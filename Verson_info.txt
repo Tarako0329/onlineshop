@@ -1,0 +1,119 @@
+ver2.99.0-0017:緊急対応・openweatherApiの&ampエラー対応
+ver2.99.0-0018:エラー時は基本、ログイン画面に飛ぶように修正
+ver2.99.0-0019:bs5&Vue3CompApiへ移行_売上修正ajax対応
+ver2.99.0-0020:bs5&Vue3CompApiへ移行_売上修正ajax対応
+ver2.99.0-0021:bs5&Vue3CompApiへ移行_売上修正ajax対応
+ver2.99.0-0022:bs5&Vue3CompApiへ移行_売上修正ajax対応
+ver2.99.0-0023:to[bs5&Vue3CompApi]売上実績画面対応完了
+ver2.99.0-0024:to[bs5&Vue3CompApi]在庫登録画面対応
+ver2.99.0-0025:to[bs5&Vue3CompApi]売上実績:軽微な修正
+ver2.99.0-0025:to[bs5&Vue3CompApi]商品一覧画面対応-a1
+ver2.99.0-0026:to[bs5&Vue3CompApi]商品一覧画面対応-a1
+ver2.99.0-0027:to[bs5&Vue3CompApi]商品一覧画面対応-a1
+ver2.99.0-028:to[bs5&Vue3CompApi]SessionCheckerの改良
+ver2.99.0-029:to[bs5&Vue3CompApi]売上分析画面の対応-v1
+ver2.99.0-030:to[bs5&Vue3CompApi]売上分析画面の対応-v2
+ver2.99.0-031:to[bs5&Vue3CompApi]商品一覧BubFix-01
+ver2.99.0-032:to[bs5&Vue3CompApi]レジ画面BubFix・・・電卓の金額に割引を適用、無駄なInputタグをhiddenに
+ver2.99.0-033:to[bs5&Vue3CompApi]レジ画面BubFix・・・電卓の[ちょうど]ボタンに割引を適用
+ver2.99.0-034:to[bs5&Vue3CompApi]ｱｶｳﾝﾄ登録画面の対応・・・インボイスとリファクタリング
+	ALTER TABLE `Users` ADD `invoice_no` VARCHAR(20) NULL DEFAULT NULL COMMENT '課税事業者登録番号' AFTER `introducer_id`;
+ver2.99.0-035:to[bs5&Vue3CompApi]インボイス対応・・・領収書作成中
+ver2.99.0-036:to[bs5&Vue3CompApi]インボイス対応・・・領収書作成
+ver2.99.0-037:to[bs5&Vue3CompApi]インボイス対応・・・レジ画面などの端数調整
+ver2.99.0-038:to[bs5&Vue3CompApi]インボイス対応・・・履歴からの領収書出力
+	ALTER TABLE `UriageData` CHANGE `su` `su` INT(11) NOT NULL DEFAULT '0' COMMENT '数量';
+	ALTER TABLE `UriageData` CHANGE `tanka` `tanka` INT(11) NOT NULL DEFAULT '0' COMMENT '単価', CHANGE `UriageKin` `UriageKin` INT(11) NOT NULL DEFAULT '0' COMMENT '売上金額', CHANGE `zei` `zei` INT(11) NOT NULL DEFAULT '0' COMMENT '消費税';
+	ALTER TABLE `UriageData` CHANGE `ShouhinCD` `ShouhinCD` VARCHAR(7) NOT NULL COMMENT '商品CD';
+	CREATE TABLE `ryoushu` (
+	  `uid` int(5) NOT NULL,
+	  `R_NO` int(11) NOT NULL COMMENT '領収書No',
+	  `UriNo` int(11) NOT NULL COMMENT '売上No',
+	  `Atena` varchar(40) NOT NULL COMMENT '宛名',
+	  `html` longtext NOT NULL COMMENT 'pdf_html',
+	  `QR_GUID` varchar(40) DEFAULT NULL,
+	  `LastHakkouDate` datetime DEFAULT current_timestamp() COMMENT '最終発行日時'
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+	ALTER TABLE `Users` ADD `inquiry_tel` VARCHAR(20) NULL DEFAULT NULL COMMENT '問合TEL' AFTER `invoice_no`, ADD `inquiry_mail` VARCHAR(100) NULL DEFAULT NULL COMMENT '問合MAIL' AFTER `inquiry_tel`;
+	php load_font.php ipag css/ipag.ttf
+	php load_font.php ipagp css/ipagp.ttf
+	php load_font.php Kranky css/Kranky-Regular.ttf
+ver2.99.0-039:to[bs5&Vue3CompApi]bugfix
+ver2.99.0-040:to[bs5&Vue3CompApi]bugfix
+ver2.99.0-041:to[bs5&Vue3CompApi]紹介CDの短縮
+ver2.99.0-042:to[bs5&Vue3CompApi]紹介CDの短縮
+ver2.99.0-043:gitignore更新
+ver2.99.0-044:トランザクションログ関連の更新
+ver2.99.0-045:to[bs5&Vue3CompApi]インボイス対応・・・端数処理・売上修正の改修
+	create view ryoshu_hakkou_chk as SELECT `uid`,`UriNo` FROM `ryoushu` GROUP by `uid`,`UriNo`;
+ver2.99.0-046:to[bs5&Vue3CompApi]インボイス対応:bugfix
+ver2.99.0-047:to[bs5&Vue3CompApi]インボイス対応:bugfix
+ver2.99.0-048:to[bs5&Vue3CompApi]インボイス対応:調整機能bugfix commited
+ver2.99.0-049:to[bs5&Vue3CompApi]bs4駆逐中-commited
+ver2.99.0-050:to[bs5&Vue3CompApi]bs4駆逐中-commited
+ver2.99.0-051:to[bs5&Vue3CompApi]bs4駆逐完了-commited
+ver2.99.0-052:レジ画面のタブレット対応-commited
+ver2.99.0-053:商品登録画面のレイアウト手法変更-commited
+ver2.99.0-054:分析画面のレイアウト調整中
+ver2.99.0-055:bugfix・・・商品登録でエラー -commited
+ver2.99.0-056:売上実績削除単位の変更(インボイス対応) -commited
+	課税売上の売上削除は売上番号単位とする
+	非課税売り上げの売上削除は商品単位とする
+	領収書が発行されている場合は売上削除不可とする
+ver2.99.0-057:レジ画面改修・税計算機能の切り出し-commited
+	イートイン・テイクアウト機能の追加 OK
+	商品の消費税計算をJS切り出しして共通関数にする OK
+	ユーザー情報で消費税の端数処理セット OK
+	ALTER TABLE `Users` CHANGE `kinouflg1` `ZeiHasu` TINYINT(1) NULL DEFAULT '0' COMMENT '消費税端数:0切捨/1四捨五入/2切上';--全環境適用済み
+	ALTER TABLE `uriagedata`--全環境適用済み
+  DROP PRIMARY KEY,
+   ADD PRIMARY KEY(
+     `uid`,
+     `UriageNO`,
+     `ShouhinCD`,
+     `zeiKBN`
+   );
+ver2.99.0-058:bugfix-sqllogger error-commited
+ver2.99.0-059:商品一覧の検索機能追加-commited
+ver2.99.0-060:細かな修正・操作性向上・分析画面のレイアウト調整-commited
+ver2.99.0-061:割引割増処理UPDATE-commited
+ver2.99.0-062:端末別の設定をindexedDbに移行-commited
+	端末別の設定をMySQL[PageDefVal]table から indexedDbに移行
+ver2.99.0-062:php Warningつぶし-commited
+ver2.99.0-063:トライアルモード修正
+ver2.99.0-064:vue3cdn修正
+ver3.00.0-000:サーバー移行に伴う修正
+
+
+【Issues】
+売上修正の領収書再発行機能を考える
+売上取消の領収証再発行機能を考える
+レジの入出金機能を考える
+
+
+ローカルからテスト環境へ
+cd /home/pcntfsrg/public_html/SaleM/TEST
+git fetch --all
+git reset --hard origin/master
+php load_font.php ipag css/ipag.ttf
+php load_font.php ipagp css/ipagp.ttf
+php load_font.php Kranky css/Kranky-Regular.ttf
+
+cd /home/pcntfsrg/public_html/SaleM/WebRez
+git fetch --all
+git reset --hard origin/master
+php load_font.php ipag css/ipag.ttf
+php load_font.php ipagp css/ipagp.ttf
+php load_font.php Kranky css/Kranky-Regular.ttf
+
+cd /home/pcntfsrg/public_html/SaleM/WebRez_Trial
+git fetch --all
+git reset --hard origin/master
+php load_font.php ipag css/ipag.ttf
+php load_font.php ipagp css/ipagp.ttf
+php load_font.php Kranky css/Kranky-Regular.ttf
+
+php load_font.php ipag C:\xampp\htdocs\SaleM\css\ipag.ttf
+php load_font.php ipagp C:\xampp\htdocs\SaleM\css\ipagp.ttf
+php load_font.php Kranky C:\xampp\htdocs\SaleM\css\Kranky-Regular.ttf
+
