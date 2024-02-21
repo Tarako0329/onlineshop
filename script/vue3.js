@@ -78,71 +78,185 @@ const dataset = (Where_to_use) => createApp({
 const shouhinMS = () => createApp({
   setup() {
     const shouhinMS = ref([])
+    let shouhinMS_pic = []
     
-    const get_shouhinMS = () => {
-      axios
-      .get(`ajax_get_shouhinMS.php`)
+    const mode = ref('new')
+    const get_shouhinMS = (serch) => {
+      let url=`ajax_get_shouhinMS.php?f=${serch}`
+      console_log('get_shouhinMS start')
+      
+      axios.get(url)
       .then((response) => {
         console_log(response.data)
-        shouhinMS.value = response.data.dataset
+        shouhinMS.value = [...response.data.dataset]
         console_log('get_shouhinMS succsess')
       })
       .catch((error)=>{
-        console_log('get_shouhinMS.php ERROR')
         console_log(error)
-        alert('リターンエラー：登録できませんでした')
+        alert('リターンエラー：商品マスタ取得失敗')
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+    }
+    const get_shouhinMS_newcd = () => {
+      let url=`ajax_get_shouhinMS_newcd.php`
+      console_log('get_shouhinMS_newcd start')
+      
+      axios.get(url)
+      .then((response) => {
+        console_log(response.data)
+        shouhinCD.value = response.data
+        console_log('get_shouhinMS_newcd succsess')
+      })
+      .catch((error)=>{
+        console_log(error)
+        alert('リターンエラー：商品マスタnewCD取得失敗')
       })
       .finally(()=>{
         //loader.value = false
       })
     }
     
-    
+    const shouhinCD = ref('')
+    const shouhinNM = ref('')
     const tanka = ref(0)
-    const zei = ref(0)
+    const zei = ref(1101)
+    const midasi = ref('')
     const info = ref('')
-    const get_shouhinMS_online = (shouhin) => {
-      console_log(shouhin)
-      let serch = document.getElementById(shouhin).value
+    const pic_list = ref([])
+    const rez_shouhinCD = ref('')
+    const rez_shouhinNM = ref('')
+    const get_shouhinMS_online = (serch) => {
       axios
       .get(`ajax_get_shouhinMS_online.php?f=${serch}`)
       .then((response) => {
-        console_log(response.data)
-        shouhinMS_online.value = response.data.dataset
-        tanka.value = response.data.dataset[0].tanka==null?response.data.dataset[0].rez_tanka:response.data.dataset[0].tanka
-        zei.value = response.data.dataset[0].zeikbn==null?response.data.dataset[0].rez_zeikbn:response.data.dataset[0].zeikbn
-        info.value = response.data.dataset[0].infomation
-        console_log('get_shouhinMS_online succsess')
+        if(response.data.alert==="success"){
+          shouhinMS.value = [...response.data.dataset]
+          shouhinMS_pic = [...response.data.pic_set]
+          console_log('get_shouhinMS_online succsess')
+          //console_log(response.data)
+        }else{
+          console_log('get_shouhinMS_online succsess:NoData')
+        }
       })
       .catch((error)=>{
         console_log('get_shouhinMS_online.php ERROR')
         console_log(error)
-        alert('リターンエラー：登録できませんでした')
       })
       .finally(()=>{
         //loader.value = false
       })
     }
+
+    watch(mode,()=>{//マスタ登録モードに合わせて商品名のリストを取得する
+      clear_ms()
+      shouhinMS.value = []
+      if(mode.value==="new"){
+        get_shouhinMS()
+        //get_shouhinMS_online()
+        get_shouhinMS_newcd()
+      }else if(mode.value==="upd"){
+        get_shouhinMS_online()
+      }else{
+        return
+      }
+    })
+
+    watch(shouhinNM,()=>{//入力された商品名からマスタ情報を取得
+      let shouhin = shouhinMS.value.filter((row)=>{
+        return row.shouhinNM === shouhinNM.value
+      })
+      console_log(shouhin)
+      if(shouhin.length!==0){
+        tanka.value = shouhin[0].tanka
+        zei.value = shouhin[0].zeikbn
+        info.value = shouhin[0].infomation
+        midasi.value = shouhin[0].short_info
+        pic_list.value=[]
+        shouhinMS_pic.forEach((row)=>{
+          if(row.shouhinCD===shouhin[0].shouhinCD){
+            pic_list.value.push(row)
+          }
+        })
+        console_log(pic_list.value)
+        if(mode.value==="upd"){
+          shouhinCD.value = shouhin[0].shouhinCD
+        }
+      }
+
+      if(mode.value==="new"){
+        get_shouhinMS_newcd()
+      }else{
+      }
+    })
+
+    let sort = 1
+    const resort = (index) =>{
+      if(pic_list.value.length < sort){
+        sort = 1
+      }
+      pic_list.value[index].sort = sort
+      sort = Number(sort) + 1
+    }
+
+
 
     const input_file_btn = (id) =>{
       document.getElementById(id).click()
     }
     const uploadfile = (id) =>{
-      let i = 0
       const params = new FormData();
-
+      
+      let i = 0
       while(document.getElementById(id).files[i]!==undefined){
-        //console_log(document.getElementById(id).files[i])
         params.append(`user_file_name_${i}`, document.getElementById(id).files[i]);
         i = i+1
       }
-      //console_log(params)
+      params.append('shouhinCD',shouhinCD.value)
 
       axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="success"){
-          
+          pic_list.value = [...response.data.filename]
+        }else{
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+    }
+
+    const ins_shouhinMS = ()=>{
+      const form = new FormData();
+      form.append(`shouhinCD`, shouhinCD.value)
+      form.append(`shouhinNM`, shouhinNM.value)
+      form.append(`tanka`, tanka.value)
+      form.append(`zeikbn`, zei.value)
+      form.append(`infomation`, info.value)
+      form.append(`short_info`, midasi.value)
+      let i = 0
+      pic_list.value.forEach((row)=>{
+        form.append(`user_file_name[${i}][sort]`,row.sort)
+        form.append(`user_file_name[${i}][filename]`,row.filename)
+        i=i+1
+      })
+      axios.post("ajax_delins_shouhinMS.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        if(response.data.status==="alert-success"){
+          //画面のクリア
+          clear_ms()
+          if(mode.value==="new"){
+            get_shouhinMS()
+            get_shouhinMS_newcd()
+          }else if(mode.value==="upd"){
+            get_shouhinMS_online()
+          }
         }else{
 
         }
@@ -155,21 +269,47 @@ const shouhinMS = () => createApp({
       })
     }
     
-    
+    const clear_ms = () =>{
+      console_log('clear_ms')
+      shouhinNM.value = ''
+      tanka.value = 0
+      zei.value = 1101
+      midasi.value = ''
+      info.value = ''
+      pic_list.value=[]
+
+    }
+
+
+
+
+
+
+
+
     onMounted(()=>{
       get_shouhinMS()
+      get_shouhinMS_newcd()
     })
 
-
     return{
+      mode,
       shouhinMS,
       get_shouhinMS,
+      shouhinCD,
+      shouhinNM,
       tanka,
       zei,
+      midasi,
       info,
+      pic_list,
+      rez_shouhinCD,
+      rez_shouhinNM,
       get_shouhinMS_online,
       input_file_btn,
       uploadfile,
+      ins_shouhinMS,
+      resort,
     }
   }
 });

@@ -19,13 +19,21 @@
   <MAIN class='container common_main'>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-      <label for='hinmei' class="form-label">商品名</label>
-      <input type='text' list='hinmeilist' class='form-control' id='hinmei' @change='get_shouhinMS_online("hinmei")'>
-      <datalist id='hinmeilist'>
-        <template v-for='list in shouhinMS' :key='list.shouhinCD'>
-          <option :value='list.shouhinNM'></option>
-        </template>
-      </datalist>
+				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
+				<label class='btn btn-outline-danger ' for='eatin' style='border-radius:0;'>新規登録</label>
+				<input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='takeout'>
+				<label class='btn btn-outline-danger ' for='takeout' style='border-radius:0;'>修正</label>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='hinmei' class="form-label">商品名</label>
+        <input type='text' list='hinmeilist' v-model='shouhinNM' class='form-control' id='hinmei'>
+        <datalist id='hinmeilist'>
+          <template v-for='list in shouhinMS' :key='list.shouhinCD'>
+            <option :value='list.shouhinNM'></option>
+          </template>
+        </datalist>
       </div>
     </div>
     <div class='row mb-3'>
@@ -42,7 +50,13 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <label for='setumei' class="form-label">商品説明</label>
+        <label for='midasi' class="form-label">商品説明(見出し)</label>
+        <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi'></textarea>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='setumei' class="form-label">商品説明(詳細)</label>
         <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='info'></textarea>
       </div>
     </div>
@@ -52,20 +66,29 @@
         <input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
       </div>
     </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <div class='row'>
+        <template v-for='(list,index) in pic_list' :key='list.filename'>
+          <div class='col-md-3 col-6 text-center' style='padding:10px;'>
+            <img :src="list.filename" class="d-block" style='width:90%;margin-bottom:5px;'>
+            <button type='button' class='btn btn-primary' @click='resort(index)'>表示順：{{list.sort}}</button>
+          </div>
+        </template>
+        </div>
+      </div>
+    </div>
 
+    <!--
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <div id="carouselExample" class="carousel slide">
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
+            <template v-for='list in pic_list' :key='pic_list'>
+              <div class="carousel-item active">
+                <img :src="list" class="d-block w-100" alt="...">
+              </div>
+            </template>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -78,10 +101,10 @@
         </div>
       </div>
     </div>
-
+-->
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <button type='button' class='btn btn-primary'>登録</button>
+        <button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
       </div>
     </div>
 
@@ -101,7 +124,7 @@
           // form1に入力されたキーを取得
           const key = e.keyCode || e.charCode || 0;
           if (key == 13) {// 13はEnterキーのキーコード
-            e.preventDefault();// アクションを行わない
+            //e.preventDefault();// アクションを行わない
           }
         }    
       };    

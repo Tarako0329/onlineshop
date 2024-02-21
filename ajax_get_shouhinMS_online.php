@@ -5,52 +5,50 @@
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $msg=$rtn;
-	  $alert_status = "alert-warning";
+	  $alert_status = "false";
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
-	  $sql = "select 
-				rezMS.shouhinCD
-				,rezMS.shouhinNM
-				,rezMS.tanka as rez_tanka
-				,rezMS.zeiKBN as rez_zeikbn
-				,rezMS.bunrui1
-				,rezMS.bunrui2
-				,rezMS.bunrui3
-				,rezMS.hyoujiKBN2
-				,online.shouhinNM as onName
+		$sql = "select 
+				online.shouhinCD
+				,online.shouhinNM
+				,online.short_info
 				,online.infomation
 				,online.tanka
 				,online.zeikbn
-			from shouhinMS rezMS 
-			left join shouhinMS_online online 
-			on rezMS.uid = online.uid 
-			and rezMS.shouhinCD = online.shouhinCD 
-	    where rezMS.uid = :uid and rezMS.shouhinNM like :hinmei order by rezMS.shouhinNM";
+				,NULL as rezCD
+			from shouhinMS_online online 
+			where online.uid = :uid and online.shouhinNM like :hinmei order by online.shouhinNM";
+
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
 		$stmt->execute();
+		$count = $stmt->rowCount();
 		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
 		$sql = "select 
-				rezMS.shouhinCD
-				,rezMS.shouhinNM
-				,pic.pic
-			from shouhinMS rezMS 
+				online.shouhinCD
+				,online.shouhinNM
+				,pic.sort
+				,pic.pic as filename
+			from shouhinMS_online online 
 			left join shouhinms_online_pic pic 
-			on rezMS.uid = pic.uid 
-			and rezMS.shouhinCD = pic.shouhinCD
-			where rezMS.uid = :uid and rezMS.shouhinNM like :hinmei order by rezMS.shouhinNM";
+			on online.uid = pic.uid 
+			and online.shouhinCD = pic.shouhinCD
+			where online.uid = :uid and online.shouhinNM like :hinmei order by online.shouhinNM,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
 		$stmt->execute();
 		$pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 		
+		if($count!==0){
+			$alert_status = "success";
+		}
 		
-		$alert_status = "alert-success";
 
 		
 		$return = array(

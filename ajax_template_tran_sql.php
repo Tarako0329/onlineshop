@@ -30,7 +30,7 @@ if($rtn !== true){
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
-            sqllogger("START TRANSACTION",[],basename(__FILE__),"ok");
+            
             $stmt = $pdo_h->prepare( $sql );
             //bind処理
             $stmt->bindValue("tanka", $_params["tanka"], PDO::PARAM_INT);
