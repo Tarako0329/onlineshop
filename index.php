@@ -18,9 +18,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <HEADER class='container-fluid text-center common_header'>
-    <h2><?php echo TITLE;?></h2>
-  </HEADER>
+  <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
     <div class='row mb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD'>
@@ -55,7 +53,7 @@
               </div><!--写真-->
               <div class='col-6'><!--見出-->
                 <h3>『{{list.shouhinNM}}』</h3>
-                <div class='text-end'>
+                <div class='mb-3'>
                   <p>税込価格：<span class='kakaku'>{{(Number(list.tanka)+Number(list.shouhizei)).toLocaleString()}} 円</span></p>
                   <p>内税：<span class='zei'>{{list.shouhizei.toLocaleString()}}</span></p>
                 </div>
@@ -73,8 +71,8 @@
                     </h2>
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
-                        <div><p>{{list.infomation}}</p></div>
-                        <div>
+                        <div class='mb-1'><p>{{list.infomation}}</p></div>
+                        <div class='mb-3'>
                           注文
                           <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
 				                  <label class='btn btn-primary ' for='show' style='border-radius:0;'>＋</label>

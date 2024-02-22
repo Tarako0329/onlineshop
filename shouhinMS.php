@@ -13,9 +13,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <HEADER class='container-fluid text-center common_header'>
-    <h2><?php echo TITLE;?></h2>
-  </HEADER>
+  <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
     <transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
@@ -84,9 +82,9 @@
       <div class='col-md-6 col-12'>
         <div class='row'>
         <template v-for='(list,index) in pic_list' :key='list.filename'>
-          <div class='col-md-3 col-6 text-center' style='padding:10px;'>
+          <div class='col-md-3 col-6' style='padding:10px;'>
+            <button type='button' class='btn btn-info mb-1' @click='resort(index)' style='min-width: 50px;'>表示順：{{list.sort}}</button>
             <img :src="list.filename" class="d-block" style='width:90%;margin-bottom:5px;'>
-            <button type='button' class='btn btn-info' @click='resort(index)'>表示順：{{list.sort}}</button>
           </div>
         </template>
         </div>

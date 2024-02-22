@@ -14,12 +14,14 @@ body,html {
 }
 .common_header{
 	background-color: var(--header_bg_color);
-	height: 30px;
+	height: 35px;
+	display: flex;
 }
 
 .common_main{
 	background-color: var(--main_bg_color);
 	width: 100%;
+	padding-bottom: 50px;
 }
 
 .common_footer{
@@ -27,7 +29,7 @@ body,html {
 }
 p {
   white-space: pre-wrap;
-	margin-bottom: 5px;
+	margin-bottom: 3px;
 }
 
 
