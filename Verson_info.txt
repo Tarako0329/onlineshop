@@ -4,7 +4,7 @@ ver0.01.1:開発中
 【Issues】
 
 ローカルからテスト環境へ
-cd /home/pcntfsrg/public_html/kakeibo
+cd /home/pcntfsrg/public_html/onlineshop
 git fetch --all
 git reset --hard origin/main
 

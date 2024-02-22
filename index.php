@@ -26,17 +26,17 @@
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD'>
         <div class='col-md-6 col-12 p-3'><!--外枠-->
           <div class='container-fluid'>
-            <div class='row'>
+            <div class='row mb-1'>
               <div class='col-6'><!--写真-->
                 <div :id="`carouselExample_${index}`" class="carousel slide">
                   <div class="carousel-inner">
 
                     <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
                       <div v-if='list.shouhinCD===pic_list.shouhinCD'>
-                        <div v-if='pic_list.sort===1' class="carousel-item active">
+                        <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
                           <img :src="pic_list.filename" class="d-block img-item">
                         </div>
-                        <div v-else class="carousel-item">
+                        <div v-else class="carousel-item" style='text-align: center;'>
                           <img :src="pic_list.filename" class="d-block img-item">
                         </div>
                       </div>
@@ -53,12 +53,14 @@
                   </button>
                 </div>
               </div><!--写真-->
-            <div class='col-6'><!--見出-->
-              <h3>{{list.shouhinCD}} : {{list.shouhinNM}}</h3>
-              <p>税込価格：{{list.tanka.toLocaleString()}} 円</p>
-              <p>内消費税：{{list.shouhizei.toLocaleString()}} 円</p>
-              <p>{{list.short_info}}</p>
-            </div><!--見出-->
+              <div class='col-6'><!--見出-->
+                <h3>『{{list.shouhinNM}}』</h3>
+                <div class='text-end'>
+                  <p>税込価格：<span class='kakaku'>{{(Number(list.tanka)+Number(list.shouhizei)).toLocaleString()}} 円</span></p>
+                  <p>内税：<span class='zei'>{{list.shouhizei.toLocaleString()}}</span></p>
+                </div>
+                <p>{{list.short_info}}</p>
+              </div><!--見出-->
             </div>
             <div class='row'>
               <div class='col-12'><!--詳細-->
@@ -80,8 +82,8 @@
 				                  <label class='btn btn-secondary ' for='stop' style='border-radius:0;'>－</label>
                         </div>
                         <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                          <label for="floatingTextarea2">オーダー備考</label>
+                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">ご要望がございましたらご記入ください</textarea>
+                          <label for="floatingTextarea2">お客様備考記入欄</label>
                         </div>
                       </div>
                     </div>

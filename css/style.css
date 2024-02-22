@@ -19,30 +19,51 @@ body,html {
 
 .common_main{
 	background-color: var(--main_bg_color);
-	padding:0;
+	width: 100%;
 }
 
 .common_footer{
 	background-color: var(--footer_bg_color);
 }
+p {
+  white-space: pre-wrap;
+	margin-bottom: 5px;
+}
+
 
 .btn{
 	min-width: 120px;
 }
 
 .img-item {
-	width: 90%;
+	width: 100%;
 	height: 150px;
 	object-fit: cover; /* width, heightといっしょに使います */
 	border: 1px solid #111;
+}
+.kakaku{
+	font-size:1.4rem;
+	color:#FF0080;
+}
+.zei{
+	font-size:1.1rem;
+	color:#FF0080;
 }
 
 
 
 
 
+/*vue-transtion*/
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
 
-
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
 
 

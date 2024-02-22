@@ -92,6 +92,8 @@ const shouhinMS = (Where_to_use) => createApp({
       },
     ]
 
+    const msg=ref('')
+
     const shouhinMS = ref([])
     const shouhinMS_pic = ref([])
     
@@ -108,7 +110,7 @@ const shouhinMS = (Where_to_use) => createApp({
       })
       .catch((error)=>{
         console_log(error)
-        alert('リターンエラー：商品マスタ取得失敗')
+        //alert('リターンエラー：商品マスタ取得失敗')
       })
       .finally(()=>{
         //loader.value = false
@@ -276,12 +278,14 @@ const shouhinMS = (Where_to_use) => createApp({
           }else if(mode.value==="upd"){
             get_shouhinMS_online()
           }
+          msg.value=`${shouhinNM.value} を登録しました`
         }else{
-
+          msg.value=`${shouhinNM.value} の登録に失敗しました`
         }
       })
       .catch((error)=>{
         console_log(error)
+        msg.value=`${shouhinNM.value} の登録に失敗しました`
       })
       .finally(()=>{
         //loader.value = false
@@ -330,6 +334,11 @@ const shouhinMS = (Where_to_use) => createApp({
     })
 
 
+    watch(msg,()=>{
+      console_log('watch msg => '+msg.value)
+      setTimeout(()=>{msg.value=""}, 3000);//3s
+      
+  })
 
 
     onMounted(()=>{
@@ -344,6 +353,7 @@ const shouhinMS = (Where_to_use) => createApp({
     })
 
     return{
+      msg,
       mode,
       shouhinMS,
       shouhinMS_pic,

@@ -17,6 +17,11 @@
     <h2><?php echo TITLE;?></h2>
   </HEADER>
   <MAIN class='container common_main'>
+    <transition>
+      <div v-show="msg!==''" class="alert alert-warning" role="alert">
+        {{msg}}
+      </div>
+    </transition>
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
 				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
