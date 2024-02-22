@@ -101,35 +101,11 @@
       </div>
     </div>
 
-    <!--
-    <div class='row mb-3'>
-      <div class='col-md-6 col-12'>
-        <div id="carouselExample" class="carousel slide">
-          <div class="carousel-inner">
-            <template v-for='list in pic_list' :key='pic_list'>
-              <div class="carousel-item active">
-                <img :src="list" class="d-block w-100" alt="...">
-              </div>
-            </template>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-    </div>
--->
-    <div class='row mb-3'>
+     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
       </div>
     </div>
-
 
 
   </MAIN>

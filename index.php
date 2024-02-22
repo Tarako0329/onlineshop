@@ -21,11 +21,11 @@
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
     <div class='cart' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>
-    <div class='row mb-3 pt-3'>
+    <div class='row pb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD'>
-        <div class='col-md-6 col-12 p-3'><!--外枠-->
+        <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
-            <div class='row mb-1'>
+            <div class='row pb-1'>
               <div class='col-6'><!--写真-->
                 <div :id="`carouselExample_${index}`" class="carousel slide">
                   <div class="carousel-inner">
@@ -54,7 +54,7 @@
               </div><!--写真-->
               <div class='col-6'><!--見出-->
                 <h3>『{{list.shouhinNM}}』</h3>
-                <div class='mb-3'>
+                <div class='pb-3'>
                   <p>税込価格：<span class='kakaku'>{{(Number(list.tanka)+Number(list.shouhizei)).toLocaleString()}} 円</span></p>
                   <p>内税：<span class='zei'>{{list.shouhizei.toLocaleString()}}</span></p>
                 </div>
@@ -72,9 +72,9 @@
                     </h2>
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
-                        <div class='mb-1'><p>{{list.infomation}}</p></div>
+                        <div class='pb-1'><p>{{list.infomation}}</p></div>
                         <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
-                        <div class='mb-3'>
+                        <div class='pb-3'>
                           <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
 				                  <label class='btn btn-primary ' for='show' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
 				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' id='stop'>
@@ -90,11 +90,26 @@
                 </div>
               </div><!--詳細-->
             </div>
+            
           </div>
+          <hr>
         </div><!--外枠-->
-        <hr>
+        
       </template>
     </div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
+    <div class="toast-header">
+      <img src="img/icon-16x16.png" class="rounded me-2" >
+      <strong class="me-auto">ご注文内容</strong>
+      <!--<small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
+    </div>
+    <div class="toast-body">
+      合計金額：<span class='kakaku'>{{order_kakaku.toLocaleString()}} 円</span>
+    </div>
+  </div>
+</div>
 
   </MAIN>
   <FOOTER class='container-fluid common_footer'>

@@ -307,13 +307,20 @@ const shouhinMS = (Where_to_use) => createApp({
       pic_list.value=[]
     }
 
+    const order_kakaku = ref(0)
     const order_count =(index,val) =>{
       let order = Number(shouhinMS.value[index].ordered)
       if(order + Number(val) < 0){
         shouhinMS.value[index].ordered = 0
       }else{
         shouhinMS.value[index].ordered = order + Number(val)
+        let tanka = new Decimal(Number(shouhinMS.value[index].tanka))
+        let shouhizei = new Decimal(Number(shouhinMS.value[index].shouhizei))
+        let order_kin = new Decimal(order_kakaku.value)
+        let zougen = new Decimal(val)
+        order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
+      console_log(order_kakaku.value)
     }
 
     const shouhizei = computed(()=>{//消費税計算
@@ -343,8 +350,19 @@ const shouhinMS = (Where_to_use) => createApp({
       //console_log(num1.mul(num2).toNumber());
       return num1.mul(num2).toNumber()
     })
-
-
+/*
+    const order_kakaku = computed(()=>{
+      let rtn,tanka,shouhizei,zeikomi
+      rtn = new Decimal(0)
+      shouhinMS.value.forEach((row)=>{
+        tanka = new Decimal(row.tanka)
+        shouhizei = new Decimal(row.shouhizei)
+        zeikomi = tanka.add(shouhizei)
+        rtn = rtn.add(zeikomi)
+      })
+      return rtn
+    })
+*/
     watch(msg,()=>{
       console_log('watch msg => '+msg.value)
       setTimeout(()=>{msg.value=""}, 3000);//3s
@@ -388,6 +406,7 @@ const shouhinMS = (Where_to_use) => createApp({
       shouhizei,
       zeikomi,
       order_count,
+      order_kakaku,
     }
   }
 });
