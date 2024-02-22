@@ -36,7 +36,7 @@
 				,pic.sort
 				,pic.pic as filename
 			from shouhinMS_online online 
-			left join shouhinms_online_pic pic 
+			left join shouhinMS_online_pic pic 
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
 			where online.uid = :uid and online.shouhinNM like :hinmei 
