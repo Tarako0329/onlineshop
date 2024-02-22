@@ -13,7 +13,11 @@ xxx*
 *.mp4
 *.htaccess
 *.csv
-*.html
-*.png
-*.jpeg
-*.jpg
+upload/*.html
+upload/*.png
+upload/*.jpeg
+upload/*.jpg
+upload/temp/*.html
+upload/temp/*.png
+upload/temp/*.jpeg
+upload/temp/*.jpg
