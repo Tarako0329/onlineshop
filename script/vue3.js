@@ -169,13 +169,14 @@ const shouhinMS = (Where_to_use) => createApp({
     }
 
     watch(mode,()=>{//マスタ登録モードに合わせて商品名のリストを取得する
-      clear_ms()
-      shouhinMS.value = []
       if(mode.value==="new"){
+        clear_ms()
+        shouhinMS.value = []
         get_shouhinMS()
-        //get_shouhinMS_online()
         get_shouhinMS_newcd()
       }else if(mode.value==="upd"){
+        clear_ms()
+        shouhinMS.value = []
         get_shouhinMS_online()
       }else{
         return
@@ -192,7 +193,7 @@ const shouhinMS = (Where_to_use) => createApp({
         status.value = shouhin[0].status
         zei.value = String(shouhin[0].zeikbn)
         info.value = shouhin[0].infomation
-        customer_bikou.value = shouhin[0].customer_bikou
+        customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
         midasi.value = shouhin[0].short_info
         pic_list.value=[]
         shouhinMS_pic.value.forEach((row)=>{
@@ -213,7 +214,7 @@ const shouhinMS = (Where_to_use) => createApp({
     })
 
     let sort = 1
-    const resort = (index) =>{
+    const resort = (index) =>{//画像の並び順設定
       if(pic_list.value.length < sort){
         sort = 1
       }
@@ -308,6 +309,11 @@ const shouhinMS = (Where_to_use) => createApp({
     }
 
     const order_kakaku = ref(0)
+    const od_atena = ref('')
+    const od_yubin = ref('')
+    const od_jusho = ref('')
+    const od_tel = ref('')
+    const od_mail = ref('')
     const order_count =(index,val) =>{
       let order = Number(shouhinMS.value[index].ordered)
       if(order + Number(val) < 0){
@@ -321,6 +327,17 @@ const shouhinMS = (Where_to_use) => createApp({
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
+    }
+    const btn_name = ref('ご注文画面へ')
+    const ordering = () =>{
+      if(mode.value==="shopping"){
+        btn_name.value='戻る'
+        mode.value="ordering"
+      }else if(mode.value==="ordering"){
+        btn_name.value='ご注文画面へ'
+        mode.value="shopping"
+      }
+
     }
 
     const shouhizei = computed(()=>{//消費税計算
@@ -350,25 +367,12 @@ const shouhinMS = (Where_to_use) => createApp({
       //console_log(num1.mul(num2).toNumber());
       return num1.mul(num2).toNumber()
     })
-/*
-    const order_kakaku = computed(()=>{
-      let rtn,tanka,shouhizei,zeikomi
-      rtn = new Decimal(0)
-      shouhinMS.value.forEach((row)=>{
-        tanka = new Decimal(row.tanka)
-        shouhizei = new Decimal(row.shouhizei)
-        zeikomi = tanka.add(shouhizei)
-        rtn = rtn.add(zeikomi)
-      })
-      return rtn
-    })
-*/
+
     watch(msg,()=>{
       console_log('watch msg => '+msg.value)
       setTimeout(()=>{msg.value=""}, 3000);//3s
       
-  })
-
+    })
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
@@ -378,6 +382,7 @@ const shouhinMS = (Where_to_use) => createApp({
       }
       if(Where_to_use==="index"){
         get_shouhinMS_online()
+        mode.value='shopping'
       }
     })
 
@@ -407,6 +412,13 @@ const shouhinMS = (Where_to_use) => createApp({
       zeikomi,
       order_count,
       order_kakaku,
+      od_atena,
+      od_yubin,
+      od_jusho,
+      od_tel,
+      od_mail,
+      btn_name,
+      ordering,
     }
   }
 });

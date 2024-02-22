@@ -21,7 +21,7 @@
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
     <div class='cart' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>
-    <div class='row pb-3 pt-3'>
+    <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
@@ -97,19 +97,54 @@
         
       </template>
     </div>
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
-    <div class="toast-header">
-      <img src="img/icon-16x16.png" class="rounded me-2" >
-      <strong class="me-auto">ご注文内容</strong>
-      <!--<small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
+
+    <div v-if='mode==="ordering"'>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='od_atena' class="form-label">お名前・宛名</label>
+        <input type='text' v-model='od_atena' class='form-control' id='od_atena'>
+      </div>
     </div>
-    <div class="toast-body">
-      合計金額：<span class='kakaku'>{{order_kakaku.toLocaleString()}} 円</span>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='od_yubin' class="form-label">郵便番号</label>
+        <input type='number' v-model='od_yubin' class='form-control' id='od_yubin'>
+      </div>
     </div>
-  </div>
-</div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='od_jusho' class="form-label">住所</label>
+        <input type='text' v-model='od_jusho' class='form-control' id='od_jusho'>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='od_tel' class="form-label">TEL</label>
+        <input type='tel' v-model='od_tel' class='form-control' id='od_tel'>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='od_mail' class="form-label">e-mail</label>
+        <input type='email' v-model='od_mail' class='form-control' id='od_mail'>
+      </div>
+    </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
+        <div class="toast-header">
+          <img src="img/icon-16x16.png" class="rounded me-2" >
+          <strong class="me-auto">ご注文内容</strong>
+          <!--<small>11 mins ago</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
+        </div>
+        <div class="toast-body">
+          合計金額：<span class='kakaku'>{{order_kakaku.toLocaleString()}} 円</span>
+          <button type='button' class='btn btn-primary' @click='ordering'>{{btn_name}}</button>
+        </div>
+      </div>
+    </div>
 
   </MAIN>
   <FOOTER class='container-fluid common_footer'>

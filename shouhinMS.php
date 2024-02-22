@@ -50,7 +50,7 @@
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <label for='tanka' class="form-label">単価</label>
-        <input type='text' class='form-control' id='tanka' v-model='tanka'>
+        <input type='number' class='form-control' id='tanka' v-model='tanka'>
         <label for='zei' class="form-label">税区分</label>
         <select class='form-select' id='zei' v-model='zei'>
           <option value="0">非課税</option>
