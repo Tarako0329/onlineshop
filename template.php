@@ -33,6 +33,7 @@
       <label for='zei' class="form-label">税区分</label>
       <input type='text' class='form-control' id='zei'>
       </div>
+      {{tanka.toLocaleString()}}
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>

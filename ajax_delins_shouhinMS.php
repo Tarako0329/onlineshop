@@ -9,7 +9,7 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-log_writer2("\$_POST",$_POST,"lv3");
+//log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = true;//csrf_checker(["shouhinMS.php","xxx.php"],["P","C","S"]);
 if($rtn !== true){
@@ -29,17 +29,19 @@ if($rtn !== true){
         $DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
         $DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
-        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,short_info,infomation,tanka,zeikbn) ";
-        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:short_info,:infomation,:tanka,:zeikbn)";
+        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,tanka,zeikbn,shouhizei) ";
+        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:tanka,:zeikbn,:shouhizei)";
         $INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["shouhinCD"] = $_POST["shouhinCD"];
         $params["shouhinNM"] = $_POST["shouhinNM"];
+        $params["status"] = $_POST["status"];
         $params["short_info"] = $_POST["short_info"];
         $params["infomation"] = $_POST["infomation"];
         $params["tanka"] = $_POST["tanka"];
         $params["zeikbn"] = $_POST["zeikbn"];
+        $params["shouhizei"] = $_POST["shouhizei"];
 
         try{
             $pdo_h->beginTransaction();
@@ -68,10 +70,12 @@ if($rtn !== true){
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
             $stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
             $stmt->bindValue("shouhinNM", $params["shouhinNM"], PDO::PARAM_STR);
+            $stmt->bindValue("status", $params["status"], PDO::PARAM_STR);
             $stmt->bindValue("short_info", $params["short_info"], PDO::PARAM_STR);
             $stmt->bindValue("infomation", $params["infomation"], PDO::PARAM_STR);
             $stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
             $stmt->bindValue("zeikbn", $params["zeikbn"], PDO::PARAM_INT);
+            $stmt->bindValue("shouhizei", $params["shouhizei"], PDO::PARAM_INT);
             
             $sqllog .= rtn_sqllog($INSsql,$params);
 
@@ -79,7 +83,7 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
             
             foreach($_POST["user_file_name"] as $row){
-                log_writer2("\$row[filename]",$row["filename"],"lv3");
+                //log_writer2("\$row[filename]",$row["filename"],"lv3");
                 
                 if (is_file($row["filename"])) {//fileの移動
                     if ( rename($row["filename"] , str_replace("temp/","",$row["filename"]))) {

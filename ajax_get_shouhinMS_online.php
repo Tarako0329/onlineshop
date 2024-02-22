@@ -1,7 +1,7 @@
 <?php
   require "php_header.php";
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
-	log_writer2("",$hinmei,"lv3");
+	//log_writer2("",$hinmei,"lv3");
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $msg=$rtn;
@@ -12,13 +12,16 @@
 		$sql = "select 
 				online.shouhinCD
 				,online.shouhinNM
+				,online.status
 				,online.short_info
 				,online.infomation
 				,online.tanka
 				,online.zeikbn
+				,online.shouhizei
 				,NULL as rezCD
 			from shouhinMS_online online 
-			where online.uid = :uid and online.shouhinNM like :hinmei order by online.shouhinNM";
+			where online.uid = :uid and online.shouhinNM like :hinmei 
+			order by online.shouhinCD";
 
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
@@ -36,7 +39,8 @@
 			left join shouhinms_online_pic pic 
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
-			where online.uid = :uid and online.shouhinNM like :hinmei order by online.shouhinNM,pic.sort";
+			where online.uid = :uid and online.shouhinNM like :hinmei 
+			order by online.shouhinCD,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);

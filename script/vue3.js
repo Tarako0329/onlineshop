@@ -75,10 +75,25 @@ const dataset = (Where_to_use) => createApp({
   }
 });
 
-const shouhinMS = () => createApp({
+const shouhinMS = (Where_to_use) => createApp({
   setup() {
+    const zeiMS = [
+      {
+        zeikbn:"0",
+        ritu:0
+      },
+      {
+        zeikbn:"1001",
+        ritu:0.08
+      },
+      {
+        zeikbn:"1101",
+        ritu:0.1
+      },
+    ]
+
     const shouhinMS = ref([])
-    let shouhinMS_pic = []
+    const shouhinMS_pic = ref([])
     
     const mode = ref('new')
     const get_shouhinMS = (serch) => {
@@ -120,6 +135,7 @@ const shouhinMS = () => createApp({
     
     const shouhinCD = ref('')
     const shouhinNM = ref('')
+    const status = ref('show')
     const tanka = ref(0)
     const zei = ref(1101)
     const midasi = ref('')
@@ -133,9 +149,9 @@ const shouhinMS = () => createApp({
       .then((response) => {
         if(response.data.alert==="success"){
           shouhinMS.value = [...response.data.dataset]
-          shouhinMS_pic = [...response.data.pic_set]
+          shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
-          //console_log(response.data)
+          console_log(response.data.pic_set)
         }else{
           console_log('get_shouhinMS_online succsess:NoData')
         }
@@ -170,11 +186,12 @@ const shouhinMS = () => createApp({
       console_log(shouhin)
       if(shouhin.length!==0){
         tanka.value = shouhin[0].tanka
-        zei.value = shouhin[0].zeikbn
+        status.value = shouhin[0].status
+        zei.value = String(shouhin[0].zeikbn)
         info.value = shouhin[0].infomation
         midasi.value = shouhin[0].short_info
         pic_list.value=[]
-        shouhinMS_pic.forEach((row)=>{
+        shouhinMS_pic.value.forEach((row)=>{
           if(row.shouhinCD===shouhin[0].shouhinCD){
             pic_list.value.push(row)
           }
@@ -235,8 +252,10 @@ const shouhinMS = () => createApp({
       const form = new FormData();
       form.append(`shouhinCD`, shouhinCD.value)
       form.append(`shouhinNM`, shouhinNM.value)
+      form.append(`status`, status.value)
       form.append(`tanka`, tanka.value)
       form.append(`zeikbn`, zei.value)
+      form.append(`shouhizei`, shouhizei.value)
       form.append(`infomation`, info.value)
       form.append(`short_info`, midasi.value)
       let i = 0
@@ -272,6 +291,7 @@ const shouhinMS = () => createApp({
     const clear_ms = () =>{
       console_log('clear_ms')
       shouhinNM.value = ''
+      status.value = 'show'
       tanka.value = 0
       zei.value = 1101
       midasi.value = ''
@@ -281,23 +301,56 @@ const shouhinMS = () => createApp({
     }
 
 
+    const shouhizei = computed(()=>{
+      let zeiritu = 0.1
+      zeiMS.forEach((row)=>{
+        if(row.zeikbn===zei.value){
+          zeiritu=row.ritu
+        }
+      })
+      console_log(zeiritu)
+      let num1 = new Decimal(tanka.value);
+      let num2 = new Decimal(zeiritu);
+      //console_log(num1.mul(num2).toNumber());
+      return num1.mul(num2).toNumber()
+    })
 
-
+    const zeikomi = computed(()=>{
+      let zeiritu = 0.1 + 1
+      zeiMS.forEach((row)=>{
+        if(row.zeikbn===zei.value){
+          zeiritu=row.ritu + 1
+        }
+      })
+      console_log(zeiritu)
+      let num1 = new Decimal(tanka.value);
+      let num2 = new Decimal(zeiritu);
+      //console_log(num1.mul(num2).toNumber());
+      return num1.mul(num2).toNumber()
+    })
 
 
 
 
     onMounted(()=>{
-      get_shouhinMS()
-      get_shouhinMS_newcd()
+      console_log(`onMounted : ${Where_to_use}`)
+      if(Where_to_use==="shouhinMS"){
+        get_shouhinMS()
+        get_shouhinMS_newcd()
+      }
+      if(Where_to_use==="index"){
+        get_shouhinMS_online()
+      }
     })
 
     return{
       mode,
       shouhinMS,
+      shouhinMS_pic,
       get_shouhinMS,
       shouhinCD,
       shouhinNM,
+      status,
       tanka,
       zei,
       midasi,
@@ -310,6 +363,8 @@ const shouhinMS = () => createApp({
       uploadfile,
       ins_shouhinMS,
       resort,
+      shouhizei,
+      zeikomi,
     }
   }
 });

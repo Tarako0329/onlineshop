@@ -7,13 +7,19 @@ html{
 	color:var(--main_font_color);
 	background-color: var(--bg_color);
 }
-
+body,html {
+  margin: 0;  /* 解決するため */
+  padding: 0; /* 入れておくと無難 */
+	width: 100%;
+}
 .common_header{
 	background-color: var(--header_bg_color);
+	height: 30px;
 }
 
 .common_main{
 	background-color: var(--main_bg_color);
+	padding:0;
 }
 
 .common_footer{
@@ -24,7 +30,12 @@ html{
 	min-width: 120px;
 }
 
-
+.img-item {
+	width: 90%;
+	height: 150px;
+	object-fit: cover; /* width, heightといっしょに使います */
+	border: 1px solid #111;
+}
 
 
 

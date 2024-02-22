@@ -14,15 +14,15 @@
 <BODY class='bd'>
   <div id='app'>
   <HEADER class='container-fluid text-center common_header'>
-    <h1><?php echo TITLE;?></h1>
+    <h2><?php echo TITLE;?></h2>
   </HEADER>
   <MAIN class='container common_main'>
-    <div class='row mb-3'>
+    <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
 				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
-				<label class='btn btn-outline-danger ' for='eatin' style='border-radius:0;'>新規登録</label>
+				<label class='btn btn-outline-success ' for='eatin' style='border-radius:0;'>新規登録</label>
 				<input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='takeout'>
-				<label class='btn btn-outline-danger ' for='takeout' style='border-radius:0;'>修正</label>
+				<label class='btn btn-outline-success ' for='takeout' style='border-radius:0;'>修正</label>
       </div>
     </div>
     <div class='row mb-3'>
@@ -38,14 +38,23 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-      <label for='tanka' class="form-label">単価</label>
-      <input type='text' class='form-control' id='tanka' v-model='tanka'>
-      <label for='zei' class="form-label">税区分</label>
-      <select class='form-select' id='zei' v-model='zei'>
-        <option value="0">非課税</option>
-        <option value="1001">8%</option>
-        <option value="1101">10%</option>
-      </select>
+				<input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
+				<label class='btn btn-outline-primary ' for='show' style='border-radius:0;'>販売中</label>
+				<input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' id='stop'>
+				<label class='btn btn-outline-danger ' for='stop' style='border-radius:0;'>販売停止中</label>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='tanka' class="form-label">単価</label>
+        <input type='text' class='form-control' id='tanka' v-model='tanka'>
+        <label for='zei' class="form-label">税区分</label>
+        <select class='form-select' id='zei' v-model='zei'>
+          <option value="0">非課税</option>
+          <option value="1001">8%</option>
+          <option value="1101">10%</option>
+        </select>
+        <p>税込価格：{{zeikomi.toLocaleString()}} ({{shouhizei.toLocaleString()}})</p>
       </div>
     </div>
     <div class='row mb-3'>
@@ -62,7 +71,7 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <button type='button' class='btn btn-primary' @click='input_file_btn("pic_file")'>写真アップロード</button>
+        <button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
         <input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
       </div>
     </div>
@@ -72,7 +81,7 @@
         <template v-for='(list,index) in pic_list' :key='list.filename'>
           <div class='col-md-3 col-6 text-center' style='padding:10px;'>
             <img :src="list.filename" class="d-block" style='width:90%;margin-bottom:5px;'>
-            <button type='button' class='btn btn-primary' @click='resort(index)'>表示順：{{list.sort}}</button>
+            <button type='button' class='btn btn-info' @click='resort(index)'>表示順：{{list.sort}}</button>
           </div>
         </template>
         </div>
@@ -116,7 +125,7 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    shouhinMS().mount('#app');
+    shouhinMS('shouhinMS').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {
