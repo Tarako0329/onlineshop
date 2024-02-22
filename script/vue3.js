@@ -142,6 +142,7 @@ const shouhinMS = (Where_to_use) => createApp({
     const zei = ref(1101)
     const midasi = ref('')
     const info = ref('')
+    const customer_bikou = ref('ご要望等ございましたらご記入ください。')
     const pic_list = ref([])
     const rez_shouhinCD = ref('')
     const rez_shouhinNM = ref('')
@@ -191,6 +192,7 @@ const shouhinMS = (Where_to_use) => createApp({
         status.value = shouhin[0].status
         zei.value = String(shouhin[0].zeikbn)
         info.value = shouhin[0].infomation
+        customer_bikou.value = shouhin[0].customer_bikou
         midasi.value = shouhin[0].short_info
         pic_list.value=[]
         shouhinMS_pic.value.forEach((row)=>{
@@ -259,6 +261,7 @@ const shouhinMS = (Where_to_use) => createApp({
       form.append(`zeikbn`, zei.value)
       form.append(`shouhizei`, shouhizei.value)
       form.append(`infomation`, info.value)
+      form.append(`customer_bikou`, customer_bikou.value)
       form.append(`short_info`, midasi.value)
       let i = 0
       pic_list.value.forEach((row)=>{
@@ -271,7 +274,6 @@ const shouhinMS = (Where_to_use) => createApp({
         console_log(response.data)
         if(response.data.status==="alert-success"){
           //画面のクリア
-          clear_ms()
           if(mode.value==="new"){
             get_shouhinMS()
             get_shouhinMS_newcd()
@@ -279,6 +281,7 @@ const shouhinMS = (Where_to_use) => createApp({
             get_shouhinMS_online()
           }
           msg.value=`${shouhinNM.value} を登録しました`
+          clear_ms()
         }else{
           msg.value=`${shouhinNM.value} の登録に失敗しました`
         }
@@ -300,12 +303,20 @@ const shouhinMS = (Where_to_use) => createApp({
       zei.value = 1101
       midasi.value = ''
       info.value = ''
+      customer_bikou.value='ご要望等ございましたらご記入ください。'
       pic_list.value=[]
-
     }
 
+    const order_count =(index,val) =>{
+      let order = Number(shouhinMS.value[index].ordered)
+      if(order + Number(val) < 0){
+        shouhinMS.value[index].ordered = 0
+      }else{
+        shouhinMS.value[index].ordered = order + Number(val)
+      }
+    }
 
-    const shouhizei = computed(()=>{
+    const shouhizei = computed(()=>{//消費税計算
       let zeiritu = 0.1
       zeiMS.forEach((row)=>{
         if(row.zeikbn===zei.value){
@@ -319,7 +330,7 @@ const shouhinMS = (Where_to_use) => createApp({
       return num1.mul(num2).toNumber()
     })
 
-    const zeikomi = computed(()=>{
+    const zeikomi = computed(()=>{//税込価格計算
       let zeiritu = 0.1 + 1
       zeiMS.forEach((row)=>{
         if(row.zeikbn===zei.value){
@@ -365,6 +376,7 @@ const shouhinMS = (Where_to_use) => createApp({
       zei,
       midasi,
       info,
+      customer_bikou,
       pic_list,
       rez_shouhinCD,
       rez_shouhinNM,
@@ -375,6 +387,7 @@ const shouhinMS = (Where_to_use) => createApp({
       resort,
       shouhizei,
       zeikomi,
+      order_count,
     }
   }
 });

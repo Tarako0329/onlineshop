@@ -22,6 +22,7 @@ body,html {
 	background-color: var(--main_bg_color);
 	width: 100%;
 	padding-bottom: 50px;
+	position: relative;
 }
 
 .common_footer{
@@ -52,7 +53,16 @@ p {
 	color:#FF0080;
 }
 
+.order{
+	color:blue;
+	font-size:1.3rem;
+}
 
+.cart{
+	position: absolute;
+	top:0px;
+	right:10px;
+}
 
 
 

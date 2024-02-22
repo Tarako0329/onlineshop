@@ -7,6 +7,8 @@
 	--main_bg_color:rgb(252, 238, 238);
 	--footer_bg_color:green;
 
+	--bs-primary-bg-subtle: #e6ffcf;
+
 	--title-from:#e4007f;	/*ヘッダーグラデーションの右下*/
 	--title-to:#ed6d35;	/*ヘッダーグラデーションの左上*/
 	--title-color:#47266e;	/*ヘッダーのタイトル(webrez+)文字色*/

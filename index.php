@@ -20,6 +20,7 @@
   <div id='app'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
+    <div class='cart' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>
     <div class='row mb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD'>
         <div class='col-md-6 col-12 p-3'><!--外枠-->
@@ -72,15 +73,15 @@
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
                         <div class='mb-1'><p>{{list.infomation}}</p></div>
+                        <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
                         <div class='mb-3'>
-                          注文
                           <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
-				                  <label class='btn btn-primary ' for='show' style='border-radius:0;'>＋</label>
+				                  <label class='btn btn-primary ' for='show' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
 				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' id='stop'>
-				                  <label class='btn btn-secondary ' for='stop' style='border-radius:0;'>－</label>
+				                  <label class='btn btn-secondary ' for='stop' style='border-radius:0;' @click='order_count(index,-1)'>－</label>
                         </div>
                         <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">ご要望がございましたらご記入ください</textarea>
+                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">{{list.customer_bikou}}</textarea>
                           <label for="floatingTextarea2">お客様備考記入欄</label>
                         </div>
                       </div>

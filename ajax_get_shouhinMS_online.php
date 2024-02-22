@@ -15,10 +15,12 @@
 				,online.status
 				,online.short_info
 				,online.infomation
+				,online.customer_bikou
 				,online.tanka
 				,online.zeikbn
 				,online.shouhizei
 				,NULL as rezCD
+				,'0' as ordered
 			from shouhinMS_online online 
 			where online.uid = :uid and online.shouhinNM like :hinmei 
 			order by online.shouhinCD";

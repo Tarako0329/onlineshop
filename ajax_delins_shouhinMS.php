@@ -29,8 +29,8 @@ if($rtn !== true){
         $DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
         $DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
-        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,tanka,zeikbn,shouhizei) ";
-        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:tanka,:zeikbn,:shouhizei)";
+        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,customer_bikou,tanka,zeikbn,shouhizei) ";
+        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:customer_bikou,:tanka,:zeikbn,:shouhizei)";
         $INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
 
         $params["uid"] = $_SESSION["user_id"];
@@ -39,6 +39,7 @@ if($rtn !== true){
         $params["status"] = $_POST["status"];
         $params["short_info"] = $_POST["short_info"];
         $params["infomation"] = $_POST["infomation"];
+        $params["customer_bikou"] = $_POST["customer_bikou"];
         $params["tanka"] = $_POST["tanka"];
         $params["zeikbn"] = $_POST["zeikbn"];
         $params["shouhizei"] = $_POST["shouhizei"];
@@ -73,6 +74,7 @@ if($rtn !== true){
             $stmt->bindValue("status", $params["status"], PDO::PARAM_STR);
             $stmt->bindValue("short_info", $params["short_info"], PDO::PARAM_STR);
             $stmt->bindValue("infomation", $params["infomation"], PDO::PARAM_STR);
+            $stmt->bindValue("customer_bikou", $params["customer_bikou"], PDO::PARAM_STR);
             $stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
             $stmt->bindValue("zeikbn", $params["zeikbn"], PDO::PARAM_INT);
             $stmt->bindValue("shouhizei", $params["shouhizei"], PDO::PARAM_INT);

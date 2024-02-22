@@ -63,13 +63,23 @@
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <label for='midasi' class="form-label">商品説明(見出し)</label>
-        <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi'></textarea>
+        <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi' placeholder="商品一覧の画面に表示されます。商品のアピールポイントを記入してください。"></textarea>
       </div>
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <label for='setumei' class="form-label">商品説明(詳細)</label>
-        <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='info'></textarea>
+        <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='info' placeholder='商品の仕様・原材料名　等、商品に関する詳細を記入'></textarea>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='setumei' class="form-label">お客様の備考</label>
+        <textarea type='memo' class='form-control' id='setumei' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
+        <div id="customer_bikou_help" class="form-text">
+          お客様に記入いただくエリアの初期表示です。<br>
+          例：セット商品の場合 => A～Eの商品から３種類を入力してください。<br><br>特になければこのまま登録してください。
+        </div>
       </div>
     </div>
     <div class='row mb-3'>
