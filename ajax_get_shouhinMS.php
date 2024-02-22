@@ -20,7 +20,7 @@
 				,bunrui2
 				,bunrui3
 				,hyoujiKBN2
-			from shouhinMS rezMS 
+			from ShouhinMS rezMS 
 	    where rezMS.uid = :uid
 			and shouhinNM like :hinmei
 			order by shouhinNM";
