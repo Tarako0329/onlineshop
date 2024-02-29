@@ -1,11 +1,17 @@
 ver0.01.0:my first commit
 ver0.01.1:開発中
 ver0.01.1:開発中:オーダー画面
+ver0.01.2:開発中:オーダー通知
 
 【Issues】
 
 ローカルからテスト環境へ
-cd /home/pcntfsrg/public_html/onlineshop
+cd /home/pcntfsrg/public_html/onlineshop/onlineshop
+git fetch --all
+git reset --hard origin/main
+
+ローカルからエリコショップへ
+cd /home/pcntfsrg/public_html/onlineshop/Present
 git fetch --all
 git reset --hard origin/main
 

@@ -26,6 +26,11 @@ if($rtn !== true){
     }else{
         $logfilename="sid_".$_SESSION['user_id'].".log";
 
+        $stmt = $pdo_h->prepare("select * from User where uid = :uid");
+        $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_INT);
+        $stmt->execute();
+        $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         //更新モード(実行)
         $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou)";
         $sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
@@ -49,7 +54,7 @@ if($rtn !== true){
             //log_writer2("\$stmt",$stmt,"lv3");
 
             $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            log_writer2("\$row",$row,"lv3");
+            //log_writer2("\$row",$row,"lv3");
             if(!empty($row[0]["new_orderNO"])){
                 $params["orderNO"] = $row[0]["new_orderNO"];
             }else{
@@ -70,7 +75,8 @@ if($rtn !== true){
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
-
+            
+            //明細登録
             foreach($_POST["meisai"] as $row){
                 log_writer2("\$row",$row,"lv3");
                 
@@ -105,6 +111,10 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog($sqlstr,$params);
             $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+
+            $body = "test";
+            $rtn = send_mail($owner["mail"],"オーダー受注通知",$body);
+            $rtn = send_mail($params["mail"],"オーダー確認",$body);
 
 
             //$count = $stmt->rowCount();

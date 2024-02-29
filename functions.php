@@ -309,41 +309,47 @@ function send_mail($to,$subject,$body){
 	//$body		: 本文
 
 	//SMTP送信
+    $return_flag = 'false';
     if(EXEC_MODE==="Local"){
-        return true;
+        return "success";
     }
 
     require_once('qdmail.php');
     require_once('qdsmtp.php');
 
-    $mail = new Qdmail();
-    $mail -> smtp(true);
-    $param = array(
-        'host'=> HOST,
-        'port'=> PORT ,
-        'from'=> FROM,
-        'protocol'=>PROTOCOL,
-    	'pop_host'=>POP_HOST,
-    	'pop_user'=>POP_USER,
-    	'pop_pass'=>POP_PASS,
-    );
-    $mail->smtpServer($param);
-    $mail->charsetBody('UTF-8','base64');
-    $mail->kana(true);
-    $mail->errorDisplay(false);
-    $mail->smtpObject()->error_display = false;
-    $mail->logLevel(1);
-	//$mail->logPath('./log/');
-	//$mail->logFilename('anpi.log');
-	//$smtp ->timeOut(10);
-	
-    $mail ->to($to);
-    $mail ->from('information@green-island.mixh.jp' , 'WEBREZ-info');
-    $mail ->subject($subject);
-    $mail ->text($body);
-
-    //送信
-    $return_flag = $mail ->send();
+    try{
+        $mail = new Qdmail();
+        $mail -> smtp(true);
+        $param = array(
+            'host'=> HOST,
+            'port'=> PORT ,
+            'from'=> FROM,
+            'protocol'=>PROTOCOL,
+            'pop_host'=>POP_HOST,
+            'pop_user'=>POP_USER,
+            'pop_pass'=>POP_PASS,
+        );
+        $mail->smtpServer($param);
+        $mail->charsetBody('UTF-8','base64');
+        $mail->kana(true);
+        $mail->errorDisplay(false);
+        $mail->smtpObject()->error_display = false;
+        $mail->logLevel(1);
+        //$mail->logPath('./log/');
+        //$mail->logFilename('anpi.log');
+        //$smtp ->timeOut(10);
+        
+        $mail ->to($to);
+        $mail ->from('noreply@greeen-sys.com' , 'WEBREZ-info');
+        $mail ->subject($subject);
+        $mail ->text($body);
+    
+        //送信
+        $return_flag = $mail ->send();
+        $return_flag = 'success';
+    }catch(Exception $e){
+        log_writer2("send_mail [Exception] \$e",$e,"lv0");
+    }
     return $return_flag;
 }
 
