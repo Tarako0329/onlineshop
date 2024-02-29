@@ -9,9 +9,9 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-log_writer2("\$_POST",$_POST,"lv3");
+//log_writer2("\$_POST",$_POST,"lv3");
 
-$rtn = csrf_checker(["index.php","/"],["P","C","S"]);
+$rtn = csrf_checker(["index.php",""],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";
@@ -26,10 +26,12 @@ if($rtn !== true){
     }else{
         $logfilename="sid_".$_SESSION['user_id'].".log";
 
-        $stmt = $pdo_h->prepare("select * from User where uid = :uid");
-        $stmt->bindValue("uid", $_SESSION["uid"], PDO::PARAM_INT);
+        $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
+        $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
         $stmt->execute();
         $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        //log_writer2("\$owner",$owner,"lv3");
 
         //更新モード(実行)
         $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou)";
@@ -78,7 +80,7 @@ if($rtn !== true){
             
             //明細登録
             foreach($_POST["meisai"] as $row){
-                log_writer2("\$row",$row,"lv3");
+                //log_writer2("\$row",$row,"lv3");
                 
                 $params["shouhinCD"] = $row["shouhinCD"];
                 $params["shouhinNM"] = $row["shouhinNM"];
@@ -113,7 +115,9 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
             $body = "test";
-            $rtn = send_mail($owner["mail"],"オーダー受注通知",$body);
+            log_writer2("\$owner[mail]",$owner[0]["mail"],"lv3");
+            log_writer2("\$params[mail]",$params["mail"],"lv3");
+            $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body);
             $rtn = send_mail($params["mail"],"オーダー確認",$body);
 
 

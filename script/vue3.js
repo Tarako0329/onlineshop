@@ -340,7 +340,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
     })
 
     const order_submit = () =>{
-      let msg 
+      let msg = ''
 
       if(od_atena.value==''){
         msg = ' 宛名'
