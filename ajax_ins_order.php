@@ -107,7 +107,7 @@ if($rtn !== true){
             }
 
             //消費税明細の登録
-            $sqlstr = "insert into juchuu_meisai select orderNO,JM.zeikbn as shouhinCD,ZMS.hyoujimei,0 as su,0 as tanka,0 as goukeitanka,FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou from juchuu_meisai JM inner join zeiMS ZMS on JM.zeikbn = ZMS.zeiKBN where orderNO = :orderNO group by orderNO,ZMS.hyoujimei,JM.zeikbn,'-' having zei <> 0";
+            $sqlstr = "insert into juchuu_meisai select orderNO,JM.zeikbn as shouhinCD,ZMS.hyoujimei,0 as su,0 as tanka,0 as goukeitanka,FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou from juchuu_meisai JM inner join ZeiMS ZMS on JM.zeikbn = ZMS.zeiKBN where orderNO = :orderNO group by orderNO,ZMS.hyoujimei,JM.zeikbn,'-' having zei <> 0";
             $stmt = $pdo_h->prepare($sqlstr);
             $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
             $sqllog .= rtn_sqllog($sqlstr,$params);
