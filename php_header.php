@@ -38,6 +38,15 @@ define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8
 define("USER_NAME", $_ENV["DBUSER"]);
 define("PASSWORD", $_ENV["PASS"]);
 
+//メール送信関連
+define("HOST", $_ENV["HOST"]);
+define("PORT", $_ENV["PORT"]);
+define("FROM", $_ENV["FROM"]);
+define("PROTOCOL", $_ENV["PROTOCOL"]);
+define("POP_HOST", $_ENV["POP_HOST"]);
+define("POP_USER", $_ENV["POP_USER"]);
+define("POP_PASS", $_ENV["POP_PASS"]);
+
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 $_SESSION["user_id"] = '2';
 //define("SAVEDIR", $_ENV["SAVEDIR"]);
