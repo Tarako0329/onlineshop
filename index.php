@@ -82,7 +82,7 @@
 				                  <label class='btn btn-secondary ' :for='`stop_${index}`' style='border-radius:0;' @click='order_count(index,-1)'>－</label>
                         </div>
                         <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" :id="`floating_${index}`" style="height: 100px">{{list.customer_bikou}}</textarea>
+                          <textarea class="form-control" placeholder="Leave a comment here" :id="`floating_${index}`" style="height: 100px" v-model='list.customer_bikou'></textarea>
                           <label :for="`floating_${index}`">お客様備考記入欄</label>
                         </div>
                       </div>
@@ -117,7 +117,7 @@
                 <td>{{list.shouhinNM}}</td>
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
-                  <input type='number' class='form-control' style='width:100px;' v-model='list.ordered'>
+                  <p>{{list.ordered}}</p>
                   <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' :id='`show2_${index}`'>
 				          <label class='btn btn-primary ' :for='`show2_${index}`' style='border-radius:0;' @click='ordered_count(index,1)'>＋</label>
 				          <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' :id='`stop2_${index}`'>
