@@ -303,7 +303,7 @@ function get_pdo_options() {
 // =========================================================
 // メール送信 
 // =========================================================
-function send_mail($to,$subject,$body){
+function send_mail($to,$subject,$body,$fromname){
 	//$to		: 送信先アドレス
 	//$subject	: 件名
 	//$body		: 本文
@@ -340,7 +340,7 @@ function send_mail($to,$subject,$body){
         //$smtp ->timeOut(10);
         
         $mail ->to($to);
-        $mail ->from('noreply@greeen-sys.com' , 'WEBREZ-info');
+        $mail ->from('noreply@greeen-sys.com' , $fromname);
         $mail ->subject($subject);
         $mail ->text($body);
     

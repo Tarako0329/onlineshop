@@ -38,7 +38,6 @@ if($rtn !== true){
         $sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
 
         $params["uid"] = $_SESSION["user_id"];
-        //$params["orderNO"] = $_POST["orderNO"];
         $params["name"] = $_POST["name"];
         $params["yubin"] = $_POST["yubin"];
         $params["jusho"] = $_POST["jusho"];
@@ -104,6 +103,7 @@ if($rtn !== true){
                 $status = $stmt->execute();
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
                 
+                $orderlist .= "・".$params["shouhinNM"]." 単価( ".$params["tanka"]." 円) 数量 ".$params["su"]." 単価合計 ".$params["goukeitanka"]." 円\n\r　備考：".$params["bikou"]."\r\n";
             }
 
             //消費税明細の登録
@@ -114,11 +114,43 @@ if($rtn !== true){
             $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
+            //メールの作成
+            $stmt = $pdo_h->prepare("select orderNO,sum(goukeitanka) as soutanka,sum(zei) as souzei from juchuu_meisai where orderNO = :orderNO group by orderNO");
+            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
+            $stmt->execute();
+            $orderlist2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
             $body = "test";
-            log_writer2("\$owner[mail]",$owner[0]["mail"],"lv3");
-            log_writer2("\$params[mail]",$params["mail"],"lv3");
-            $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body);
-            $rtn = send_mail($params["mail"],"オーダー確認",$body);
+            //log_writer2("\$owner[mail]",$owner[0]["mail"],"lv3");
+            //log_writer2("\$params[mail]",$params["mail"],"lv3");
+            $name = $params['name'];
+            $yubin = $params['yubin'];
+            $jusho = $params['jusho'];
+            $tel = $params['tel'];
+            $mail = $params['mail'];
+            $bikou = $params['bikou'];
+            $goukeitanka = $orderlist2[0]["soutanka"];
+            $goukeizei = $orderlist2[0]["souzei"];
+
+            $body = <<< "EOM"
+            $name 様よりご注文いただきました。
+
+            【ご注文内容】
+            $orderlist
+
+            ご注文総額：$goukeitanka + $goukeizei
+
+            【ご注文主】
+            $name
+            $yubin
+            $tel
+            $mail
+            オーダー備考：
+            $bikou
+            EOM;
+ 
+            $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body,TITLE." onLineShop");
+            $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）",$body,TITLE." onLineShop");
 
 
             //$count = $stmt->rowCount();
