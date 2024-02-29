@@ -1,81 +1,5 @@
 const { createApp, ref, onMounted, onBeforeMount, computed,watch } = Vue;
-const dataset = (Where_to_use) => createApp({
-  setup() {
-    const pagename = ref(Where_to_use)
-
-    const input_file_btn = () =>{
-      document.getElementById('file').click()
-    }
-    
-    const read_html_moneyforward = () => {//
-      axios
-      .get(`ajax_read_forward.php?fn=${readfilename.value}`)
-      .then((response) => {
-        console_log(response.data)
-        console_log('read_html_moneyforward succsess')
-      })
-      .catch((error)=>{
-        console_log('read_html_moneyforward.php ERROR')
-        console_log(error)
-        alert('リターンエラー：登録できませんでした')
-      })
-      .finally(()=>{
-        loader.value = false
-      })
-   }
-
-    const uploadfile = () =>{
-      const file = document.getElementById('file').files[0];
-      console_log(file.name)
-      const params = new FormData();
-      params.append('user_file_name', file);
-      axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
-      .then((response)=>{
-        //console_log(response.data)
-        if(response.data.status==="success"){
-          readfilename.value = response.data.filename
-          read_html_moneyforward()
-        }else{
-
-        }
-      })
-      .catch((error)=>{
-        console_log(error)
-      })
-      .finally(()=>{
-        loader.value = false
-      })
-    }
-    
-    const readdata_filter = computed(() => {
-    })
-
-
-    watch(readdata_filter,()=>{//明細のフィルタリングに合わせて、フィルタ選択肢を絞る
-      console_log('watch readdata_filter')
-    })
-
-
-
-    onMounted(()=>{
-      console_log("onMounted")
-      
-      if(pagename.value!=="data_custmer.php"){
-      }
-    })
-    onBeforeMount(()=>{
-      console_log("onBeforeMount:"+pagename.value)
-      if(pagename.value==="data_summary12m.php"){
-      }
-    })
-
-
-    return{
-    }
-  }
-});
-
-const shouhinMS = (Where_to_use) => createApp({
+const shouhinMS = (Where_to_use,p_token) => createApp({
   setup() {
     const zeiMS = [
       {
@@ -91,7 +15,7 @@ const shouhinMS = (Where_to_use) => createApp({
         ritu:0.1
       },
     ]
-
+    let token = p_token
     const msg=ref('')
 
     const shouhinMS = ref([])
@@ -168,6 +92,29 @@ const shouhinMS = (Where_to_use) => createApp({
       })
     }
 
+    const get_ordered = computed(()=>{
+      let orderlist = []
+      orderlist = shouhinMS.value.filter((row)=>{
+        return (row.ordered!=0)
+      })
+
+      orderlist.forEach((row)=>{
+        let num1 = new Decimal(row.zeikomikakaku);
+        let num2 = new Decimal(row.ordered);
+        let num3 = new Decimal(row.tanka);
+        //console_log(num1.mul(num2).toNumber());
+        row.goukeikingaku = num1.mul(num2).toNumber()
+        row.goukeitanka = num3.mul(num2).toNumber()
+      })
+
+      return orderlist
+    })
+
+    const shouhinMS_SALE = computed(()=>{
+      return shouhinMS.value.filter((row)=>{
+        return (row.status==='show')
+      })
+    })    
     watch(mode,()=>{//マスタ登録モードに合わせて商品名のリストを取得する
       if(mode.value==="new"){
         clear_ms()
@@ -264,6 +211,7 @@ const shouhinMS = (Where_to_use) => createApp({
       form.append(`infomation`, info.value)
       form.append(`customer_bikou`, customer_bikou.value)
       form.append(`short_info`, midasi.value)
+      form.append(`csrf_token`, token)
       let i = 0
       pic_list.value.forEach((row)=>{
         form.append(`user_file_name[${i}][sort]`,row.sort)
@@ -286,10 +234,12 @@ const shouhinMS = (Where_to_use) => createApp({
         }else{
           msg.value=`${shouhinNM.value} の登録に失敗しました`
         }
+        token = response.data.csrf_create
       })
-      .catch((error)=>{
+      .catch((error,response)=>{
         console_log(error)
         msg.value=`${shouhinNM.value} の登録に失敗しました`
+        token = response.data.csrf_create
       })
       .finally(()=>{
         //loader.value = false
@@ -314,27 +264,42 @@ const shouhinMS = (Where_to_use) => createApp({
     const od_jusho = ref('')
     const od_tel = ref('')
     const od_mail = ref('')
+    const od_bikou = ref('')
     const order_count =(index,val) =>{
-      let order = Number(shouhinMS.value[index].ordered)
+      let order = Number(shouhinMS_SALE.value[index].ordered)
       if(order + Number(val) < 0){
-        shouhinMS.value[index].ordered = 0
+        shouhinMS_SALE.value[index].ordered = 0
       }else{
-        shouhinMS.value[index].ordered = order + Number(val)
-        let tanka = new Decimal(Number(shouhinMS.value[index].tanka))
-        let shouhizei = new Decimal(Number(shouhinMS.value[index].shouhizei))
+        shouhinMS_SALE.value[index].ordered = order + Number(val)
+        let tanka = new Decimal(Number(shouhinMS_SALE.value[index].tanka))
+        let shouhizei = new Decimal(Number(shouhinMS_SALE.value[index].shouhizei))
         let order_kin = new Decimal(order_kakaku.value)
         let zougen = new Decimal(val)
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
     }
-    const btn_name = ref('ご注文画面へ')
+    const ordered_count =(index,val) =>{
+      let order = Number(get_ordered.value[index].ordered)
+      if(order + Number(val) < 0){
+        get_ordered.value[index].ordered = 0
+      }else{
+        let tanka = new Decimal(Number(get_ordered.value[index].tanka))
+        let shouhizei = new Decimal(Number(get_ordered.value[index].shouhizei))
+        let order_kin = new Decimal(order_kakaku.value)
+        let zougen = new Decimal(val)
+        order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
+        get_ordered.value[index].ordered = order + Number(val)
+      }
+      console_log(order_kakaku.value)
+    }
+    const btn_name = ref('ご注文内容確認')
     const ordering = () =>{
       if(mode.value==="shopping"){
         btn_name.value='戻る'
         mode.value="ordering"
       }else if(mode.value==="ordering"){
-        btn_name.value='ご注文画面へ'
+        btn_name.value='ご注文内容確認'
         mode.value="shopping"
       }
 
@@ -358,7 +323,7 @@ const shouhinMS = (Where_to_use) => createApp({
       let zeiritu = 0.1 + 1
       zeiMS.forEach((row)=>{
         if(row.zeikbn===zei.value){
-          zeiritu=row.ritu + 1
+          zeiritu=Number(row.ritu) + Number(1)
         }
       })
       console_log(zeiritu)
@@ -373,6 +338,71 @@ const shouhinMS = (Where_to_use) => createApp({
       setTimeout(()=>{msg.value=""}, 3000);//3s
       
     })
+
+    const order_submit = () =>{
+      let msg 
+
+      if(od_atena.value==''){
+        msg = ' 宛名'
+      }
+      if(od_yubin.value==''){
+        msg = msg + ' 郵便番号'
+      }
+      if(od_jusho.value==''){
+        msg = msg + ' 住所'
+      }
+      if(od_mail.value==''){
+        msg = msg + ' メールアドレス'
+      }
+      if(msg.length!==0){
+        alert(`${msg} を入力して下さい。`)
+        return
+      }
+      if(confirm('この内容で送信してよいですか？')===false){
+        return
+      }
+      const form = new FormData();
+      form.append(`name`, od_atena.value)
+      form.append(`yubin`, od_yubin.value)
+      form.append(`jusho`, od_jusho.value)
+      form.append(`tel`, od_tel.value)
+      form.append(`mail`, od_mail.value)
+      form.append(`bikou`, od_bikou.value)
+      form.append(`csrf_token`, token)
+
+      let i = 0
+      get_ordered.value.forEach((row)=>{
+        form.append(`meisai[${i}][shouhinCD]`,row.shouhinCD)
+        form.append(`meisai[${i}][shouhinNM]`,row.shouhinNM)
+        form.append(`meisai[${i}][su]`,row.ordered)
+        form.append(`meisai[${i}][tanka]`,row.tanka)
+        form.append(`meisai[${i}][zei]`,row.shouhizei)
+        form.append(`meisai[${i}][zeikbn]`,row.zeikbn)
+        form.append(`meisai[${i}][bikou]`,row.customer_bikou)
+        form.append(`meisai[${i}][goukeitanka]`,row.goukeitanka)
+        i=i+1
+      })
+      axios.post("ajax_ins_order.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        if(response.data.status==="alert-success"){
+          msg.value=`${shouhinNM.value} を登録しました`
+          clear_ms()
+        }else{
+          msg.value=`${shouhinNM.value} の登録に失敗しました`
+        }
+        token = response.data.csrf_create
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        msg.value=`${shouhinNM.value} の登録に失敗しました`
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+
+    }
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
@@ -411,14 +441,19 @@ const shouhinMS = (Where_to_use) => createApp({
       shouhizei,
       zeikomi,
       order_count,
+      ordered_count,
       order_kakaku,
       od_atena,
       od_yubin,
       od_jusho,
       od_tel,
       od_mail,
+      od_bikou,
       btn_name,
       ordering,
+      get_ordered,
+      shouhinMS_SALE,
+      order_submit,
     }
   }
 });

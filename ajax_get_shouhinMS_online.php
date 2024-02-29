@@ -20,7 +20,9 @@
 				,online.zeikbn
 				,online.shouhizei
 				,NULL as rezCD
+				,online.tanka + online.shouhizei as zeikomikakaku
 				,'0' as ordered
+				,'0' as goukeikingaku
 			from shouhinMS_online online 
 			where online.uid = :uid and online.shouhinNM like :hinmei 
 			order by online.shouhinCD";

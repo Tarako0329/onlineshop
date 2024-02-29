@@ -1,5 +1,6 @@
 <?php
-    require "php_header.php";
+  require "php_header.php";
+  $token = csrf_create();
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -114,7 +115,7 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    shouhinMS('shouhinMS').mount('#app');
+    shouhinMS('shouhinMS','<?php echo $token; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

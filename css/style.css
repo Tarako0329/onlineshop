@@ -21,7 +21,8 @@ body,html {
 .common_main{
 	background-color: var(--main_bg_color);
 	width: 100%;
-	padding-bottom: 50px;
+	height: 100%;
+	padding-bottom: 100px;
 	position: relative;
 }
 
@@ -47,6 +48,7 @@ p {
 .kakaku{
 	font-size:1.4rem;
 	color:#FF0080;
+	font-weight: 900;
 }
 .zei{
 	font-size:1.1rem;
@@ -59,11 +61,21 @@ p {
 }
 
 .cart{
-	position: absolute;
-	top:0px;
-	right:10px;
+	position: fixed;
+	top:30px;
+	right:2px;
+	border:#40E0D0 0.5px;
+	height: 50px;
+	width: 50px;
+	background-color: rgb(238, 193, 193);
+	border-radius: 30px;
 }
-
+@media screen and (min-width: 600px) {
+	.cart{
+		top:30px;
+		right:50px;
+	}	
+}
 
 
 /*vue-transtion*/

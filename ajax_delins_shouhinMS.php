@@ -11,7 +11,7 @@ $sqllog="";
 
 //log_writer2("\$_POST",$_POST,"lv3");
 
-$rtn = true;//csrf_checker(["shouhinMS.php","xxx.php"],["P","C","S"]);
+$rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";

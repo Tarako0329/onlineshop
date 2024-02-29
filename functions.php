@@ -485,6 +485,8 @@ function sqllogger($logsql,$e){//(sqlログ,Exception $e:$eセット時はメー
 }
 
 function rtn_sqllog($sql,$params){//(sql,パラメータ[],phpファイル名)w:書き込み r:整形SQLリターン
+    //log_writer2("[\$sql] =>",$sql,"lv3");
+    //log_writer2("[\$params] =>",$params,"lv3");
     $logsql=$sql.";";
     $i=0;
     $userid = (!empty($_SESSION['user_id'])?$_SESSION['user_id']:"-");
