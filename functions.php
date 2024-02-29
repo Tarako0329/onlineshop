@@ -512,6 +512,28 @@ function rtn_sqllog($sql,$params){//(sql,パラメータ[],phpファイル名)w:
     return date("Y-m-d H:i:s")."\t".$userid."\t".$phpname."\t".$logsql."\n";
 }
 
-
+// =========================================================
+// 数字を3桁カンマ区切りで返す(整数のみ対応)
+// =========================================================
+function return_num_disp($number) {
+    //$return_number = "";
+    //$zan_mojisu = 0;
+    $return_number = null;
+    if(preg_match('/[^0-9]/',$number)==0){//0～9以外が存在して無い場合、数値として処理
+        $shori_moji_su = mb_strlen($number) - 3;
+        $zan_mojisu = null;
+        
+        while($shori_moji_su > 0){
+            $return_number = $return_number.",".mb_substr($number,$shori_moji_su,3);
+            $zan_mojisu = $shori_moji_su;
+            $shori_moji_su = $shori_moji_su - 3;
+        }
+        
+        $return_number = mb_substr($number,0,$zan_mojisu).$return_number;
+    }else{
+        $return_number = $number;
+    }
+    return $return_number;
+}
 
 ?>
