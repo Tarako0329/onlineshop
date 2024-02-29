@@ -152,7 +152,7 @@ if($rtn !== true){
             EOM;
  
             $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body,TITLE." onLineShop");
-            $title = TITLE:
+            $title = TITLE;
             $body = <<< "EOM"
             $name 様
 
