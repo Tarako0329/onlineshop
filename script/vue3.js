@@ -354,7 +354,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       if(od_mail.value==''){
         msg = msg + ' メールアドレス'
       }
-      if(msg.length!==0){
+      if(String(msg).length!==0){
         alert(`${msg} を入力して下さい。`)
         return
       }
