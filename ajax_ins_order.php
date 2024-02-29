@@ -103,7 +103,7 @@ if($rtn !== true){
                 $status = $stmt->execute();
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
                 
-                $orderlist .= "◆".$params["shouhinNM"]."\n\r　 価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r　備考：".$params["bikou"]."\r\n\r\n";
+                $orderlist .= "◆".$params["shouhinNM"]."\n\r".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
             }
 
             //消費税明細の登録
@@ -152,6 +152,32 @@ if($rtn !== true){
             EOM;
  
             $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body,TITLE." onLineShop");
+            $title = TITLE:
+            $body = <<< "EOM"
+            $name 様
+
+            この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
+            
+            ＜＜オーナー設定メッセージ＞＞
+
+            【ご注文内容】
+            $orderlist
+            ご注文総額：$sougaku  内税($goukeizei)
+
+            【ご注文主】
+            お名前：$name
+            郵便番号：$yubin
+            送付先住所：$jusho
+            TEL：$tel
+            MAIL：$mail
+            オーダー備考：
+            $bikou
+
+            ＜＜オーナー設定メッセージ＞＞
+
+            EOM;
+
+
             $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）",$body,TITLE." onLineShop");
 
 

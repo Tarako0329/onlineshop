@@ -114,7 +114,10 @@
             </thead>
             <tbody v-for='(list,index) in get_ordered' :key='list.shouhinCD'>
               <tr>
-                <td>{{list.shouhinNM}}</td>
+                <td>
+                  {{list.shouhinNM}}
+                  <small>{{list.short_info}}</small>
+                </td>
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
                   <p>{{list.ordered}}</p>

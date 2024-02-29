@@ -380,6 +380,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
         form.append(`meisai[${i}][zeikbn]`,row.zeikbn)
         form.append(`meisai[${i}][bikou]`,row.customer_bikou)
         form.append(`meisai[${i}][goukeitanka]`,row.goukeitanka)
+        form.append(`meisai[${i}][short_info]`,row.short_info)
         i=i+1
       })
       axios.post("ajax_ins_order.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
