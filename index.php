@@ -99,7 +99,7 @@
       </template>
     </div>
 
-    <div v-if='mode==="ordering"'>
+    <div v-show='mode==="ordering"'>
       <div class='row mb-3'>
         <div class='col-md-6 col-12'>
           <table class='table table-sm table-bordered caption-top'>
@@ -107,16 +107,23 @@
             <thead>
               <tr>
                 <th>商品名</th>
-                <th>税込単価</th>
+                <th>税込価格</th>
                 <th>ご購入数</th>
-                <th>税込金額</th>
+                <th>税込総額</th>
               </tr>
             </thead>
             <tbody v-for='(list,index) in get_ordered' :key='list.shouhinCD'>
-              <tr>
+              <tr class="align-bottom">
                 <td>
                   {{list.shouhinNM}}
-                  <small>{{list.short_info}}</small>
+                  <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
+                    <template v-if='list.shouhinCD===pic_list.shouhinCD'>
+                      <div v-if='pic_list.sort===1' class="" style='text-align: center;width:100px;'>
+                        <img :src="pic_list.filename" class="d-block img-item-sm">
+                      </div>
+                    </template>
+                  </template>
+                  <div><small>{{list.short_info}}</small></div>
                 </td>
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
@@ -137,7 +144,7 @@
                 <td></td>
                 <td></td>
                 <td>合計金額</td>
-                <td>{{order_kakaku.toLocaleString()}}</td>
+                <td>{{Math.floor(order_kakaku).toLocaleString()}}</td>
               </tr>
             </tfoot>
           </table>
@@ -171,6 +178,38 @@
         <div class='col-md-6 col-12'>
           <label for='od_mail' class="form-label">e-mail</label>
           <input type='email' v-model='od_mail' class='form-control' id='od_mail' placeholder='必須'>
+        </div>
+      </div>
+      <div class='row mb-3'>
+        <div class='col-md-6 col-12'>
+          <input type='checkbox' v-model='order_sent_same' class='form-check-input' id='order_sent_same' placeholder='必須'>
+          <label for='order_sent_same' class="form-check-label" style='margin-left:5px;'>お届け先は上記と同一</label>
+        </div>
+      </div>
+      <div v-show='order_sent_same===false'>
+        <div class='row mb-3'>
+          <div class='col-md-6 col-12'>
+            <label for='st_atena' class="form-label">お届け先：お名前・宛名</label>
+            <input type='text' v-model='st_atena' class='form-control' id='st_atena' placeholder='必須'>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div class='col-md-6 col-12'>
+            <label for='st_yubin' class="form-label">お届け先：郵便番号</label>
+            <input type='number' v-model='st_yubin' class='form-control' id='st_yubin' placeholder='必須'>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div class='col-md-6 col-12'>
+            <label for='st_jusho' class="form-label">お届け先：住所</label>
+            <input type='text' v-model='st_jusho' class='form-control' id='st_jusho' placeholder='必須'>
+          </div>
+        </div>
+        <div class='row mb-3'>
+          <div class='col-md-6 col-12'>
+            <label for='st_tel' class="form-label">お届け先：TEL</label>
+            <input type='tel' v-model='st_tel' class='form-control' id='st_tel'>
+          </div>
         </div>
       </div>
       <div class='row mb-3'>

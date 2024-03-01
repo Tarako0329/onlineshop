@@ -34,7 +34,7 @@ if($rtn !== true){
         //log_writer2("\$owner",$owner,"lv3");
 
         //更新モード(実行)
-        $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou)";
+        $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou,st_name,st_yubin,st_jusho,st_tel) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou,:st_name,:st_yubin,:st_jusho,:st_tel)";
         $sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
 
         $params["uid"] = $_SESSION["user_id"];
@@ -44,23 +44,39 @@ if($rtn !== true){
         $params["tel"] = is_null($_POST["tel"])?"":$_POST["tel"];
         $params["mail"] = is_null($_POST["mail"])?"":$_POST["mail"];
         $params["bikou"] = is_null($_POST["bikou"])?"":$_POST["bikou"];
+        $params["st_name"] = $_POST["st_name"];
+        $params["st_yubin"] = $_POST["st_yubin"];
+        $params["st_jusho"] = $_POST["st_jusho"];
+        $params["st_tel"] = $_POST["st_tel"];
 
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
             //受注ヘッダ登録
+
+            //オーダー番号作成
+            $stmt = $pdo_h->prepare("select orderNO from juchuu_head where orderNO = :orderNO FOR UPDATE");
+            while(true){
+                $params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
+                $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+                $stmt->execute();
+                $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if(empty($row[0]["orderNO"])){
+                    break;
+                }
+            }
+            /*
             $stmt = $pdo_h->prepare("select max(orderNO) + 1 as new_orderNO from juchuu_head FOR UPDATE");
             $stmt->execute();
-            //log_writer2("\$stmt",$stmt,"lv3");
-
             $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            //log_writer2("\$row",$row,"lv3");
+            log_writer2("\$row",$row,"lv3");
             if(!empty($row[0]["new_orderNO"])){
                 $params["orderNO"] = $row[0]["new_orderNO"];
             }else{
                 $params["orderNO"] = 1;
             }
+            */
             $stmt = $pdo_h->prepare( $sqlstr_h );
             //bind処理
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -72,12 +88,18 @@ if($rtn !== true){
             $stmt->bindValue("mail", $params["mail"], PDO::PARAM_STR);
             $stmt->bindValue("bikou", $params["bikou"], PDO::PARAM_STR);
             
+            $stmt->bindValue("st_name", $params["st_name"], PDO::PARAM_STR);
+            $stmt->bindValue("st_yubin", $params["st_yubin"], PDO::PARAM_STR);
+            $stmt->bindValue("st_jusho", $params["st_jusho"], PDO::PARAM_STR);
+            $stmt->bindValue("st_tel", $params["st_tel"], PDO::PARAM_STR);
+
             $sqllog .= rtn_sqllog($sqlstr_h,$params);
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
             
             //明細登録
+            $orderlist="";
             foreach($_POST["meisai"] as $row){
                 //log_writer2("\$row",$row,"lv3");
                 
@@ -103,7 +125,7 @@ if($rtn !== true){
                 $status = $stmt->execute();
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
                 
-                $orderlist .= "◆".$params["shouhinNM"]."\n\r".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
+                $orderlist .= "◆".$params["shouhinNM"]."".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
             }
 
             //消費税明細の登録
@@ -129,6 +151,10 @@ if($rtn !== true){
             $tel = $params['tel'];
             $mail = $params['mail'];
             $bikou = $params['bikou'];
+            $st_name = $params['st_name'];
+            $st_yubin = $params['st_yubin'];
+            $st_jusho = $params['st_jusho'];
+            $st_tel = $params['st_tel'];
             $goukeitanka = return_num_disp($orderlist2[0]["soutanka"]);
             $goukeizei = return_num_disp($orderlist2[0]["souzei"]);
             $sougaku = return_num_disp($orderlist2[0]["zeikomisou"]);
@@ -142,13 +168,19 @@ if($rtn !== true){
             ご注文総額：$sougaku  内税($goukeizei)
 
             【ご注文主】
-            　$name
-            　$yubin
-            　$jusho
-            　$tel
-            　$mail
-            　オーダー備考：
-            　$bikou
+            $name
+            $yubin
+            $jusho
+            $tel
+            $mail
+            オーダー備考：
+            $bikou
+
+            【お届け先】(表示がない場合は同上)
+            $st_name
+            $st_yubin
+            $st_jusho
+            $st_tel
             EOM;
  
             $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body,TITLE." onLineShop");
@@ -172,6 +204,12 @@ if($rtn !== true){
             MAIL：$mail
             オーダー備考：
             $bikou
+
+            【お届け先】(表示がない場合は同上)
+            宛名：$st_name
+            郵便番号：$st_yubin
+            住所：$st_jusho
+            TEL：$st_tel
 
             ＜＜オーナー設定メッセージ＞＞
 
@@ -208,6 +246,7 @@ $return_sts = array(
     ,"status" => $alert_status
     ,"csrf_create" => $token
     ,"timeout" => $timeout
+    ,"orderNO" => $params["orderNO"]
 );
 header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);

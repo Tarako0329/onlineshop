@@ -258,13 +258,19 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       pic_list.value=[]
     }
 
-    const order_kakaku = ref(0)
+    const order_kakaku = ref(0) //オーダー税込総額
     const od_atena = ref('')
     const od_yubin = ref('')
     const od_jusho = ref('')
     const od_tel = ref('')
     const od_mail = ref('')
     const od_bikou = ref('')
+
+    const order_sent_same = ref(true) //注文者と送付先が同一(falseは別)
+    const st_atena = ref('')
+    const st_yubin = ref('')
+    const st_jusho = ref('')
+    const st_tel = ref('')
     const order_count =(index,val) =>{
       let order = Number(shouhinMS_SALE.value[index].ordered)
       if(order + Number(val) < 0){
@@ -363,12 +369,17 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       }
       const form = new FormData();
       form.append(`name`, od_atena.value)
-      form.append(`yubin`, od_yubin.value)
+      form.append(`yubin`, String(od_yubin.value))
       form.append(`jusho`, od_jusho.value)
-      form.append(`tel`, od_tel.value)
+      form.append(`tel`, String(od_tel.value))
       form.append(`mail`, od_mail.value)
       form.append(`bikou`, od_bikou.value)
       form.append(`csrf_token`, token)
+
+      form.append(`st_name`, st_atena.value)
+      form.append(`st_yubin`, String(st_yubin.value))
+      form.append(`st_jusho`, st_jusho.value)
+      form.append(`st_tel`, String(st_tel.value))
 
       let i = 0
       get_ordered.value.forEach((row)=>{
@@ -450,6 +461,11 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       od_tel,
       od_mail,
       od_bikou,
+      order_sent_same,
+      st_atena,
+      st_yubin,
+      st_jusho,
+      st_tel,
       btn_name,
       ordering,
       get_ordered,
