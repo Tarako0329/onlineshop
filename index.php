@@ -123,7 +123,7 @@
                       </div>
                     </template>
                   </template>
-                  <div><small>{{list.short_info}}</small></div>
+                  <div style='width:120px;'><small>{{list.short_info}}</small></div>
                 </td>
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
@@ -222,7 +222,8 @@
         <div class='col-md-6 col-12'>
           <button type='button' class='btn btn-primary' @click='order_submit()'>ご注文送信</button>
         </div>
-        <small>ご注文送信後、お客様メールアドレスにご注文内容の自動送信されます。その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
+        <small>ご注文送信後、お客様メールアドレスにご注文内容の自動配信されます。</small>
+        <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
       </div>
     </div>
 

@@ -45,6 +45,12 @@ p {
 	object-fit: cover; /* width, heightといっしょに使います */
 	border: 1px solid #111;
 }
+.img-item-sm {
+	width: 100%;
+	
+	object-fit: cover; /* width, heightといっしょに使います */
+	border: 1px solid #111;
+}
 .kakaku{
 	font-size:1.4rem;
 	color:#FF0080;

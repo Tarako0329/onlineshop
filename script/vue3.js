@@ -360,6 +360,17 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       if(od_mail.value==''){
         msg = msg + ' メールアドレス'
       }
+      if(order_sent_same.value === false){
+        if(st_atena.value==''){
+          msg = msg + ' お届け先宛名'
+        }
+        if(st_yubin.value==''){
+          msg = msg + ' お届け先郵便番号'
+        }
+        if(st_jusho.value==''){
+          msg = msg + ' お届け先住所'
+        }
+      }
       if(String(msg).length!==0){
         alert(`${msg} を入力して下さい。`)
         return
@@ -398,16 +409,13 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="alert-success"){
-          msg.value=`${shouhinNM.value} を登録しました`
-          clear_ms()
+          alert('ありがとうございます。ご注文を受け付けました。')
         }else{
-          msg.value=`${shouhinNM.value} の登録に失敗しました`
         }
         token = response.data.csrf_create
       })
       .catch((error,response)=>{
         console_log(error)
-        msg.value=`${shouhinNM.value} の登録に失敗しました`
         token = response.data.csrf_create
       })
       .finally(()=>{
