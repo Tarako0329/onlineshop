@@ -9,7 +9,9 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-$rtn = csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+//log_writer2("\$_POST",$_POST,"lv3");
+
+$rtn = csrf_checker(["configration.php"],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";
@@ -22,28 +24,59 @@ if($rtn !== true){
         $_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
         $timeout=true;
     }else{
-        //更新モード(実行)
-        $sqlstr = "update UriageData set tanka = :tanka,updDatetime=now() where UriDate = :w_date_from ";
+        $logfilename="sid_".$_SESSION['user_id'].".log";
+
+        $DELsql = "delete from Users_online where uid = :uid ";
+
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,site_name,logo)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:site_name,:logo)";
+
+        $params["uid"] = $_SESSION["user_id"];
+        $params["yagou"] = $_POST["yagou"];
+        $params["name"] = $_POST["name"];
+        $params["shacho"] = $_POST["shacho"];
+        $params["jusho"] = $_POST["jusho"];
+        $params["tel"] = $_POST["tel"];
+        $params["mail"] = $_POST["mail"];
+        $params["mail_body"] = $_POST["mail_body"];
+        $params["site_name"] = $_POST["site_name"];
+        $params["logo"] = $_POST["logo"];
 
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
+            //sqllogger("START TRANSACTION",[],basename(__FILE__),"ok");
+
+            $stmt = $pdo_h->prepare( $DELsql );
+            $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
             
-            $stmt = $pdo_h->prepare( $sql );
-            //bind処理
-            $stmt->bindValue("tanka", $_params["tanka"], PDO::PARAM_INT);
-            $stmt->bindValue("w_date_from", $_params["w_date_from"], PDO::PARAM_STR);
-            
-            $sqllog .= rtn_sqllog($sqlstr,$_params);
+            $sqllog .= rtn_sqllog($DELsql,$params);
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
-            //$count = $stmt->rowCount();
+            
+            $stmt = $pdo_h->prepare( $INSsql );
+            $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+            $stmt->bindValue("yagou", $params["yagou"], PDO::PARAM_STR);
+            $stmt->bindValue("name", $params["name"], PDO::PARAM_STR);
+            $stmt->bindValue("shacho", $params["shacho"], PDO::PARAM_STR);
+            $stmt->bindValue("jusho", $params["jusho"], PDO::PARAM_STR);
+            $stmt->bindValue("tel", $params["tel"], PDO::PARAM_STR);
+            $stmt->bindValue("mail", $params["mail"], PDO::PARAM_STR);
+            $stmt->bindValue("mail_body", $params["mail_body"], PDO::PARAM_STR);
+            $stmt->bindValue("site_name", $params["site_name"], PDO::PARAM_INT);
+            $stmt->bindValue("logo", $params["logo"], PDO::PARAM_INT);
+            
+            $sqllog .= rtn_sqllog($INSsql,$params);
+
+            $status = $stmt->execute();
+            $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+            
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
 	
-			$msg = "登録が完了しました。";
+			$msg .= "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
@@ -51,7 +84,7 @@ if($rtn !== true){
             $pdo_h->rollBack();
             $sqllog .= rtn_sqllog("rollBack",[]);
             sqllogger($sqllog,$e);
-            $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
+            $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;
         }

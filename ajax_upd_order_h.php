@@ -9,7 +9,9 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-$rtn = csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+//log_writer2("\$_POST",$_POST,"lv3");
+
+$rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";
@@ -22,22 +24,43 @@ if($rtn !== true){
         $_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
         $timeout=true;
     }else{
+        //$logfilename="sid_".$_SESSION['user_id'].".log";
+
+        $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
+        $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+        $stmt->execute();
+        $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        //log_writer2("\$owner",$owner,"lv3");
+
         //更新モード(実行)
-        $sqlstr = "update UriageData set tanka = :tanka,updDatetime=now() where UriDate = :w_date_from ";
+        $colum = $_POST["colum"];   //更新対象項目名
+        $value = $_POST["value"];
+        $orderNO = $_POST["orderNO"];
+
+        $sqlstr_h = "update juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid=:uid";
+
+        $params["uid"] = $_SESSION["user_id"];
+        $params[$colum] = $_POST["value"];
+        $params["orderNO"] = $_POST["orderNO"];
 
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
-            
-            $stmt = $pdo_h->prepare( $sql );
+
+            //受注ヘッダ登録
+
+            $stmt = $pdo_h->prepare( $sqlstr_h );
             //bind処理
-            $stmt->bindValue("tanka", $_params["tanka"], PDO::PARAM_INT);
-            $stmt->bindValue("w_date_from", $_params["w_date_from"], PDO::PARAM_STR);
-            
-            $sqllog .= rtn_sqllog($sqlstr,$_params);
+            $stmt->bindValue($colum, $params[$colum], PDO::PARAM_STR);
+            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+            $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+
+            $sqllog .= rtn_sqllog($sqlstr_h,$params);
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+            
             //$count = $stmt->rowCount();
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);

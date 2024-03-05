@@ -214,20 +214,34 @@
       </div>
       <div class='row mb-3'>
         <div class='col-md-6 col-12 form-floating'>
-          <textarea class="form-control" placeholder="ご要望等ございましたらご記入ください。" id="floating" style="height: 100px"></textarea>
+          <textarea class="form-control" placeholder="ご要望等ございましたらご記入ください。" id="floating" style="height: 100px" v-model='od_bikou'></textarea>
           <label for="floating">自由記入欄</label>
         </div>
       </div>
       <div class='row mb-3'>
+        <small>ご注文送信後、お客様メールアドレスにご注文内容の自動配信されます。</small>
+        <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
+        <small><span style='color:red;'><?php echo FROM;?></span> からのメールを受信できるよう設定をお願いします。</small>
         <div class='col-md-6 col-12'>
           <button type='button' class='btn btn-primary' @click='order_submit()'>ご注文送信</button>
         </div>
-        <small>ご注文送信後、お客様メールアドレスにご注文内容の自動配信されます。</small>
-        <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
       </div>
     </div>
+    <div v-show='mode==="ordered"'>
+      <p>受付番号：[<span style='color:red;'>{{orderNO}}</span>] にてショップにご注文を送信いたしました。</p>
+      <br>
+      <p>ご注文内容を確認する自動配信メールを送信いたしましたのでご確認ください。</p>
+      <br>
+      <p>その後、ショップより改めてご注文内容、配送、お支払い等 についてのメールをお送りいたします。</p>
+      <br>
+      <p>もしメールが届いてないようでしたら、お手数をおかけしますが・・・・までご連絡いただけますでしょうか。</p>
+      <br>
+      <p>また、その際は受付番号をお知らせ頂けると、その後のやり取りがスムーズになります。</p>
+      <br>
+      <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
+    </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
+    <div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
         <div class="toast-header">
           <img src="img/icon-16x16.png" class="rounded me-2" >

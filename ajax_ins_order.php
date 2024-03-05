@@ -24,7 +24,7 @@ if($rtn !== true){
         $_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
         $timeout=true;
     }else{
-        $logfilename="sid_".$_SESSION['user_id'].".log";
+        //$logfilename="sid_".$_SESSION['user_id'].".log";
 
         $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
         $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
@@ -66,17 +66,7 @@ if($rtn !== true){
                     break;
                 }
             }
-            /*
-            $stmt = $pdo_h->prepare("select max(orderNO) + 1 as new_orderNO from juchuu_head FOR UPDATE");
-            $stmt->execute();
-            $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            log_writer2("\$row",$row,"lv3");
-            if(!empty($row[0]["new_orderNO"])){
-                $params["orderNO"] = $row[0]["new_orderNO"];
-            }else{
-                $params["orderNO"] = 1;
-            }
-            */
+
             $stmt = $pdo_h->prepare( $sqlstr_h );
             //bind処理
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -137,87 +127,97 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
             //メールの作成
-            $stmt = $pdo_h->prepare("select orderNO,CAST(sum(goukeitanka) as char) + 0 as soutanka,CAST(sum(zei) as char) + 0 as souzei,CAST(sum(goukeitanka + zei) as char) + 0 as zeikomisou from juchuu_meisai where orderNO = :orderNO group by orderNO");
-            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
-            $stmt->execute();
-            $orderlist2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-            $body = "test";
-            //log_writer2("\$owner[mail]",$owner[0]["mail"],"lv3");
-            //log_writer2("\$params[mail]",$params["mail"],"lv3");
-            $name = $params['name'];
-            $yubin = $params['yubin'];
-            $jusho = $params['jusho'];
-            $tel = $params['tel'];
-            $mail = $params['mail'];
-            $bikou = $params['bikou'];
-            $st_name = $params['st_name'];
-            $st_yubin = $params['st_yubin'];
-            $st_jusho = $params['st_jusho'];
-            $st_tel = $params['st_tel'];
-            $goukeitanka = return_num_disp($orderlist2[0]["soutanka"]);
-            $goukeizei = return_num_disp($orderlist2[0]["souzei"]);
-            $sougaku = return_num_disp($orderlist2[0]["zeikomisou"]);
+            {
+                $stmt = $pdo_h->prepare("select orderNO,CAST(sum(goukeitanka) as char) + 0 as soutanka,CAST(sum(zei) as char) + 0 as souzei,CAST(sum(goukeitanka + zei) as char) + 0 as zeikomisou from juchuu_meisai where orderNO = :orderNO group by orderNO");
+                $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
+                $stmt->execute();
+                $orderlist2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                //log_writer2("\$owner[mail]",$owner[0]["mail"],"lv3");
+                //log_writer2("\$params[mail]",$params["mail"],"lv3");
+                $orderNO = $params['orderNO'];
+                $name = $params['name'];
+                $yubin = $params['yubin'];
+                $jusho = $params['jusho'];
+                $tel = $params['tel'];
+                $mail = $params['mail'];
+                $bikou = $params['bikou'];
+                $st_name = $params['st_name'];
+                $st_yubin = $params['st_yubin'];
+                $st_jusho = $params['st_jusho'];
+                $st_tel = $params['st_tel'];
+                $goukeitanka = return_num_disp($orderlist2[0]["soutanka"]);
+                $goukeizei = return_num_disp($orderlist2[0]["souzei"]);
+                $sougaku = return_num_disp($orderlist2[0]["zeikomisou"]);
 
-            $body = <<< "EOM"
-            $name 様よりご注文いただきました。
+                $body = <<< "EOM"
+                $name 様よりご注文いただきました。
 
-            【ご注文内容】
-            $orderlist
+                【ご注文内容】
+                $orderlist
 
-            ご注文総額：$sougaku  内税($goukeizei)
+                ご注文総額：$sougaku  内税($goukeizei)
 
-            【ご注文主】
-            $name
-            $yubin
-            $jusho
-            $tel
-            $mail
-            オーダー備考：
-            $bikou
+                【ご注文主】
+                $name
+                $yubin
+                $jusho
+                $tel
+                $mail
+                オーダー備考：
+                $bikou
 
-            【お届け先】(表示がない場合は同上)
-            $st_name
-            $st_yubin
-            $st_jusho
-            $st_tel
-            EOM;
- 
-            $rtn = send_mail($owner[0]["mail"],"オーダー受注通知",$body,TITLE." onLineShop");
-            $title = TITLE;
-            $body = <<< "EOM"
-            $name 様
-
-            この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
-            
-            ＜＜オーナー設定メッセージ＞＞
-
-            【ご注文内容】
-            $orderlist
-            ご注文総額：$sougaku  内税($goukeizei)
-
-            【ご注文主】
-            お名前：$name
-            郵便番号：$yubin
-            送付先住所：$jusho
-            TEL：$tel
-            MAIL：$mail
-            オーダー備考：
-            $bikou
-
-            【お届け先】(表示がない場合は同上)
-            宛名：$st_name
-            郵便番号：$st_yubin
-            住所：$st_jusho
-            TEL：$st_tel
-
-            ＜＜オーナー設定メッセージ＞＞
-
-            EOM;
+                【お届け先】(表示がない場合は同上)
+                $st_name
+                $st_yubin
+                $st_jusho
+                $st_tel
+                EOM;
+                
+                $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop");
 
 
-            $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）",$body,TITLE." onLineShop");
+                $title = TITLE;
+                $body = <<< "EOM"
+                受付番号：$orderNO
+                $name 様
 
+                この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
+                
+                以下の内容にて、ご注文を受付ました。
+                
+                別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
+
+                【ご注文内容】
+                $orderlist
+                ご注文総額：$sougaku  内税($goukeizei)
+
+                【ご注文主】
+                お名前：$name
+                郵便番号：$yubin
+                送付先住所：$jusho
+                TEL：$tel
+                MAIL：$mail
+                オーダー備考：
+                $bikou
+
+                【お届け先】(表示がない場合は同上)
+                宛名：$st_name
+                郵便番号：$st_yubin
+                住所：$st_jusho
+                TEL：$st_tel
+
+                ※
+                ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
+                ※
+
+                MAIL：$mail
+                TEL：$tel
+
+                EOM;
+
+                $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop");
+            }
 
             //$count = $stmt->rowCount();
 			$pdo_h->commit();

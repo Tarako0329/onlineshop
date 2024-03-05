@@ -340,7 +340,7 @@ function send_mail($to,$subject,$body,$fromname){
         //$smtp ->timeOut(10);
         
         $mail ->to($to);
-        $mail ->from('noreply@greeen-sys.com' , $fromname);
+        $mail ->from(FROM , $fromname);
         $mail ->subject($subject);
         $mail ->text($body);
     

@@ -344,7 +344,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       setTimeout(()=>{msg.value=""}, 3000);//3s
       
     })
-
+    const orderNO = ref('')
     const order_submit = () =>{
       let msg = ''
 
@@ -409,8 +409,11 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="alert-success"){
-          alert('ありがとうございます。ご注文を受け付けました。')
+          //alert('ありがとうございます。ご注文を受け付けました。')
+          mode.value='ordered'
+          orderNO.value=response.data.orderNO
         }else{
+          alert('注文送信失敗')
         }
         token = response.data.csrf_create
       })
@@ -423,7 +426,13 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       })
 
     }
-
+    const order_clear =()=>{
+      mode.value='shopping'
+      get_ordered.value.forEach((row)=>{
+        row.ordered=0
+      })
+      order_kakaku.value=0
+    }
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -479,6 +488,210 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       get_ordered,
       shouhinMS_SALE,
       order_submit,
+      orderNO,
+      order_clear,
     }
   }
 });
+
+
+const admin_menu = (Where_to_use,p_token) => createApp({
+  setup() {
+    const menu = ref([
+      {name:'サイト設定',url : 'configration.php'},
+      {name:'販売商品編集',url : 'shouhinMS.php'},
+      {name:'受注・発送・入金管理',url : 'order_management.php'},
+    ])
+
+    return{
+      menu
+    }
+  }
+})
+
+const order_mng = (Where_to_use,p_token) => createApp({
+  setup() {
+    let token = p_token
+    const orderlist_hd = ref([])
+    const orderlist_bd = ref([])
+    const get_orderlist = () =>{
+      axios
+      .get(`ajax_get_orderlists.php`)
+      .then((response) => {
+        if(response.data.alert==="success"){
+          orderlist_hd.value = [...response.data.header]
+          orderlist_bd.value = [...response.data.body]
+          console_log('ajax_get_orderlists succsess')
+          console_log(response.data)
+        }else{
+          console_log('ajax_get_orderlists succsess:NoData')
+        }
+      })
+      .catch((error)=>{
+        console_log('ajax_get_orderlists.php ERROR')
+        console_log(error)
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+    }
+    const set_order_sts = (orderNO,colum,val,index) =>{
+      //colum項目にvalを設定
+      console_log(orderNO)
+      console_log(colum)
+      console_log(orderlist_hd.value[index])
+
+      const form = new FormData();
+      form.append(`orderNO`, orderNO)
+      form.append(`colum`, colum)
+      form.append(`value`, val)
+      form.append(`csrf_token`, token)
+
+      axios.post("ajax_upd_order_h.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        if(response.data.status==="alert-success"){
+        }else{
+          alert('更新失敗')
+        }
+        token = response.data.csrf_create
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+
+    }
+    const unlock = (id)=>{
+      document.getElementById(id).disabled = false
+      document.getElementById(id).readOnly = false
+    }
+
+    onMounted(()=>{
+      console_log(`onMounted : ${Where_to_use}`)
+      if(Where_to_use==="shouhinMS"){
+      }
+      get_orderlist()
+    })
+    return{
+      orderlist_hd,
+      orderlist_bd,
+      get_orderlist,
+      set_order_sts,
+      unlock,
+    }
+  }
+})
+
+const configration = (Where_to_use,p_token) => createApp({
+  setup() {
+    let token = p_token
+    const yagou = ref('')
+    const name = ref('')
+    const shacho = ref('')
+    const jusho = ref('')
+    const tel = ref('')
+    const mail = ref('')
+    const mail_body = ref('<購入者名>様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const site_name = ref('')
+    const logo = ref('')
+    const get_user = () =>{
+      axios
+      .get(`ajax_get_usersMSonline.php`)
+      .then((response) => {
+        yagou.value = response.data[0].yagou
+        name.value = response.data[0].name
+        shacho.value = response.data[0].shacho
+        jusho.value = response.data[0].jusho
+        tel.value = response.data[0].tel
+        mail.value = response.data[0].mail
+        if(response.data[0].mail_body!==""){
+          mail_body.value = response.data[0].mail_body
+        }
+        site_name.value = response.data[0].site_name
+        logo.value = response.data[0].logo
+        console_log('ajax_get_usersMSonline succsess')
+      })
+      .catch((error)=>{
+        console_log('ajax_get_usersMSonline.php ERROR')
+        console_log(error)
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+    }
+
+    const set_user = () =>{
+      const form = new FormData();
+      form.append(`yagou`, yagou.value)
+      form.append(`name`, name.value)
+      form.append(`shacho`, shacho.value)
+      form.append(`jusho`, jusho.value)
+      form.append(`tel`, tel.value)
+      form.append(`mail`, mail.value)
+      form.append(`mail_body`, mail_body.value)
+      form.append(`site_name`, site_name.value)
+      form.append(`logo`, logo.value)
+      form.append(`csrf_token`, token)
+
+      axios.post("ajax_delins_userMSonline.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        if(response.data.status==="alert-success"){
+        }else{
+          alert('更新失敗')
+        }
+        token = response.data.csrf_create
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+
+    }
+
+    const mail_body_sample = computed(()=>{
+      let val=mail_body.value
+
+      val = val.replace(/<購入者名>/g,'田中次郎')
+      val = val.replace(/<注文内容>/g,'【ご注文内容】\n◆iPad\n価格( 10,909 円) x 1(コ) = 合計 10,909 円(税抜)\n\n備考：ご要望等ございましたらご記入ください。\n\nご注文総額：￥11,999  内税(1,090)')
+      val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：田中次郎\n郵便番号：261XXXX\n送付先住所：千葉市美浜区〇〇〇\nTEL：09012341234\nMAIL：sample@gmail.com\nオーダー備考：\nご要望等ございましたらご記入ください。')
+      val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：佐藤次郎\n郵便番号：261XXXX\n送付先住所：千葉市若葉区〇〇〇\nTEL：09012341234')
+      val = val.replace(/<自社名>/g,'サンプル株式会社')
+      val = val.replace(/<自社住所>/g,'千葉県千葉市稲毛区〇〇〇〇')
+      val = val.replace(/<問合せ受付TEL>/g,'0120-00-0000')
+      val = val.replace(/<問合せ受付MAIL>/g,'sample@gmail.com')
+      val = val.replace(/<問合担当者>/g,'小泉純一郎')
+      val = val.replace(/<代表者>/g,'田中角栄')
+      
+      return val
+    })
+
+    onMounted(()=>{
+      console_log(`onMounted : ${Where_to_use}`)
+      if(Where_to_use==="shouhinMS"){
+      }
+      get_user()
+    })
+
+    return{
+      mail_body_sample,
+      yagou,
+      name,
+      shacho,
+      jusho,
+      tel,
+      mail,
+      mail_body,
+      site_name,
+      logo,
+      set_user,
+    }
+  }
+})

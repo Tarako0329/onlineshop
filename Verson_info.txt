@@ -2,6 +2,9 @@ ver0.01.0:my first commit
 ver0.01.1:開発中
 ver0.01.1:開発中:オーダー画面
 ver0.01.2:開発中:オーダー通知
+ver0.01.2:開発中:サイト設定
+ALTER TABLE `juchuu_head` ADD `sent_flg` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '発送先別' AFTER `mail`;
+
 
 【Issues】
 
