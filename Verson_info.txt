@@ -4,7 +4,9 @@ ver0.01.1:開発中:オーダー画面
 ver0.01.2:開発中:オーダー通知
 ver0.01.2:開発中:サイト設定
 ALTER TABLE `juchuu_head` ADD `sent_flg` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '発送先別' AFTER `mail`;
-
+ver0.01.3:開発中:サイト設定
+ALTER TABLE `Users_online` ADD `site_pr` TEXT NOT NULL COMMENT 'PR情報' AFTER `logo`;
+ALTER TABLE `Users_online` CHANGE `yagou` `yagou` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT '問合せ担当', CHANGE `tel` `tel` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `site_name` `site_name` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `logo` `logo` VARCHAR(400) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL, CHANGE `site_pr` `site_pr` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL COMMENT 'PR情報', CHANGE `upddatetime` `upddatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 【Issues】
 

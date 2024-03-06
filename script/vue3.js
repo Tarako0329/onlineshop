@@ -169,12 +169,10 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       sort = Number(sort) + 1
     }
 
-
-
-    const input_file_btn = (id) =>{
+    const input_file_btn = (id) =>{//アップロードボタン
       document.getElementById(id).click()
     }
-    const uploadfile = (id) =>{
+    const uploadfile = (id) =>{//写真アップロード処理・写真をアップしファイルパスを取得
       const params = new FormData();
       
       let i = 0
@@ -188,7 +186,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="success"){
-          pic_list.value = [...response.data.filename]
+          pic_list.value = [...pic_list.value,...response.data.filename]
         }else{
         }
       })
@@ -198,6 +196,39 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       .finally(()=>{
         //loader.value = false
       })
+    }
+    const pic_delete = (filepass) =>{
+      //アップされたファイルを削除
+      //マスタに登録されたレコードを削除
+      //pic_list[]からレコード削除
+      const form = new FormData();
+      form.append(`pic`, filepass)
+      form.append(`csrf_token`, token)
+
+      axios.post("ajax_file_delete.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        if(response.data.status==="alert-success"){
+          //画面のクリア
+          pic_list.value.forEach((row,index)=>{
+            if(row.filename===filepass){pic_list.value.splice(index,1)}
+          })
+          msg.value=`${filepass} を削除しました`
+
+        }else{
+          msg.value=`${filepass} の削除に失敗しました`
+        }
+        token = response.data.csrf_create
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        msg.value=`${filepass} の削除に失敗しました`
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        //loader.value = false
+      })
+
     }
 
     const ins_shouhinMS = ()=>{
@@ -465,6 +496,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       get_shouhinMS_online,
       input_file_btn,
       uploadfile,
+      pic_delete,
       ins_shouhinMS,
       resort,
       shouhizei,
@@ -570,18 +602,112 @@ const order_mng = (Where_to_use,p_token) => createApp({
       document.getElementById(id).readOnly = false
     }
 
+    const yagou = ref('')
+    const site_name = ref('')
+    const tantou = ref('')
+    const shacho = ref('')
+    const jusho = ref('')
+    const tel = ref('')
+    const mail = ref('')
+    const mail_body = ref('')
+
+    const mail_body_template = computed(()=>{
+      let val=mail_body.value
+      let return_value=[]
+      let orders = '【ご注文内容】\n'
+      
+      orderlist_hd.value.forEach((row)=>{
+        //明細取得
+        orders = '【ご注文内容】\n'
+        orderlist_bd.value.forEach((row2,index)=>{
+          if(row.orderNO===row2.orderNO && row2.zei==="0.00"){
+            orders = orders + "◆" + row2.shouhinNM + "\n価格( " + String(Number(row2.tanka).toLocaleString()) + " 円) x " + String(row2.su) + "(コ) = 合計 " + String(Number(row2.goukeitanka).toLocaleString()) + " 円(税抜)\n備考：" + row2.bikou + "\n\n";
+          }else if(row.orderNO===row2.orderNO && row2.zei!=="0.00"){
+            //消費税
+            orders = orders + "消費税：" + row2.shouhinNM + " = " + String(Number(row2.zei).toLocaleString()) + " 円\n"
+          }
+        })
+        orders = orders + "御請求額： " + String(Number(row.税込総額).toLocaleString()) + " 円"
+        
+        val = mail_body.value
+        
+        val = val.replace(/<購入者名>/g,row.name)
+        val = val.replace(/<注文内容>/g,orders)
+        val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
+        val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
+        val = val.replace(/<自社名>/g,yagou.value)
+        val = val.replace(/<自社住所>/g,jusho.value)
+        val = val.replace(/<問合せ受付TEL>/g,tel.value)
+        val = val.replace(/<問合せ受付MAIL>/g,mail.value)
+        val = val.replace(/<問合担当者>/g,tantou.value)
+        val = val.replace(/<代表者>/g,shacho.value)
+        
+        return_value.push({orderNO:row.orderNO,mailbody:val})
+      })
+      
+      return return_value
+    })
+
+    const approval_email = (orderNO,index) =>{
+      if(confirm('お客様に受付完了のメールを送付しますか？')){
+      }else{
+        return
+      }
+      console_log(orderNO)
+      console_log(orderlist_hd.value[index].orderNO)
+      console_log(mail_body_template.value[index].orderNO)
+      //念のための確認
+      if(orderNO!==orderlist_hd.value[index].orderNO){
+        alert('受付番号不一致')
+        return
+      }
+      if(orderNO!==mail_body_template.value[index].orderNO){
+        alert('受付番号不一致')
+        return
+      }
+
+      const form = new FormData();
+      form.append(`mailto`, orderlist_hd.value[index].mail)
+      form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`)
+      form.append(`body`, mail_body_template.value[index].mailbody)
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
       }
       get_orderlist()
+      GET_USER2()
+      .then((response)=>{
+        console_log('owata')
+        console_log(response)
+        yagou.value = response.yagou
+        site_name.value = response.site_name
+        tantou.value = response.name
+        shacho.value = response.shacho
+        jusho.value = response.jusho
+        tel.value = response.tel
+        mail.value = response.mail
+        mail_body.value = response.mail_body
+
+      })
     })
+
     return{
       orderlist_hd,
       orderlist_bd,
       get_orderlist,
       set_order_sts,
       unlock,
+      yagou,
+      tantou,
+      shacho,
+      jusho,
+      tel,
+      mail,
+      mail_body,
+      mail_body_template,
+      approval_email,
     }
   }
 })
@@ -590,7 +716,7 @@ const configration = (Where_to_use,p_token) => createApp({
   setup() {
     let token = p_token
     const yagou = ref('')
-    const name = ref('')
+    const tantou = ref('')
     const shacho = ref('')
     const jusho = ref('')
     const tel = ref('')
@@ -603,7 +729,7 @@ const configration = (Where_to_use,p_token) => createApp({
       .get(`ajax_get_usersMSonline.php`)
       .then((response) => {
         yagou.value = response.data[0].yagou
-        name.value = response.data[0].name
+        tantou.value = response.data[0].name
         shacho.value = response.data[0].shacho
         jusho.value = response.data[0].jusho
         tel.value = response.data[0].tel
@@ -683,7 +809,7 @@ const configration = (Where_to_use,p_token) => createApp({
     return{
       mail_body_sample,
       yagou,
-      name,
+      tantou,
       shacho,
       jusho,
       tel,
@@ -695,3 +821,28 @@ const configration = (Where_to_use,p_token) => createApp({
     }
   }
 })
+
+//グローバル関数
+const GET_USER2 = ()=>{
+	return new Promise((resolve, reject) => {
+		GET_USER_SHORI(resolve);
+	});
+}
+const GET_USER_SHORI = (resolve) =>{
+  let obj
+  axios
+  .get(`ajax_get_usersMSonline.php`)
+  .then((response) => {
+    obj = response.data[0]
+    console_log('ajax_get_usersMSonline succsess')
+  })
+  .catch((error)=>{
+    console_log('ajax_get_usersMSonline.php ERROR')
+    console_log(error)
+  })
+  .finally(()=>{
+    //loader.value = false
+    resolve(obj)
+    //return obj
+  })
+}

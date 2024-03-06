@@ -192,9 +192,16 @@
                         </div>
                         <div class='row mb-3 mt-3'>
                           <div class='col-md-6 col-12'>
-                            <button type='button' class='btn btn-primary'>注文内容確認のメールを送る</button>
+                            <button type='button' class='btn btn-primary' @click='approval_email(list.orderNO,index)'>注文内容確認のメールを送る</button>
                           </div>
                         </div>
+                        <div class='row mb-3'>
+                          <div class='col-md-8 col-12'>
+                            <label for='Approval' class="form-label">メール内容</label>
+                            <textarea type='memo' class='form-control' id='Approval' rows="10" v-model='mail_body_template[index].mailbody'></textarea>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                   </div>

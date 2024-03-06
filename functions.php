@@ -303,7 +303,7 @@ function get_pdo_options() {
 // =========================================================
 // メール送信 
 // =========================================================
-function send_mail($to,$subject,$body,$fromname){
+function send_mail($to,$subject,$body,$fromname,$bcc){
 	//$to		: 送信先アドレス
 	//$subject	: 件名
 	//$body		: 本文

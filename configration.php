@@ -48,7 +48,7 @@
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
         <label for='hinmei' class="form-label">問い合せ担当者</label>
-        <input type='text' class='form-control' id='hinmei' v-model='name'>
+        <input type='text' class='form-control' id='hinmei' v-model='tantou'>
       </div>
     </div>
     <div class='row mb-3 pt-3'>
