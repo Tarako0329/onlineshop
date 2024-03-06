@@ -340,6 +340,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         //$smtp ->timeOut(10);
         
         $mail ->to($to);
+        $mail ->bcc($bcc);
         $mail ->from(FROM , $fromname);
         $mail ->subject($subject);
         $mail ->text($body);
