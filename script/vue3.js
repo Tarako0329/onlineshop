@@ -670,6 +670,8 @@ const order_mng = (Where_to_use,p_token) => createApp({
       form.append(`mailto`, orderlist_hd.value[index].mail)
       form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`)
       form.append(`mailbody`, mail_body_template.value[index].mailbody)
+      form.append(`csrf_token`, token)
+      
       axios.post("ajax_sendmail.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
