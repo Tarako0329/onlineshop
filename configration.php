@@ -23,50 +23,63 @@
     </transition>-->
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">サイト名</label>
-        <input type='text' class='form-control' id='hinmei' v-model='site_name'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">屋号</label>
-        <input type='text' class='form-control' id='hinmei' v-model='yagou'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">代表者</label>
-        <input type='text' class='form-control' id='hinmei' v-model='shacho'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">屋号所在地</label>
-        <input type='text' class='form-control' id='hinmei' v-model='jusho'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">問い合せ担当者</label>
-        <input type='text' class='form-control' id='hinmei' v-model='tantou'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">問い合せ窓口（TEL）</label>
-        <input type='text' class='form-control' id='hinmei' v-model='tel'>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='hinmei' class="form-label">問い合せ窓口（MAIL）</label>
-        <input type='mail' class='form-control' id='hinmei' v-model='mail'>
+        <label for='site_name' class="form-label">サイト名</label>
+        <input type='text' class='form-control' id='site_name' v-model='site_name'>
       </div>
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <label for='midasi' class="form-label">注文受付メールテンプレート</label><button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
-        <textarea type='memo' class='form-control' id='midasi' rows="10" v-model='mail_body'></textarea>
+        <label for='site_pr' class="form-label">サイトＰＲ</label>
+        <textarea type='memo' class='form-control' id='site_pr' rows="10" v-model='site_pr'></textarea>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='yagou' class="form-label">屋号</label>
+        <input type='text' class='form-control' id='yagou' v-model='yagou'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='shacho' class="form-label">代表者</label>
+        <input type='text' class='form-control' id='shacho' v-model='shacho'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='jusho' class="form-label">屋号所在地</label>
+        <input type='text' class='form-control' id='jusho' v-model='jusho'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='tantou' class="form-label">問い合せ担当者</label>
+        <input type='text' class='form-control' id='tantou' v-model='tantou'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='mail' class="form-label">問い合せ窓口（TEL）</label>
+        <input type='text' class='form-control' id='mail' v-model='mail'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='mail' class="form-label">問い合せ窓口（MAIL）</label>
+        <input type='mail' class='form-control' id='mail' v-model='mail'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='cc_mail' class="form-label">CC Mail</label>
+        <input type='mail' class='form-control' id='cc_mail' v-model='cc_mail'>
+        <small>お客様宛に送信したメールにＣＣで自身に送りたい場合は設定してください。</small>
+      </div>
+    </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='mail_body' class="form-label">注文受付メールテンプレート</label><button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
+        <textarea type='memo' class='form-control' id='mail_body' rows="10" v-model='mail_body'></textarea>
         <div class='row mb-3 mt-2'>
           <div class='col-12'>
             定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)

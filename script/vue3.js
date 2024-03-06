@@ -609,6 +609,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
     const jusho = ref('')
     const tel = ref('')
     const mail = ref('')
+    const cc_mail = ref('')
     const mail_body = ref('')
 
     const mail_body_template = computed(()=>{
@@ -668,10 +669,11 @@ const order_mng = (Where_to_use,p_token) => createApp({
 
       const form = new FormData();
       form.append(`mailto`, orderlist_hd.value[index].mail)
+      form.append(`mailtoCC`, cc_mail.value)
       form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`)
       form.append(`mailbody`, mail_body_template.value[index].mailbody)
       form.append(`csrf_token`, token)
-      
+
       axios.post("ajax_sendmail.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
@@ -707,6 +709,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
         jusho.value = response.jusho
         tel.value = response.tel
         mail.value = response.mail
+        cc_mail.value = response.cc_mail
         mail_body.value = response.mail_body
 
       })
@@ -740,9 +743,12 @@ const configration = (Where_to_use,p_token) => createApp({
     const jusho = ref('')
     const tel = ref('')
     const mail = ref('')
+    const cc_mail = ref('')
     const mail_body = ref('<購入者名>様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const site_name = ref('')
+    const site_pr = ref('')
     const logo = ref('')
+    /*
     const get_user = () =>{
       axios
       .get(`ajax_get_usersMSonline.php`)
@@ -768,17 +774,19 @@ const configration = (Where_to_use,p_token) => createApp({
         //loader.value = false
       })
     }
-
+    */
     const set_user = () =>{
       const form = new FormData();
       form.append(`yagou`, yagou.value)
-      form.append(`name`, name.value)
+      form.append(`name`, tantou.value)
       form.append(`shacho`, shacho.value)
       form.append(`jusho`, jusho.value)
       form.append(`tel`, tel.value)
       form.append(`mail`, mail.value)
+      form.append(`cc_mail`, cc_mail.value)
       form.append(`mail_body`, mail_body.value)
       form.append(`site_name`, site_name.value)
+      form.append(`site_pr`, site_pr.value)
       form.append(`logo`, logo.value)
       form.append(`csrf_token`, token)
 
@@ -822,7 +830,27 @@ const configration = (Where_to_use,p_token) => createApp({
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
       }
-      get_user()
+      //get_user()
+      GET_USER2()
+      .then((response)=>{
+        console_log('owata')
+        console_log(response)
+        yagou.value = response.yagou
+        site_name.value = response.site_name
+        site_pr.value = response.site_pr
+        logo.value = response.logo
+        tantou.value = response.name
+        shacho.value = response.shacho
+        jusho.value = response.jusho
+        tel.value = response.tel
+        mail.value = response.mail
+        cc_mail.value = response.cc_mail
+        if(response.mail_body!==""){
+          mail_body.value = response.mail_body
+        }
+
+      })
+
     })
 
     return{
@@ -833,8 +861,10 @@ const configration = (Where_to_use,p_token) => createApp({
       jusho,
       tel,
       mail,
+      cc_mail,
       mail_body,
       site_name,
+      site_pr,
       logo,
       set_user,
     }
