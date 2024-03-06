@@ -9,7 +9,7 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-//log_writer2("\$_POST",$_POST,"lv3");
+log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
 if($rtn !== true){
@@ -26,27 +26,8 @@ if($rtn !== true){
     }else{
 
         try{
-            $pdo_h->beginTransaction();
-            $sqllog .= rtn_sqllog("START TRANSACTION",[]);
+            $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"green.green.midori@gmail.com");
 
-            //受注ヘッダ登録
-
-            $stmt = $pdo_h->prepare( $sqlstr_h );
-            //bind処理
-            $stmt->bindValue($colum, $params[$colum], PDO::PARAM_STR);
-            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
-            $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
-
-            $sqllog .= rtn_sqllog($sqlstr_h,$params);
-
-            $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("--execute():正常終了",[]);
-            
-            //$count = $stmt->rowCount();
-			$pdo_h->commit();
-			$sqllog .= rtn_sqllog("commit",[]);
-			sqllogger($sqllog,0);
-	
 			$msg = "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
@@ -90,7 +71,7 @@ function shutdown(){
           
         $emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
         if(EXEC_MODE!=="Local"){
-            send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg);
+            send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"");
         }
         log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
     

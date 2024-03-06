@@ -174,7 +174,7 @@ if($rtn !== true){
                 $st_tel
                 EOM;
                 
-                $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop");
+                $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop","");
 
 
                 $title = TITLE;
@@ -216,7 +216,7 @@ if($rtn !== true){
 
                 EOM;
 
-                $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop");
+                $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop","");
             }
 
             //$count = $stmt->rowCount();
