@@ -1,7 +1,5 @@
 <?php
   require "php_header.php";
-	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
-
 	//log_writer2("\$_GET",$_GET,"lv3");
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
