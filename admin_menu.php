@@ -17,7 +17,7 @@
   <MAIN class='container common_main pt-3'>
     <div v-for='(list,index) in menu' :key='list.name' class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <a type="button" :href="list.url" class='btn btn-info'>{{list.name}}</a>
+        <a type="button" :href="list.url" class='btn btn-primary' style='font-size:15px;font-weight:700;width:200px;height:40px;padding-top:7px;'>{{list.name}}</a>
       </div>
     </div>
   </MAIN>
