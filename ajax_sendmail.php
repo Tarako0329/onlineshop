@@ -26,7 +26,7 @@ if($rtn !== true){
     }else{
 
         try{
-            $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"green.green.midori@gmail.com");
+            $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,$_POST["mailtoCC"]);
 
 			$msg = "登録が完了しました。";
 			$alert_status = "alert-success";

@@ -630,8 +630,8 @@ const order_mng = (Where_to_use,p_token) => createApp({
         //loader.value = false
         document.getElementById(`mailbtn${index}`).disabled = false
       })
-
     }
+
     const unlock = (id)=>{
       document.getElementById(id).disabled = false
       document.getElementById(id).readOnly = false
@@ -718,11 +718,15 @@ const order_mng = (Where_to_use,p_token) => createApp({
         console_log(response.data)
         loader.value = false
         if(response.data.status==="alert-success"){
+          token = response.data.csrf_create
+          set_order_sts(orderNO,"first_answer",1,index)
           alert('メールを送信しました')
+          orderlist_hd.value[index].オーダー受付="済"
         }else{
           alert('更新失敗')
+          token = response.data.csrf_create
         }
-        token = response.data.csrf_create
+        
       })
       .catch((error,response)=>{
         console_log(error)

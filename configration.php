@@ -73,7 +73,7 @@
       <div class='col-md-6 col-12'>
         <label for='cc_mail' class="form-label">CC Mail</label>
         <input type='mail' class='form-control' id='cc_mail' v-model='cc_mail'>
-        <small>お客様宛に送信したメールにＣＣで自身に送りたい場合は設定してください。</small>
+        <small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
       </div>
     </div>
     <div class='row mb-3'>
