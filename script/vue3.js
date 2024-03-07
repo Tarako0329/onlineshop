@@ -544,6 +544,7 @@ const admin_menu = (Where_to_use,p_token) => createApp({
 const order_mng = (Where_to_use,p_token) => createApp({
   setup() {
     let token = p_token
+
     const orderlist_hd = ref([])
     const orderlist_bd = ref([])
     const get_orderlist = () =>{
@@ -573,6 +574,8 @@ const order_mng = (Where_to_use,p_token) => createApp({
       console_log(colum)
       console_log(orderlist_hd.value[index])
 
+      document.getElementById(`mailbtn${index}`).disabled = true
+
       const form = new FormData();
       form.append(`orderNO`, orderNO)
       form.append(`colum`, colum)
@@ -594,6 +597,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       })
       .finally(()=>{
         //loader.value = false
+        document.getElementById(`mailbtn${index}`).disabled = false
       })
 
     }
@@ -611,6 +615,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
     const mail = ref('')
     const cc_mail = ref('')
     const mail_body = ref('')
+    const loader = ref(false)
 
     const mail_body_template = computed(()=>{
       let val=mail_body.value
@@ -667,6 +672,8 @@ const order_mng = (Where_to_use,p_token) => createApp({
         return
       }
 
+      loader.value = true
+
       const form = new FormData();
       form.append(`mailto`, orderlist_hd.value[index].mail)
       form.append(`mailtoCC`, cc_mail.value)
@@ -678,6 +685,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="alert-success"){
+          alert('メールを送信しました')
         }else{
           alert('更新失敗')
         }
@@ -688,7 +696,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
         token = response.data.csrf_create
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
       })
 
     }
@@ -730,6 +738,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       mail_body,
       mail_body_template,
       approval_email,
+      loader,
     }
   }
 })
@@ -748,34 +757,10 @@ const configration = (Where_to_use,p_token) => createApp({
     const site_name = ref('')
     const site_pr = ref('')
     const logo = ref('')
-    /*
-    const get_user = () =>{
-      axios
-      .get(`ajax_get_usersMSonline.php`)
-      .then((response) => {
-        yagou.value = response.data[0].yagou
-        tantou.value = response.data[0].name
-        shacho.value = response.data[0].shacho
-        jusho.value = response.data[0].jusho
-        tel.value = response.data[0].tel
-        mail.value = response.data[0].mail
-        if(response.data[0].mail_body!==""){
-          mail_body.value = response.data[0].mail_body
-        }
-        site_name.value = response.data[0].site_name
-        logo.value = response.data[0].logo
-        console_log('ajax_get_usersMSonline succsess')
-      })
-      .catch((error)=>{
-        console_log('ajax_get_usersMSonline.php ERROR')
-        console_log(error)
-      })
-      .finally(()=>{
-        //loader.value = false
-      })
-    }
-    */
+    const loader = ref(false)
+
     const set_user = () =>{
+      loader.value = true
       const form = new FormData();
       form.append(`yagou`, yagou.value)
       form.append(`name`, tantou.value)
@@ -794,6 +779,7 @@ const configration = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="alert-success"){
+          alert('更新しました')
         }else{
           alert('更新失敗')
         }
@@ -802,9 +788,10 @@ const configration = (Where_to_use,p_token) => createApp({
       .catch((error,response)=>{
         console_log(error)
         token = response.data.csrf_create
+        alert('更新error')
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
       })
 
     }
@@ -830,7 +817,6 @@ const configration = (Where_to_use,p_token) => createApp({
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
       }
-      //get_user()
       GET_USER2()
       .then((response)=>{
         console_log('owata')
@@ -867,6 +853,7 @@ const configration = (Where_to_use,p_token) => createApp({
       site_pr,
       logo,
       set_user,
+      loader,
     }
   }
 })

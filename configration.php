@@ -14,7 +14,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <?php include "header_tag.php"  ?>
+  <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>
     <!--<transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
@@ -140,6 +140,10 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+	<div class="loader-wrap" v-show='loader'>
+		<div class="loader">Loading...</div>
+	</div>
+
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>

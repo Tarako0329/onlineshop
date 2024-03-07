@@ -13,7 +13,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <?php include "header_tag.php"  ?>
+  <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main pt-3'>
     <div v-for='(list,index) in menu' :key='list.name' class='row mb-3'>
       <div class='col-md-6 col-12'>

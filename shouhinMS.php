@@ -14,7 +14,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <?php include "header_tag.php"  ?>
+  <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>
     <transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">

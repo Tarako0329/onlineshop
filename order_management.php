@@ -19,7 +19,7 @@
 </head>
 <BODY class='bd'>
   <div id='app'>
-  <?php include "header_tag.php"  ?>
+  <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>
     <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
     <div class='row pb-3 pt-3'>
@@ -134,7 +134,7 @@
                             <label :for='`od_tel${index}`' class="form-label">TEL</label>
                             <div class="input-group">
                               <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)'>
+                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)' disabled readonly>>
                             </div>
                           </div>
                         </div>
@@ -192,13 +192,13 @@
                         </div>
                         <div class='row mb-3 mt-3'>
                           <div class='col-md-6 col-12'>
-                            <button type='button' class='btn btn-primary' @click='approval_email(list.orderNO,index)'>注文内容確認のメールを送る</button>
+                            <button type='button' class='btn btn-primary' :id='`mailbtn${index}`' @click='approval_email(list.orderNO,index)'>注文内容確認のメールを送る</button>
                           </div>
                         </div>
                         <div class='row mb-3'>
                           <div class='col-md-8 col-12'>
-                            <label for='Approval' class="form-label">メール内容</label>
-                            <textarea type='memo' class='form-control' id='Approval' rows="10" v-model='mail_body_template[index].mailbody'></textarea>
+                            <label :for='`Approval${index}`' class="form-label">メール内容</label>
+                            <textarea type='memo' class='form-control' :id='`Approval${index}`' rows="10" v-model='mail_body_template[index].mailbody'></textarea>
                           </div>
                         </div>
 
@@ -219,7 +219,11 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+  <div class="loader-wrap" v-show='loader'>
+		<div class="loader">Loading...</div>
+	</div>
   </div>
+
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
     order_mng('order_management','<?php echo $token; ?>').mount('#app');

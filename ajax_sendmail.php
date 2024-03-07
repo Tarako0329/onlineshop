@@ -8,7 +8,7 @@ $alert_status = "alert-warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
-
+sleep(6);
 log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
