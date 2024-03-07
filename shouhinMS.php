@@ -115,6 +115,9 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+  <div class="loader-wrap" v-show='loader'>
+		<div class="loader">Loading...</div>
+	</div>
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>

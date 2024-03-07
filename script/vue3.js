@@ -17,6 +17,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
     ]
     let token = p_token
     const msg=ref('')
+    const loader = ref(false)
 
     const shouhinMS = ref([])
     const shouhinMS_pic = ref([])
@@ -78,7 +79,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
           shouhinMS.value = [...response.data.dataset]
           shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
-          console_log(response.data.pic_set)
+          //console_log(response.data.pic_set)
         }else{
           console_log('get_shouhinMS_online succsess:NoData')
         }
@@ -181,22 +182,25 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
         i = i+1
       }
       params.append('shouhinCD',shouhinCD.value)
-
+      loader.value = true
       axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="success"){
           pic_list.value = [...pic_list.value,...response.data.filename]
         }else{
+          alert('写真アップロードエラー')
         }
       })
       .catch((error)=>{
         console_log(error)
+        alert('写真アップロードERROR')
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
       })
     }
+
     const pic_delete = (filepass) =>{
       //アップされたファイルを削除
       //マスタに登録されたレコードを削除
@@ -232,6 +236,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
     }
 
     const ins_shouhinMS = ()=>{
+      loader.value = true
       const form = new FormData();
       form.append(`shouhinCD`, shouhinCD.value)
       form.append(`shouhinNM`, shouhinNM.value)
@@ -273,7 +278,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
         token = response.data.csrf_create
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
       })
     }
     
@@ -378,7 +383,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
     const orderNO = ref('')
     const order_submit = () =>{
       let msg = ''
-
+      loader.value = true
       if(od_atena.value==''){
         msg = ' 宛名'
       }
@@ -409,6 +414,8 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       if(confirm('この内容で送信してよいですか？')===false){
         return
       }
+      loader.value = true
+
       const form = new FormData();
       form.append(`name`, od_atena.value)
       form.append(`yubin`, String(od_yubin.value))
@@ -453,7 +460,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
         token = response.data.csrf_create
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
       })
 
     }
@@ -464,6 +471,26 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       })
       order_kakaku.value=0
     }
+
+    const img_zoom =ref(false)
+    const pic_zoom_cd = ref(0)
+    const pic_zoom = (shouhinCD) =>{
+      console_log(`pic_zoom:${shouhinCD}`)
+      pic_zoom_cd.value = Number(shouhinCD)
+      if(img_zoom.value){
+        img_zoom.value = false
+      }else{
+        img_zoom.value = true
+      }
+      console_log(`pic_zoom:${pic_zoom_cd}`)
+    }
+    const shouhinMS_pic_sel = computed(()=>{
+      const rtn = shouhinMS_pic.value.filter((row)=>{
+        if(row.shouhinCD===pic_zoom_cd.value){return true}
+      })
+      return rtn
+    })
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -478,6 +505,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
 
     return{
       msg,
+      loader,
       mode,
       shouhinMS,
       shouhinMS_pic,
@@ -522,6 +550,9 @@ const shouhinMS = (Where_to_use,p_token) => createApp({
       order_submit,
       orderNO,
       order_clear,
+      img_zoom,
+      pic_zoom,
+      shouhinMS_pic_sel,
     }
   }
 });
@@ -659,6 +690,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       }else{
         return
       }
+      
       console_log(orderNO)
       console_log(orderlist_hd.value[index].orderNO)
       console_log(mail_body_template.value[index].orderNO)
@@ -684,6 +716,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       axios.post("ajax_sendmail.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
+        loader.value = false
         if(response.data.status==="alert-success"){
           alert('メールを送信しました')
         }else{
@@ -779,6 +812,7 @@ const configration = (Where_to_use,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         if(response.data.status==="alert-success"){
+          loader.value = false
           alert('更新しました')
         }else{
           alert('更新失敗')
@@ -877,8 +911,6 @@ const GET_USER_SHORI = (resolve) =>{
     console_log(error)
   })
   .finally(()=>{
-    //loader.value = false
     resolve(obj)
-    //return obj
   })
 }

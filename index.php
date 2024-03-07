@@ -34,10 +34,10 @@
                     <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
                       <div v-if='list.shouhinCD===pic_list.shouhinCD'>
                         <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
-                          <img :src="pic_list.filename" class="d-block img-item">
+                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(list.shouhinCD)'>
                         </div>
                         <div v-else class="carousel-item" style='text-align: center;'>
-                          <img :src="pic_list.filename" class="d-block img-item">
+                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(list.shouhinCD)'>
                         </div>
                       </div>
                     </template>
@@ -257,6 +257,36 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+  <Transition>
+    <div v-show='img_zoom' class='img-wrap'>
+      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:5px;right:5px;' @click='pic_zoom(0)'></button>
+      <div id="carousel" class="carousel slide" style='width:90%;max-width: 800px;'>
+        <div class="carousel-inner">
+          <template v-for='(pic_list,index2) in shouhinMS_pic_sel' :key='pic_list.shouhinCD'>
+            <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
+              <img :src="pic_list.filename" class="d-block img-item-xl">
+            </div>
+            <div v-else class="carousel-item" style='text-align: center;'>
+              <img :src="pic_list.filename" class="d-block img-item-xl">
+            </div>
+          </template>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <!--<div><img src="upload/2_1_20240222-111959_41d6edd81784741326e30c20678fad59_t.jpeg" class="d-block img-item-xl"></div>-->
+    </div>
+  </Transition>
+  <div class="loader-wrap" v-show='loader'>
+		<div class="loader">Loading...</div>
+	</div>
+
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
