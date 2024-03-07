@@ -92,8 +92,8 @@
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
             <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
