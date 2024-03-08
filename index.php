@@ -76,14 +76,14 @@
                         <div class='pb-1'><p>{{list.infomation}}</p></div>
                         <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
                         <div class='pb-3'>
-                          <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' :id='`show_${index}`'>
+                          <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show_${index}`'>
 				                  <label class='btn btn-primary ' :for='`show_${index}`' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
-				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' :id='`stop_${index}`'>
+				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off'  :id='`stop_${index}`'>
 				                  <label class='btn btn-secondary ' :for='`stop_${index}`' style='border-radius:0;' @click='order_count(index,-1)'>－</label>
                         </div>
-                        <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" :id="`floating_${index}`" style="height: 100px" v-model='list.customer_bikou'></textarea>
+                        <div>
                           <label :for="`floating_${index}`">お客様備考記入欄</label>
+                          <textarea class="form-control" placeholder="Leave a comment here" :id="`floating_${index}`" style="height: 100px" v-model='list.customer_bikou'></textarea>
                         </div>
                       </div>
                     </div>
@@ -128,9 +128,9 @@
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
                   <p>{{list.ordered}}</p>
-                  <input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' :id='`show2_${index}`'>
+                  <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show2_${index}`'>
 				          <label class='btn btn-primary ' :for='`show2_${index}`' style='border-radius:0;' @click='ordered_count(index,1)'>＋</label>
-				          <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' :id='`stop2_${index}`'>
+				          <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off'  :id='`stop2_${index}`'>
 				          <label class='btn btn-secondary ' :for='`stop2_${index}`' style='border-radius:0;' @click='ordered_count(index,-1)'>－</label>
                 </td>
                 <td>{{((Number(list.tanka)+Number(list.shouhizei))*Number(list.ordered)).toLocaleString()}}</td>
@@ -213,9 +213,9 @@
         </div>
       </div>
       <div class='row mb-3'>
-        <div class='col-md-6 col-12 form-floating'>
-          <textarea class="form-control" placeholder="ご要望等ございましたらご記入ください。" id="floating" style="height: 100px" v-model='od_bikou'></textarea>
+        <div class='col-md-6 col-12'>
           <label for="floating">自由記入欄</label>
+          <textarea class="form-control" placeholder="ご要望等ございましたらご記入ください。" id="floating" style="height: 100px" v-model='od_bikou'></textarea>
         </div>
       </div>
       <div class='row mb-3'>
@@ -290,7 +290,7 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    shouhinMS('index','<?php echo $token; ?>').mount('#app');
+    sales('index','<?php echo $token; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

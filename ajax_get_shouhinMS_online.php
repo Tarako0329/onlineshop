@@ -25,7 +25,7 @@
 				,'0' as goukeikingaku
 			from shouhinMS_online online 
 			where online.uid = :uid and online.shouhinNM like :hinmei 
-			order by online.shouhinCD";
+			order by online.uid,online.shouhinCD";
 
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
@@ -44,7 +44,7 @@
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
 			where online.uid = :uid and online.shouhinNM like :hinmei 
-			order by online.shouhinCD,pic.sort";
+			order by online.uid,online.shouhinCD,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);

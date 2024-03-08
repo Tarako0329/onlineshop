@@ -75,8 +75,8 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-8 col-12'>
-        <label for='setumei' class="form-label">お客様の備考</label>
-        <textarea type='memo' class='form-control' id='setumei' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
+        <label for='customer_bikou' class="form-label">お客様の備考</label>
+        <textarea type='memo' class='form-control' id='customer_bikou' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
         <div id="customer_bikou_help" class="form-text">
           お客様に記入いただくエリアの初期表示です。<br>
           例：セット商品の場合 => A～Eの商品から３種類を入力してください。<br><br>特になければこのまま登録してください。

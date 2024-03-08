@@ -151,27 +151,27 @@ if($rtn !== true){
                 $sougaku = return_num_disp($orderlist2[0]["zeikomisou"]);
 
                 $body = <<< "EOM"
-                $name 様よりご注文いただきました。
-
-                【ご注文内容】
-                $orderlist
-
-                ご注文総額：$sougaku  内税($goukeizei)
-
-                【ご注文主】
-                $name
-                $yubin
-                $jusho
-                $tel
-                $mail
-                オーダー備考：
-                $bikou
-
-                【お届け先】(表示がない場合は同上)
-                $st_name
-                $st_yubin
-                $st_jusho
-                $st_tel
+                    $name 様よりご注文いただきました。
+                
+                    【ご注文内容】
+                    $orderlist
+                
+                    ご注文総額：$sougaku  内税($goukeizei)
+                
+                    【ご注文主】
+                    $name
+                    $yubin
+                    $jusho
+                    $tel
+                    $mail
+                    オーダー備考：
+                    $bikou
+                
+                    【お届け先】(表示がない場合は同上)
+                    $st_name
+                    $st_yubin
+                    $st_jusho
+                    $st_tel
                 EOM;
                 
                 $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop","");
@@ -179,40 +179,40 @@ if($rtn !== true){
 
                 $title = TITLE;
                 $body = <<< "EOM"
-                受付番号：$orderNO
-                $name 様
+                    受付番号：$orderNO
+                    $name 様
 
-                この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
-                
-                以下の内容にて、ご注文を受付ました。
-                
-                別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
+                    この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
 
-                【ご注文内容】
-                $orderlist
-                ご注文総額：$sougaku  内税($goukeizei)
+                    以下の内容にて、ご注文を受付ました。
 
-                【ご注文主】
-                お名前：$name
-                郵便番号：$yubin
-                送付先住所：$jusho
-                TEL：$tel
-                MAIL：$mail
-                オーダー備考：
-                $bikou
+                    別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
 
-                【お届け先】(表示がない場合は同上)
-                宛名：$st_name
-                郵便番号：$st_yubin
-                住所：$st_jusho
-                TEL：$st_tel
+                    【ご注文内容】
+                    $orderlist
+                    ご注文総額：$sougaku  内税($goukeizei)
 
-                ※
-                ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
-                ※
+                    【ご注文主】
+                    お名前：$name
+                    郵便番号：$yubin
+                    送付先住所：$jusho
+                    TEL：$tel
+                    MAIL：$mail
+                    オーダー備考：
+                    $bikou
 
-                MAIL：$mail
-                TEL：$tel
+                    【お届け先】(表示がない場合は同上)
+                    宛名：$st_name
+                    郵便番号：$st_yubin
+                    住所：$st_jusho
+                    TEL：$st_tel
+
+                    ※
+                    ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
+                    ※
+
+                    MAIL：$mail
+                    TEL：$tel
 
                 EOM;
 
