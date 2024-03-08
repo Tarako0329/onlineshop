@@ -28,8 +28,8 @@ if($rtn !== true){
 
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,site_name,logo,site_pr,cc_mail)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:site_name,:logo,:site_pr,:cc_mail)";
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,site_name,logo,site_pr,cc_mail)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:site_name,:logo,:site_pr,:cc_mail)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -39,6 +39,9 @@ if($rtn !== true){
         $params["tel"] = $_POST["tel"];
         $params["mail"] = $_POST["mail"];
         $params["mail_body"] = $_POST["mail_body"];
+        $params["mail_body_auto"] = $_POST["mail_body_auto"];
+        $params["mail_body_paid"] = $_POST["mail_body_paid"];
+        $params["mail_body_sent"] = $_POST["mail_body_sent"];
         $params["site_name"] = $_POST["site_name"];
         $params["logo"] = $_POST["logo"];
         $params["cc_mail"] = $_POST["cc_mail"];
@@ -66,6 +69,9 @@ if($rtn !== true){
             $stmt->bindValue("tel", $params["tel"], PDO::PARAM_STR);
             $stmt->bindValue("mail", $params["mail"], PDO::PARAM_STR);
             $stmt->bindValue("mail_body", $params["mail_body"], PDO::PARAM_STR);
+            $stmt->bindValue("mail_body_auto", $params["mail_body_auto"], PDO::PARAM_STR);
+            $stmt->bindValue("mail_body_paid", $params["mail_body_paid"], PDO::PARAM_STR);
+            $stmt->bindValue("mail_body_sent", $params["mail_body_sent"], PDO::PARAM_STR);
             $stmt->bindValue("site_name", $params["site_name"], PDO::PARAM_INT);
             $stmt->bindValue("logo", $params["logo"], PDO::PARAM_INT);
             $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_INT);

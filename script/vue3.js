@@ -599,13 +599,11 @@ const order_mng = (Where_to_use,p_token) => createApp({
         //loader.value = false
       })
     }
-    const set_order_sts = (orderNO,colum,val,index) =>{
+    const set_order_sts = (orderNO,colum,val,index) =>{//受注情報の更新
       //colum項目にvalを設定
       console_log(orderNO)
       console_log(colum)
       console_log(orderlist_hd.value[index])
-
-      document.getElementById(`mailbtn${index}`).disabled = true
 
       const form = new FormData();
       form.append(`orderNO`, orderNO)
@@ -616,7 +614,26 @@ const order_mng = (Where_to_use,p_token) => createApp({
       axios.post("ajax_upd_order_h.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
+        send_mailsubject.value = `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`
         if(response.data.status==="alert-success"){
+          if((colum==="payment" || colum==="sent" || colum==="first_answer") && val===1){
+            if(confirm('メール送信画面を開きますか？')){
+              send_index.value = index
+              send_orderNO.value = orderNO
+              if(colum==="payment" && val===1){
+                send_mailbody.value=get_mail_sample(mail_body_paid.value,index)
+                document.getElementById("modalon").click()
+              }
+              if(colum==="sent" && val===1){
+                send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
+                document.getElementById("modalon").click()
+              }
+              if(colum==="first_answer" && val===1){
+                send_mailbody.value=get_mail_sample(mail_body.value,index)
+                document.getElementById("modalon").click()
+              }
+            }
+          }
         }else{
           alert('更新失敗')
         }
@@ -628,7 +645,6 @@ const order_mng = (Where_to_use,p_token) => createApp({
       })
       .finally(()=>{
         //loader.value = false
-        document.getElementById(`mailbtn${index}`).disabled = false
       })
     }
 
@@ -637,6 +653,7 @@ const order_mng = (Where_to_use,p_token) => createApp({
       document.getElementById(id).readOnly = false
     }
 
+    //サイト設定
     const yagou = ref('')
     const site_name = ref('')
     const tantou = ref('')
@@ -646,12 +663,59 @@ const order_mng = (Where_to_use,p_token) => createApp({
     const mail = ref('')
     const cc_mail = ref('')
     const mail_body = ref('')
+    const mail_body_paid = ref('')
+    const mail_body_sent = ref('')
     const loader = ref(false)
 
+    //mail関連
+    const send_mailbody = ref('')
+    const send_mailsubject = ref('')
+    const send_index = ref(0)
+    const send_orderNO = ref(0)
+
+    const get_mail_sample = (template,index)=>{
+      //console_log(`get_mail_sample:${template}`)
+      let val = template
+      let orders = ''
+      let orders_postage = ''
+
+      let row = orderlist_hd.value[index]
+      
+      //明細取得
+      orders = '【ご注文内容】\n'
+      orderlist_bd.value.forEach((row2,index)=>{
+        if(row.orderNO===row2.orderNO && row2.zei==="0.00"){
+          orders = orders + "◆" + row2.shouhinNM + "\n価格( " + String(Number(row2.tanka).toLocaleString()) + " 円) x " + String(row2.su) + "(コ) = 合計 " + String(Number(row2.goukeitanka).toLocaleString()) + " 円(税抜)\n備考：" + row2.bikou + "\n\n";
+        }else if(row.orderNO===row2.orderNO && row2.zei!=="0.00"){
+          //消費税
+          orders = orders + "消費税：" + row2.shouhinNM + " = " + String(Number(row2.zei).toLocaleString()) + " 円\n"
+        }
+      })
+      orders = orders + "ご注文総額：： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
+      
+      orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
+      
+      val = val.replace(/<購入者名>/g,row.name)
+      val = val.replace(/<注文内容>/g,orders)
+      val = val.replace(/<送料込の注文内容>/g,orders_postage)
+      val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
+      val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
+      val = val.replace(/<自社名>/g,yagou.value)
+      val = val.replace(/<自社住所>/g,jusho.value)
+      val = val.replace(/<問合せ受付TEL>/g,tel.value)
+      val = val.replace(/<問合せ受付MAIL>/g,mail.value)
+      val = val.replace(/<問合担当者>/g,tantou.value)
+      val = val.replace(/<代表者>/g,shacho.value)
+        
+      
+      return val
+    }
+    /*
     const mail_body_template = computed(()=>{
       let val=mail_body.value
       let return_value=[]
-      let orders = '【ご注文内容】\n'
+      let orders = ''
+      let orders_postage = ''
       
       orderlist_hd.value.forEach((row)=>{
         //明細取得
@@ -664,12 +728,17 @@ const order_mng = (Where_to_use,p_token) => createApp({
             orders = orders + "消費税：" + row2.shouhinNM + " = " + String(Number(row2.zei).toLocaleString()) + " 円\n"
           }
         })
-        orders = orders + "御請求額： " + String(Number(row.税込総額).toLocaleString()) + " 円"
+
+
+        orders = orders + "ご注文総額：： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
         
+        orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
+
         val = mail_body.value
         
         val = val.replace(/<購入者名>/g,row.name)
         val = val.replace(/<注文内容>/g,orders)
+        val = val.replace(/<送料込の注文内容>/g,orders_postage)
         val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
         val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
         val = val.replace(/<自社名>/g,yagou.value)
@@ -684,22 +753,16 @@ const order_mng = (Where_to_use,p_token) => createApp({
       
       return return_value
     })
+    */
 
-    const approval_email = (orderNO,index) =>{
-      if(confirm('お客様に受付完了のメールを送付しますか？')){
+    const send_email = () =>{
+      if(confirm('メールを送付しますか？')){
       }else{
         return
       }
       
-      console_log(orderNO)
-      console_log(orderlist_hd.value[index].orderNO)
-      console_log(mail_body_template.value[index].orderNO)
       //念のための確認
-      if(orderNO!==orderlist_hd.value[index].orderNO){
-        alert('受付番号不一致')
-        return
-      }
-      if(orderNO!==mail_body_template.value[index].orderNO){
+      if(send_orderNO.value!==orderlist_hd.value[send_index.value].orderNO){
         alert('受付番号不一致')
         return
       }
@@ -707,10 +770,10 @@ const order_mng = (Where_to_use,p_token) => createApp({
       loader.value = true
 
       const form = new FormData();
-      form.append(`mailto`, orderlist_hd.value[index].mail)
+      form.append(`mailto`, orderlist_hd.value[send_index.value].mail)
       form.append(`mailtoCC`, cc_mail.value)
-      form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`)
-      form.append(`mailbody`, mail_body_template.value[index].mailbody)
+      form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${send_orderNO.value}」`)
+      form.append(`mailbody`, send_mailbody.value)
       form.append(`csrf_token`, token)
 
       axios.post("ajax_sendmail.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
@@ -719,11 +782,10 @@ const order_mng = (Where_to_use,p_token) => createApp({
         loader.value = false
         if(response.data.status==="alert-success"){
           token = response.data.csrf_create
-          set_order_sts(orderNO,"first_answer",1,index)
           alert('メールを送信しました')
-          orderlist_hd.value[index].オーダー受付="済"
+          document.getElementById('mail_modal_close').click()
         }else{
-          alert('更新失敗')
+          alert('送信失敗')
           token = response.data.csrf_create
         }
         
@@ -737,6 +799,11 @@ const order_mng = (Where_to_use,p_token) => createApp({
       })
 
     }
+
+
+
+
+
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
@@ -756,6 +823,8 @@ const order_mng = (Where_to_use,p_token) => createApp({
         mail.value = response.mail
         cc_mail.value = response.cc_mail
         mail_body.value = response.mail_body
+        mail_body_paid.value = response.mail_body_paid
+        mail_body_sent.value = response.mail_body_sent
 
       })
     })
@@ -773,9 +842,13 @@ const order_mng = (Where_to_use,p_token) => createApp({
       tel,
       mail,
       mail_body,
-      mail_body_template,
-      approval_email,
+      mail_body_paid,
+      mail_body_sent,
+      //mail_body_template,
+      send_email,
       loader,
+      send_mailbody,
+      send_mailsubject,
     }
   }
 })
@@ -790,7 +863,10 @@ const configration = (Where_to_use,p_token) => createApp({
     const tel = ref('')
     const mail = ref('')
     const cc_mail = ref('')
-    const mail_body = ref('<購入者名>様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const mail_body_auto = ref('<購入者名> 様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を受け付けました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n※弊社担当にてご注文内容の確認が取れましたら、お支払い・納期等についてのご案内メールを送付いたします。\n※メールが届かない場合、また、不明点・お問い合わせ等ございましたら以下までご連絡くださいませ。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const mail_body = ref('<購入者名> 様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const mail_body_paid = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文についてのお支払いを確認いたしました。\n発送が終わりましたら再度ご連絡させていただきます。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n何かございましたら以下までご連絡くださいませ。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const mail_body_sent = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文について、本日商品を発送いたしました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n（お届け先未記載の場合は<購入者名> 様宛にお送りしてます。）\n\n配送状況などについては下記URLよりご確認いただけます。\n\nhttps://sagawa.com（サガワなどのURL貼付け）\n\n商品のご到着までしばらくお待ちください。\n\n今後とも <自社名> をよろしくお願いします。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const site_name = ref('')
     const site_pr = ref('')
     const logo = ref('')
@@ -807,6 +883,9 @@ const configration = (Where_to_use,p_token) => createApp({
       form.append(`mail`, mail.value)
       form.append(`cc_mail`, cc_mail.value)
       form.append(`mail_body`, mail_body.value)
+      form.append(`mail_body_auto`, mail_body_auto.value)
+      form.append(`mail_body_paid`, mail_body_paid.value)
+      form.append(`mail_body_sent`, mail_body_sent.value)
       form.append(`site_name`, site_name.value)
       form.append(`site_pr`, site_pr.value)
       form.append(`logo`, logo.value)
@@ -834,11 +913,12 @@ const configration = (Where_to_use,p_token) => createApp({
 
     }
 
-    const mail_body_sample = computed(()=>{
-      let val=mail_body.value
+    const get_mail_sample = (template) =>{
+      let val=template
 
       val = val.replace(/<購入者名>/g,'田中次郎')
-      val = val.replace(/<注文内容>/g,'【ご注文内容】\n◆iPad\n価格( 10,909 円) x 1(コ) = 合計 10,909 円(税抜)\n\n備考：ご要望等ございましたらご記入ください。\n\nご注文総額：￥11,999  内税(1,090)')
+      val = val.replace(/<注文内容>/g,'【ご注文内容】\n◆商品Ａ\n価格( 10,000 円) x 2(コ) = 合計 20,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆商品Ｂ\n価格( 5,000 円) x 1(コ) = 合計 5,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆消費税：10% = 2,500 円\n◆ご注文総額：27,500円')
+      val = val.replace(/<送料込の注文内容>/g,'【ご注文内容】\n◆商品Ａ\n価格( 10,000 円) x 2(コ) = 合計 20,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆商品Ｂ\n価格( 5,000 円) x 1(コ) = 合計 5,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆消費税：10% = 2,500 円\n◆ご注文総額：27,500円\n\n◆配送料：500円\n\n御請求額：￥28,000')
       val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：田中次郎\n郵便番号：261XXXX\n送付先住所：千葉市美浜区〇〇〇\nTEL：09012341234\nMAIL：sample@gmail.com\nオーダー備考：\nご要望等ございましたらご記入ください。')
       val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：佐藤次郎\n郵便番号：261XXXX\n送付先住所：千葉市若葉区〇〇〇\nTEL：09012341234')
       val = val.replace(/<自社名>/g,'サンプル株式会社')
@@ -847,14 +927,27 @@ const configration = (Where_to_use,p_token) => createApp({
       val = val.replace(/<問合せ受付MAIL>/g,'sample@gmail.com')
       val = val.replace(/<問合担当者>/g,'小泉純一郎')
       val = val.replace(/<代表者>/g,'田中角栄')
-      
+
       return val
+    }
+    const mail_body_sample = computed(()=>{
+      return get_mail_sample(mail_body.value)
+    })
+    const mail_body_auto_sample = computed(()=>{
+      return get_mail_sample(mail_body_auto.value)
+    })
+    const mail_body_paid_sample = computed(()=>{
+      return get_mail_sample(mail_body_paid.value)
+    })
+    const mail_body_sent_sample = computed(()=>{
+      return get_mail_sample(mail_body_sent.value)
     })
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
       }
+
       GET_USER2()
       .then((response)=>{
         console_log('owata')
@@ -878,7 +971,6 @@ const configration = (Where_to_use,p_token) => createApp({
     })
 
     return{
-      mail_body_sample,
       yagou,
       tantou,
       shacho,
@@ -886,12 +978,19 @@ const configration = (Where_to_use,p_token) => createApp({
       tel,
       mail,
       cc_mail,
-      mail_body,
       site_name,
       site_pr,
       logo,
       set_user,
       loader,
+      mail_body_auto,
+      mail_body,
+      mail_body_sent,
+      mail_body_paid,
+      mail_body_auto_sample,
+      mail_body_sample,
+      mail_body_sent_sample,
+      mail_body_paid_sample,
     }
   }
 })

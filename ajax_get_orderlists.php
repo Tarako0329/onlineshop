@@ -9,7 +9,7 @@
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
 	  $sql = 
-			"select HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou
+			"select HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou,HD.postage
 			,if(first_answer=0,'未','済') as オーダー受付
 			,if(sent=0,'未','済') as 発送
 			,if(payment=0,'未','済') as 入金
@@ -19,7 +19,7 @@
 			inner join juchuu_meisai MS
 			on HD.orderNO = MS.orderNO 
 	    where HD.uid = :uid
-			group by HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou,if(first_answer=0,'未','済'),if(sent=0,'未','済'),if(payment=0,'未','済'),if(sent_flg=0,'無','有')
+			group by HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou,HD.postage,if(first_answer=0,'未','済'),if(sent=0,'未','済'),if(payment=0,'未','済'),if(sent_flg=0,'無','有')
 			order by juchuu_date";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);

@@ -10,6 +10,8 @@ ALTER TABLE `Users_online` CHANGE `yagou` `yagou` VARCHAR(100) CHARACTER SET utf
 
 ver0.01.4:開発中:おおむねできた
 ver0.01.5:開発中:デザイン調整
+ver0.01.5:開発中:使い勝手向上
+
 
 【Issues】
 

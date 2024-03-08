@@ -67,7 +67,7 @@
                 <div class="accordion" :id="`accordion_${index}`">
                   <div class="accordion-item">
                     <h2 class="accordion-header">
-                      <button class="accordion-button" style='font-size:15px;font-weight:800;' type="button" data-bs-toggle="collapse" :data-bs-target="`#collapseOne_${index}`" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="accordion-button" style='font-size:15px;font-weight:400;' type="button" data-bs-toggle="collapse" :data-bs-target="`#collapseOne_${index}`" aria-expanded="true" aria-controls="collapseOne">
                         商品詳細・ご注文はコチラ
                       </button>
                     </h2>

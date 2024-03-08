@@ -24,7 +24,7 @@
     <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
     <div class='row pb-3 pt-3'>
       <template v-for='(list,index) in orderlist_hd' :key='list.orderNO'>
-        <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
+        <div class='col-xl-6 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
             </div>
@@ -49,6 +49,12 @@
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
                         <div class='d-flex'>
+                        <div class='me-3'>
+                            <input type='radio' class='btn-check' :name='`statusU_${index}`' value="未" autocomplete='off' :id='`showU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",0,index)'>
+				                    <label class='btn btn-outline-danger ' :for='`showU_${index}`' style='border-radius:0;'>未受付</label>
+				                    <input type='radio' class='btn-check' :name='`statusU_${index}`' value="済" autocomplete='off' :id='`stopU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",1,index)'>
+				                    <label class='btn btn-outline-primary ' :for='`stopU_${index}`' style='border-radius:0;'>受付済</label>
+                          </div>
                           <div class='me-3'>
                             <input type='radio' class='btn-check' :name='`status_${index}`' value="未" autocomplete='off' :id='`show_${index}`' v-model='list.入金' @change='set_order_sts(list.orderNO,"payment",0,index)'>
 				                    <label class='btn btn-outline-danger ' :for='`show_${index}`' style='border-radius:0;'>未入金</label>
@@ -97,6 +103,14 @@
                             </tr>
                           </tfoot>
                         </table>
+                        <div class='row mb-3'>
+                          <div class='col-md-6 col-12'>
+                            <label :for='`postage${index}`' class="form-label">送料</label>
+                            <div class="input-group">
+                              <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' placeholder='メールに反映されます' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'>
+                            </div>
+                          </div>
+                        </div>
                         <p>【注文者要望】</p>
                         <p>{{list.bikou}}</p>
                         <hr>
@@ -134,7 +148,7 @@
                             <label :for='`od_tel${index}`' class="form-label">TEL</label>
                             <div class="input-group">
                               <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)' disabled readonly>>
+                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)' disabled readonly>
                             </div>
                           </div>
                         </div>
@@ -190,18 +204,6 @@
                             </div>
                           </div>
                         </div>
-                        <div class='row mb-3 mt-3'>
-                          <div class='col-md-6 col-12'>
-                            <button type='button' class='btn btn-primary' :id='`mailbtn${index}`' @click='approval_email(list.orderNO,index)'>注文内容確認のメールを送る</button>
-                          </div>
-                        </div>
-                        <div class='row mb-3'>
-                          <div class='col-md-8 col-12'>
-                            <label :for='`Approval${index}`' class="form-label">メール内容</label>
-                            <textarea type='memo' class='form-control' :id='`Approval${index}`' rows="10" v-model='mail_body_template[index].mailbody'></textarea>
-                          </div>
-                        </div>
-
                       </div>
                     </div>
                   </div>
@@ -222,7 +224,28 @@
   <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
 	</div>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;" id="modalon"></button>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">件名：{{send_mailsubject}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <textarea type='memo' class='form-control' rows="30" v-model='send_mailbody'></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
+          <button type='button' class='btn btn-primary' @click='send_email()'>メールを送る</button>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+  </div><!--app-->
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>

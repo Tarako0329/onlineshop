@@ -36,6 +36,7 @@
         var COLOR_NO 
     </script>
     <script src="script/function.js?<?php echo $time; ?>"></script>
+    <script src="script/class.js?<?php echo $time; ?>"></script>
     <script src="script/indexeddb.js?<?php echo $time; ?>"></script>
 
 

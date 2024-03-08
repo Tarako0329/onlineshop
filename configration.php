@@ -59,8 +59,8 @@
     </div>
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
-        <label for='mail' class="form-label">問い合せ窓口（TEL）</label>
-        <input type='text' class='form-control' id='mail' v-model='mail'>
+        <label for='tel' class="form-label">問い合せ窓口（TEL）</label>
+        <input type='text' class='form-control' id='tel' v-model='tel'>
       </div>
     </div>
     <div class='row mb-3 pt-3'>
@@ -76,9 +76,11 @@
         <small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
       </div>
     </div>
+    <!--
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <label for='mail_body' class="form-label">注文受付メールテンプレート</label><button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
+        <label for='mail_body' class="form-label">注文受付メールテンプレート</label>
+        <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
         <textarea type='memo' class='form-control' id='mail_body' rows="10" v-model='mail_body'></textarea>
         <div class='row mb-3 mt-2'>
           <div class='col-12'>
@@ -100,9 +102,135 @@
           </div>
         </div>
         <small>メールサンプル</small>
-        <div class='p-2' style='white-space: pre-wrap;border:1px solid black;'>{{mail_body_sample}}</div>
+        <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_sample'></div>
+      </div>
+    </div>-->
+
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <p>各種メールのテンプレート作成</p>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist" style='width:100%;'>
+            <button class="nav-link active" id="nav-mail_body_auto	-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_auto	" type="button" role="tab" aria-controls="nav-mail_body_auto" aria-selected="true">自動返信</button>
+            <button class="nav-link" id="nav-mail_body-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body" type="button" role="tab" aria-controls="nav-mail_body" aria-selected="false">受付確認</button>
+            <button class="nav-link" id="nav-mail_body_sent-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_sent" type="button" role="tab" aria-controls="nav-mail_body_sent" aria-selected="false">発送連絡</button>
+            <button class="nav-link" id="nav-mail_body_paid-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_paid" type="button" role="tab" aria-controls="nav-mail_body_paid" aria-selected="false">支払確認</button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent" style='width:100%;'>
+          <div class="tab-pane fade show active" id="nav-mail_body_auto" role="tabpanel" aria-labelledby="nav-mail_body_auto-tab" tabindex="0">
+            <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_auto=""}'>クリア</button>
+            <textarea type='memo' class='form-control' id='mail_body_auto' rows="20" v-model='mail_body_auto'></textarea>
+            <div class='row mb-3 mt-2'>
+              <div class='col-12'>
+                定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div class='col-12'>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+              </div>
+            </div>
+            <small>メールサンプル</small>
+            <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_auto_sample'></div>
+
+          </div>
+          <div class="tab-pane fade" id="nav-mail_body" role="tabpanel" aria-labelledby="nav-mail_body-tab" tabindex="0">
+            <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
+            <textarea type='memo' class='form-control' id='mail_body' rows="20" v-model='mail_body'></textarea>
+            <div class='row mb-3 mt-2'>
+              <div class='col-12'>
+                定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div class='col-12'>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+              </div>
+            </div>
+            <small>メールサンプル</small>
+            <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_sample'></div>
+          </div>
+          <div class="tab-pane fade" id="nav-mail_body_sent" role="tabpanel" aria-labelledby="nav-mail_body_sent-tab" tabindex="0">
+            <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_sent=""}'>クリア</button>
+            <textarea type='memo' class='form-control' id='mail_body_sent' rows="20" v-model='mail_body_sent'></textarea>
+            <div class='row mb-3 mt-2'>
+              <div class='col-12'>
+                定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
+              </div>
+            </div>
+              <div class='row mb-3'>
+              <div class='col-12'>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+              </div>
+            </div>
+            <small>メールサンプル</small>
+            <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_sent_sample'></div>
+
+          </div>
+          <div class="tab-pane fade" id="nav-mail_body_paid" role="tabpanel" aria-labelledby="nav-mail_body_paid-tab" tabindex="0">
+            <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_paid=""}'>クリア</button>
+            <textarea type='memo' class='form-control' id='mail_body_paid' rows="20" v-model='mail_body_paid'></textarea>
+            <div class='row mb-3 mt-2'>
+              <div class='col-12'>
+                定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div class='col-12'>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+              </div>
+            </div>
+            <small>メールサンプル</small>
+            <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_paid_sample'></div>
+
+          </div>
+        </div>
       </div>
     </div>
+
+
+
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <button type='button' class='btn btn-primary m-2' @click='set_user'>登録</button>
