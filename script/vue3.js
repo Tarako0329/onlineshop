@@ -1105,6 +1105,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         if(row.uid === order_shop_id.value){row.ordered=0}
       })
       order_shop_id.value = ''
+      btn_name.value='ご注文内容確認'
       //order_kakaku.value=0
     }
 
