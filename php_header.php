@@ -19,8 +19,6 @@ define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 //$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
 session_start();
 //$_SESSION = [];
-$_SESSION["user_id"]="tarako";
-
 
 if(MAIN_DOMAIN==="localhost:81"){
   $time=date('Ymd-His');
@@ -48,7 +46,7 @@ define("POP_USER", $_ENV["POP_USER"]);
 define("POP_PASS", $_ENV["POP_PASS"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-$_SESSION["user_id"] = '2';
+//$_SESSION["user_id"] = '2';
 //define("SAVEDIR", $_ENV["SAVEDIR"]);
 //define("NOM", $_ENV["SIO"]);
 /*

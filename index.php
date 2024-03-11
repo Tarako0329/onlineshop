@@ -31,8 +31,8 @@
                 <div :id="`carouselExample_${index}`" class="carousel slide">
                   <div class="carousel-inner">
 
-                    <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
-                      <div v-if='list.shouhinCD===pic_list.shouhinCD'>
+                    <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD'>
+                      <div v-if='list.shouhinCD===pic_list.shouhinCD && list.uid===pic_list.uid'>
                         <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
                           <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(list.shouhinCD)'>
                         </div>
@@ -54,6 +54,7 @@
                 </div>
               </div><!--写真-->
               <div class='col-6'><!--見出-->
+                <small><i class="bi bi-shop"></i>【 {{list.yagou}} 】</small>
                 <h3>『{{list.shouhinNM}}』</h3>
                 <div class='pb-3'>
                   <p>税込価格：<span class='kakaku'>{{(Number(list.zeikomikakaku)).toLocaleString()}} 円</span></p>
@@ -99,7 +100,12 @@
       </template>
     </div>
 
-    <div v-show='mode==="ordering"'>
+    <div v-show='mode==="ordering"' data-bs-spy="scroll">
+      <div class='row mb-1' id="scrollspyHeading1">
+        <div class='col-md-6 col-12'>
+          <h3><i class="bi bi-shop"></i>【 {{Charge_amount_by_store[0].yagou}} 】</h3>
+        </div>
+      </div>
       <div class='row mb-3'>
         <div class='col-md-6 col-12'>
           <table class='table table-sm table-bordered caption-top'>
@@ -112,12 +118,12 @@
                 <th>税込総額</th>
               </tr>
             </thead>
-            <tbody v-for='(list,index) in get_ordered' :key='list.shouhinCD'>
+            <tbody v-for='(list,index) in get_ordered' :key='list.uid+list.shouhinCD'>
               <tr class="align-bottom">
                 <td>
                   {{list.shouhinNM}}
-                  <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
-                    <template v-if='list.shouhinCD===pic_list.shouhinCD'>
+                  <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD'>
+                    <template v-if='list.shouhinCD===pic_list.shouhinCD && list.uid===pic_list.uid'>
                       <div v-if='pic_list.sort===1' class="" style='text-align: center;width:100px;'>
                         <img :src="pic_list.filename" class="d-block img-item-sm">
                       </div>
@@ -144,7 +150,8 @@
                 <td></td>
                 <td></td>
                 <td>合計金額</td>
-                <td>{{Math.floor(order_kakaku).toLocaleString()}}</td>
+                <!--<td>{{Math.floor(order_kakaku).toLocaleString()}}</td>-->
+                <td>{{Math.floor(Charge_amount_by_store[0].seikyu).toLocaleString()}}</td>
               </tr>
             </tfoot>
           </table>
@@ -219,7 +226,7 @@
         </div>
       </div>
       <div class='row mb-3'>
-        <small>ご注文送信後、お客様メールアドレスにご注文内容の自動配信されます。</small>
+        <small>ご注文送信後、お客様メールアドレスにご注文内容確認のメールが自動配信されます。</small>
         <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
         <small><span style='color:red;'><?php echo FROM;?></span> からのメールを受信できるよう設定をお願いします。</small>
         <div class='col-md-6 col-12'>
@@ -227,6 +234,7 @@
         </div>
       </div>
     </div>
+
     <div v-show='mode==="ordered"'>
       <p>受付番号：[<span style='color:red;'>{{orderNO}}</span>] にてショップにご注文を送信いたしました。</p>
       <br>
@@ -241,15 +249,21 @@
       <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
     </div>
 
-    <div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:150px;'>
+    <div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:250px;'>
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
         <div class="toast-header">
           <img src="img/icon-16x16.png" class="rounded me-2" >
           <strong class="me-auto">ご注文金額</strong>
         </div>
-        <div class="toast-body">
-          <div>合計：<span class='kakaku'>{{Math.floor(order_kakaku).toLocaleString()}} 円</span></div>
-          <button type='button' class='btn btn-primary' @click='ordering'>{{btn_name}}</button>
+        <div class="toast-body" style='padding:5px;' v-for='(list,index) in Charge_amount_by_store' :key='list.uid'>
+          <div class='row ' style='padding:0;'>
+            <div class='col-12 d-flex flex-row-reverse'>
+              <!--<div><button type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</button></div>-->
+              <div><a href="#scrollspyHeading1" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
+              <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
+              <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

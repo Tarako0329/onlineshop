@@ -1,6 +1,8 @@
 <?php
   require "php_header.php";
   $token = csrf_create();
+  $user_hash = $_GET["key"] ;
+  $_SESSION["user_id"] = rot13decrypt2($user_hash);
 ?>
 <!DOCTYPE html>
 <html lang='ja'>

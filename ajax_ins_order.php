@@ -27,7 +27,8 @@ if($rtn !== true){
         //$logfilename="sid_".$_SESSION['user_id'].".log";
 
         $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
-        $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+        //$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+        $stmt->bindValue("uid", $_POST["order_shop_id"], PDO::PARAM_INT);
         $stmt->execute();
         $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -37,7 +38,8 @@ if($rtn !== true){
         $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou,st_name,st_yubin,st_jusho,st_tel) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou,:st_name,:st_yubin,:st_jusho,:st_tel)";
         $sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
 
-        $params["uid"] = $_SESSION["user_id"];
+        //$params["uid"] = $_SESSION["user_id"];
+        $params["uid"] = $_POST["order_shop_id"];
         $params["name"] = $_POST["name"];
         $params["yubin"] = $_POST["yubin"];
         $params["jusho"] = $_POST["jusho"];

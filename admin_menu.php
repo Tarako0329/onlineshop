@@ -1,5 +1,7 @@
 <?php
-    require "php_header.php";
+  require "php_header.php";
+  $user_hash = $_GET["key"] ;
+  $_SESSION["user_id"] = rot13decrypt2($user_hash);
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -26,7 +28,7 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    admin_menu().mount('#app');
+    admin_menu('admin_menu.php','','<?php echo $user_hash;?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

@@ -661,10 +661,64 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       })
     }
 
+    const Charge_amount_by_store = computed(()=>{//ショップごとの注文合計額
+      let kingakus = []
+      let kingaku_temp = new Decimal(0)
+
+      shouhinMS.value.forEach((row,index)=>{
+        let num1 = new Decimal(row.zeikomikakaku);
+        let num2 = new Decimal(row.ordered);
+        //console_log(num1.mul(num2).toNumber());
+
+        if(row.ordered != 0){
+          kingaku_temp = kingaku_temp.add(num1.mul(num2)) //税込合計
+        }
+        //if(index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0){
+        if(((index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0) 
+            || index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0)){
+          kingakus.push({
+            "uid":row.uid
+            ,"yagou":row.yagou
+            ,"seikyu":kingaku_temp.toNumber()
+          })
+          
+          kingaku_temp = Decimal(0)
+        }/*else if(index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0){
+          kingakus.push({
+            "uid":row.uid
+            ,"yagou":row.yagou
+            ,"seikyu":kingaku_temp.toNumber()
+          })
+          kingaku_temp = Decimal(0)
+        }*/
+      })
+
+      if(kingakus.length===0){
+        kingakus.push({
+          "uid":9999999
+          ,"yagou":'None'
+          ,"seikyu":0
+        })
+      }
+
+      return kingakus.filter((row) =>{
+        if(order_shop_id.value === ''){
+          return (row.ordered!=0)
+        }else{
+          return (row.ordered!=0 && row.uid === order_shop_id.value)
+        }
+      })
+    })
+
     const get_ordered = computed(()=>{//注文リスト
       let orderlist = []
       orderlist = shouhinMS.value.filter((row)=>{
-        return (row.ordered!=0)
+        //return (row.ordered!=0)
+        if(order_shop_id.value === ''){
+          return (row.ordered!=0)
+        }else{
+          return (row.ordered!=0 && row.uid === order_shop_id.value)
+        }
       })
 
       orderlist.forEach((row)=>{
@@ -672,8 +726,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         let num2 = new Decimal(row.ordered);
         let num3 = new Decimal(row.tanka);
         //console_log(num1.mul(num2).toNumber());
-        row.goukeikingaku = num1.mul(num2).toNumber()
-        row.goukeitanka = num3.mul(num2).toNumber()
+        row.goukeikingaku = num1.mul(num2).toNumber() //税込合計
+        row.goukeitanka = num3.mul(num2).toNumber()   //単価合計
       })
 
       return orderlist
@@ -866,6 +920,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
    
 
     const order_kakaku = ref(0) //オーダー税込総額
+    const order_shop_id = ref('')
     const od_atena = ref('')
     const od_yubin = ref('')
     const od_jusho = ref('')
@@ -906,13 +961,16 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       }
       console_log(order_kakaku.value)
     }
-    const btn_name = ref('ご注文内容確認')
-    const ordering = () =>{
+    const btn_name = ref('カート')
+    const ordering = (uid) =>{
+      console_log(`ordering:${uid}`)
       if(mode.value==="shopping"){
+        order_shop_id.value = uid
         btn_name.value='戻る'
         mode.value="ordering"
       }else if(mode.value==="ordering"){
-        btn_name.value='ご注文内容確認'
+        order_shop_id.value = ''
+        btn_name.value='カート'
         mode.value="shopping"
       }
 
@@ -956,7 +1014,10 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
     const orderNO = ref('')
     const order_submit = () =>{//注文送信
       let msg = ''
-
+      if(order_shop_id.value===''){
+        alert('想定外エラー：order_shop_id が選択されてません')
+        return
+      }
       if(od_atena.value==''){
         msg = ' 宛名'
       }
@@ -990,6 +1051,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       loader.value = true
 
       const form = new FormData();
+      form.append(`order_shop_id`, order_shop_id.value)
       form.append(`name`, od_atena.value)
       form.append(`yubin`, String(od_yubin.value))
       form.append(`jusho`, od_jusho.value)
@@ -1039,10 +1101,11 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
     }
     const order_clear =()=>{//注文クリア
       mode.value='shopping'
-      get_ordered.value.forEach((row)=>{
-        row.ordered=0
+      shouhinMS.value.forEach((row)=>{
+        if(row.uid === order_shop_id.value){row.ordered=0}
       })
-      order_kakaku.value=0
+      order_shop_id.value = ''
+      //order_kakaku.value=0
     }
 
     const img_zoom =ref(false)
@@ -1104,6 +1167,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       order_count,
       ordered_count,
       order_kakaku,
+      Charge_amount_by_store,
+      order_shop_id,
       od_atena,
       od_yubin,
       od_jusho,
@@ -1129,12 +1194,12 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
   }
 });
 
-const admin_menu = (Where_to_use,p_token) => createApp({//管理者メニュー
+const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メニュー
   setup() {
     const menu = ref([
-      {name:'サイト設定',url : 'configration.php'},
-      {name:'販売商品編集',url : 'shouhinMS.php'},
-      {name:'受注・発送・入金管理',url : 'order_management.php'},
+      {name:'サイト設定',url : `configration.php?key=${user_hash}`},
+      {name:'販売商品編集',url : `shouhinMS.php?key=${user_hash}`},
+      {name:'受注・発送・入金管理',url : `order_management.php?key=${user_hash}`},
     ])
 
     return{

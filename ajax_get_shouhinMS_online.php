@@ -2,6 +2,7 @@
   require "php_header.php";
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
 	//log_writer2("",$hinmei,"lv3");
+	$_SESSION["user_id"] = "%";
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $msg=$rtn;
@@ -23,19 +24,24 @@
 				,online.tanka + online.shouhizei as zeikomikakaku
 				,'0' as ordered
 				,'0' as goukeikingaku
+				,ums_inline.*
 			from shouhinMS_online online 
-			where online.uid = :uid and online.shouhinNM like :hinmei 
+			inner join Users_online ums_inline
+			on online.uid = ums_inline.uid
+			where online.uid like :uid and online.shouhinNM like :hinmei 
 			order by online.uid,online.shouhinCD";
 
 		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
+		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
+		
 		$sql = "select 
-				online.shouhinCD
+				online.uid
+				,online.shouhinCD
 				,online.shouhinNM
 				,pic.sort
 				,pic.pic as filename
@@ -43,7 +49,7 @@
 			left join shouhinMS_online_pic pic 
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
-			where online.uid = :uid and online.shouhinNM like :hinmei 
+			where online.uid like :uid and online.shouhinNM like :hinmei 
 			order by online.uid,online.shouhinCD,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
