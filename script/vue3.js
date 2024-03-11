@@ -1596,8 +1596,17 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
         tel.value = response.tel
         mail.value = response.mail
         cc_mail.value = response.cc_mail
-        if(response.mail_body!==""){
+        if(response.mail_body!=="''"){
           mail_body.value = response.mail_body
+        }
+        if(response.mail_body_auto!=="''"){
+          mail_body_auto.value = response.mail_body_auto
+        }
+        if(response.mail_body_paid!=="''"){
+          mail_body_paid.value = response.mail_body_paid
+        }
+        if(response.mail_body_sent!=="''"){
+          mail_body_sent.value = response.mail_body_sent
         }
 
       })
