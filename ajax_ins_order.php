@@ -26,7 +26,7 @@ if($rtn !== true){
     }else{
         //$logfilename="sid_".$_SESSION['user_id'].".log";
 
-        $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
+        $stmt = $pdo_h->prepare("select * from Users_online where uid = :uid");
         //$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
         $stmt->bindValue("uid", $_POST["order_shop_id"], PDO::PARAM_INT);
         $stmt->execute();
