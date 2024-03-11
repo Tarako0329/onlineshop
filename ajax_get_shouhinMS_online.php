@@ -2,7 +2,7 @@
   require "php_header.php";
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
 	//log_writer2("",$hinmei,"lv3");
-	$_SESSION["user_id"] = "%";
+	//$_SESSION["user_id"] = "%";
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $msg=$rtn;
