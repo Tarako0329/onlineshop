@@ -32,7 +32,7 @@ if($rtn !== true){
         $stmt->execute();
         $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        //log_writer2("\$owner",$owner,"lv3");
+        log_writer2("\$owner",$owner,"lv3");
 
         //更新モード(実行)
         $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou,st_name,st_yubin,st_jusho,st_tel) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou,:st_name,:st_yubin,:st_jusho,:st_tel)";
@@ -152,6 +152,7 @@ if($rtn !== true){
                 $goukeizei = return_num_disp($orderlist2[0]["souzei"]);
                 $sougaku = return_num_disp($orderlist2[0]["zeikomisou"]);
 
+                //ショップオーナー向けメール
                 $body = <<< "EOM"
                     $name 様よりご注文いただきました。
                 
@@ -178,43 +179,43 @@ if($rtn !== true){
                 
                 $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 
-
+                //お客様向けメール
                 $title = TITLE;
                 $body = <<< "EOM"
-                    受付番号：$orderNO
-                    $name 様
+                受付番号：$orderNO
+                $name 様
 
-                    この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
+                この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
 
-                    以下の内容にて、ご注文を受付ました。
+                以下の内容にて、ご注文を受付ました。
 
-                    別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
+                別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
 
-                    【ご注文内容】
-                    $orderlist
-                    ご注文総額：$sougaku  内税($goukeizei)
+                【ご注文内容】
+                $orderlist
+                ご注文総額：$sougaku  内税($goukeizei)
 
-                    【ご注文主】
-                    お名前：$name
-                    郵便番号：$yubin
-                    送付先住所：$jusho
-                    TEL：$tel
-                    MAIL：$mail
-                    オーダー備考：
-                    $bikou
+                【ご注文主】
+                お名前：$name
+                郵便番号：$yubin
+                送付先住所：$jusho
+                TEL：$tel
+                MAIL：$mail
+                オーダー備考：
+                $bikou
 
-                    【お届け先】(表示がない場合は同上)
-                    宛名：$st_name
-                    郵便番号：$st_yubin
-                    住所：$st_jusho
-                    TEL：$st_tel
+                【お届け先】(表示がない場合は同上)
+                宛名：$st_name
+                郵便番号：$st_yubin
+                住所：$st_jusho
+                TEL：$st_tel
 
-                    ※
-                    ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
-                    ※
+                ※
+                ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
+                ※
 
-                    MAIL：$mail
-                    TEL：$tel
+                MAIL：$owner[0]["mail"]
+                TEL：$owner[0]["tel"]
 
                 EOM;
 
