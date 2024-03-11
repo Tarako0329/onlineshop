@@ -17,13 +17,13 @@
 <BODY class='bd'>
   <div id='app'>
   <?php include "header_tag_admin.php"  ?>
-  <MAIN class='container common_main'>
+  <MAIN class='container common_main' data-bs-spy="scroll">
     <transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
         {{msg}}
       </div>
     </transition>
-    <div class='row mb-3 pt-3'>
+    <div class='row mb-3 pt-3' id="scrollspyHeading1">
       <div class='col-md-8 col-12'>
 				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
 				<label class='btn btn-outline-success ' for='eatin' style='border-radius:0;'>新規登録</label>
@@ -109,7 +109,8 @@
 
      <div class='row mb-3'>
       <div class='col-md-8 col-12'>
-        <button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
+        <!--<button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>-->
+        <a href="#scrollspyHeading1" type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</a>
       </div>
     </div>
 
