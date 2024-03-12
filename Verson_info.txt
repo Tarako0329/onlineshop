@@ -10,8 +10,13 @@ ver0.01.5:開発中:使い勝手向上
 ver0.01.6:開発中:リファクタリング
 ver1.00.0:複数出店者対応
 ver1.00.1:複数出店者対応bugfix
-
-
+ver1.01.0:キャンセル・ステータス管理設定
+  ALTER TABLE `Users_online` ADD `mail_body_cancel` TEXT NULL DEFAULT '' COMMENT 'キャンセル受付メール' AFTER `mail_body_sent`;
+  ALTER TABLE `Users_online` ADD `chk_recept` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・受付' AFTER `cc_mail`, ADD `chk_sent` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・発送' AFTER `chk_recept`, ADD `chk_paid` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・入金' AFTER `chk_sent`, ADD `lock_sts` VARCHAR(10) NOT NULL DEFAULT 'recept' COMMENT '受注管理・キャンセルロック' AFTER `chk_paid`;
+  ALTER TABLE `Users_online` CHANGE `chk_recept` `chk_recept` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・受付', CHANGE `chk_sent` `chk_sent` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・発送', CHANGE `chk_paid` `chk_paid` BOOLEAN NOT NULL DEFAULT TRUE COMMENT '受注管理・入金';
+  ALTER TABLE `juchuu_head` ADD `cancel` TINYINT NULL DEFAULT '0' COMMENT '注文キャンセル' AFTER `postage`;
+  ALTER TABLE `Users_online` ADD `cancel_rule` TEXT NOT NULL COMMENT 'キャンセル規定' AFTER `lock_sts`;
+  ALTER TABLE `Users_online` CHANGE `cancel_rule` `cancel_rule` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '\'\'' COMMENT 'キャンセル規定';
 【Issues】
 
 ローカルからテスト環境へ

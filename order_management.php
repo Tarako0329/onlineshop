@@ -37,12 +37,17 @@
                     <h2 class="accordion-header">
                       <button class="accordion-button" style='font-size:11px;font-weight:800;' type="button" data-bs-toggle="collapse" :data-bs-target="`#collapseOne_${index}`" aria-expanded="true" aria-controls="collapseOne">
                         <div style="width: 100%;">
-                          <div style="width: 100%;">注文日[{{String(list.juchuu_date).substring(0,10)}}] 注文者：{{list.name}}  \{{Number(list.税込総額).toLocaleString()}}</div>
+                          <div style="width: 100%;">注文日[{{String(list.juchuu_date).substring(0,10)}}] 注文者：{{list.name}}  ￥{{Number(list.税込総額).toLocaleString()}}</div>
                           <div style="width: 100%;">
                             受付NO:[{{list.orderNO}}] 　
-                            <template v-if='list.オーダー受付==="済"'><span style='color:blue;'>受付{{list.オーダー受付}}</span></template><template v-else ><span style='color:red;'>{{list.オーダー受付}}受付</span></template> 　
-                            <template v-if='list.入金==="済"'><span style='color:blue;'>入金{{list.入金}}</span></template><template v-else ><span style='color:red;'>{{list.入金}}入金</span></template> 　
-                            <template v-if='list.発送==="済"'><span style='color:blue;'>発送{{list.発送}}</span></template><template v-else ><span style='color:red;'>{{list.発送}}発送</span></template> 
+                            <template v-if='list.cancel===0'>
+                              <template v-if='chk_recept'><template v-if='list.オーダー受付==="済"'><span style='color:blue;'>受付{{list.オーダー受付}}</span></template><template v-else ><span style='color:red;'>{{list.オーダー受付}}受付</span></template> 　</template>
+                              <template v-if='chk_paid'><template v-if='list.入金==="済"'><span style='color:blue;'>入金{{list.入金}}</span></template><template v-else ><span style='color:red;'>{{list.入金}}入金</span></template> 　</template>
+                              <template v-if='chk_sent'><template v-if='list.発送==="済"'><span style='color:blue;'>発送{{list.発送}}</span></template><template v-else ><span style='color:red;'>{{list.発送}}発送</span></template> </template>
+                            </template>
+                            <template v-else>
+                              キャンセル済み
+                            </template>
                           </div>
                         </div>
                         
@@ -51,23 +56,26 @@
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
                         <div class='d-flex'>
-                        <div class='me-3'>
+                          <div v-if='chk_recept' class='me-3'>
+                            <p>受付</p>
                             <input type='radio' class='btn-check' :name='`statusU_${index}`' value="未" autocomplete='off' :id='`showU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",0,index)'>
-				                    <label class='btn btn-outline-danger ' :for='`showU_${index}`' style='border-radius:0;'>未受付</label>
+				                    <label class='btn btn-outline-danger ' :for='`showU_${index}`' style='border-radius:0;'>未</label>
 				                    <input type='radio' class='btn-check' :name='`statusU_${index}`' value="済" autocomplete='off' :id='`stopU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",1,index)'>
-				                    <label class='btn btn-outline-primary ' :for='`stopU_${index}`' style='border-radius:0;'>受付済</label>
+				                    <label class='btn btn-outline-primary ' :for='`stopU_${index}`' style='border-radius:0;'>済</label>
                           </div>
-                          <div class='me-3'>
+                          <div v-if='chk_paid' class='me-3'>
+                            <p>入金</p>
                             <input type='radio' class='btn-check' :name='`status_${index}`' value="未" autocomplete='off' :id='`show_${index}`' v-model='list.入金' @change='set_order_sts(list.orderNO,"payment",0,index)'>
-				                    <label class='btn btn-outline-danger ' :for='`show_${index}`' style='border-radius:0;'>未入金</label>
+				                    <label class='btn btn-outline-danger ' :for='`show_${index}`' style='border-radius:0;'>未</label>
 				                    <input type='radio' class='btn-check' :name='`status_${index}`' value="済" autocomplete='off' :id='`stop_${index}`' v-model='list.入金' @change='set_order_sts(list.orderNO,"payment",1,index)'>
-				                    <label class='btn btn-outline-primary ' :for='`stop_${index}`' style='border-radius:0;'>入金済</label>
+				                    <label class='btn btn-outline-primary ' :for='`stop_${index}`' style='border-radius:0;'>済</label>
                           </div>
-                          <div>
+                          <div v-if='chk_sent'>
+                            <p>発送</p>
                             <input type='radio' class='btn-check' :name='`statusH_${index}`' value="未" autocomplete='off' :id='`showH_${index}`' v-model='list.発送' @change='set_order_sts(list.orderNO,"sent",0,index)'>
-				                    <label class='btn btn-outline-danger ' :for='`showH_${index}`' style='border-radius:0;'>未発送</label>
+				                    <label class='btn btn-outline-danger ' :for='`showH_${index}`' style='border-radius:0;'>未</label>
 				                    <input type='radio' class='btn-check' :name='`statusH_${index}`' value="済" autocomplete='off' :id='`stopH_${index}`' v-model='list.発送' @change='set_order_sts(list.orderNO,"sent",1,index)'>
-				                    <label class='btn btn-outline-primary ' :for='`stopH_${index}`' style='border-radius:0;'>発送済</label>
+				                    <label class='btn btn-outline-primary ' :for='`stopH_${index}`' style='border-radius:0;'>済</label>
                           </div>
                         </div>
                         <table class='table table-sm table-bordered caption-top'>
@@ -109,7 +117,7 @@
                           <div class='col-md-6 col-12'>
                             <label :for='`postage${index}`' class="form-label">送料</label>
                             <div class="input-group">
-                              <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' placeholder='メールに反映されます' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'>
+                              <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'>
                             </div>
                           </div>
                         </div>

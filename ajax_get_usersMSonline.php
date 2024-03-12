@@ -11,7 +11,7 @@
 		$sql = "select 
 				*
 			from Users_online
-			where uid = :uid ";
+			where uid like :uid ";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->execute();

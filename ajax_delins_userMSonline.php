@@ -28,8 +28,8 @@ if($rtn !== true){
 
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,site_name,logo,site_pr,cc_mail)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:site_name,:logo,:site_pr,:cc_mail)";
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -42,10 +42,16 @@ if($rtn !== true){
         $params["mail_body_auto"] = $_POST["mail_body_auto"];
         $params["mail_body_paid"] = $_POST["mail_body_paid"];
         $params["mail_body_sent"] = $_POST["mail_body_sent"];
+        $params["mail_body_cancel"] = $_POST["mail_body_cancel"];
         $params["site_name"] = $_POST["site_name"];
         $params["logo"] = $_POST["logo"];
         $params["cc_mail"] = $_POST["cc_mail"];
         $params["site_pr"] = $_POST["site_pr"];
+        $params["chk_recept"] = $_POST["chk_recept"];
+        $params["chk_sent"] = $_POST["chk_sent"];
+        $params["chk_paid"] = $_POST["chk_paid"];
+        $params["lock_sts"] = $_POST["lock_sts"];
+        $params["cancel_rule"] = $_POST["cancel_rule"];
 
         try{
             $pdo_h->beginTransaction();
@@ -72,10 +78,16 @@ if($rtn !== true){
             $stmt->bindValue("mail_body_auto", $params["mail_body_auto"], PDO::PARAM_STR);
             $stmt->bindValue("mail_body_paid", $params["mail_body_paid"], PDO::PARAM_STR);
             $stmt->bindValue("mail_body_sent", $params["mail_body_sent"], PDO::PARAM_STR);
-            $stmt->bindValue("site_name", $params["site_name"], PDO::PARAM_INT);
-            $stmt->bindValue("logo", $params["logo"], PDO::PARAM_INT);
-            $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_INT);
-            $stmt->bindValue("site_pr", $params["site_pr"], PDO::PARAM_INT);
+            $stmt->bindValue("mail_body_cancel", $params["mail_body_cancel"], PDO::PARAM_STR);
+            $stmt->bindValue("site_name", $params["site_name"], PDO::PARAM_STR);
+            $stmt->bindValue("logo", $params["logo"], PDO::PARAM_STR);
+            $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_STR);
+            $stmt->bindValue("site_pr", $params["site_pr"], PDO::PARAM_STR);
+            $stmt->bindValue("chk_recept", $params["chk_recept"], PDO::PARAM_INT);
+            $stmt->bindValue("chk_sent", $params["chk_sent"], PDO::PARAM_INT);
+            $stmt->bindValue("chk_paid", $params["chk_paid"], PDO::PARAM_INT);
+            $stmt->bindValue("lock_sts", $params["lock_sts"], PDO::PARAM_STR);
+            $stmt->bindValue("cancel_rule", $params["cancel_rule"], PDO::PARAM_STR);
             
             $sqllog .= rtn_sqllog($INSsql,$params);
 

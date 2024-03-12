@@ -27,7 +27,6 @@
   <div id='app'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
-    <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
     <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
@@ -231,12 +230,20 @@
           <textarea class="form-control" placeholder="ご要望等ございましたらご記入ください。" id="floating" style="height: 100px" v-model='od_bikou'></textarea>
         </div>
       </div>
+      <hr>
+      <div class='row mb-3'>
+        <div class='col-md-6 col-12'>
+          <label >【キャンセル規定】</label>
+          <p>{{Charge_amount_by_store[0].cancel_rule}}</p>
+        </div>
+      </div>
+      <hr>
       <div class='row mb-3'>
         <small>ご注文送信後、お客様メールアドレスにご注文内容確認のメールが自動配信されます。</small>
         <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>
         <small><span style='color:red;'><?php echo FROM;?></span> からのメールを受信できるよう設定をお願いします。</small>
-        <div class='col-md-6 col-12'>
-          <button type='button' class='btn btn-primary' @click='order_submit()'>ご注文送信</button>
+        <div class='col-md-6 col-12 mt-5'>
+          <button type='button' class='btn btn-primary btn-lg' style='max-width:100px;width:100px;' @click='order_submit()'>ご注文送信</button>
         </div>
       </div>
     </div>
@@ -255,7 +262,7 @@
       <br>
       <p>【お問い合わせ先】</p>
       <p>{{Charge_amount_by_store[0].yagou}}</p>
-      <p>{{Charge_amount_by_store[0].tel}}</p>
+      <a :href='`tel:${Charge_amount_by_store[0].tel}`'>{{Charge_amount_by_store[0].tel}}</p>
       <p>{{Charge_amount_by_store[0].mail}}</p>
       <br>
       <br>

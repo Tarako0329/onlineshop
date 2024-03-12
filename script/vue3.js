@@ -680,12 +680,14 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
             "uid":row.uid
             ,"yagou":row.yagou
             ,"tel":row.tel
-            ,"maik":row.mail
+            ,"mail":row.mail
+            ,"cancel_rule":row.cancel_rule
             ,"seikyu":kingaku_temp.toNumber()
           })
           
           kingaku_temp = Decimal(0)
-        }/*else if(index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0){
+        }
+        /*else if(index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0){
           kingakus.push({
             "uid":row.uid
             ,"yagou":row.yagou
@@ -701,6 +703,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           ,"yagou":'shop'
           ,"tel":'None'
           ,"mail":'None'
+          ,"cancel_rule":"None"
           ,"seikyu":0
         })
       }
@@ -1245,6 +1248,11 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       console_log(orderNO)
       console_log(colum)
       console_log(orderlist_hd.value[index])
+      if(colum==="cancel" && val===1){
+        if(confirm("ご注文をキャンセルしてよいですか？")===false){
+          return
+        }
+      }
 
       const form = new FormData();
       form.append(`orderNO`, orderNO)
@@ -1275,6 +1283,10 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
               }
             }
           }
+          if(colum==="cancel" && val===1){
+            alert("キャンセルしました")
+            orderlist_hd.value[index].cancel=1
+          }
         }else{
           alert('更新失敗')
         }
@@ -1294,7 +1306,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       document.getElementById(id).readOnly = false
     }
 
-    //サイト設定
+    //サイト設定情報
     const yagou = ref('')
     const site_name = ref('')
     const tantou = ref('')
@@ -1306,6 +1318,10 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
     const mail_body = ref('')
     const mail_body_paid = ref('')
     const mail_body_sent = ref('')
+    const mail_body_cancel = ref('')
+    const chk_paid = ref('')
+    const chk_recept = ref('')
+    const chk_sent = ref('')
     const loader = ref(false)
 
     //mail関連
@@ -1332,7 +1348,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
           orders = orders + "消費税：" + row2.shouhinNM + " = " + String(Number(row2.zei).toLocaleString()) + " 円\n"
         }
       })
-      orders = orders + "ご注文総額：： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
+      orders = orders + "ご注文総額： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
       
       orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
       
@@ -1371,7 +1387,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
         })
 
 
-        orders = orders + "ご注文総額：： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
+        orders = orders + "ご注文総額： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
         
         orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
 
@@ -1441,6 +1457,22 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
 
     }
 
+    const cancel_lock = computed(()=>{
+      let retn = []
+      orderlist_hd.value.forEach((row,index)=>{
+        let sts = 'unlock'
+        if(row.lock_sts === "recept" && row.オーダー受付==="済"){sts = 'lock'}
+        if(row.lock_sts === "paid" && row.入金==="済"){sts = 'lock'}
+        if(row.lock_sts === "sent" && row.発送==="済"){sts = 'lock'}
+        retn.push({
+          "uid":row.uid,
+          "orderNO":row.orderNO,
+          "cancel":sts
+        })
+      })
+      return retn
+    })
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -1461,7 +1493,9 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
         mail_body.value = response.mail_body
         mail_body_paid.value = response.mail_body_paid
         mail_body_sent.value = response.mail_body_sent
-
+        chk_recept.value = response.chk_recept===1?true:false
+        chk_sent.value = response.chk_sent===1?true:false
+        chk_paid.value = response.chk_paid===1?true:false
       })
     })
 
@@ -1480,11 +1514,15 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       mail_body,
       mail_body_paid,
       mail_body_sent,
-      //mail_body_template,
+      mail_body_cancel,
       send_email,
       loader,
       send_mailbody,
       send_mailsubject,
+      chk_paid,
+      chk_recept,
+      chk_sent,
+      cancel_lock,
     }
   }
 })
@@ -1503,10 +1541,16 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
     const mail_body = ref('<購入者名> 様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const mail_body_paid = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文についてのお支払いを確認いたしました。\n発送が終わりましたら再度ご連絡させていただきます。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n何かございましたら以下までご連絡くださいませ。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const mail_body_sent = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文について、本日商品を発送いたしました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n（お届け先未記載の場合は<購入者名> 様宛にお送りしてます。）\n\n配送状況などについては下記URLよりご確認いただけます。\n\nhttps://sagawa.com（サガワなどのURL貼付け）\n\n商品のご到着までしばらくお待ちください。\n\n今後とも <自社名> をよろしくお願いします。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
+    const mail_body_cancel = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文について、キャンセルを受け付けました。\n\n<注文内容>\n\n<購入者情報>\n\n今後とも <自社名> をよろしくお願いします。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const site_name = ref('')
     const site_pr = ref('')
     const logo = ref('')
     const loader = ref(false)
+    const chk_recept = ref('')
+    const chk_sent = ref('')
+    const chk_paid = ref('')
+    const lock_sts = ref('')
+    const cancel_rule = ref('例\n受注生産品について：ご注文受付のメール送信後はキャンセル不可となっております。\n汎用製品について：入金確認後、７日以内でしたらキャンセルを受け付けます。\n返品時の送料についてはご負担願います。')
 
     const set_user = () =>{
       loader.value = true
@@ -1522,9 +1566,15 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       form.append(`mail_body_auto`, mail_body_auto.value)
       form.append(`mail_body_paid`, mail_body_paid.value)
       form.append(`mail_body_sent`, mail_body_sent.value)
+      form.append(`mail_body_cancel`, mail_body_cancel.value)
       form.append(`site_name`, site_name.value)
       form.append(`site_pr`, site_pr.value)
       form.append(`logo`, logo.value)
+      form.append(`chk_recept`, chk_recept.value===true?1:0)
+      form.append(`chk_sent`, chk_sent.value===true?1:0)
+      form.append(`chk_paid`, chk_paid.value===true?1:0)
+      form.append(`lock_sts`, lock_sts.value)
+      form.append(`cancel_rule`, cancel_rule.value)
       form.append(`csrf_token`, token)
 
       axios.post("ajax_delins_userMSonline.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
@@ -1578,6 +1628,9 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
     const mail_body_sent_sample = computed(()=>{
       return get_mail_sample(mail_body_sent.value)
     })
+    const mail_body_cancel_sample = computed(()=>{
+      return get_mail_sample(mail_body_cancel.value)
+    })
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
@@ -1596,6 +1649,10 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
         tel.value = response.tel
         mail.value = response.mail
         cc_mail.value = response.cc_mail
+        chk_recept.value = response.chk_recept===1?true:false
+        chk_sent.value = response.chk_sent===1?true:false
+        chk_paid.value = response.chk_paid===1?true:false
+        lock_sts.value = response.lock_sts
         if(response.mail_body!=="''"){
           mail_body.value = response.mail_body
         }
@@ -1607,6 +1664,12 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
         }
         if(response.mail_body_sent!=="''"){
           mail_body_sent.value = response.mail_body_sent
+        }
+        if(response.mail_body_cancel!=="''"){
+          mail_body_cancel.value = response.mail_body_cancel
+        }
+        if(response.cancel_rule!=="''"){
+          cancel_rule.value = response.cancel_rule
         }
 
       })
@@ -1634,9 +1697,18 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       mail_body_sample,
       mail_body_sent_sample,
       mail_body_paid_sample,
+      mail_body_cancel,
+      mail_body_cancel_sample,
+      chk_paid,
+      chk_recept,
+      chk_sent,
+      lock_sts,
+      cancel_rule,
     }
   }
 })
+
+
 
 //グローバル関数
 const GET_USER2 = ()=>{

@@ -25,12 +25,12 @@ if($rtn !== true){
         $timeout=true;
     }else{
         //$logfilename="sid_".$_SESSION['user_id'].".log";
-
+        /*
         $stmt = $pdo_h->prepare("select * from Users where uid = :uid");
         $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
         $stmt->execute();
         $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        */
         //log_writer2("\$owner",$owner,"lv3");
 
         //更新モード(実行)
@@ -38,7 +38,7 @@ if($rtn !== true){
         $value = $_POST["value"];
         $orderNO = $_POST["orderNO"];
 
-        $sqlstr_h = "update juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid=:uid";
+        $sqlstr_h = "update juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
 
         $params["uid"] = $_SESSION["user_id"];
         $params[$colum] = $_POST["value"];

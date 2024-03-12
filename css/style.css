@@ -15,7 +15,11 @@
   font-weight: 500;
   font-style: normal;
 }
-
+@media(min-width: 1020px){
+  a[href^="tel:"]{
+    pointer-events: none;
+  }
+}
 html{
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;

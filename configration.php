@@ -25,6 +25,12 @@
     </transition>-->
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
+        <label for='yagou' class="form-label">屋号</label>
+        <input type='text' class='form-control' id='yagou' v-model='yagou'>
+      </div>
+    </div>
+    <div class='row mb-3 pt-3' style='display: none;'>
+      <div class='col-md-6 col-12'>
         <label for='site_name' class="form-label">サイト名</label>
         <input type='text' class='form-control' id='site_name' v-model='site_name'>
       </div>
@@ -33,12 +39,6 @@
       <div class='col-md-6 col-12'>
         <label for='site_pr' class="form-label">サイトＰＲ</label>
         <textarea type='memo' class='form-control' id='site_pr' rows="10" v-model='site_pr'></textarea>
-      </div>
-    </div>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-6 col-12'>
-        <label for='yagou' class="form-label">屋号</label>
-        <input type='text' class='form-control' id='yagou' v-model='yagou'>
       </div>
     </div>
     <div class='row mb-3 pt-3'>
@@ -78,25 +78,29 @@
         <small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
       </div>
     </div>
+    <div class='row mb-3'>
+      <div class='col-md-6 col-12'>
+        <label for='cancel_rule' class="form-label">キャンセル規定</label>
+        <textarea type='memo' class='form-control' id='cancel_rule' rows="5" v-model='cancel_rule'></textarea>
+        <small>注文確認時に表示します。<br>キャンセル規定を定めない場合、法律で『商品の引渡し（特定権利の移転）が完了した日から数えて８日以内』まではキャンセルを受け付ける義務があります。</small>
+      </div>
+    </div>
+
     <hr>
-    <!--<h4>受注管理画面の設定</h4>
+    <h4>受注管理画面の設定</h4>
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
         <p>受注管理に利用するステータス</p>
         <div class="form-check">
-        <input type='checkbox' class='form-check-input' id='recept'>
+        <input type='checkbox' class='form-check-input' id='recept' v-model='chk_recept'>
         <label for='recept' class="form-check-label">注文受付</label>
         </div>
         <div class="form-check">
-        <input type='checkbox' class='form-check-input' id='preparation'>
-        <label for='preparation' class="form-check-label">発送準備中</label>
-        </div>
-        <div class="form-check">
-        <input type='checkbox' class='form-check-input' id='sent'>
+        <input type='checkbox' class='form-check-input' id='sent' v-model='chk_sent'>
         <label for='sent' class="form-check-label">発送済み</label>
         </div>
         <div class="form-check">
-        <input type='checkbox' class='form-check-input' id='paid'>
+        <input type='checkbox' class='form-check-input' id='paid' v-model='chk_paid'>
         <label for='paid' class="form-check-label">入金済み</label>
         </div>
         <small>何も選択しない場合、「完了 or 未完了 or キャンセル」での管理となります。</small>
@@ -105,17 +109,16 @@
     <div class='row mb-5 pt-3'>
       <div class='col-md-6 col-12'>
         <label for='lock_sts' class="form-label">オーダーキャンセルロック</label>
-        <select class='form-select' id='lock_sts'>
+        <select class='form-select' id='lock_sts' v-model='lock_sts'>
           <option value="recept">注文受付</option>
-          <option value="preparation">発送準備中</option>
           <option value="sent">発送済み</option>
           <option value="paid">入金済み</option>
           <option value="nolock">ロックしない</option>
         </select>
-        <small>上記の状態になるとお客様からのキャンセル操作をロックします。\n</small>
+        <small>上記の状態になるとお客様からのキャンセル操作をロックします。</small><br>
         <small>以降のキャンセルについてはお客様と直接ご相談いただき、お店側で判断することになります。</small>
       </div>
-    </div>-->
+    </div>
 
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
@@ -126,6 +129,7 @@
             <button class="nav-link" id="nav-mail_body-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body" type="button" role="tab" aria-controls="nav-mail_body" aria-selected="false">受付確認</button>
             <button class="nav-link" id="nav-mail_body_sent-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_sent" type="button" role="tab" aria-controls="nav-mail_body_sent" aria-selected="false">発送連絡</button>
             <button class="nav-link" id="nav-mail_body_paid-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_paid" type="button" role="tab" aria-controls="nav-mail_body_paid" aria-selected="false">支払確認</button>
+            <button class="nav-link" id="nav-mail_body_cancel-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_cancel" type="button" role="tab" aria-controls="nav-mail_body_cancel" aria-selected="false">ｷｬﾝｾﾙ受付</button>
           </div>
         </nav>
         <div class="tab-content" id="nav-tabContent" style='width:100%;'>
@@ -234,6 +238,33 @@
             </div>
             <small>メールサンプル</small>
             <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_paid_sample'></div>
+
+          </div>
+          <div class="tab-pane fade" id="nav-mail_body_cancel" role="tabpanel" aria-labelledby="nav-mail_body_cancel-tab" tabindex="0">
+            <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_cancel=""}'>クリア</button>
+            <textarea type='memo' class='form-control' id='mail_body_cancel' rows="20" v-model='mail_body_cancel'></textarea>
+            <div class='row mb-3 mt-2'>
+              <div class='col-12'>
+                定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
+              </div>
+            </div>
+            <div class='row mb-3'>
+              <div class='col-12'>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
+                <button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+              </div>
+            </div>
+            <small>メールサンプル</small>
+            <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_cancel_sample'></div>
 
           </div>
         </div>
