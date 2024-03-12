@@ -183,8 +183,8 @@
                             <br>
                             【お問い合わせ先】<br>
                             {{list.yagou}}<br>
-                            tel:{{list.tel}}<br>
-                            mail:{{list.mail}}<br>
+                            <a :href="`tel:${list.shop_tel}`">tel:{{list.shop_tel}}</a><br>
+                            mail:{{list.shop_mail}}<br>
                           </div>
                         </div>
                       </div>
