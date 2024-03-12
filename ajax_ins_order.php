@@ -91,7 +91,7 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
             
             //明細登録
-            $orderlist="";
+            $orderlist="【ご注文内容】\r\n";
             foreach($_POST["meisai"] as $row){
                 //log_writer2("\$row",$row,"lv3");
                 
@@ -224,10 +224,10 @@ if($rtn !== true){
                 $body = $owner[0]["mail_body_auto"];
 
                 $body = str_replace("<購入者名>",$name,$body);
-                $body = str_replace("<注文内容>",$orderlist,$body);
+                $body = str_replace("<注文内容>",$orderlist."ご注文総額：".$sougaku."  内税(".$goukeizei.")",$body);
                 $body = str_replace("<送料込の注文内容>",$orderlist,$body);
-                $body = str_replace("<購入者情報>",'【ご注文主】\nお名前：'.$name.'\n郵便番号：'.$yubin.'\n住所：'.$jusho.'\nTEL：'.$tel.'\nMAIL：'.$mail.'\nオーダー備考：\n'.$bikou.'',$body);
-                $body = str_replace("<届け先情報>",'【お届け先】\nお名前：'.$st_name.'\n郵便番号：'.$st_yubin.'\n送付先住所：'.$st_jusho.'\nTEL：'.$st_tel.'',$body);
+                $body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$bikou.'',$body);
+                $body = str_replace("<届け先情報>","【お届け先】\r\nお名前：".$st_name."\r\n郵便番号：".$st_yubin."\r\n送付先住所：".$st_jusho."\r\nTEL：".$st_tel.'',$body);
                 $body = str_replace("<自社名>",$owner[0]["yagou"],$body);
                 $body = str_replace("<自社住所>",$owner[0]["jusho"],$body);
                 $body = str_replace("<問合せ受付TEL>",$owner[0]["tel"],$body);
