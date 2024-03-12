@@ -17,7 +17,7 @@
 <BODY class='bd'>
   <div id='app'>
   <?php include "header_tag_admin.php"  ?>
-  <MAIN class='container common_main'>
+  <MAIN class='container common_main' data-bs-spy="scroll">
     <!--<transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
         {{msg}}
@@ -275,7 +275,8 @@
 
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <button type='button' class='btn btn-primary m-2' @click='set_user'>登録</button>
+        <!--<button type='button' class='btn btn-primary m-2' @click='set_user'>登録</button>-->
+        <a href="#scrollspyHeading" type='button' class='btn btn-primary m-2' @click='set_user'>登録</a>
       </div>
     </div>
 

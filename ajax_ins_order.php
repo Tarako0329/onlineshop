@@ -117,7 +117,7 @@ if($rtn !== true){
                 $status = $stmt->execute();
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
                 
-                $orderlist .= "◆".$params["shouhinNM"]."".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
+                $orderlist .= "◆".$params["shouhinNM"]."\r\n".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
             }
 
             //消費税明細の登録

@@ -26,7 +26,7 @@
 <BODY class='bd'>
   <div id='app'>
   <?php include "header_tag.php"  ?>
-  <MAIN class='container common_main'>
+  <MAIN class='container common_main' data-bs-spy="scroll">
     <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
@@ -105,7 +105,7 @@
       </template>
     </div>
 
-    <div v-show='mode==="ordering"' data-bs-spy="scroll">
+    <div v-show='mode==="ordering"'>
       <div class='row mb-1' id="scrollspyHeading1">
         <div class='col-md-6 col-12'>
           <h3><i class="bi bi-shop"></i>【 {{Charge_amount_by_store[0].yagou}} 】</h3>
@@ -249,24 +249,26 @@
     </div>
 
     <div v-show='mode==="ordered"'>
-      <p>受付番号：[<span style='color:red;'>{{orderNO}}</span>] にてショップにご注文を送信いたしました。</p>
-      <br>
-      <p>ご注文内容を確認する自動配信メールを送信いたしましたのでご確認ください。</p>
-      <br>
-      <p>その後、ショップより改めてご注文内容、配送、お支払い等 についてのメールをお送りいたします。</p>
-      <br>
-      <p>もしメールが届いてないようでしたら、お手数をおかけしますが下記連絡先へご連絡いただけますでしょうか。</p>
-      <br>
-      <p>また、その際は受付番号をお知らせ頂けると、その後のやり取りがスムーズになります。</p>
-      <br>
-      <br>
-      <p>【お問い合わせ先】</p>
-      <p>{{Charge_amount_by_store[0].yagou}}</p>
-      <a :href='`tel:${Charge_amount_by_store[0].tel}`'>{{Charge_amount_by_store[0].tel}}</a>
-      <p>{{Charge_amount_by_store[0].mail}}</p>
-      <br>
-      <br>
-      <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
+      <div id="scrollspyHeading2">受付番号：[<span style='color:red;'>{{orderNO}}</span>] にてショップにご注文を送信いたしました。</div>
+      <div>
+        <p>ご注文内容を確認する自動配信メールを送信いたしましたのでご確認ください。</p>
+        <br>
+        <p>その後、ショップより改めてご注文内容、配送、お支払い等 についてのメールをお送りいたします。</p>
+        <br>
+        <p>もしメールが届いてないようでしたら、お手数をおかけしますが下記連絡先へご連絡いただけますでしょうか。</p>
+        <br>
+        <p>また、その際は受付番号をお知らせ頂けると、その後のやり取りがスムーズになります。</p>
+        <br>
+        <br>
+        <p>【お問い合わせ先】</p>
+        <p>{{Charge_amount_by_store[0].yagou}}</p>
+        <a :href='`tel:${Charge_amount_by_store[0].tel}`'>{{Charge_amount_by_store[0].tel}}</a>
+        <p>{{Charge_amount_by_store[0].mail}}</p>
+        <br>
+        <br>
+        <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
+        <a href="#scrollspyHeading" id='spy2'></a>
+      </div>
     </div>
 
     <div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:250px;'>
@@ -279,7 +281,7 @@
           <div class='row ' style='padding:0;'>
             <div class='col-12 d-flex flex-row-reverse'>
               <!--<div><button type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</button></div>-->
-              <div><a href="#scrollspyHeading1" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
+              <div><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
               <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
               <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
             </div>

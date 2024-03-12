@@ -1092,6 +1092,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           //alert('ありがとうございます。ご注文を受け付けました。')
           mode.value='ordered'
           orderNO.value=response.data.orderNO
+          document.getElementById('spy2').click()
         }else{
           alert('注文送信失敗')
         }
