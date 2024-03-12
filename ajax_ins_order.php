@@ -32,7 +32,7 @@ if($rtn !== true){
         $stmt->execute();
         $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        log_writer2("\$owner",$owner,"lv3");
+        //log_writer2("\$owner",$owner,"lv3");
 
         //更新モード(実行)
         $sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou,st_name,st_yubin,st_jusho,st_tel) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou,:st_name,:st_yubin,:st_jusho,:st_tel)";
@@ -154,33 +154,34 @@ if($rtn !== true){
 
                 //ショップオーナー向けメール
                 $body = <<< "EOM"
-                    $name 様よりご注文いただきました。
+                $name 様よりご注文いただきました。
                 
-                    【ご注文内容】
-                    $orderlist
+                【ご注文内容】
+                $orderlist
                 
-                    ご注文総額：$sougaku  内税($goukeizei)
+                ご注文総額：$sougaku  内税($goukeizei)
                 
-                    【ご注文主】
-                    $name
-                    $yubin
-                    $jusho
-                    $tel
-                    $mail
-                    オーダー備考：
-                    $bikou
+                【ご注文主】
+                $name
+                $yubin
+                $jusho
+                $tel
+                $mail
+                オーダー備考：
+                $bikou
                 
-                    【お届け先】(表示がない場合は同上)
-                    $st_name
-                    $st_yubin
-                    $st_jusho
-                    $st_tel
+                【お届け先】(表示がない場合は同上)
+                $st_name
+                $st_yubin
+                $st_jusho
+                $st_tel
                 EOM;
                 
                 $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 
                 //お客様向けメール
                 $title = TITLE;
+                /*
                 $body = <<< "EOM"
                 受付番号：$orderNO
                 $name 様
@@ -218,7 +219,22 @@ if($rtn !== true){
                 TEL：$owner[0]["tel"]
 
                 EOM;
+                */
 
+                $body = $owner[0]["mail_body_auto"];
+
+                $body = str_replace("<購入者名>",$name,$body);
+                $body = str_replace("<注文内容>",$orderlist,$body);
+                $body = str_replace("<送料込の注文内容>",$orderlist,$body);
+                $body = str_replace("<購入者情報>",'【ご注文主】\nお名前：'.$name.'\n郵便番号：'.$yubin.'\n住所：'.$jusho.'\nTEL：'.$tel.'\nMAIL：'.$mail.'\nオーダー備考：\n'.$bikou.'',$body);
+                $body = str_replace("<届け先情報>",'【お届け先】\nお名前：'.$st_name.'\n郵便番号：'.$st_yubin.'\n送付先住所：'.$st_jusho.'\nTEL：'.$st_tel.'',$body);
+                $body = str_replace("<自社名>",$owner[0]["yagou"],$body);
+                $body = str_replace("<自社住所>",$owner[0]["jusho"],$body);
+                $body = str_replace("<問合せ受付TEL>",$owner[0]["tel"],$body);
+                $body = str_replace("<問合せ受付MAIL>",$owner[0]["mail"],$body);
+                $body = str_replace("<問合担当者>",$owner[0]["name"],$body);
+                $body = str_replace("<代表者>",$owner[0]["shacho"],$body);
+          
                 $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["CC_mail"]);
             }
 

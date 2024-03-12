@@ -311,6 +311,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 	//SMTP送信
     $return_flag = 'false';
     if(EXEC_MODE==="Local"){
+        log_writer2("\$body",$body,"lv3");
         return "success";
     }
 

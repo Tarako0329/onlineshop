@@ -679,6 +679,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           kingakus.push({
             "uid":row.uid
             ,"yagou":row.yagou
+            ,"tel":row.tel
+            ,"maik":row.mail
             ,"seikyu":kingaku_temp.toNumber()
           })
           
@@ -696,7 +698,9 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       if(kingakus.length===0){
         kingakus.push({
           "uid":9999999
-          ,"yagou":'None'
+          ,"yagou":'shop'
+          ,"tel":'None'
+          ,"mail":'None'
           ,"seikyu":0
         })
       }
@@ -1105,7 +1109,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         if(row.uid === order_shop_id.value){row.ordered=0}
       })
       order_shop_id.value = ''
-      btn_name.value='ご注文内容確認'
+      btn_name.value='カート'
       //order_kakaku.value=0
     }
 
@@ -1200,7 +1204,7 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
     const menu = ref([
       {name:'サイト設定',url : `configration.php?key=${user_hash}`},
       {name:'販売商品編集',url : `shouhinMS.php?key=${user_hash}`},
-      {name:'受注・発送・入金管理',url : `order_management.php?key=${user_hash}`},
+      {name:'受注管理',url : `order_management.php?key=${user_hash}`},
     ])
 
     return{
@@ -1436,11 +1440,6 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       })
 
     }
-
-
-
-
-
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)

@@ -248,9 +248,16 @@
       <br>
       <p>その後、ショップより改めてご注文内容、配送、お支払い等 についてのメールをお送りいたします。</p>
       <br>
-      <p>もしメールが届いてないようでしたら、お手数をおかけしますが・・・・までご連絡いただけますでしょうか。</p>
+      <p>もしメールが届いてないようでしたら、お手数をおかけしますが下記連絡先へご連絡いただけますでしょうか。</p>
       <br>
       <p>また、その際は受付番号をお知らせ頂けると、その後のやり取りがスムーズになります。</p>
+      <br>
+      <br>
+      <p>【お問い合わせ先】</p>
+      <p>{{Charge_amount_by_store[0].yagou}}</p>
+      <p>{{Charge_amount_by_store[0].tel}}</p>
+      <p>{{Charge_amount_by_store[0].mail}}</p>
+      <br>
       <br>
       <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
     </div>

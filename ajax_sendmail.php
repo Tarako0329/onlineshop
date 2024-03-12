@@ -33,9 +33,9 @@ if($rtn !== true){
 			$reseve_status=true;
 
         }catch(Exception $e){
-            $pdo_h->rollBack();
-            $sqllog .= rtn_sqllog("rollBack",[]);
-            sqllogger($sqllog,$e);
+            //$pdo_h->rollBack();
+            //$sqllog .= rtn_sqllog("rollBack",[]);
+            //sqllogger($sqllog,$e);
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;

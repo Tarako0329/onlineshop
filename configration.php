@@ -78,33 +78,42 @@
         <small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
       </div>
     </div>
-    <!--
-    <div class='row mb-3'>
+    <hr>
+    <!--<h4>受注管理画面の設定</h4>
+    <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
-        <label for='mail_body' class="form-label">注文受付メールテンプレート</label>
-        <button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
-        <textarea type='memo' class='form-control' id='mail_body' rows="10" v-model='mail_body'></textarea>
-        <div class='row mb-3 mt-2'>
-          <div class='col-12'>
-            定型値(例：購入者ボタンを押すと、メール本文で「購入者」に変換されます。)
-          </div>
+        <p>受注管理に利用するステータス</p>
+        <div class="form-check">
+        <input type='checkbox' class='form-check-input' id='recept'>
+        <label for='recept' class="form-check-label">注文受付</label>
         </div>
-        <div class='row mb-3'>
-          <div class='col-12'>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-            <button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
-          </div>
+        <div class="form-check">
+        <input type='checkbox' class='form-check-input' id='preparation'>
+        <label for='preparation' class="form-check-label">発送準備中</label>
         </div>
-        <small>メールサンプル</small>
-        <div class='p-2' style='white-space: pre-wrap;border:1px solid black;' v-text='mail_body_sample'></div>
+        <div class="form-check">
+        <input type='checkbox' class='form-check-input' id='sent'>
+        <label for='sent' class="form-check-label">発送済み</label>
+        </div>
+        <div class="form-check">
+        <input type='checkbox' class='form-check-input' id='paid'>
+        <label for='paid' class="form-check-label">入金済み</label>
+        </div>
+        <small>何も選択しない場合、「完了 or 未完了 or キャンセル」での管理となります。</small>
+      </div>
+    </div>
+    <div class='row mb-5 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='lock_sts' class="form-label">オーダーキャンセルロック</label>
+        <select class='form-select' id='lock_sts'>
+          <option value="recept">注文受付</option>
+          <option value="preparation">発送準備中</option>
+          <option value="sent">発送済み</option>
+          <option value="paid">入金済み</option>
+          <option value="nolock">ロックしない</option>
+        </select>
+        <small>上記の状態になるとお客様からのキャンセル操作をロックします。\n</small>
+        <small>以降のキャンセルについてはお客様と直接ご相談いただき、お店側で判断することになります。</small>
       </div>
     </div>-->
 
