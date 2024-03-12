@@ -262,7 +262,7 @@
       <br>
       <p>【お問い合わせ先】</p>
       <p>{{Charge_amount_by_store[0].yagou}}</p>
-      <a :href='`tel:${Charge_amount_by_store[0].tel}`'>{{Charge_amount_by_store[0].tel}}</p>
+      <a :href='`tel:${Charge_amount_by_store[0].tel}`'>{{Charge_amount_by_store[0].tel}}</a>
       <p>{{Charge_amount_by_store[0].mail}}</p>
       <br>
       <br>
