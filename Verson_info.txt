@@ -17,7 +17,12 @@ ver1.01.0:キャンセル・ステータス管理設定
   ALTER TABLE `juchuu_head` ADD `cancel` TINYINT NULL DEFAULT '0' COMMENT '注文キャンセル' AFTER `postage`;
   ALTER TABLE `Users_online` ADD `cancel_rule` TEXT NOT NULL COMMENT 'キャンセル規定' AFTER `lock_sts`;
   ALTER TABLE `Users_online` CHANGE `cancel_rule` `cancel_rule` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '\'\'' COMMENT 'キャンセル規定';
+
+ver1.02.0:構成微調整
+
+
 【Issues】
+
 
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/onlineshop/onlineshop
