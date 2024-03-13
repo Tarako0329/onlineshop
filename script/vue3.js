@@ -1497,6 +1497,17 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       return retn
     })
 
+    const serch_word = ref('')
+    const serch_mail = ref('')
+    const set_serch_mail = () =>{
+      serch_mail.value = order_hd_serch.value[0].mail
+    }
+    const order_hd_serch = computed(()=>{
+      return orderlist_hd.value.filter((row)=>{
+        return row.orderNO == serch_word.value || row.mail === serch_mail.value
+      })
+    })
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="order_rireki.php"){
@@ -1549,6 +1560,10 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       chk_recept,
       chk_sent,
       cancel_lock,
+      serch_word,
+      order_hd_serch,
+      serch_mail,
+      set_serch_mail,
     }
   }
 })

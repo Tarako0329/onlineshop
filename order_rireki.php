@@ -19,12 +19,22 @@
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY class='bd'>
-  <div id='app'>
+  <div id='app' style='height: 100%'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>
     <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
     <div class='row pb-3 pt-3'>
-      <template v-for='(list,index) in orderlist_hd' :key='list.orderNO'>
+      <div class='col-12'>
+        <label for='serch_word'>受付番号：</label>
+        <input type='text' class='form-control' v-model='serch_word' id='serch_word'>
+      </div>
+      <div class='col-12 mt-3'>
+        <button type='button' class='btn btn-primary' @click='set_serch_mail()'>同じメールアドレスの購入履歴を表示</button>
+      </div>
+    </div>
+    <div class='row pb-3 pt-3'>
+      <!--<template v-for='(list,index) in orderlist_hd' :key='list.orderNO'>-->
+      <template v-for='(list,index) in order_hd_serch' :key='list.orderNO'>
         <div class='col-xl-6 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
