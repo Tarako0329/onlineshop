@@ -81,10 +81,11 @@
         <textarea type='memo' class='form-control' id='customer_bikou' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
         <div id="customer_bikou_help" class="form-text">
           お客様に記入いただくエリアの初期表示です。<br>
-          例：セット商品の場合 => A～Eの商品から３種類を入力してください。<br><br>特になければこのまま登録してください。
+          例：セット商品の場合 => A～Eの商品から３種類を入力してください。
         </div>
       </div>
     </div>
+    <hr>
     <div class='row mb-3'>
       <div class='col-md-8 col-12'>
         <button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
@@ -93,6 +94,7 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-8 col-12'>
+        <small>写真の『削除』は『登録』ボタンに関係なく、即反映されます。</small>
         <div class='row'>
         <template v-for='(list,index) in pic_list' :key='list.filename'>
           <div class='col-md-4 col-6' style='padding:10px;'>

@@ -237,6 +237,26 @@ const shouhinMS = (Where_to_use,p_token) => createApp({//商品マスタ管理
     }
 
     const ins_shouhinMS = ()=>{
+      let msg = ''
+      if(shouhinNM.value == ''){
+        msg = msg + ' 商品名'
+      }
+      if(tanka.value == ''){
+        msg = msg + ' 単価'
+      }
+      if(midasi.value == ''|| midasi.value == null){
+        msg = msg + ' 商品説明（見出し）'
+      }
+      if(info.value == '' || info.value == null){
+        msg = msg + ' 商品説明（詳細）'
+      }
+      if(pic_list.value.length === 0){
+        msg = msg + ' 写真'
+      }
+      if(msg.length != 0){
+        alert(`${msg} を設定してください。`)
+        return
+      }
       loader.value = true
       const form = new FormData();
       form.append(`shouhinCD`, shouhinCD.value)
@@ -1358,6 +1378,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
     const send_mailsubject = ref('')
     const send_index = ref(0)
     const send_orderNO = ref(0)
+    const send_mail_btn = ref('送 信')
 
     const get_mail_sample = (template,index)=>{
       //console_log(`get_mail_sample:${template}`)
@@ -1454,6 +1475,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       }
 
       loader.value = true
+      send_mail_btn.value='送信中'
 
       const form = new FormData();
       form.append(`mailto`, orderlist_hd.value[send_index.value].mail)
@@ -1482,6 +1504,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       })
       .finally(()=>{
         loader.value = false
+        send_mail_btn.value='送 信'
       })
 
     }
@@ -1569,6 +1592,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       order_hd_serch,
       serch_mail,
       set_serch_mail,
+      send_mail_btn,
     }
   }
 })

@@ -248,7 +248,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
-          <button type='button' class='btn btn-primary' @click='send_email()'>メールを送る</button>
+          <button type='button' class='btn btn-primary' @click='send_email()'>{{send_mail_btn}}</button>
         </div>
       </div>
     </div>

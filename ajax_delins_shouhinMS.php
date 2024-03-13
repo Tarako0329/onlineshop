@@ -9,7 +9,7 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 
-//log_writer2("\$_POST",$_POST,"lv3");
+log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
 if($rtn !== true){
