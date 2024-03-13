@@ -12,7 +12,8 @@
           <ul class="navbar-nav alice-regular">
             <template v-for='(list,index) in menu' :key='list.name'>
               <li class="nav-item">
-                <a :class="nav_class[index]" :href="list.url" :id='`menu_0${index}`'>{{list.name}}</a>
+                <!--<a :class="nav_class[index]" :href="list.url" :id='`menu_0${index}`'>{{list.name}}</a>-->
+                <a class="nav-link" :href="list.url" :id='`menu_0${index}`'>{{list.name}}</a>
               </li>
             </template>
           </ul>
