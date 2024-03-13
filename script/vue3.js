@@ -266,16 +266,19 @@ const shouhinMS = (Where_to_use,p_token) => createApp({//商品マスタ管理
           }else if(mode.value==="upd"){
             get_shouhinMS_online()
           }
-          msg.value=`${shouhinNM.value} を登録しました`
+          //msg.value=`${shouhinNM.value} を登録しました`
+          alert(`${shouhinNM.value} を登録しました`)
           clear_ms()
         }else{
-          msg.value=`${shouhinNM.value} の登録に失敗しました`
+          //msg.value=`${shouhinNM.value} の登録に失敗しました`
+          alert(`${shouhinNM.value} の登録に失敗しました`)
         }
         token = response.data.csrf_create
       })
       .catch((error,response)=>{
         console_log(error)
-        msg.value=`${shouhinNM.value} の登録に失敗しました`
+        //msg.value=`${shouhinNM.value} の登録に失敗しました`
+        alert(`${shouhinNM.value} の登録に失敗しました`)
         token = response.data.csrf_create
       })
       .finally(()=>{
