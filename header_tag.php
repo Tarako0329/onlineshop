@@ -9,8 +9,8 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse ms-5" id="navbarNav">
+          <ul class="navbar-nav alice-regular">
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="index.php" id='menu_home'>Home</a>
             </li>

@@ -9,7 +9,7 @@
 <head>
     <?php 
     //共通部分、bootstrap設定、フォントCND、ファビコン等
-    include "head_bs5.php" 
+    include "head_admin.php" 
     ?>
     <!--<script src="./script/flow.js"></script>-->
     <TITLE><?php echo TITLE;?></TITLE>
@@ -23,7 +23,7 @@
         {{msg}}
       </div>
     </transition>
-    <div class='row mb-3 pt-3' id="scrollspyHeading1">
+    <div class='row mb-3 pt-3'>
       <div class='col-md-8 col-12'>
 				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
 				<label class='btn btn-outline-success ' for='eatin' style='border-radius:0;'>新規登録</label>
@@ -109,8 +109,8 @@
 
      <div class='row mb-3'>
       <div class='col-md-8 col-12'>
-        <!--<button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>-->
-        <a href="#scrollspyHeading1" type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</a>
+        <button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
+        <!--<a href="#scrollspyHeading1" type='button' class='btn btn-primary' @click='ins_shouhinMS()'>登録</a>-->
       </div>
     </div>
 
@@ -121,14 +121,16 @@
   <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
 	</div>
-  </div>
+  </div><!--app-->
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    shouhinMS('shouhinMS.php','<?php echo $token; ?>').mount('#app');
     admin_menu('shouhinMS.php','','<?php echo $user_hash;?>').mount('#admin_menu');
+    shouhinMS('shouhinMS.php','<?php echo $token; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {
+        //document.getElementById("menu_01").classList.add("active");
+        //console_log(document.getElementById("menu_01").classList)
         document.getElementById("app").onkeypress = (e) => {
           // form1に入力されたキーを取得
           const key = e.keyCode || e.charCode || 0;

@@ -1212,28 +1212,30 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
       {name:'受注管理',url : `order_management.php?key=${user_hash}`},
     ])
 
+    const nav_class = ref([])
+
     onMounted(()=>{
       console_log(`onMounted admin_menu: ${Where_to_use}`)
       if(Where_to_use==="configration.php"){
         console_log("!")
-        document.getElementById("menu_0").classList.add("active");
-        console_log(document.getElementById("menu_0").classList)
-      }
-      if(Where_to_use==="shouhinMS.php"){
+        //document.getElementById("menu_00").classList.add("active");
+        nav_class.value = [[{'nav-link':true,'active':true}],'nav-link','nav-link']
+      }else if(Where_to_use==="shouhinMS.php"){
         console_log("!!")
-        document.getElementById("menu_1").classList.add("active");
-        console_log(document.getElementById("menu_1").classList)
-      }
-      if(Where_to_use==="order_management.php"){
+        //document.getElementById("menu_01").classList.add("active");
+        nav_class.value = ['nav-link',[{'nav-link':true,'active':true}],'nav-link']
+      }else if(Where_to_use==="order_management.php"){
         console_log("!!!")
-        document.getElementById("menu_2").classList.add("active");
-        console_log(document.getElementById("menu_2").classList)
+        //document.getElementById("menu_02").classList.add("active");
+        nav_class.value = ['nav-link','nav-link',[{'nav-link':true,'active':true}]]
       }
-      console_log(document.getElementById("menu_1").classList)
+      //console_log(document.getElementById("menu_01").classList)
+      console_log(nav_class.value[0])
     })
 
     return{
-      menu
+      menu,
+      nav_class
     }
   }
 })

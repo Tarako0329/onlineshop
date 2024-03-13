@@ -24,7 +24,7 @@
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY class='bd'>
-  <div id='app'>
+  <div id='app' style='height: 100%'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main' data-bs-spy="scroll">
     <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
@@ -271,7 +271,7 @@
       </div>
     </div>
 
-    <div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:250px;'>
+    <!--<div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:250px;'>
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
         <div class="toast-header">
           <img src="img/icon-16x16.png" class="rounded me-2" >
@@ -280,7 +280,26 @@
         <div class="toast-body" style='padding:5px;' v-for='(list,index) in Charge_amount_by_store' :key='list.uid'>
           <div class='row ' style='padding:0;'>
             <div class='col-12 d-flex flex-row-reverse'>
-              <!--<div><button type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</button></div>-->
+              <div><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
+              <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
+              <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+  </MAIN>
+  <FOOTER class='container common_footer fixed-bottom'>
+    <div v-show='mode!=="ordered"' class="toast-container position-absolute bottom-0 end-0 p-3" style='width:250px;'>
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
+        <div class="toast-header">
+          <img src="img/icon-16x16.png" class="rounded me-2" >
+          <strong class="me-auto">ご注文金額</strong>
+        </div>
+        <div class="toast-body" style='padding:5px;' v-for='(list,index) in Charge_amount_by_store' :key='list.uid'>
+          <div class='row ' style='padding:0;'>
+            <div class='col-12 d-flex flex-row-reverse'>
               <div><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
               <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
               <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
@@ -289,9 +308,6 @@
         </div>
       </div>
     </div>
-
-  </MAIN>
-  <FOOTER class='container-fluid common_footer'>
   </FOOTER>
   <Transition>
     <div v-show='img_zoom' class='img-wrap'>

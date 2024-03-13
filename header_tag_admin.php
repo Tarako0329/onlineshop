@@ -8,11 +8,11 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse ms-5" id="navbarNav">
+          <ul class="navbar-nav alice-regular">
             <template v-for='(list,index) in menu' :key='list.name'>
               <li class="nav-item">
-                <a class="nav-link" :href="list.url" :id='`menu_${index}`'>{{list.name}}</a>
+                <a :class="nav_class[index]" :href="list.url" :id='`menu_0${index}`'>{{list.name}}</a>
               </li>
             </template>
           </ul>
