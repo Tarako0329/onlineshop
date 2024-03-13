@@ -15,8 +15,8 @@
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY class='bd'>
-  <div id='app'>
   <?php include "header_tag_admin.php"  ?>
+  <div id='app'>
   <MAIN class='container common_main' data-bs-spy="scroll">
     <transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
@@ -124,7 +124,8 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    shouhinMS('shouhinMS','<?php echo $token; ?>').mount('#app');
+    shouhinMS('shouhinMS.php','<?php echo $token; ?>').mount('#app');
+    admin_menu('shouhinMS.php','','<?php echo $user_hash;?>').mount('#admin_menu');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

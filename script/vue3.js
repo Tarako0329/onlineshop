@@ -496,7 +496,7 @@ const shouhinMS = (Where_to_use,p_token) => createApp({//商品マスタ管理
     */
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
-      if(Where_to_use==="shouhinMS"){
+      if(Where_to_use==="shouhinMS.php"){
         get_shouhinMS()
         get_shouhinMS_newcd()
       }
@@ -1142,6 +1142,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       if(Where_to_use==="index"){
         get_shouhinMS_online()
         mode.value='shopping'
+        document.getElementById("menu_home").classList.add("active");
       }
     })
 
@@ -1207,9 +1208,29 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
   setup() {
     const menu = ref([
       {name:'サイト設定',url : `configration.php?key=${user_hash}`},
-      {name:'販売商品編集',url : `shouhinMS.php?key=${user_hash}`},
+      {name:'商品管理',url : `shouhinMS.php?key=${user_hash}`},
       {name:'受注管理',url : `order_management.php?key=${user_hash}`},
     ])
+
+    onMounted(()=>{
+      console_log(`onMounted admin_menu: ${Where_to_use}`)
+      if(Where_to_use==="configration.php"){
+        console_log("!")
+        document.getElementById("menu_0").classList.add("active");
+        console_log(document.getElementById("menu_0").classList)
+      }
+      if(Where_to_use==="shouhinMS.php"){
+        console_log("!!")
+        document.getElementById("menu_1").classList.add("active");
+        console_log(document.getElementById("menu_1").classList)
+      }
+      if(Where_to_use==="order_management.php"){
+        console_log("!!!")
+        document.getElementById("menu_2").classList.add("active");
+        console_log(document.getElementById("menu_2").classList)
+      }
+      console_log(document.getElementById("menu_1").classList)
+    })
 
     return{
       menu
@@ -1476,7 +1497,9 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
 
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
-      if(Where_to_use==="shouhinMS"){
+      if(Where_to_use==="order_rireki.php"){
+        document.getElementById("menu_rireki").classList.add("active");
+      }else if(Where_to_use==="order_management.php"){
       }
       get_orderlist()
       GET_USER2()
@@ -1674,7 +1697,6 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
         }
 
       })
-
     })
 
     return{

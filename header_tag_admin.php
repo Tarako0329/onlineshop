@@ -1,4 +1,22 @@
-  <HEADER class='container common_header' data-bs-spy="scroll" >
-    <img src='img/icon-48x48.png' id="scrollspyHeading">
-    <h1 class='mt-3 alice-regular'><a href="admin_menu.php?key=<?php echo $user_hash;?>"><?php echo TITLE;?></a></h1>
+  <HEADER class='common_header' data-bs-spy="scroll" id='admin_menu'>
+    <!--<img src='img/icon-48x48.png' id="scrollspyHeading">
+    <h1 class='mt-3 alice-regular'><a href="admin_menu.php?key=<?php //echo $user_hash;?>"><?php //echo TITLE;?></a></h1>-->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" style='padding:0;'>
+      <div class="container common_header">
+        <img src="img/icon-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">
+        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php echo $user_hash;?>"><h1 style='color:brown;'>管理メニュー</h1></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <template v-for='(list,index) in menu' :key='list.name'>
+              <li class="nav-item">
+                <a class="nav-link" :href="list.url" :id='`menu_${index}`'>{{list.name}}</a>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </HEADER>

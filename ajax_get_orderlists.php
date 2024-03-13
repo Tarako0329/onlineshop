@@ -22,7 +22,7 @@
 			on HD.uid = UMS.uid
 	    where HD.uid like :uid
 			group by HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou,HD.postage,UMS.lock_sts,HD.cancel,UMS.yagou,UMS.tel,UMS.mail,if(first_answer=0,'未','済'),if(sent=0,'未','済'),if(payment=0,'未','済'),if(sent_flg=0,'無','有')
-			order by juchuu_date";
+			order by first_answer,juchuu_date";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->execute();

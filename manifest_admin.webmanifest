@@ -1,8 +1,7 @@
 {
-	"name":				"Present Select",
-	"short_name":		"Present",
+	"name":				"Present管理",
+	"short_name":		"Present管理",
 	"description":		"",
-	"start_url":		"/",
 	"display":			"standalone",
 	"orientation":		"any",
 	"background_color":	"#fff",

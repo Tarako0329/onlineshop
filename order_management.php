@@ -9,7 +9,7 @@
 <head>
     <?php 
     //共通部分、bootstrap設定、フォントCND、ファビコン等
-    include "head_bs5.php" 
+    include "head_admin.php" 
     ?>
     <!--<script src="./script/flow.js"></script>-->
     <style>
@@ -20,8 +20,8 @@
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY class='bd'>
-  <div id='app'>
   <?php include "header_tag_admin.php"  ?>
+  <div id='app'>
   <MAIN class='container common_main'>
     <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
     <div class='row pb-3 pt-3'>
@@ -259,7 +259,8 @@
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    order_mng('order_management','<?php echo $token; ?>').mount('#app');
+    order_mng('order_management.php','<?php echo $token; ?>').mount('#app');
+    admin_menu('order_management.php','','<?php echo $user_hash;?>').mount('#admin_menu');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

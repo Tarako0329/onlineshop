@@ -9,14 +9,14 @@
 <head>
     <?php 
     //共通部分、bootstrap設定、フォントCND、ファビコン等
-    include "head_bs5.php" 
+    include "head_admin.php" 
     ?>
     <!--<script src="./script/flow.js"></script>-->
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY class='bd'>
-  <div id='app'>
   <?php include "header_tag_admin.php"  ?>
+  <div id='app'>
   <MAIN class='container common_main' data-bs-spy="scroll">
     <!--<transition>
       <div v-show="msg!==''" class="alert alert-warning" role="alert">
@@ -318,7 +318,8 @@
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    configration('configration','<?php echo $token; ?>').mount('#app');
+    configration('configration.php','<?php echo $token; ?>').mount('#app');
+    admin_menu('configration.php','','<?php echo $user_hash;?>').mount('#admin_menu');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {
