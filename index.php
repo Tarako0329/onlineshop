@@ -26,7 +26,8 @@
 <BODY class='bd'>
   <div id='app' style='height: 100%'>
   <?php include "header_tag.php"  ?>
-  <MAIN class='container common_main' data-bs-spy="scroll">
+  <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
+    <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
     <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
@@ -266,8 +267,9 @@
         <p>{{Charge_amount_by_store[0].mail}}</p>
         <br>
         <br>
-        <button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>
-        <a href="#scrollspyHeading" id='spy2'></a>
+        <!--<button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>-->
+        <div id='scrollspy'><a href="#scrollspyHeading" type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</a></div>
+        <div id='scrollspy'><a href="#scrollspyHeading" id='spy2'></a></div>
       </div>
     </div>
 
@@ -300,7 +302,7 @@
         <div class="toast-body" style='padding:5px;' v-for='(list,index) in Charge_amount_by_store' :key='list.uid'>
           <div class='row ' style='padding:0;'>
             <div class='col-12 d-flex flex-row-reverse'>
-              <div><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
+              <div id='scrollspy'><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
               <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
               <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
             </div>

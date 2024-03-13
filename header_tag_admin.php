@@ -1,4 +1,4 @@
-  <HEADER class='common_header' data-bs-spy="scroll" id='admin_menu'>
+  <HEADER class='common_header' id='admin_menu'>
     <!--<img src='img/icon-48x48.png' id="scrollspyHeading">
     <h1 class='mt-3 alice-regular'><a href="admin_menu.php?key=<?php //echo $user_hash;?>"><?php //echo TITLE;?></a></h1>-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" style='padding:0;'>
