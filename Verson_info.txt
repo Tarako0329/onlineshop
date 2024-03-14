@@ -19,6 +19,7 @@ ver1.01.0:キャンセル・ステータス管理設定
   ALTER TABLE `Users_online` CHANGE `cancel_rule` `cancel_rule` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '\'\'' COMMENT 'キャンセル規定';
 ver1.02.0:構成微調整
 ver1.03.0:ユーザー確認用の購入履歴追加
+ver1.04.0:発送補助機能追加
 
 
 

@@ -1233,34 +1233,25 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
       {name:'サイト設定',url : `configration.php?key=${user_hash}`},
       {name:'商品管理',url : `shouhinMS.php?key=${user_hash}`},
       {name:'受注管理',url : `order_management.php?key=${user_hash}`},
+      {name:'発送サポート',url : `Unshipped_slip.php?key=${user_hash}`},
     ])
-
-    //const nav_class = ref([])
 
     onMounted(()=>{
       console_log(`onMounted admin_menu: ${Where_to_use}`)
       if(Where_to_use==="configration.php"){
-        console_log("!")
         document.getElementById("menu_00").classList.add("active");
-        //nav_class.value = [[{'nav-link':true,'active':true}],'nav-link','nav-link']
       }else if(Where_to_use==="shouhinMS.php"){
-        console_log("!!")
         document.getElementById("menu_01").classList.add("active");
-        //nav_class.value = ['nav-link',[{'nav-link':true,'active':true}],'nav-link']
       }else if(Where_to_use==="order_management.php"){
-        console_log("!!!")
         document.getElementById("menu_02").classList.add("active");
-        //nav_class.value = ['nav-link','nav-link',[{'nav-link':true,'active':true}]]
+      }else if(Where_to_use==="Unshipped_slip.php"){
+        document.getElementById("menu_03").classList.add("active");
       }else{
-        //nav_class.value = ['nav-link','nav-link','nav-link']
       }
-      //console_log(document.getElementById("menu_01").classList)
-      //console_log(nav_class.value[0])
     })
 
     return{
       menu,
-      //nav_class
     }
   }
 })
@@ -1778,9 +1769,60 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
 })
 
 
+const Unsipped_slip = (Where_to_use,p_token) => createApp({//販売管理
+  setup() {
+    const Unsippedlist = ref([])
+    const Unsippedlist_uchiwake = ref([])
+    const FROM = ref('')
+    const TO = ref(new Date().toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",day: "2-digit"}).replaceAll('/', '-'))
+
+    const get_unsipped_list = () => {
+      axios
+      .get(`ajax_get_unsipped.php?from=${FROM.value}&to=${TO.value}`)
+      .then((response) => {
+        console_log(response)
+        Unsippedlist.value = response.data.result
+        Unsippedlist_uchiwake.value = response.data.result2
+        console_log('ajax_get_unsipped succsess')
+      })
+      .catch((error)=>{
+        console_log('ajax_get_unsipped.php ERROR')
+        console_log(error)
+      })
+      .finally(()=>{
+      })
+    }
+    
+    const pdf_url = computed(()=>{return `Unshipped_slip_pdf.php?from=${FROM.value}&to=${TO.value}`})
+
+    watch(FROM,()=>{
+      console_log('watch FROM => '+FROM.value)
+      get_unsipped_list()
+    })
+    watch(TO,()=>{
+      console_log('watch TO => '+TO.value)
+      get_unsipped_list()
+    })
+
+    onMounted(()=>{
+      console_log(`onMounted:${Where_to_use}`)
+      get_unsipped_list()
+    })
+
+    return{
+      Unsippedlist,
+      Unsippedlist_uchiwake,
+      get_unsipped_list,
+      FROM,
+      TO,
+      pdf_url,
+    }
+  }
+})
+
 
 //グローバル関数
-const GET_USER2 = ()=>{
+const GET_USER2 = ()=>{//サイト設定情報取得
 	return new Promise((resolve, reject) => {
 		GET_USER_SHORI(resolve);
 	});
@@ -1791,6 +1833,28 @@ const GET_USER_SHORI = (resolve) =>{
   .get(`ajax_get_usersMSonline.php`)
   .then((response) => {
     obj = response.data[0]
+    console_log('ajax_get_usersMSonline succsess')
+  })
+  .catch((error)=>{
+    console_log('ajax_get_usersMSonline.php ERROR')
+    console_log(error)
+  })
+  .finally(()=>{
+    resolve(obj)
+  })
+}
+
+const GET_ORDER_LIST = ()=>{//サイト設定情報取得
+	return new Promise((resolve, reject) => {
+		GET_USER_SHORI(resolve);
+	});
+}
+const GET_ORDER_LIST_SHORI = (resolve) =>{
+  let obj
+  axios
+  .get(`ajax_get_usersMSonline.php`)
+  .then((response) => {
+    obj = response.data
     console_log('ajax_get_usersMSonline succsess')
   })
   .catch((error)=>{

@@ -1,6 +1,10 @@
 <?php
   require "php_header.php";
   $token = csrf_create();
+  if(empty($_GET["key"])){
+    echo "参照用のURLが異なります。";
+    exit();
+  }
   $user_hash = $_GET["key"] ;
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 ?>
