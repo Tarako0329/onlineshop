@@ -1500,20 +1500,20 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       .then((response)=>{
         console_log('owata')
         console_log(response)
-        yagou.value = response.yagou
-        site_name.value = response.site_name
-        tantou.value = response.name
-        shacho.value = response.shacho
-        jusho.value = response.jusho
-        tel.value = response.tel
-        mail.value = response.mail
-        cc_mail.value = response.cc_mail
-        mail_body.value = response.mail_body
-        mail_body_paid.value = response.mail_body_paid
-        mail_body_sent.value = response.mail_body_sent
-        chk_recept.value = response.chk_recept===1?true:false
-        chk_sent.value = response.chk_sent===1?true:false
-        chk_paid.value = response.chk_paid===1?true:false
+        yagou.value = response[0].yagou
+        site_name.value = response[0].site_name
+        tantou.value = response[0].name
+        shacho.value = response[0].shacho
+        jusho.value = response[0].jusho
+        tel.value = response[0].tel
+        mail.value = response[0].mail
+        cc_mail.value = response[0].cc_mail
+        mail_body.value = response[0].mail_body
+        mail_body_paid.value = response[0].mail_body_paid
+        mail_body_sent.value = response[0].mail_body_sent
+        chk_recept.value = response[0].chk_recept===1?true:false
+        chk_sent.value = response[0].chk_sent===1?true:false
+        chk_paid.value = response[0].chk_paid===1?true:false
       })
     })
 
@@ -1663,37 +1663,37 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
 
       GET_USER2()
       .then((response)=>{
-        yagou.value = response.yagou
-        site_name.value = response.site_name
-        site_pr.value = response.site_pr
-        logo.value = response.logo
-        tantou.value = response.name
-        shacho.value = response.shacho
-        jusho.value = response.jusho
-        tel.value = response.tel
-        mail.value = response.mail
-        cc_mail.value = response.cc_mail
-        chk_recept.value = response.chk_recept===1?true:false
-        chk_sent.value = response.chk_sent===1?true:false
-        chk_paid.value = response.chk_paid===1?true:false
-        lock_sts.value = response.lock_sts
-        if(response.mail_body!=="''"){
-          mail_body.value = response.mail_body
+        yagou.value = response[0].yagou
+        site_name.value = response[0].site_name
+        site_pr.value = response[0].site_pr
+        logo.value = response[0].logo
+        tantou.value = response[0].name
+        shacho.value = response[0].shacho
+        jusho.value = response[0].jusho
+        tel.value = response[0].tel
+        mail.value = response[0].mail
+        cc_mail.value = response[0].cc_mail
+        chk_recept.value = response[0].chk_recept===1?true:false
+        chk_sent.value = response[0].chk_sent===1?true:false
+        chk_paid.value = response[0].chk_paid===1?true:false
+        lock_sts.value = response[0].lock_sts
+        if(response[0].mail_body!=="''"){
+          mail_body.value = response[0].mail_body
         }
-        if(response.mail_body_auto!=="''"){
-          mail_body_auto.value = response.mail_body_auto
+        if(response[0].mail_body_auto!=="''"){
+          mail_body_auto.value = response[0].mail_body_auto
         }
-        if(response.mail_body_paid!=="''"){
-          mail_body_paid.value = response.mail_body_paid
+        if(response[0].mail_body_paid!=="''"){
+          mail_body_paid.value = response[0].mail_body_paid
         }
-        if(response.mail_body_sent!=="''"){
-          mail_body_sent.value = response.mail_body_sent
+        if(response[0].mail_body_sent!=="''"){
+          mail_body_sent.value = response[0].mail_body_sent
         }
-        if(response.mail_body_cancel!=="''"){
-          mail_body_cancel.value = response.mail_body_cancel
+        if(response[0].mail_body_cancel!=="''"){
+          mail_body_cancel.value = response[0].mail_body_cancel
         }
-        if(response.cancel_rule!=="''"){
-          cancel_rule.value = response.cancel_rule
+        if(response[0].cancel_rule!=="''"){
+          cancel_rule.value = response[0].cancel_rule
         }
 
       })
@@ -1784,6 +1784,25 @@ const Unsipped_slip = (Where_to_use,p_token) => createApp({//販売管理
 })
 
 
+const shops = (Where_to_use,p_token) => createApp({//サイト設定
+  setup() {
+    const shoplist = ref([])
+
+    onMounted(()=>{
+      GET_USER2()
+      .then((response)=>{
+        shoplist.value = response
+      })
+    })
+
+    return {
+      shoplist,
+    }
+  }
+})
+
+
+
 //グローバル関数
 const GET_USER2 = ()=>{//サイト設定情報取得
 	return new Promise((resolve, reject) => {
@@ -1795,7 +1814,7 @@ const GET_USER_SHORI = (resolve) =>{
   axios
   .get(`ajax_get_usersMSonline.php`)
   .then((response) => {
-    obj = response.data[0]
+    obj = response.data
     console_log('ajax_get_usersMSonline succsess')
   })
   .catch((error)=>{
