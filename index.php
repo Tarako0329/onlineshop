@@ -15,7 +15,6 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_bs5.php" 
     ?>
-    <!--<script src="./script/flow.js"></script>-->
     <style>
       .btn{
         min-width: 50px;
