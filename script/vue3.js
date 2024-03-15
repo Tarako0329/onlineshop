@@ -1348,6 +1348,10 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       document.getElementById(id2).style.display = 'none'
     }
 
+    const copy_target = (id) =>{
+      COPY_TARGET(id)
+    }
+
     //サイト設定情報
     const yagou = ref('')
     const site_name = ref('')
@@ -1410,50 +1414,6 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       
       return val
     }
-    /*
-    const mail_body_template = computed(()=>{
-      let val=mail_body.value
-      let return_value=[]
-      let orders = ''
-      let orders_postage = ''
-      
-      orderlist_hd.value.forEach((row)=>{
-        //明細取得
-        orders = '【ご注文内容】\n'
-        orderlist_bd.value.forEach((row2,index)=>{
-          if(row.orderNO===row2.orderNO && row2.zei==="0.00"){
-            orders = orders + "◆" + row2.shouhinNM + "\n価格( " + String(Number(row2.tanka).toLocaleString()) + " 円) x " + String(row2.su) + "(コ) = 合計 " + String(Number(row2.goukeitanka).toLocaleString()) + " 円(税抜)\n備考：" + row2.bikou + "\n\n";
-          }else if(row.orderNO===row2.orderNO && row2.zei!=="0.00"){
-            //消費税
-            orders = orders + "消費税：" + row2.shouhinNM + " = " + String(Number(row2.zei).toLocaleString()) + " 円\n"
-          }
-        })
-
-
-        orders = orders + "ご注文総額： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
-        
-        orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
-
-        val = mail_body.value
-        
-        val = val.replace(/<購入者名>/g,row.name)
-        val = val.replace(/<注文内容>/g,orders)
-        val = val.replace(/<送料込の注文内容>/g,orders_postage)
-        val = val.replace(/<購入者情報>/g,'【ご購入者】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
-        val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
-        val = val.replace(/<自社名>/g,yagou.value)
-        val = val.replace(/<自社住所>/g,jusho.value)
-        val = val.replace(/<問合せ受付TEL>/g,tel.value)
-        val = val.replace(/<問合せ受付MAIL>/g,mail.value)
-        val = val.replace(/<問合担当者>/g,tantou.value)
-        val = val.replace(/<代表者>/g,shacho.value)
-        
-        return_value.push({orderNO:row.orderNO,mailbody:val})
-      })
-      
-      return return_value
-    })
-    */
 
     const send_email = () =>{
       if(confirm('メールを送付しますか？')){
@@ -1586,6 +1546,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       serch_mail,
       set_serch_mail,
       send_mail_btn,
+      copy_target,
     }
   }
 })

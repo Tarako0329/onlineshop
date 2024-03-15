@@ -2,11 +2,20 @@
 
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+    <meta content="卵・乳・小麦・白砂糖を使わない食べ物を販売します" name="description">
+    <meta property="og:title" content="cafe present オンラインショップ" />
+    <meta property="og:description" content="卵・乳・小麦・白砂糖を使わない食べ物を販売します" />
+    <meta property="og:type" content="web shop" />
+    <meta property="og:url" content="https://cafe-present.greeen-sys.com/" />
+    <meta property="og:image" content="img/android-chrome-256x256.png" />
+    <meta property="og:site_name" content="cafe present オンラインショップ" />
+    <meta property="og:locale" content="ja_JP"  />
+
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alice&family=Zen+Antique&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&family=Zen+Antique&display=swap" rel="stylesheet">
 
     <!-- Bootstrap5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -27,12 +36,11 @@
     <!--ajaxライブラリ-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>axios.defaults.baseURL = <?php echo "'".ROOT_URL."'" ?>;</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script><!--QRコードライブラリ-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>QRコードライブラリ-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/9.0.0/decimal.min.js"></script><!--小数演算ライブラリ-->
 
     <script>
         var KANKYO = <?php echo "'".EXEC_MODE."'" ;?>;
-        var ZEIHASU = <?php echo empty($ZeiHasu)?0:$ZeiHasu ;?>;
         var COLOR_NO 
     </script>
     <script src="script/function.js?<?php echo $time; ?>"></script>

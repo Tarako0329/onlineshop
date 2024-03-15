@@ -14,3 +14,9 @@ const console_log=(log,lv)=>{
   }
 }
 
+const COPY_TARGET = (id) =>{
+  let copyTarget = document.getElementById(id).innerText;;
+  // 選択しているテキストをクリップボードにコピーする
+  navigator.clipboard.writeText(copyTarget);
+
+}

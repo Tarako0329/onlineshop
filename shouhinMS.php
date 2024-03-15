@@ -15,6 +15,11 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_admin.php" 
     ?>
+    <style>
+      .btn{
+	      min-width: 120px;
+      }
+    </style>
     <TITLE><?php echo TITLE;?> 商品管理</TITLE>
 </head>
 <BODY>

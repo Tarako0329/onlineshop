@@ -15,6 +15,7 @@
         min-width: 30px;
       }
     </style>
+    <meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY>

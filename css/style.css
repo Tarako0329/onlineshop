@@ -15,6 +15,12 @@
   font-weight: 500;
   font-style: normal;
 }
+.fjalla-one-regular {
+  font-family: "Fjalla One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 @media(min-width: 1020px){
   a[href^="tel:"]{
     pointer-events: none;
@@ -83,7 +89,15 @@ p {
 
 
 .btn{
-	min-width: 120px;
+	/*min-width: 120px;*/
+}
+.icon-btn{
+	padding:0px;
+	font-size:8px;
+	font-family: "Fjalla One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
 }
 
 .img-item {
