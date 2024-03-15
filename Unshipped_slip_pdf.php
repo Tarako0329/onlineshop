@@ -115,8 +115,8 @@ $html = <<< EOM
 		</style>
 	</head>
 	<body>
-		<div style='text-align:left;'>
-			powered by <span style='font-family:Kranky;font-weight: bolder;'>$sysname</span><br>
+		<div style='text-align:left;font-size:10px;'>
+			powered by みどりシステム<br>
 			$print_time<br>
 			対象期間　『受注日：$from ～ $to 』
 		</div>

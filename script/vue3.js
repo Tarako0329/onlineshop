@@ -1341,9 +1341,11 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       })
     }
 
-    const unlock = (id)=>{
+    const unlock = (id,id2)=>{
       document.getElementById(id).disabled = false
       document.getElementById(id).readOnly = false
+      document.getElementById(id).style.display = 'block'
+      document.getElementById(id2).style.display = 'none'
     }
 
     //サイト設定情報
@@ -1396,7 +1398,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
       val = val.replace(/<購入者名>/g,row.name)
       val = val.replace(/<注文内容>/g,orders)
       val = val.replace(/<送料込の注文内容>/g,orders_postage)
-      val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
+      val = val.replace(/<購入者情報>/g,'【ご購入者】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
       val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
       val = val.replace(/<自社名>/g,yagou.value)
       val = val.replace(/<自社住所>/g,jusho.value)
@@ -1437,7 +1439,7 @@ const order_mng = (Where_to_use,p_token) => createApp({//販売管理
         val = val.replace(/<購入者名>/g,row.name)
         val = val.replace(/<注文内容>/g,orders)
         val = val.replace(/<送料込の注文内容>/g,orders_postage)
-        val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
+        val = val.replace(/<購入者情報>/g,'【ご購入者】\nお名前：' + row.name + '\n郵便番号：' + row.yubin + '\n住所：' + row.jusho + '\nTEL：' + row.tel + '\nMAIL：' + row.mail + '\nオーダー備考：\n' + row.bikou + '')
         val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：' + row.st_name + '\n郵便番号：' + row.st_yubin + '\n送付先住所：' + row.st_jusho + '\nTEL：' + row.st_tel + '')
         val = val.replace(/<自社名>/g,yagou.value)
         val = val.replace(/<自社住所>/g,jusho.value)
@@ -1666,7 +1668,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       val = val.replace(/<購入者名>/g,'田中次郎')
       val = val.replace(/<注文内容>/g,'【ご注文内容】\n◆商品Ａ\n価格( 10,000 円) x 2(コ) = 合計 20,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆商品Ｂ\n価格( 5,000 円) x 1(コ) = 合計 5,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆消費税：10% = 2,500 円\n◆ご注文総額：27,500円')
       val = val.replace(/<送料込の注文内容>/g,'【ご注文内容】\n◆商品Ａ\n価格( 10,000 円) x 2(コ) = 合計 20,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆商品Ｂ\n価格( 5,000 円) x 1(コ) = 合計 5,000 円(税抜)\n備考：ご要望等ございましたらご記入ください。\n\n◆消費税：10% = 2,500 円\n◆ご注文総額：27,500円\n\n◆配送料：500円\n\n御請求額：￥28,000')
-      val = val.replace(/<購入者情報>/g,'【ご注文主】\nお名前：田中次郎\n郵便番号：261XXXX\n送付先住所：千葉市美浜区〇〇〇\nTEL：09012341234\nMAIL：sample@gmail.com\nオーダー備考：\nご要望等ございましたらご記入ください。')
+      val = val.replace(/<購入者情報>/g,'【ご購入者】\nお名前：田中次郎\n郵便番号：261XXXX\n送付先住所：千葉市美浜区〇〇〇\nTEL：09012341234\nMAIL：sample@gmail.com\nオーダー備考：\nご要望等ございましたらご記入ください。')
       val = val.replace(/<届け先情報>/g,'【お届け先】\nお名前：佐藤次郎\n郵便番号：261XXXX\n送付先住所：千葉市若葉区〇〇〇\nTEL：09012341234')
       val = val.replace(/<自社名>/g,'サンプル株式会社')
       val = val.replace(/<自社住所>/g,'千葉県千葉市稲毛区〇〇〇〇')

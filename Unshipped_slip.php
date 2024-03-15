@@ -17,7 +17,7 @@
     ?>
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
-<BODY class='bd'>
+<BODY>
   <div id='app'>
   <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>

@@ -11,7 +11,7 @@
     <script src="./script/flow.js"></script>
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
-<BODY class='bd'>
+<BODY>
   <div id='app'>
   <HEADER class='container text-center common_header'>
     <h1><?php echo TITLE;?></h1>

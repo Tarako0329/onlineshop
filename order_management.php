@@ -20,9 +20,9 @@
         min-width: 30px;
       }
     </style>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE><?php echo TITLE;?> 受注管理</TITLE>
 </head>
-<BODY class='bd'>
+<BODY>
   <?php include "header_tag_admin.php"  ?>
   <div id='app'>
   <MAIN class='container common_main'>
@@ -130,11 +130,12 @@
                         <p>【注文者情報】</p>
                         <p>※[<i class="bi bi-pencil-square"></i>] を押すと修正できるようになります。</p>
                         <div class='row mb-3'>
-                          <div class='col-md-6 col-12'>
+                          <div class='col-12'>
                             <label :for='`od_atena${index}`' class="form-label">お名前・宛名</label>
                             <div class="input-group">
-                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_atena${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='text' v-model='list.name' class='form-control' :id='`od_atena${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"name",list.name,index)' disabled readonly>
+                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_atena${index}`,`p_atena${index}`)'><i class="bi bi-pencil-square"></i></button>
+                              <input type='text' v-model='list.name' class='form-control' :id='`od_atena${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"name",list.name,index)' disabled readonly style='display:none;'>
+                              <p style='margin-left:8px;font-size:larger;' :id='`p_atena${index}`'>{{list.name}}</p>
                             </div>
                           </div>
                         </div>
@@ -142,17 +143,19 @@
                           <div class='col-md-6 col-12'>
                             <label :for='`od_yubin${index}`' class="form-label">郵便番号</label>
                             <div class="input-group">
-                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_yubin${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='number' v-model='list.yubin' class='form-control' :id='`od_yubin${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"yubin",list.yubin,index)' disabled readonly>
+                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_yubin${index}`,`p_yubin${index}`)'><i class="bi bi-pencil-square"></i></button>
+                              <input type='number' v-model='list.yubin' class='form-control' :id='`od_yubin${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"yubin",list.yubin,index)' disabled readonly style='display:none;'>
+                              <p style='margin-left:8px;font-size:larger;' :id='`p_yubin${index}`'>{{list.yubin}}</p>
                             </div>
                           </div>
                         </div>
                         <div class='row mb-3'>
-                          <div class='col-md-6 col-12'>
+                          <div class='col-12'>
                             <label :for='`od_jusho${index}`' class="form-label">住所</label>
                             <div class="input-group">
-                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_jusho${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='text' v-model='list.jusho' class='form-control' :id='`od_jusho${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"jusho",list.jusho,index)' disabled readonly>
+                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_jusho${index}`,`p_jusho${index}`)'><i class="bi bi-pencil-square"></i></button>
+                              <input type='text' v-model='list.jusho' class='form-control' :id='`od_jusho${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"jusho",list.jusho,index)' disabled readonly style='display:none;'>
+                              <p style='margin-left:8px;font-size:larger;' :id='`p_jusho${index}`'>{{list.jusho}}</p>
                             </div>
                           </div>
                         </div>
@@ -160,17 +163,19 @@
                           <div class='col-md-6 col-12'>
                             <label :for='`od_tel${index}`' class="form-label">TEL</label>
                             <div class="input-group">
-                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)' disabled readonly>
+                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_tel${index}`,`p_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
+                              <input type='tel' v-model='list.tel' class='form-control' :id='`od_tel${index}`' @change='set_order_sts(list.orderNO,"tel",list.tel,index)' disabled readonly style='display:none;'>
+                              <p style='margin-left:8px;font-size:larger;' :id='`p_tel${index}`'>{{list.tel}}</p>
                             </div>
                           </div>
                         </div>
                         <div class='row mb-3'>
-                          <div class='col-md-6 col-12'>
+                          <div class='col-12'>
                             <label :for='`od_mail${index}`' class="form-label">e-mail</label>
                             <div class="input-group">
-                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_mail${index}`)'><i class="bi bi-pencil-square"></i></button>
-                              <input type='email' v-model='list.mail' class='form-control' :id='`od_mail${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"mail",list.mail,index)' disabled readonly>
+                              <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_mail${index}`,`p_mail${index}`)'><i class="bi bi-pencil-square"></i></button>
+                              <input type='email' v-model='list.mail' class='form-control' :id='`od_mail${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"mail",list.mail,index)' disabled readonly style='display:none;'>
+                              <p style='margin-left:8px;font-size:larger;' :id='`p_mail${index}`'>{{list.mail}}</p>
                             </div>
                           </div>
                         </div>
@@ -181,11 +186,12 @@
                           <hr>
                           <p>【発送先】</p>
                           <div class='row mb-3'>
-                            <div class='col-md-6 col-12'>
+                            <div class='col-12'>
                               <label :for='`st_atena${index}`' class="form-label">お届け先：お名前・宛名</label>
                               <div class="input-group">
-                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_atena${index}`)'><i class="bi bi-pencil-square"></i></button>
-                                <input type='text' v-model='list.st_name' class='form-control' :id='`st_atena${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_name",list.st_name,index)' disabled readonly>
+                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_atena${index}`,`p_st_name${index}`)'><i class="bi bi-pencil-square"></i></button>
+                                <input type='text' v-model='list.st_name' class='form-control' :id='`st_atena${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_name",list.st_name,index)' disabled readonly style='display:none;'>
+                                <p style='margin-left:8px;font-size:larger;' :id='`p_st_name${index}`'>{{list.st_name}}</p>
                               </div>
                             </div>
                           </div>
@@ -193,17 +199,19 @@
                             <div class='col-md-6 col-12'>
                               <label :for='`st_yubin${index}`' class="form-label">お届け先：郵便番号</label>
                               <div class="input-group">
-                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_yubin${index}`)'><i class="bi bi-pencil-square"></i></button>
-                                <input type='number' v-model='list.st_yubin' class='form-control' :id='`st_yubin${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_yubin",list.st_yubin,index)' disabled readonly>
+                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_yubin${index}`,`p_st_yubin${index}`)'><i class="bi bi-pencil-square"></i></button>
+                                <input type='number' v-model='list.st_yubin' class='form-control' :id='`st_yubin${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_yubin",list.st_yubin,index)' disabled readonly style='display:none;'>
+                                <p style='margin-left:8px;font-size:larger;' :id='`p_st_yubin${index}`'>{{list.st_yubin}}</p>
                               </div>
                             </div>
                           </div>
                           <div class='row mb-3'>
-                            <div class='col-md-6 col-12'>
+                            <div class='col-12'>
                               <label :for='`st_jusho${index}`' class="form-label">お届け先：住所</label>
                               <div class="input-group">
-                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_jusho${index}`)'><i class="bi bi-pencil-square"></i></button>
-                                <input type='text' v-model='list.st_jusho' class='form-control' :id='`st_jusho${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_jusho",list.st_jusho,index)' disabled readonly>
+                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_jusho${index}`,`p_st_jusho${index}`)'><i class="bi bi-pencil-square"></i></button>
+                                <input type='text' v-model='list.st_jusho' class='form-control' :id='`st_jusho${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"st_jusho",list.st_jusho,index)' disabled readonly style='display:none;'>
+                                <p style='margin-left:8px;font-size:larger;' :id='`p_st_jusho${index}`'>{{list.st_jusho}}</p>
                               </div>
                             </div>
                           </div>
@@ -211,8 +219,9 @@
                             <div class='col-md-6 col-12'>
                               <label :for='`st_tel${index}`' class="form-label">お届け先：TEL</label>
                               <div class="input-group">
-                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
-                                <input type='tel' v-model='list.st_tel' class='form-control' :id='`st_tel${index}`' @change='set_order_sts(list.orderNO,"st_tel",list.st_tel,index)' disabled readonly>
+                                <button type='button' class='btn btn-outline-secondary' @click='unlock(`st_tel${index}`,`p_st_tel${index}`)'><i class="bi bi-pencil-square"></i></button>
+                                <input type='tel' v-model='list.st_tel' class='form-control' :id='`st_tel${index}`' @change='set_order_sts(list.orderNO,"st_tel",list.st_tel,index)' disabled readonly style='display:none;'>
+                                <p style='margin-left:8px;font-size:larger;' :id='`p_st_tel${index}`'>{{list.st_tel}}</p>
                               </div>
                             </div>
                           </div>

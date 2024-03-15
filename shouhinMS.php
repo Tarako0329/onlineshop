@@ -15,9 +15,9 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_admin.php" 
     ?>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE><?php echo TITLE;?> 商品管理</TITLE>
 </head>
-<BODY class='bd'>
+<BODY>
   <?php include "header_tag_admin.php"  ?>
   <div id='app'>
   <MAIN class='container common_main' data-bs-spy="scroll">

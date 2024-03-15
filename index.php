@@ -22,12 +22,12 @@
     </style>
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
-<BODY class='bd'>
-  <div id='app' style='height: 100%'>
+<BODY >
+  <div id='app' style='min-height: 100%'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
-    <div v-if='mode==="shopping"' class='row pb-3 pt-3'>
+    <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
@@ -271,25 +271,6 @@
         <div id='scrollspy'><a href="#scrollspyHeading" id='spy2'></a></div>
       </div>
     </div>
-
-    <!--<div v-show='mode!=="ordered"' class="toast-container position-fixed bottom-0 end-0 p-3" style='width:250px;'>
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>
-        <div class="toast-header">
-          <img src="img/icon-16x16.png" class="rounded me-2" >
-          <strong class="me-auto">ご注文金額</strong>
-        </div>
-        <div class="toast-body" style='padding:5px;' v-for='(list,index) in Charge_amount_by_store' :key='list.uid'>
-          <div class='row ' style='padding:0;'>
-            <div class='col-12 d-flex flex-row-reverse'>
-              <div><a href="#scrollspyHeading" type='button' class='btn btn-primary ms-3' style='width:30px;' @click='ordering(list.uid)'>{{btn_name}}</a></div>
-              <div class='text-end' style='width:130px;'><span class='kakaku'>{{Math.floor(list.seikyu).toLocaleString()}} 円</span></div>
-              <div class='text-start' style='max-width:90px;white-space: nowrap;overflow: hidden;'>{{list.yagou}}：</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>-->
-
   </MAIN>
   <FOOTER class='container common_footer fixed-bottom'>
     <div v-show='mode!=="ordered"' class="toast-container position-absolute bottom-0 end-0 p-3" style='width:250px;'>

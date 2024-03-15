@@ -17,7 +17,7 @@
     </style>
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
-<BODY class='bd'>
+<BODY>
   <div id='app' style='height: 100%'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main'>

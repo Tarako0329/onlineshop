@@ -1,7 +1,7 @@
 /*色関連*/
 :root {
 	--main_font_color:black;
-	--bg_color:#cfd4c4;
+	--bg_color:rgb(255, 255, 255);	/*bodyタグ・mainタグの外*/
 	
 	--header_bg_color:rgb(249,208,216);
 	--main_bg_color:rgb(252, 238, 238);
