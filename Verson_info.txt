@@ -31,11 +31,18 @@ ver1.04.1:bugfix
 cd /home/pcntfsrg/public_html/onlineshop/onlineshop
 git fetch --all
 git reset --hard origin/main
+php load_font.php ipag css/ipag.ttf
+php load_font.php ipagp css/ipagp.ttf
+php load_font.php Kranky css/Kranky-Regular.ttf
 
 ローカルからエリコショップへ
 cd /home/pcntfsrg/public_html/onlineshop/Present
 git fetch --all
 git reset --hard origin/main
+php load_font.php ipag css/ipag.ttf
+php load_font.php ipagp css/ipagp.ttf
+php load_font.php Kranky css/Kranky-Regular.ttf
+
 
 git clone
 git pull origin master
