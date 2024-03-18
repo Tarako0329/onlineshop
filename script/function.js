@@ -20,3 +20,26 @@ const COPY_TARGET = (id) =>{
   navigator.clipboard.writeText(copyTarget);
 
 }
+
+//グローバル関数
+const GET_USER2 = ()=>{//サイト設定情報取得
+	return new Promise((resolve, reject) => {
+		GET_USER_SHORI(resolve);
+	});
+}
+const GET_USER_SHORI = (resolve) =>{
+  let obj
+  axios
+  .get(`ajax_get_usersMSonline.php`)
+  .then((response) => {
+    obj = response.data
+    console_log('ajax_get_usersMSonline succsess')
+  })
+  .catch((error)=>{
+    console_log('ajax_get_usersMSonline.php ERROR')
+    console_log(error)
+  })
+  .finally(()=>{
+    resolve(obj)
+  })
+}

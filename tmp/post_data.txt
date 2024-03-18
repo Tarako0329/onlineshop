@@ -1,0 +1,28 @@
+{
+    "to": "U56023f698175e5d2fc8bd649fc4b378b",
+    "messages": [
+        {
+            "type": "text",
+            "text": "こんにちは API"
+        },
+        {
+            "type": "text",
+            "text": "PHPからPUSH送信\r\n改行して２行目"
+        }
+    ]
+}
+
+{
+    "to": "U56023f698175e5d2fc8bd649fc4b378b",
+    "messages": [
+        {
+            "type": "text",
+            "text": "こんにちは API"
+        },
+        {
+            "type": "text",
+            "text": "PHPからPUSH送信\r\n改行して２行目"
+        }
+    ]
+}
+
