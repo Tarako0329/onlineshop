@@ -1,13 +1,18 @@
 <?php
+    require "php_header.php";
+
+    log_writer2("\$GET",$_GET,"lv3");
+    log_writer2("\$POST",$_POST,"lv3");
+
 // LINE Messaging API プッシュメッセージを送る
 $LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push";
 
 
-$LINE_CHANNEL_ACCESS_TOKEN = 'tMgHcjdEccRfOqeUnGb27VDF98ywD7HatWhLJC6tB0olVWon2rAa5cU+lCv3+MJWp/9K3KpJrqkipQsNwe5+HKX7RU5SW6kcRhr7vT8kZCldCK4WGnO1Y006Plr143WgDuOoVW8O43aib+NjVlmNZgdB04t89/1O/w1cDnyilFU='; 
+$LINE_CHANNEL_ACCESS_TOKEN = $_ENV["LINE_CHANNEL_ACCESS_TOKEN"];
 
 // Your user ID
 // Messaging API 管理画面で確認 これくらいながいやつ
-$LINE_USER_ID = "U56023f698175e5d2fc8bd649fc4b378b";
+$LINE_USER_ID = $_ENV["LINE_USER_ID"];
 
 // 送信するメッセージ
 $message_1 = "こんにちは API";
