@@ -177,49 +177,34 @@ if($rtn !== true){
                 $st_tel
                 EOM;
                 
-                $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+                if(!empty($owner[0]["line_id"])){
+                    $url = 'line_push_msg.php';
+
+                    $data = array(
+                        'LINE_USER_ID' => $owner[0]["line_id"],
+                        'MSG' => "オーダー受注通知[No:".$orderNO."]\r\n".$body,
+                    );
+                
+                    $context = array(
+                        'http' => array(
+                            'method'  => 'POST',
+                            'header'  => implode("\r\n", array('Content-Type: application/x-www-form-urlencoded',)),
+                            'content' => http_build_query($data)
+                        )
+                    );
+                
+                    $html = file_get_contents($url, false, stream_context_create($context));
+                
+                    //var_dump($http_response_header);
+                
+                    echo $html;
+                }else if(!empty($owner[0]["mail"])){
+                    $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+                }
 
                 //お客様向けメール
+                {
                 $title = TITLE;
-                /*
-                $body = <<< "EOM"
-                受付番号：$orderNO
-                $name 様
-
-                この度は $title onLineShop よりご注文いただき、誠にありがとうございます。
-
-                以下の内容にて、ご注文を受付ました。
-
-                別途、出店者よりお支払方法や納期などについてご連絡いたしますのでお待ちください。
-
-                【ご注文内容】
-                $orderlist
-                ご注文総額：$sougaku  内税($goukeizei)
-
-                【ご注文主】
-                お名前：$name
-                郵便番号：$yubin
-                送付先住所：$jusho
-                TEL：$tel
-                MAIL：$mail
-                オーダー備考：
-                $bikou
-
-                【お届け先】(表示がない場合は同上)
-                宛名：$st_name
-                郵便番号：$st_yubin
-                住所：$st_jusho
-                TEL：$st_tel
-
-                ※
-                ※ご注文内容の修正・キャンセルについては以下のメールもしくはお電話にてご連絡ください。
-                ※
-
-                MAIL：$owner[0]["mail"]
-                TEL：$owner[0]["tel"]
-
-                EOM;
-                */
 
                 $body = $owner[0]["mail_body_auto"];
 
@@ -236,6 +221,7 @@ if($rtn !== true){
                 $body = str_replace("<代表者>",$owner[0]["shacho"],$body);
           
                 $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["CC_mail"]);
+                }
             }
 
             //$count = $stmt->rowCount();
