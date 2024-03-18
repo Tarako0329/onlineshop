@@ -44,6 +44,34 @@ const GET_USER_SHORI = (resolve) =>{
   })
 }
 
+const UPLOADFILE = (id) =>{//写真アップロード処理・写真をアップしファイルパスを取得
+  const params = new FormData();
+  
+  let i = 0
+  while(document.getElementById(id).files[i]!==undefined){
+    params.append(`user_file_name_${i}`, document.getElementById(id).files[i]);
+    i = i+1
+  }
+  params.append('shouhinCD',shouhinCD.value)
+  loader.value = true
+  axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+  .then((response)=>{
+    console_log(response.data)
+    if(response.data.status==="success"){
+      pic_list.value = [...pic_list.value,...response.data.filename]
+    }else{
+      alert('写真アップロードエラー')
+    }
+  })
+  .catch((error)=>{
+    console_log(error)
+    alert('写真アップロードERROR')
+  })
+  .finally(()=>{
+    loader.value = false
+  })
+}
+
 const LINE_PUSH = (ID,MSG) =>{
   const form = new FormData();
   form.append(`LINE_USER_ID`, ID)

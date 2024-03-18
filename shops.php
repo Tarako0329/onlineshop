@@ -26,19 +26,14 @@
       <template v-for='(list,index) in shoplist' :key='list.uid'>
         <div class='col-xl-6 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
-            <div class='row pb-1'>
-            </div>
             <div class='row'>
-              <div class='col-12'><!--詳細-->
-                <div class="card" style="width: 100%;">
-                  <img src="img/android-chrome-152x152.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">{{list.yagou}}</h5>
-                    <p class="card-text">{{list.site_pr}}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
+              <div class='col-12 d-flex original-gradient' style='height:50px;'><!--詳細-->
+                <div style='height:50px;padding:2px;border:solid 2px #fff;'><img style='height:100%' src="img/android-chrome-152x152.png" ></div>
+                <div class='ms-3 pt-3'><h3 class="card-title">{{list.yagou}}</h3></div>
               </div><!--詳細-->
+              <div class='col-12 p-3'>
+                <div style='white-space: pre-wrap;' v-html='list.site_pr'></div>
+              </div>
             </div>
             
           </div>

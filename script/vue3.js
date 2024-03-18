@@ -1577,7 +1577,20 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
     const lock_sts = ref('')
     const cancel_rule = ref('例\n受注生産品について：ご注文受付のメール送信後はキャンセル不可となっております。\n汎用製品について：入金確認後、７日以内でしたらキャンセルを受け付けます。\n返品時の送料についてはご負担願います。')
 
+    const site_pr_chk = computed(()=>{
+      let msg = ''
+      if(site_pr.value.toLowerCase().includes("input")){msg = "inputタグは使えません\n"}
+      if(site_pr.value.toLowerCase().includes("<a")){msg = msg + "aタグは使えません\n"}
+      if(site_pr.value.toLowerCase().includes("script")){msg = msg + "scriptタグは使えません\n"}
+      if(site_pr.value.toLowerCase().includes("form")){msg = msg + "formタグは使えません\n"}
+      return msg
+    })
+
     const set_user = () =>{
+      if(site_pr_chk.value){
+        alert("サイトPRが不正です")
+        return;
+      }
       loader.value = true
       const form = new FormData();
       form.append(`yagou`, yagou.value)
@@ -1717,6 +1730,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       line_id,
       site_name,
       site_pr,
+      site_pr_chk,
       logo,
       set_user,
       loader,

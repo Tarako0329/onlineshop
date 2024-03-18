@@ -28,7 +28,7 @@
     </transition>-->
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
-        <label for='yagou' class="form-label">屋号</label>
+        <label for='yagou' class="form-label">屋号・ショップ名</label>
         <input type='text' class='form-control' id='yagou' v-model='yagou'>
       </div>
     </div>
@@ -40,10 +40,20 @@
     </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <label for='site_pr' class="form-label">サイトＰＲ</label>
+        <label for='site_pr' class="form-label">ショップＰＲ</label><small>（htmlタグが使用できます）</small>
         <textarea type='memo' class='form-control' id='site_pr' rows="10" v-model='site_pr'></textarea>
+        <small style='color:red;'>{{site_pr_chk}}</small>
       </div>
     </div>
+    <!--<div class='row mb-5 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='shop_logo' class="form-label">ショップロゴ</label>
+        <div class="input-group mb-3">
+          <input type="file" class="form-control" id='shop_logo' v-model='shop_logo'>
+        </div>
+        <small>(50 x 50)px で表示されます</small>
+      </div>
+    </div>-->
     <div class='row mb-3 pt-3'>
       <div class='col-md-6 col-12'>
         <label for='shacho' class="form-label">代表者</label>
@@ -292,7 +302,7 @@
 
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
-        <button type='button' class='btn btn-primary m-2' @click='set_user' style='width:80px;'>登録</button>
+        <button type='button' class='btn btn-primary m-2 btn-lg' @click='set_user' style='width:80px;'>登録</button>
         <!--<a href="#scrollspyHeading" type='button' class='btn btn-primary m-2' @click='set_user'>登録</a>-->
       </div>
     </div>
