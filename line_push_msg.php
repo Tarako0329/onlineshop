@@ -1,8 +1,10 @@
 <?php
     require "php_header.php";
+$json_string = file_get_contents('php://input');
+$json_obj = json_decode($json_string);
 
-    log_writer2("\$GET",$_GET,"lv3");
-    log_writer2("\$POST",$_POST,"lv3");
+    log_writer2("\$json_obj",$json_obj,"lv3");
+    //log_writer2("\$POST",$_POST,"lv3");
 
 // LINE Messaging API プッシュメッセージを送る
 $LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push";
