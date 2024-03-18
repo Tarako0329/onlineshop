@@ -1,10 +1,6 @@
 <?php
-    require "php_header.php";
-$json_string = file_get_contents('php://input');
-$json_obj = json_decode($json_string);
-
-    log_writer2("\$json_obj",$json_obj,"lv3");
-    //log_writer2("\$POST",$_POST,"lv3");
+require "php_header.php";
+log_writer2("\$POST",$_POST,"lv3");
 
 // LINE Messaging API プッシュメッセージを送る
 $LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push";
@@ -14,11 +10,7 @@ $LINE_CHANNEL_ACCESS_TOKEN = $_ENV["LINE_CHANNEL_ACCESS_TOKEN"];
 
 // Your user ID
 // Messaging API 管理画面で確認 これくらいながいやつ
-$LINE_USER_ID = $_ENV["LINE_USER_ID"];
-
-// 送信するメッセージ
-$message_1 = "こんにちは API";
-$message_2 = "PHPからPUSH送信\r\n改行して２行目";
+$LINE_USER_ID = $_POST["LINE_USER_ID"];
 
 // リクエストヘッダ
 $header = [
@@ -30,11 +22,7 @@ $header = [
 $post_values = array(
     [
     "type" => "text",
-    "text" => $message_1
-    ],
-    [
-    "type" => "text",
-    "text" => $message_2
+    "text" => $_POST["MSG"]
     ]
 );
 
@@ -64,9 +52,7 @@ if ($USE_CURL) {
     curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
     $result = curl_exec($curl);
     curl_close($curl);
-}
-else
-{
+}else{
     // file_get_contentsを使った送信処理
     $context = stream_context_create(array(
         'http' => array(
@@ -85,7 +71,7 @@ else
 }
 
 // デバグ確認用のログ：受信レスポンス
-$file = 'tmp/result.txt';
-file_put_contents($file, $result, FILE_APPEND);
-file_put_contents($file, PHP_EOL.PHP_EOL, FILE_APPEND);
+//$file = 'tmp/result.txt';
+//file_put_contents($file, $result, FILE_APPEND);
+//file_put_contents($file, PHP_EOL.PHP_EOL, FILE_APPEND);
 ?>

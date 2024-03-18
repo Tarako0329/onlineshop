@@ -23,7 +23,7 @@ ver1.04.0:発送補助機能追加
 ver1.04.1:bugfix
 ver1.04.2:細かな修正
 ver1.04.3:ショップリスト作成&LINE
-
+  ALTER TABLE `Users_online` ADD `line_id` VARCHAR(40) NULL COMMENT 'LINE ID' AFTER `cancel_rule`;
 
 
 【Issues】

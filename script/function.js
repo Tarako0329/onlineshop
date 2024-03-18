@@ -43,3 +43,20 @@ const GET_USER_SHORI = (resolve) =>{
     resolve(obj)
   })
 }
+
+const LINE_PUSH = (ID,MSG) =>{
+  const form = new FormData();
+  form.append(`LINE_USER_ID`, ID)
+  form.append(`MSG`, MSG)
+
+  axios.post("line_push_msg.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+  .then((response) => {
+    console_log('line_push_msg succsess')
+  })
+  .catch((error)=>{
+    console_log('line_push_msg.php ERROR')
+    console_log(error)
+  })
+  .finally(()=>{
+  })
+}

@@ -1561,6 +1561,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
     const tel = ref('')
     const mail = ref('')
     const cc_mail = ref('')
+    const line_id = ref('')
     const mail_body_auto = ref('<購入者名> 様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を受け付けました。\n\n<注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n※弊社担当にてご注文内容の確認が取れましたら、お支払い・納期等についてのご案内メールを送付いたします。\n※メールが届かない場合、また、不明点・お問い合わせ等ございましたら以下までご連絡くださいませ。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const mail_body = ref('<購入者名> 様\n\nご注文ありがとうございます。\n以下の内容にて、ご注文を承りました。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n<届け先情報>\n\n下記支払先へのお支払いが確認できましたら発送準備に入ります。\n【銀行振込】\n〇〇銀行〇〇支店　普通　0123456\n振込手数料についてはお客様負担となります\n\n【paypay】\n＊＊＊＊＊＊\n\n不明点・お問い合わせ等ございましたら下記へご連絡ください。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
     const mail_body_paid = ref('<購入者名> 様\n\nいつもありがとうございます。\n\n以下のご注文についてのお支払いを確認いたしました。\n発送が終わりましたら再度ご連絡させていただきます。\n\n<送料込の注文内容>\n\n<購入者情報>\n\n何かございましたら以下までご連絡くださいませ。\n\n*************************\n<自社名>\n<自社住所>\nTEL:<問合せ受付TEL>\nMAIL:<問合せ受付MAIL>\n*************************')
@@ -1586,6 +1587,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       form.append(`tel`, tel.value)
       form.append(`mail`, mail.value)
       form.append(`cc_mail`, cc_mail.value)
+      form.append(`line_id`, line_id.value)
       form.append(`mail_body`, mail_body.value)
       form.append(`mail_body_auto`, mail_body_auto.value)
       form.append(`mail_body_paid`, mail_body_paid.value)
@@ -1656,6 +1658,10 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       return get_mail_sample(mail_body_cancel.value)
     })
 
+    const line_test = () =>{
+      LINE_PUSH(line_id.value,"テスト：「オーダーが入りました」")
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -1673,6 +1679,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
         tel.value = response[0].tel
         mail.value = response[0].mail
         cc_mail.value = response[0].cc_mail
+        line_id.value = response[0].line_id
         chk_recept.value = response[0].chk_recept===1?true:false
         chk_sent.value = response[0].chk_sent===1?true:false
         chk_paid.value = response[0].chk_paid===1?true:false
@@ -1707,6 +1714,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       tel,
       mail,
       cc_mail,
+      line_id,
       site_name,
       site_pr,
       logo,
@@ -1727,6 +1735,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       chk_sent,
       lock_sts,
       cancel_rule,
+      line_test,
     }
   }
 })

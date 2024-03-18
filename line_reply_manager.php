@@ -43,7 +43,7 @@
         $post_values = array(
             [
                 "type" => "text",
-                "text" => "フォローありがとう！"
+                "text" => "フォローありがとう！\r\n「userid」とメッセージを送ると、サイト設定画面に入力するLINE ID が返信されるよ。"
             ]
         );
     }

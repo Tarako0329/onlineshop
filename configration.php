@@ -81,6 +81,20 @@
         <small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
       </div>
     </div>
+    <div class='row mb-5 pt-3'>
+      <div class='col-md-6 col-12'>
+        <label for='line_id' class="form-label">LINE ID</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id='line_id' v-model='line_id'>
+          <button class="btn btn-outline-success" type="button" id="button-addon2" @click='line_test()'>LINEテスト</button>
+        </div>
+        <small>
+          <p>設定すると、注文の通知がLINEに届きます。</p>
+          <p>LINE ID はお友達とLINE交換などで使用しているＩＤとは異なります</p>
+          <p><a href="https://lin.ee/bIvwCmb"> 通知用のLINEチャンネル</a>に登録して取得してください。</p>
+        </small>
+      </div>
+    </div>
     <div class='row mb-3'>
       <div class='col-md-6 col-12'>
         <label for='cancel_rule' class="form-label">キャンセル規定</label>
