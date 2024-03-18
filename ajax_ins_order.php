@@ -178,7 +178,7 @@ if($rtn !== true){
                 EOM;
                 
                 if(!empty($owner[0]["line_id"])){
-                    $url = 'line_push_msg.php';
+                    $url = ROOT_URL.'line_push_msg.php';
 
                     $data = array(
                         'LINE_USER_ID' => $owner[0]["line_id"],
@@ -197,7 +197,7 @@ if($rtn !== true){
                 
                     //var_dump($http_response_header);
                 
-                    echo $html;
+                    //echo $html;
                 }else if(!empty($owner[0]["mail"])){
                     $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
                 }
