@@ -13,11 +13,39 @@
 
     if ($type == 'message') {
         $msg = $json_obj->events[0]->message->text ;
-        if($msg <> "userid"){
-            exit();
+        if($msg == "userid"){
+            // 送信するメッセージ
+            $post_values = array(
+                [
+                    "type" => "text",
+                    "text" => "ユーザIDは"
+                ],
+                [
+                    "type" => "text",
+                    "text" => $user_id
+                ],
+                [
+                    "type" => "text",
+                    "text" => "になります。\r\nサイト設定画面の「LINE ID」に設定してください。"
+                ]
+                
+            );
+        }else{
+            $post_values = array(
+                [
+                    "type" => "text",
+                    "text" => "教えてあげることは何もないよ～"
+                ]
+            );
+
         }
     } else {
-        exit();
+        $post_values = array(
+            [
+                "type" => "text",
+                "text" => "フォローありがとう！"
+            ]
+        );
     }
 
 
@@ -31,10 +59,6 @@
     //$LINE_USER_ID = $_ENV["LINE_USER_ID"];
     $LINE_USER_ID = $user_id;
 
-    // 送信するメッセージ
-    $message_1 = "ユーザIDは";
-    $message_2 = $user_id;
-    $message_3 = "になります。\r\nサイト設定画面の「LINE ID」に設定してください。";
 
     // リクエストヘッダ
     $header = [
@@ -43,21 +67,6 @@
     ];
 
     // 送信するメッセージの下準備
-    $post_values = array(
-        [
-            "type" => "text",
-            "text" => $message_1
-        ],
-        [
-            "type" => "text",
-            "text" => $message_2
-        ],
-        [
-            "type" => "text",
-            "text" => $message_3
-        ]
-        
-    );
 
     // 送信するデータ
     $post_data = [
