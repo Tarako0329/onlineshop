@@ -55,6 +55,16 @@ if($rtn !== true){
         $params["cancel_rule"] = $_POST["cancel_rule"];
 
         try{
+            if (is_file($params["logo"])) {//fileの移動
+                if ( rename($params["logo"] , str_replace("temp/","",$params["logo"]))) {
+                    $params["logo"] = str_replace("temp/","",$params["logo"] );
+                } else {
+                    $msg = "ファイル移動失敗";
+                }
+            } else {
+                $msg = "ファイル保存失敗 or ファイル未設定・NOFILE";
+            }
+
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
             //sqllogger("START TRANSACTION",[],basename(__FILE__),"ok");
