@@ -702,6 +702,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           kingakus.push({
             "uid":row.uid
             ,"yagou":row.yagou
+            ,"logo":row.logo
             ,"tel":row.tel
             ,"mail":row.mail
             ,"cancel_rule":row.cancel_rule
@@ -710,20 +711,13 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           
           kingaku_temp = Decimal(0)
         }
-        /*else if(index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0){
-          kingakus.push({
-            "uid":row.uid
-            ,"yagou":row.yagou
-            ,"seikyu":kingaku_temp.toNumber()
-          })
-          kingaku_temp = Decimal(0)
-        }*/
       })
 
       if(kingakus.length===0){
         kingakus.push({
           "uid":9999999
           ,"yagou":'shop'
+          ,"logo":''
           ,"tel":'None'
           ,"mail":'None'
           ,"cancel_rule":"None"

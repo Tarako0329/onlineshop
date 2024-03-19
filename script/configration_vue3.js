@@ -1,7 +1,8 @@
 //const { createApp, ref, onMounted, onBeforeMount, computed,watch } = Vue;
-const configration = (Where_to_use,p_token) => createApp({//サイト設定
+const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
   setup() {
     let token = p_token
+    let hash = p_hash
     const yagou = ref('')
     const tantou = ref('')
     const shacho = ref('')
@@ -94,6 +95,7 @@ const configration = (Where_to_use,p_token) => createApp({//サイト設定
       form.append(`lock_sts`, lock_sts.value)
       form.append(`cancel_rule`, cancel_rule.value)
       form.append(`csrf_token`, token)
+      form.append(`hash`, hash)
 
       axios.post("ajax_delins_userMSonline.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{

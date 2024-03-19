@@ -107,7 +107,11 @@
 
     <div v-show='mode==="ordering"'>
       <div class='row mb-1' id="scrollspyHeading1">
-        <div class='col-md-6 col-12'>
+        <div v-if='Charge_amount_by_store[0].logo!==""' class='col-md-6 col-12 d-flex'>
+          <div style='width:30px;height:30px;padding:2px;border:solid 2px #fff;'><img style='height:100%' :src="Charge_amount_by_store[0].logo" ></div>
+          <h3 class='mt-1'>【 {{Charge_amount_by_store[0].yagou}} 】</h3>
+        </div>
+        <div v-else class='col-md-6 col-12'>
           <h3><i class="bi bi-shop"></i>【 {{Charge_amount_by_store[0].yagou}} 】</h3>
         </div>
       </div>

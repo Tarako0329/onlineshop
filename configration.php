@@ -353,7 +353,7 @@
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
 	<script src="script/configration_vue3.js?<?php echo $time; ?>"></script>
 	<script>
-		configration('configration.php','<?php echo $token; ?>').mount('#app');
+		configration('configration.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
 		admin_menu('configration.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>
 	<script>// Enterキーが押された時にSubmitされるのを抑制する
