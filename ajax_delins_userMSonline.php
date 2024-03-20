@@ -23,7 +23,7 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    $rtn=check_session_userid_for_ajax($pdo_h);
+    //$rtn=check_session_userid_for_ajax($pdo_h);
     if($rtn===false){
         $reseve_status = true;
         $msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";

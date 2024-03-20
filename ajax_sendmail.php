@@ -10,6 +10,12 @@ $timeout=false;                     //セッション切れ。ログイン画面
 $sqllog="";
 sleep(2);
 //log_writer2("\$_POST",$_POST,"lv3");
+if(empty($_POST["hash"])){
+    echo "アクセスが不正です。";
+    exit();
+}
+$user_hash = $_POST["hash"] ;
+$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 $rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
 if($rtn !== true){
@@ -17,7 +23,7 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    $rtn=check_session_userid_for_ajax($pdo_h);
+    //$rtn=check_session_userid_for_ajax($pdo_h);
     if($rtn===false){
         $reseve_status = true;
         $msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";

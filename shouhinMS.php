@@ -133,9 +133,10 @@
 	</div>
   </div><!--app-->
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/shouhinMS_vue3.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('shouhinMS.php','','<?php echo $user_hash;?>').mount('#admin_menu');
-    shouhinMS('shouhinMS.php','<?php echo $token; ?>').mount('#app');
+    shouhinMS('shouhinMS.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

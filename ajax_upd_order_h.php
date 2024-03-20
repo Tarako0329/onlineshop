@@ -8,8 +8,14 @@ $alert_status = "alert-warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
+if(empty($_POST["hash"])){
+    echo "アクセスが不正です。";
+    exit();
+}
+$user_hash = $_POST["hash"] ;
+$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-//log_writer2("\$_POST",$_POST,"lv3");
+log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
 if($rtn !== true){
@@ -17,7 +23,7 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    $rtn=check_session_userid_for_ajax($pdo_h);
+    //$rtn=check_session_userid_for_ajax($pdo_h);
     if($rtn===false){
         $reseve_status = true;
         $msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";

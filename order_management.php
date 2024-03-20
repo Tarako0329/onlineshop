@@ -280,7 +280,7 @@
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
-    order_mng('order_management.php','<?php echo $token; ?>').mount('#app');
+    order_mng('order_management.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
     admin_menu('order_management.php','','<?php echo $user_hash;?>').mount('#admin_menu');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
