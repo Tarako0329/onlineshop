@@ -241,6 +241,7 @@
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<配送状況>"}' style='width:70px;min-width:50px;'>配送状況</button>
 							</div>
 						</div>
 						<small>メールサンプル</small>

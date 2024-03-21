@@ -177,7 +177,7 @@ if($rtn !== true){
                 $st_tel
                 EOM;
                 
-                if(!empty($owner[0]["line_id"])){
+                if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){
                     $url = ROOT_URL.'line_push_msg.php';
 
                     $data = array(

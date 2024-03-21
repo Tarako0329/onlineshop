@@ -118,10 +118,26 @@
                         </table>
                         <div class='row mb-3'>
                           <div class='col-md-6 col-12'>
+                            <label :for='`post_corp${index}`' class="form-label">配送業者</label>
+                            <input type='text' v-model='list.post_corp' class='form-control' :id='`post_corp${index}`' @change='set_order_sts(list.orderNO,"post_corp",list.post_corp,index)'> 
+                          </div>
+                        </div>
+                        <div class='row mb-3'>
+                          <div class='col-md-6 col-12'>
                             <label :for='`postage${index}`' class="form-label">送料</label>
-                            <div class="input-group">
-                              <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'>
-                            </div>
+                            <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'> 
+                          </div>
+                        </div>
+                        <div class='row mb-3'>
+                          <div class='col-md-6 col-12'>
+                            <label :for='`postage_url_${index}`' class="form-label">配送状況確認URL</label>
+                            <input type='text' v-model='list.postage_url' class='form-control' :id='`postage_url_${index}`' @change='set_order_sts(list.orderNO,"postage_url",list.postage_url,index)'> 
+                          </div>
+                        </div>
+                        <div class='row mb-3'>
+                          <div class='col-md-6 col-12'>
+                            <label :for='`postage_no_${index}`' class="form-label">配送状況確認用の番号</label>
+                            <input type='text' v-model='list.postage_no' class='form-control' :id='`postage_no_${index}`' @change='set_order_sts(list.orderNO,"postage_no",list.postage_no,index)'> 
                           </div>
                         </div>
                         <p>【注文者要望】</p>

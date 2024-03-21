@@ -32,6 +32,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
   setup() {
     let token = p_token
     let hash = p_hash
+    let haita_flg = 'stop'//set_order_stsをシングルスレッドに
 
     const orderlist_hd = ref([])
     const orderlist_bd = ref([])
@@ -57,6 +58,12 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       })
     }
     const set_order_sts = (orderNO,colum,val,index) =>{//受注情報の更新
+      if(haita_flg !== 'stop'){
+        console_log('set_order_sts：排他')
+        return
+      }
+      haita_flg = 'start'
+      loader.value = true
       //colum項目にvalを設定
       console_log(orderNO)
       console_log(colum)
@@ -79,6 +86,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         console_log(response.data)
         send_mailsubject.value = `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`
         if(response.data.status==="alert-success"){
+          token = response.data.csrf_create
           if((colum==="payment" || colum==="sent" || colum==="first_answer") && val===1){
             if(confirm('メール送信画面を開きますか？')){
               send_index.value = index
@@ -88,17 +96,35 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
                 document.getElementById("modalon").click()
               }
               if(colum==="sent" && val===1){
+                if(String(orderlist_hd.value[index].postage_url).length<9){
+                  if(confirm("配送確認URLは未入力のままでよいですか？")===false){
+                    document.getElementById(`postage_url_${index}`).style.backgroundColor="rgb(243, 149, 235)"
+                    return
+                  }
+                }
+                if(String(orderlist_hd.value[index].postage_no).length<=1){
+                  if(confirm("配送確認番号は未入力のままでよいですか？")===false){
+                    document.getElementById(`postage_no_${index}`).style.backgroundColor="rgb(243, 149, 235)"
+                    return
+                  }
+                }
+                document.getElementById(`postage_url_${index}`).style.backgroundColor="#fff"
+                document.getElementById(`postage_no_${index}`).style.backgroundColor="#fff"
+
                 send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
                 document.getElementById("modalon").click()
               }
               if(colum==="first_answer" && val===1){
-                if(confirm(`送料は ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
+                if(confirm(`配送業者『${orderlist_hd.value[index].post_corp}』　送料 ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
                   document.getElementById(`postage${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                  return
+                  document.getElementById(`post_corp${index}`).style.backgroundColor="rgb(243, 149, 235)"
+                  //return
+                }else{
+                  document.getElementById(`postage${index}`).style.backgroundColor="#fff"
+                  document.getElementById(`post_corp${index}`).style.backgroundColor="#fff"
+                  send_mailbody.value=get_mail_sample(mail_body.value,index)
+                  document.getElementById("modalon").click()
                 }
-                document.getElementById(`postage${index}`).style.backgroundColor="#fff"
-                send_mailbody.value=get_mail_sample(mail_body.value,index)
-                document.getElementById("modalon").click()
               }
             }
           }
@@ -109,14 +135,15 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         }else{
           alert('更新失敗')
         }
-        token = response.data.csrf_create
+        //token = response.data.csrf_create
       })
       .catch((error,response)=>{
         console_log(error)
         token = response.data.csrf_create
       })
       .finally(()=>{
-        //loader.value = false
+        loader.value = false
+        haita_flg = 'stop'
       })
     }
 
@@ -161,6 +188,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       let val = template
       let orders = ''
       let orders_postage = ''
+      let post_info = ''
 
       let row = orderlist_hd.value[index]
       
@@ -176,8 +204,12 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       })
       orders = orders + "ご注文総額： " + String(Number(row.税込総額).toLocaleString()) + " 円(税込)"
       
-      orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円\n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
+      orders_postage = orders + "\n\n◆送料：" + String(Number(row.postage).toLocaleString()) + " 円 （" + row.post_corp + "） \n\n御請求額："+String((Number(row.税込総額)+Number(row.postage)).toLocaleString())+"円"
       
+      if(String(row.post_corp).length > 1){post_info = post_info + `配送業者：${row.post_corp}\n`}
+      if(String(row.postage_url).length > 9){post_info = post_info + `ＵＲＬ：${row.postage_url}\n`} // https:// で 8文字なので
+      if(String(row.postage_no).length > 1){post_info = post_info + `確認番号：${row.postage_no}\n`}
+
       val = val.replace(/<購入者名>/g,row.name)
       val = val.replace(/<注文内容>/g,orders)
       val = val.replace(/<送料込の注文内容>/g,orders_postage)
@@ -189,7 +221,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       val = val.replace(/<問合せ受付MAIL>/g,mail.value)
       val = val.replace(/<問合担当者>/g,tantou.value)
       val = val.replace(/<代表者>/g,shacho.value)
-        
+      val = val.replace(/<配送状況>/g,post_info)
       
       return val
     }

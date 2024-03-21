@@ -33,9 +33,9 @@ $post_data = [
     ];
 
 // デバグ確認用のログ：送信データ
-$file = 'tmp/post_data.txt';
-file_put_contents($file, json_encode($post_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), FILE_APPEND);
-file_put_contents($file, PHP_EOL.PHP_EOL, FILE_APPEND);
+//$file = 'tmp/post_data.txt';
+//file_put_contents($file, json_encode($post_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), FILE_APPEND);
+//file_put_contents($file, PHP_EOL.PHP_EOL, FILE_APPEND);
 
 // cURLを使った送信処理の時は true
 // file_get_contentsを使った送信処理の時は false
