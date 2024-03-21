@@ -25,6 +25,7 @@ ver1.04.2:細かな修正
 ver1.04.3:ショップリスト作成&LINE
   ALTER TABLE `Users_online` ADD `line_id` VARCHAR(40) NULL COMMENT 'LINE ID' AFTER `cancel_rule`;
 ver1.04.4:細かな修正
+ver1.04.5:細かな修正bugfix
 
 【Issues】
 
@@ -46,8 +47,18 @@ php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
 
 
+php load_font.php ipag C:\xampp\htdocs\SaleM\css\ipag.ttf
+php load_font.php ipagp C:\xampp\htdocs\SaleM\css\ipagp.ttf
+php load_font.php Kranky C:\xampp\htdocs\SaleM\css\Kranky-Regular.ttf
+
 git clone
 git pull origin master
 
 git config --global user.name "Tarako0329"
 git config --global user.email green.green.midori@gmail.com
+
+MYSQL　大文字小文字
+Unix 上では lower_case_table_names=0 を、Windows 上では lower_case_table_names=2 を使用してください。 
+これでデータベース名とテーブル名の大文字と小文字の区別が保持されます。 この欠点は、ユーザーのステートメントが、
+Windows 上で正しい大文字または小文字でデータベース名およびテーブル名を常に参照していることを確認する必要があることです。 
+大文字と小文字が区別される Unix にステートメントを転送する場合、大文字と小文字が正しくなければこのステートメントは機能しません。

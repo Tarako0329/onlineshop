@@ -27,6 +27,7 @@
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
+
     <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
@@ -39,10 +40,10 @@
                     <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD'>
                       <div v-if='list.shouhinCD===pic_list.shouhinCD && list.uid===pic_list.uid'>
                         <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
-                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(list.shouhinCD)'>
+                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(pic_list.uid,list.shouhinCD)'>
                         </div>
                         <div v-else class="carousel-item" style='text-align: center;'>
-                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(list.shouhinCD)'>
+                          <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(pic_list.uid,list.shouhinCD)'>
                         </div>
                       </div>
                     </template>
@@ -295,10 +296,10 @@
       </div>
     </div>
   </FOOTER>
-  <Transition>
-    <div v-show='img_zoom' class='img-wrap'>
-      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:5px;right:5px;' @click='pic_zoom(0)'></button>
-      <div id="carousel" class="carousel slide" style='width:90%;max-width: 800px;'>
+  <Transition><!--写真ズーム-->
+    <div v-show='img_zoom' class='img-wrap' >
+      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;' @click='pic_zoom(0,0)'></button>
+      <div id="carousel" class="carousel slide" style='max-width:90%;width: 800px;aspect-ratio: 4 / 3;'>
         <div class="carousel-inner">
           <template v-for='(pic_list,index2) in shouhinMS_pic_sel' :key='pic_list.shouhinCD'>
             <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
@@ -327,6 +328,7 @@
 
   </div>
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/index_vue3.js?<?php echo $time; ?>"></script>
   <script>
     sales('index','<?php echo $token; ?>').mount('#app');
   </script>
