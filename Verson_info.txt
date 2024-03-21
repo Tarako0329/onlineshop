@@ -26,6 +26,7 @@ ver1.04.3:ショップリスト作成&LINE
   ALTER TABLE `Users_online` ADD `line_id` VARCHAR(40) NULL COMMENT 'LINE ID' AFTER `cancel_rule`;
 ver1.04.4:細かな修正
 ver1.04.5:細かな修正bugfix
+ver1.04.6:細かな修正
 
 【Issues】
 

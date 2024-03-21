@@ -1,6 +1,4 @@
 const { createApp, ref, onMounted, onBeforeMount, computed,watch } = Vue;
-
-
 const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メニュー
   setup() {
     const menu = ref([
@@ -94,6 +92,11 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
                 document.getElementById("modalon").click()
               }
               if(colum==="first_answer" && val===1){
+                if(confirm(`送料は ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
+                  document.getElementById(`postage${index}`).style.backgroundColor="rgb(243, 149, 235)"
+                  return
+                }
+                document.getElementById(`postage${index}`).style.backgroundColor="#fff"
                 send_mailbody.value=get_mail_sample(mail_body.value,index)
                 document.getElementById("modalon").click()
               }

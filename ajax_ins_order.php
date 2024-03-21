@@ -8,12 +8,6 @@ $alert_status = "alert-warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
-if(empty($_POST["hash"])){
-    echo "アクセスが不正です。";
-    exit();
-}
-$user_hash = $_POST["hash"] ;
-$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 //log_writer2("\$_POST",$_POST,"lv3");
 
