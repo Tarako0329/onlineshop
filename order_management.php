@@ -295,6 +295,7 @@
   </div><!--app-->
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/order_management_vue3.js?<?php echo $time; ?>"></script>
   <script>
     order_mng('order_management.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
     admin_menu('order_management.php','','<?php echo $user_hash;?>').mount('#admin_menu');

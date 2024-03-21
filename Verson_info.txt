@@ -31,6 +31,8 @@ ver1.05.0:発送連絡の機能追加
   ALTER TABLE `juchuu_head` ADD `postage_url` VARCHAR(400) NULL COMMENT '配送確認URL' AFTER `postage`, ADD `postage_no` VARCHAR(100) NULL COMMENT '配送確認用番号' AFTER `postage_url`;
   ALTER TABLE `juchuu_head` ADD `post_corp` VARCHAR(40) NOT NULL COMMENT '配送業者' AFTER `sent`;
   ALTER TABLE `juchuu_head` CHANGE `post_corp` `post_corp` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送業者', CHANGE `postage_url` `postage_url` VARCHAR(400) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送確認URL', CHANGE `postage_no` `postage_no` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送確認用番号';
+ver1.06.0:QR決済情報追加
+
 
 【Issues】
 

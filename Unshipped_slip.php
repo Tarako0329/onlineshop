@@ -94,7 +94,7 @@
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('Unshipped_slip.php','','<?php echo $user_hash;?>').mount('#admin_menu');
-    Unsipped_slip('Unshipped_slip.php','<?php echo $token;?>').mount('#app');
+    Unsipped_slip('Unshipped_slip.php','<?php echo $token;?>','<?php echo $user_hash;?>').mount('#app');
   </script>
 </BODY>
 </html>
