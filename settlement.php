@@ -42,7 +42,7 @@
 		<div v-if='new_type.types==="bank"' class='row mb-3'>
 			<div class='col-md-8 col-12'>
 				<label for='source' class="form-label">振込先</label>
-				<input type='text' class='form-control' id='source' v-model='new_type.source' placeholder="〇〇銀行　〇〇支店　普通0123456　ﾌﾘｺﾐﾀﾛｳ　等">
+				<textarea type='memo' class='form-control' id='source' rows="2" v-model='new_type.source'></textarea>
 			</div>
 		</div>
 		<div v-if='new_type.types==="QR"' class='row mb-3'>
@@ -94,7 +94,7 @@
 								<td>{{list.payname}}</td>
 								<td>{{list.types}}</td>
 								<td v-if='list.types==="QR"'><div class='img-div' style="height:50px;width:50px;"><img :src="list.source" class='img-item-sm'></div></td>
-								<td v-else>{{list.source}}</td>
+								<td v-else style='white-space: pre-wrap;'>{{list.source}}</td>
 								<td>{{list.hosoku}}</td>
 								<td><input type='checkbox' class="form-check-input" v-model='list.flg' @change='upd_flg(index)'></td>
 								<td role='button' @click='del_payinfo(index)'><i class="bi bi-trash3"></i></td>

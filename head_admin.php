@@ -34,6 +34,7 @@
     <script>
         var KANKYO = <?php echo "'".EXEC_MODE."'" ;?>;
         var ZEIHASU = <?php echo empty($ZeiHasu)?0:$ZeiHasu ;?>;
+        const HTTP = '<?php echo ROOT_URL;?>';
         var COLOR_NO 
     </script>
     <script src="script/function.js?<?php echo $time; ?>"></script>

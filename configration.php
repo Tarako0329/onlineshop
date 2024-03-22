@@ -209,6 +209,7 @@
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
+								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<支払方法>"}' style='width:70px;min-width:50px;'>支払方法</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
