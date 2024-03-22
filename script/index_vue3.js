@@ -261,7 +261,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         loader.value = false
       })
 
-    }
+    } 
     const order_clear =()=>{//注文クリア
       mode.value='shopping'
       shouhinMS.value.forEach((row)=>{

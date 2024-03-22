@@ -13,6 +13,6 @@ $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($data as $row){
-  echo $row["site_name"]."<a href=admin_menu.php?key=".rot13encrypt2($row["uid"]).">管理サイトへ</a><br>";
+  echo $row["yagou"]."　　　<a href=admin_menu.php?key=".rot13encrypt2($row["uid"]).">管理サイトへ</a><br>";
 }
 ?>

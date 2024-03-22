@@ -277,6 +277,7 @@
       </div>
     </div>
   </MAIN>
+  
   <FOOTER class='container common_footer fixed-bottom'>
     <div v-show='mode!=="ordered"' class="toast-container position-absolute bottom-0 end-0 p-3" style='width:250px;'>
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style='display: block;'>

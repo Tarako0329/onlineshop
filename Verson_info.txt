@@ -44,6 +44,8 @@ ver1.06.0:QR決済情報追加
   ALTER TABLE `Users_online_payinfo` ADD PRIMARY KEY(`uid`, `types`, `payname`, `source`);
   ALTER TABLE `Users_online_payinfo` CHANGE `flg` `flg` BOOLEAN NOT NULL DEFAULT TRUE;
   ALTER TABLE `Users_online_payinfo` DROP PRIMARY KEY, ADD PRIMARY KEY(`uid`, `payname`);
+ver1.06.1:bugfix
+
 
 【Issues】
 
