@@ -15,7 +15,7 @@ if(empty($_POST["hash"])){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-log_writer2("\$_SESSION",$_SESSION,"lv3");
+//log_writer2("\$_SESSION",$_SESSION,"lv3");
 
 $rtn = csrf_checker(["configration.php"],["P","C","S"]);
 if($rtn !== true){

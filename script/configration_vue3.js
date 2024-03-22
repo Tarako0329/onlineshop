@@ -46,7 +46,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         params.append(`user_file_name_${i}`, document.getElementById(id).files[i]);
         i = i+1
       }
-      params.append('shouhinCD','')
+      params.append('fileparam','')
       loader.value = true
       axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
@@ -163,38 +163,38 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
       GET_USER2()
       .then((response)=>{
-        yagou.value = response[0].yagou
-        site_name.value = response[0].site_name
-        site_pr.value = response[0].site_pr
-        logo.value = response[0].logo
-        tantou.value = response[0].name
-        shacho.value = response[0].shacho
-        jusho.value = response[0].jusho
-        tel.value = response[0].tel
-        mail.value = response[0].mail
-        cc_mail.value = response[0].cc_mail
-        line_id.value = response[0].line_id
-        chk_recept.value = response[0].chk_recept===1?true:false
-        chk_sent.value = response[0].chk_sent===1?true:false
-        chk_paid.value = response[0].chk_paid===1?true:false
-        lock_sts.value = response[0].lock_sts
-        if(response[0].mail_body!=="''"){
-          mail_body.value = response[0].mail_body
+        yagou.value = response.Users_online[0].yagou
+        site_name.value = response.Users_online[0].site_name
+        site_pr.value = response.Users_online[0].site_pr
+        logo.value = response.Users_online[0].logo
+        tantou.value = response.Users_online[0].name
+        shacho.value = response.Users_online[0].shacho
+        jusho.value = response.Users_online[0].jusho
+        tel.value = response.Users_online[0].tel
+        mail.value = response.Users_online[0].mail
+        cc_mail.value = response.Users_online[0].cc_mail
+        line_id.value = response.Users_online[0].line_id
+        chk_recept.value = response.Users_online[0].chk_recept===1?true:false
+        chk_sent.value = response.Users_online[0].chk_sent===1?true:false
+        chk_paid.value = response.Users_online[0].chk_paid===1?true:false
+        lock_sts.value = response.Users_online[0].lock_sts
+        if(response.Users_online[0].mail_body!=="''"){
+          mail_body.value = response.Users_online[0].mail_body
         }
-        if(response[0].mail_body_auto!=="''"){
-          mail_body_auto.value = response[0].mail_body_auto
+        if(response.Users_online[0].mail_body_auto!=="''"){
+          mail_body_auto.value = response.Users_online[0].mail_body_auto
         }
-        if(response[0].mail_body_paid!=="''"){
-          mail_body_paid.value = response[0].mail_body_paid
+        if(response.Users_online[0].mail_body_paid!=="''"){
+          mail_body_paid.value = response.Users_online[0].mail_body_paid
         }
-        if(response[0].mail_body_sent!=="''"){
-          mail_body_sent.value = response[0].mail_body_sent
+        if(response.Users_online[0].mail_body_sent!=="''"){
+          mail_body_sent.value = response.Users_online[0].mail_body_sent
         }
-        if(response[0].mail_body_cancel!=="''"){
-          mail_body_cancel.value = response[0].mail_body_cancel
+        if(response.Users_online[0].mail_body_cancel!=="''"){
+          mail_body_cancel.value = response.Users_online[0].mail_body_cancel
         }
-        if(response[0].cancel_rule!=="''"){
-          cancel_rule.value = response[0].cancel_rule
+        if(response.Users_online[0].cancel_rule!=="''"){
+          cancel_rule.value = response.Users_online[0].cancel_rule
         }
 
       })

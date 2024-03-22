@@ -159,7 +159,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				params.append(`user_file_name_${i}`, document.getElementById(id).files[i]);
 				i = i+1
 			}
-			params.append('shouhinCD',shouhinCD.value)
+			params.append('fileparam',shouhinCD.value)
 			loader.value = true
 			axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response)=>{

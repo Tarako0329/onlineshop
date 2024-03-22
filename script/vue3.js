@@ -94,7 +94,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     onMounted(()=>{
       GET_USER2()
       .then((response)=>{
-        shoplist.value = response
+        shoplist.value = response.Users_online
       })
     })
 
@@ -109,21 +109,125 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     let token = p_token
     let hash = p_hash
 
-    const new_type = ref([{types:"bank",payname:"",source:"",hosoku:"",flg:true}])
+    const new_type = ref({types:"bank",payname:"",source:"",hosoku:"",flg:true})
     const pay_lists = ref([])
     const loader = ref(false)
+
+    const fileupload = (id,filesubname) => {
+      UPLOADFILE(id,filesubname).then((response)=>{
+        new_type.value.source=response.filename[0].filename
+      })
+    }
+
+    const submit_payinfo = () =>{
+      loader.value = true
+      const form = new FormData()
+      form.append('types',new_type.value.types)
+      form.append('payname',new_type.value.payname)
+      form.append('source',new_type.value.source)
+      form.append('hosoku',new_type.value.hosoku)
+      form.append('flg',new_type.value.flg)
+      form.append('hash',hash)
+      form.append('csrf_token',token)
+
+      axios.post("ajax_ins_payinfo.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        token = response.data.csrf_create
+        console_log(response.data)
+        if(response.data.status==="success"){
+          new_type.value.source = new_type.value.source.replace('temp/','')
+          pay_lists.value.push(new_type.value)
+          new_type.value = {types:"bank",payname:"",source:"",hosoku:"",flg:true}
+        }else if(response.data.status==="warning"){
+          alert('決済名が重複してます')
+        }else{
+          alert('登録処理エラー')
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+        console_log(response)
+        alert('登録処理エラー')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
+
+    const upd_flg = (index) =>{
+      loader.value = true
+      const form = new FormData()
+      form.append('payname',pay_lists.value[index].payname)
+      form.append('flg',pay_lists.value[index].flg)
+
+      form.append('hash',hash)
+      form.append('csrf_token',token)
+
+      axios.post("ajax_upd_userMSonline_pay.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        token = response.data.csrf_create
+        console_log(response.data)
+        if(response.data.status==="success"){
+        }else if(response.data.status==="warning"){
+          alert('決済名が重複してます')
+        }else{
+          alert('登録処理エラー')
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+        console_log(response)
+        alert('登録処理エラー')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
+
+    const del_payinfo = (index) =>{
+      loader.value = true
+      const form = new FormData()
+      form.append('payname',pay_lists.value[index].payname)
+      form.append('source',pay_lists.value[index].source)
+      form.append('types',pay_lists.value[index].types)
+
+      form.append('hash',hash)
+      form.append('csrf_token',token)
+
+      axios.post("ajax_del_userMSonline_pay.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        token = response.data.csrf_create
+        console_log(response.data)
+        if(response.data.status==="success"){
+          pay_lists.value.splice(index,1)
+          alert('決済情報を削除しました')
+        }else if(response.data.status==="warning"){
+          //alert('決済名が重複してます')
+        }else{
+          alert('削除処理エラー')
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+        console_log(response)
+        alert('削除処理エラー')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
 
     onMounted(()=>{
       GET_USER2()
       .then((response)=>{
-        //shoplist.value = response
+        pay_lists.value = response.Users_online_payinfo
       })
     })
 
     onBeforeMount(()=>{
       console_log("onBeforeMount:")
       if(pay_lists.value.length===0){
-        pay_lists.value.push(new_type.value)
+        //pay_lists.value.push(new_type.value)
       }
     })
 
@@ -131,6 +235,10 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       new_type,
       pay_lists,
       loader,
+      fileupload,
+      submit_payinfo,
+      upd_flg,
+      del_payinfo,
     }
   }
 })

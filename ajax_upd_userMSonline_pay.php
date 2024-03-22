@@ -4,7 +4,7 @@ require "php_header.php";
 register_shutdown_function('shutdown');
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
-$alert_status = "alert-warning";    //bootstrap alert class
+$alert_status = "warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
@@ -17,10 +17,10 @@ $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 log_writer2("\$_POST",$_POST,"lv3");
 
-$rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
+$rtn = csrf_checker(["settlement.php",""],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
-    $alert_status = "alert-warning";
+    $alert_status = "warning";
     $reseve_status = true;
 }else{
     //$rtn=check_session_userid_for_ajax($pdo_h);
@@ -31,26 +31,20 @@ if($rtn !== true){
         $timeout=true;
     }else{
         //更新モード(実行)
-        $colum = $_POST["colum"];   //更新対象項目名
-        $value = $_POST["value"];
-        $orderNO = $_POST["orderNO"];
+        $sqlstr_h = "update Users_online_payinfo set flg = :flg where payname = :payname and uid like :uid";
 
-        $sqlstr_h = "update juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
-
+        $params["flg"] = $_POST["flg"];
+        $params["payname"] = $_POST["payname"];
         $params["uid"] = $_SESSION["user_id"];
-        $params[$colum] = $_POST["value"];
-        $params["orderNO"] = $_POST["orderNO"];
 
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
-            //受注ヘッダ登録
-
             $stmt = $pdo_h->prepare( $sqlstr_h );
             //bind処理
-            $stmt->bindValue($colum, $params[$colum], PDO::PARAM_STR);
-            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+            $stmt->bindValue("flg", $params["flg"], PDO::PARAM_STR);
+            $stmt->bindValue("payname", $params["payname"], PDO::PARAM_STR);
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 
             $sqllog .= rtn_sqllog($sqlstr_h,$params);
@@ -64,7 +58,7 @@ if($rtn !== true){
 			sqllogger($sqllog,0);
 	
 			$msg = "登録が完了しました。";
-			$alert_status = "alert-success";
+			$alert_status = "success";
 			$reseve_status=true;
 
         }catch(Exception $e){
@@ -72,7 +66,7 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("rollBack",[]);
             sqllogger($sqllog,$e);
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
-            $alert_status = "alert-danger";
+            $alert_status = "danger";
             $reseve_status=true;
         }
     }
@@ -113,7 +107,7 @@ function shutdown(){
         $token = csrf_create();
         $return_sts = array(
             "MSG" => "システムエラーによる更新失敗。管理者へ通知しました。"
-            ,"status" => "alert-danger"
+            ,"status" => "danger"
             ,"csrf_create" => $token
             ,"timeout" => false
         );

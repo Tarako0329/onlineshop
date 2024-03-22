@@ -17,10 +17,28 @@
 		$stmt->execute();
 
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$sql = "select 
+				*,if(flg=1,'true','false') as flg
+			from Users_online_payinfo
+			where uid like :uid ";
+		$stmt = $pdo_h->prepare($sql);
+		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
+		$stmt->execute();
+
+		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 		$alert_status = "alert-success";
-		
+
+		$return_sts = array(
+			"MSG" => $msg
+			,"status" => $alert_status
+			,"Users_online" => $data
+			,"Users_online_payinfo" => $data2
+		);
+				
 	}
   header('Content-type: application/json');  
-  echo json_encode($data, JSON_UNESCAPED_UNICODE);
+  echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
   exit();
 ?>

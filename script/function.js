@@ -44,7 +44,15 @@ const GET_USER_SHORI = (resolve) =>{
   })
 }
 
-const UPLOADFILE = (id) =>{//写真アップロード処理・写真をアップしファイルパスを取得
+const UPLOADFILE = (id,filesubname)=>{//サイト設定情報取得
+	return new Promise((resolve, reject) => {
+		UPLOADFILE_SHORI(id,filesubname,resolve);
+	});
+}
+const UPLOADFILE_SHORI = (id,filesubname,resolve) =>{//写真アップロード処理・写真をアップしファイルパスを取得
+  //id:[input type=file]に設定してるID
+  //アップロードするファイルのサブ名称　xxxx+filesubname+xxx.png みたいになる
+  let obj
   const params = new FormData();
   
   let i = 0
@@ -52,25 +60,28 @@ const UPLOADFILE = (id) =>{//写真アップロード処理・写真をアップ
     params.append(`user_file_name_${i}`, document.getElementById(id).files[i]);
     i = i+1
   }
-  params.append('shouhinCD',shouhinCD.value)
-  loader.value = true
+  params.append('filesubname',filesubname)
   axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
   .then((response)=>{
     console_log(response.data)
+    obj = response.data
     if(response.data.status==="success"){
-      pic_list.value = [...pic_list.value,...response.data.filename]
+      
     }else{
       alert('写真アップロードエラー')
     }
   })
   .catch((error)=>{
+    obj = error
     console_log(error)
     alert('写真アップロードERROR')
   })
   .finally(()=>{
-    loader.value = false
+    resolve(obj)
   })
 }
+
+
 
 const LINE_PUSH = (ID,MSG) =>{
   const form = new FormData();

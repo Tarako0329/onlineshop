@@ -32,7 +32,18 @@ ver1.05.0:発送連絡の機能追加
   ALTER TABLE `juchuu_head` ADD `post_corp` VARCHAR(40) NOT NULL COMMENT '配送業者' AFTER `sent`;
   ALTER TABLE `juchuu_head` CHANGE `post_corp` `post_corp` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送業者', CHANGE `postage_url` `postage_url` VARCHAR(400) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送確認URL', CHANGE `postage_no` `postage_no` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '-' COMMENT '配送確認用番号';
 ver1.06.0:QR決済情報追加
-
+  CREATE TABLE `Users_online_payinfo` (
+  `uid` int(11) NOT NULL,
+  `types` varchar(10) NOT NULL,
+  `payname` varchar(20) NOT NULL,
+  `source` varchar(400) NOT NULL,
+  `hosoku` text DEFAULT NULL,
+  `flg` tinyint(4) NOT NULL DEFAULT 0,
+  `updatetime` datetime NOT NULL DEFAULT current_timestamp()
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  ALTER TABLE `Users_online_payinfo` ADD PRIMARY KEY(`uid`, `types`, `payname`, `source`);
+  ALTER TABLE `Users_online_payinfo` CHANGE `flg` `flg` BOOLEAN NOT NULL DEFAULT TRUE;
+  ALTER TABLE `Users_online_payinfo` DROP PRIMARY KEY, ADD PRIMARY KEY(`uid`, `payname`);
 
 【Issues】
 

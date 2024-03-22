@@ -280,22 +280,21 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       get_orderlist()
       GET_USER2()
       .then((response)=>{
-        console_log('owata')
         console_log(response)
-        yagou.value = response[0].yagou
-        site_name.value = response[0].site_name
-        tantou.value = response[0].name
-        shacho.value = response[0].shacho
-        jusho.value = response[0].jusho
-        tel.value = response[0].tel
-        mail.value = response[0].mail
-        cc_mail.value = response[0].cc_mail
-        mail_body.value = response[0].mail_body
-        mail_body_paid.value = response[0].mail_body_paid
-        mail_body_sent.value = response[0].mail_body_sent
-        chk_recept.value = response[0].chk_recept===1?true:false
-        chk_sent.value = response[0].chk_sent===1?true:false
-        chk_paid.value = response[0].chk_paid===1?true:false
+        yagou.value = response.Users_online[0].yagou
+        site_name.value = response.Users_online[0].site_name
+        tantou.value = response.Users_online[0].name
+        shacho.value = response.Users_online[0].shacho
+        jusho.value = response.Users_online[0].jusho
+        tel.value = response.Users_online[0].tel
+        mail.value = response.Users_online[0].mail
+        cc_mail.value = response.Users_online[0].cc_mail
+        mail_body.value = response.Users_online[0].mail_body
+        mail_body_paid.value = response.Users_online[0].mail_body_paid
+        mail_body_sent.value = response.Users_online[0].mail_body_sent
+        chk_recept.value = response.Users_online[0].chk_recept===1?true:false
+        chk_sent.value = response.Users_online[0].chk_sent===1?true:false
+        chk_paid.value = response.Users_online[0].chk_paid===1?true:false
       })
     })
 

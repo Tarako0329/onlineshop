@@ -7,7 +7,7 @@ require "php_header.php";
 $i=0;
 while($i < count($_FILES)){
     $tempfile = $_FILES['user_file_name_'.$i]['tmp_name'];
-    $filename = 'upload/temp/' .$_SESSION["user_id"]."_".$_POST["shouhinCD"]."_".date('Ymd-His')."_".$_FILES['user_file_name_'.$i]['name'];
+    $filename = 'upload/temp/' .$_SESSION["user_id"]."_".$_POST["filesubname"]."_".date('Ymd-His')."_".$_FILES['user_file_name_'.$i]['name'];
     $stats = "false";
     
     if (is_uploaded_file($tempfile)) {
