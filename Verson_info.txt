@@ -65,9 +65,9 @@ php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
 
 
-php load_font.php ipag C:\xampp\htdocs\SaleM\css\ipag.ttf
-php load_font.php ipagp C:\xampp\htdocs\SaleM\css\ipagp.ttf
-php load_font.php Kranky C:\xampp\htdocs\SaleM\css\Kranky-Regular.ttf
+php load_font.php ipag C:\xampp\htdocs\onlineshop\css\ipag.ttf
+php load_font.php ipagp C:\xampp\htdocs\onlineshop\css\ipagp.ttf
+php load_font.php Kranky C:\xampp\htdocs\onlineshop\css\Kranky-Regular.ttf
 
 git clone
 git pull origin master

@@ -220,8 +220,9 @@
   </div><!--app-->
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/order_management_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    order_mng('order_rireki.php','<?php echo $token; ?>').mount('#app');
+    order_mng('order_rireki.php','<?php echo $token; ?>','').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

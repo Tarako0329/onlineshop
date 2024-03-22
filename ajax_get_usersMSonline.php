@@ -31,8 +31,7 @@
 		$alert_status = "alert-success";
 
 		$return_sts = array(
-			"MSG" => $msg
-			,"status" => $alert_status
+			"status" => $alert_status
 			,"Users_online" => $data
 			,"Users_online_payinfo" => $data2
 		);

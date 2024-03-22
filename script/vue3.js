@@ -94,6 +94,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     onMounted(()=>{
       GET_USER2()
       .then((response)=>{
+        console_log(response)
         shoplist.value = response.Users_online
       })
     })
