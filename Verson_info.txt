@@ -45,6 +45,8 @@ ver1.06.0:QR決済情報追加
   ALTER TABLE `Users_online_payinfo` CHANGE `flg` `flg` BOOLEAN NOT NULL DEFAULT TRUE;
   ALTER TABLE `Users_online_payinfo` DROP PRIMARY KEY, ADD PRIMARY KEY(`uid`, `payname`);
 ver1.06.1:bugfix
+ver1.07.0:プライバシーポリシー追加
+
 
 
 【Issues】
@@ -66,7 +68,8 @@ php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
 
-
+git fetch --all
+git reset --hard origin/main
 php load_font.php ipag C:\xampp\htdocs\onlineshop\css\ipag.ttf
 php load_font.php ipagp C:\xampp\htdocs\onlineshop\css\ipagp.ttf
 php load_font.php Kranky C:\xampp\htdocs\onlineshop\css\Kranky-Regular.ttf

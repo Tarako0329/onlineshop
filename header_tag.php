@@ -12,13 +12,16 @@
         <div class="collapse navbar-collapse ms-5" id="navbarNav">
           <ul class="navbar-nav alice-regular">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="index.php" id='menu_home'>Home</a>
+              <a class="nav-link" href="index.php" id='menu_home'>Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="shops.php" id='menu_Shops'>Shops</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="order_rireki.php" id='menu_rireki'>購入履歴</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="privacy_policy.php" id='menu_privacy'>プライバシーポリシー</a>
             </li>
           </ul>
         </div>

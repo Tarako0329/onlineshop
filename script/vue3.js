@@ -97,6 +97,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
         console_log(response)
         shoplist.value = response.Users_online
       })
+      document.getElementById("menu_Shops").classList.add("active");
     })
 
     return {
@@ -105,7 +106,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
   }
 })
 
-const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
+const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定・支払情報
   setup() {
     let token = p_token
     let hash = p_hash

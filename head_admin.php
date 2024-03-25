@@ -1,5 +1,5 @@
 <!-- headタグの共通部分 -->
-
+    <meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>
