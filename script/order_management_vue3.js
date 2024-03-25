@@ -27,6 +27,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         //loader.value = false
       })
     }
+
     const set_order_sts = (orderNO,colum,val,index) =>{//受注情報の更新
       if(haita_flg !== 'stop'){
         console_log('set_order_sts：排他')
@@ -40,6 +41,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       console_log(orderlist_hd.value[index])
       if(colum==="cancel" && val===1){
         if(confirm("ご注文をキャンセルしてよいですか？")===false){
+          loader.value = false
           return
         }
       }
@@ -53,10 +55,10 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
 
       axios.post("ajax_upd_order_h.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
+        token = response.data.csrf_create
         console_log(response.data)
         send_mailsubject.value = `【${site_name.value}】ご注文についてのご連絡「受付番号：${orderNO}」`
         if(response.data.status==="alert-success"){
-          token = response.data.csrf_create
           if((colum==="payment" || colum==="sent" || colum==="first_answer") && val===1){
             if(confirm('メール送信画面を開きますか？')){
               send_index.value = index
@@ -107,9 +109,10 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         }
         //token = response.data.csrf_create
       })
-      .catch((error,response)=>{
+      .catch((error)=>{
         console_log(error)
-        token = response.data.csrf_create
+        //console_log(response)
+        //token = response.data.csrf_create
       })
       .finally(()=>{
         loader.value = false
@@ -140,7 +143,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
     const mail_body = ref('')
     const mail_body_paid = ref('')
     const mail_body_sent = ref('')
-    const mail_body_cancel = ref('')
+    const mail_body_cancel = ref('') 
     const chk_paid = ref('')
     const chk_recept = ref('')
     const chk_sent = ref('')

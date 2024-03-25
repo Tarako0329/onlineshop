@@ -46,6 +46,7 @@ ver1.06.0:QR決済情報追加
   ALTER TABLE `Users_online_payinfo` DROP PRIMARY KEY, ADD PRIMARY KEY(`uid`, `payname`);
 ver1.06.1:bugfix
 ver1.07.0:プライバシーポリシー追加
+ver1.07.1:bugfix;キャンセルできなかった件
 
 
 

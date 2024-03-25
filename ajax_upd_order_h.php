@@ -2,22 +2,26 @@
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header.php";
 register_shutdown_function('shutdown');
+//log_writer2("\$_POST",$_POST,"lv3");
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
 $alert_status = "alert-warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
-if(empty($_POST["hash"])){
+if($_POST["colum"]==="cancel"){
+    //キャンセルは顧客からだからHASH不要
+    $_SESSION["user_id"] = "%";
+}else if(empty($_POST["hash"])){
     echo "アクセスが不正です。";
     exit();
+}else{
+    $user_hash = $_POST["hash"] ;
+    $_SESSION["user_id"] = rot13decrypt2($user_hash);
 }
-$user_hash = $_POST["hash"] ;
-$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-log_writer2("\$_POST",$_POST,"lv3");
 
-$rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
+$rtn = csrf_checker(["order_management.php","order_rireki.php"],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";
