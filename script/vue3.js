@@ -59,7 +59,7 @@ const Unsipped_slip = (Where_to_use,p_token,p_hash) => createApp({//発送サポ
       })
     }
     
-    const pdf_url = computed(()=>{return `Unshipped_slip_pdf.php?from=${FROM.value}&to=${TO.value}`})
+    const pdf_url = computed(()=>{return `pdf_Unshipped_slip.php?from=${FROM.value}&to=${TO.value}`})
 
     watch(FROM,()=>{
       console_log('watch FROM => '+FROM.value)

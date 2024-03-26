@@ -4,6 +4,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     let token = p_token
     let hash = p_hash
     const yagou = ref('')
+    const invoice = ref('')
     const tantou = ref('')
     const shacho = ref('')
     const jusho = ref('')
@@ -74,6 +75,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       loader.value = true
       const form = new FormData();
       form.append(`yagou`, yagou.value)
+      form.append(`invoice`, invoice.value)
       form.append(`name`, tantou.value)
       form.append(`shacho`, shacho.value)
       form.append(`jusho`, jusho.value)
@@ -165,6 +167,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       GET_USER2()
       .then((response)=>{
         yagou.value = response.Users_online[0].yagou
+        invoice.value = response.Users_online[0].invoice
         site_name.value = response.Users_online[0].site_name
         site_pr.value = response.Users_online[0].site_pr
         logo.value = response.Users_online[0].logo
@@ -203,6 +206,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     return{
       yagou,
+      invoice,
       tantou,
       shacho,
       jusho,

@@ -48,8 +48,8 @@ ver1.06.1:bugfix
 ver1.07.0:プライバシーポリシー追加
 ver1.07.1:bugfix;キャンセルできなかった件
 ver1.08.0:メール文面修正
-
-
+ver1.09.0:領収書・納品書の追加(番号登録)
+  ALTER TABLE `Users_online` ADD `invoice` VARCHAR(20) NOT NULL DEFAULT '未登録' COMMENT 'インボイス番号' AFTER `line_id`;
 
 
 【Issues】

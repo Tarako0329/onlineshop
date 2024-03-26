@@ -32,7 +32,13 @@
 				<input type='text' class='form-control' id='yagou' v-model='yagou'>
 			</div>
 		</div>
-		<div class='row mb-3 pt-3' style='display: none;'>
+		<div class='row mb-3'>
+			<div class='col-md-6 col-12'>
+				<label for='invoice' class="form-label">インボイス登録番号</label>
+				<input type='text' class='form-control' id='invoice' v-model='invoice'>
+			</div>
+		</div>
+		<div class='row mb-3' style='display: none;'>
 			<div class='col-md-6 col-12'>
 				<label for='site_name' class="form-label">サイト名</label>
 				<input type='text' class='form-control' id='site_name' v-model='site_name'>
