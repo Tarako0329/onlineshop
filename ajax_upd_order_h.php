@@ -61,6 +61,19 @@ if($rtn !== true){
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+
+            if($colum ==="postage" || $colum === "postage_zeikbn"){
+                $sqlstr_h = "update juchuu_head set postage_zei = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where orderNO = :orderNO and uid like :uid";
+                $stmt = $pdo_h->prepare( $sqlstr_h );
+                //bind処理
+                $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+                $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+    
+                $sqllog .= rtn_sqllog($sqlstr_h,$params);
+    
+                $status = $stmt->execute();
+                $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+                }
             
             //$count = $stmt->rowCount();
 			$pdo_h->commit();

@@ -276,6 +276,7 @@
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
 								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<領収書LINK>"}' style='width:70px;min-width:50px;'>領収書LINK</button>
 							</div>
 						</div>
 						<small>メールサンプル</small>

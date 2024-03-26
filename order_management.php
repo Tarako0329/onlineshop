@@ -123,9 +123,16 @@
                           </div>
                         </div>
                         <div class='row mb-3'>
-                          <div class='col-md-6 col-12'>
-                            <label :for='`postage${index}`' class="form-label">送料</label>
+                          <div class='col-md-4 col-8'>
+                            <label :for='`postage${index}`' class="form-label">送料(税込)</label>
                             <input type='text' v-model='list.postage' class='form-control' :id='`postage${index}`' @change='set_order_sts(list.orderNO,"postage",list.postage,index)'> 
+                          </div>
+                          <div class='col-md-2 col-4'>
+                            <label :for='`postage${index}`' class="form-label">税率</label>
+                            <select v-model='list.postage_zeikbn' class='form-select' :id='`postage_zeikbn${index}`' @change='set_order_sts(list.orderNO,"postage_zeikbn",list.postage_zeikbn,index)'> 
+                              <option value=1101>10%</option>
+                              <option value=0>非課税</option>
+                            </select>
                           </div>
                         </div>
                         <div class='row mb-3'>
