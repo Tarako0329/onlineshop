@@ -22,6 +22,7 @@
   <?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>
     <!--<a href="line_push_msg.php" type='button' class='btn btn-danger'>test</a>-->
+    test
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
