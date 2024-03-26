@@ -219,7 +219,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       form.append(`mailto`, orderlist_hd.value[send_index.value].mail)
       form.append(`mailtoCC`, cc_mail.value)
       form.append(`subject`, `【${site_name.value}】ご注文についてのご連絡「受付番号：${send_orderNO.value}」`)
-      form.append(`mailbody`, send_mailbody.value)
+      form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\n${send_mailbody.value}`)
       form.append(`csrf_token`, token)
       form.append(`hash`, hash)
 
