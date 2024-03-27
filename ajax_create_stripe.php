@@ -12,7 +12,7 @@
 		$connect = $stripe->accounts->create([
 			'type' => 'standard',
 			'country' => 'JP',
-			'email' => $_GET["email"],
+			'email' => $_GET["mail"],
 			'capabilities' => [
 				'card_payments' => ['requested' => true],
 				'transfers' => ['requested' => true],
