@@ -10,7 +10,7 @@
 	}else{
 		try{
 			$stripe = new \Stripe\StripeClient(S_KEY);
-			$id = $_GET["stripe_id"];
+			$id = $_GET["id"];
 
 			if($id==="nothing"){
 				$account = $stripe->accounts->create([
