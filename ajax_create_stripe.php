@@ -1,6 +1,6 @@
 <?php
   require "php_header.php";
-	$user_hash = $_GET["key"] ;
+	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
@@ -19,7 +19,7 @@
 					'transfers' => ['requested' => true],
 				],*/
 			]);
-			log_writer2("\$account",$account,"lv3");
+			log_writer2("\$account",$account->id,"lv3");
 
 			$link = $stripe->accountLinks->create([
 				'account' => $account->id,
