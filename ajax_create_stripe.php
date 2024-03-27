@@ -1,14 +1,14 @@
 <?php
   require "php_header.php";
+	$user_hash = $_GET["key"] ;
+	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
-	  $msg=$rtn;
-	  $alert_status = "alert-warning";
+	  $alert_status = "warning";
 	  $reseve_status = true;
 	}else{
 		try{
-			$msg="OK";
 			$stripe = new \Stripe\StripeClient(S_KEY);
 			$account = $stripe->accounts->create([
 				'type' => 'standard',
@@ -28,17 +28,25 @@
 				'type' => 'account_onboarding',
 			]);
 			log_writer2("\$link",$link,"lv3");
+
+			$sql = "update Users_online set stripe_id = '".$account->id."' where uid = ".$_SESSION["user_id"];
+			$stmt = $pdo_h->prepare( $sql );
+			$sqllog .= rtn_sqllog($sql,[]);
+			$status = $stmt->execute();
+			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+
 		}catch(Exception $e){
 			log_writer2("\$e",$e,"lv3");
-			$msg = $e;
+			$alert_status = "danger";
 		}
-		$alert_status = "alert-success";
+		$alert_status = "success";
+
 
 		
 
 		$return_sts = array(
 			"status" => $alert_status
-			,"new_account" => $account
+			,"link" => $link->link
 			,"msg" => $msg
 		);
 				

@@ -221,7 +221,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     }
 
     const create_stripe = () =>{
-      axios.get(`ajax_create_stripe.php?mail=${stripe_mail}`)
+      axios.get(`ajax_create_stripe.php?mail=${stripe_mail}&hash=${hash}`)
       .then((response)=>{
         console_log(response.data)
       })
