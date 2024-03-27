@@ -7,23 +7,27 @@
 	  $alert_status = "alert-warning";
 	  $reseve_status = true;
 	}else{
-
-		$stripe = new \Stripe\StripeClient(S_KEY);
-		$connect = $stripe->accounts->create([
-			'type' => 'standard',
-			'country' => 'JP',
-			'email' => $_GET["mail"],
-			'capabilities' => [
-				'card_payments' => ['requested' => true],
-				'transfers' => ['requested' => true],
-			],
-		]);
-
+		try{
+			$msg="OK";
+			$stripe = new \Stripe\StripeClient(S_KEY);
+			$connect = $stripe->accounts->create([
+				'type' => 'standard',
+				'country' => 'JP',
+				'email' => $_GET["mail"],
+				'capabilities' => [
+					'card_payments' => ['requested' => true],
+					'transfers' => ['requested' => true],
+				],
+			]);
+		}catch(Exception $e){
+			$msg = $e;
+		}
 		$alert_status = "alert-success";
 
 		$return_sts = array(
 			"status" => $alert_status
 			,"new_account" => $connect
+			,"msg" => $msg
 		);
 				
 	}
