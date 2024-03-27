@@ -19,10 +19,10 @@
 					'transfers' => ['requested' => true],
 				],*/
 			]);
-			log_writer2("\$connect",$connect,"lv3");
+			log_writer2("\$account",$account,"lv3");
 
 			$link = $stripe->accountLinks->create([
-				'account' => $account->ID,
+				'account' => $account->id,
 				'refresh_url' => 'https://example.com/reauth',
 				'return_url' => 'https://example.com/return',
 				'type' => 'account_onboarding',
@@ -38,7 +38,7 @@
 
 		$return_sts = array(
 			"status" => $alert_status
-			,"new_account" => $connect
+			,"new_account" => $account
 			,"msg" => $msg
 		);
 				
