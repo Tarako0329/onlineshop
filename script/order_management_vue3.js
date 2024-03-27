@@ -196,7 +196,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       val = val.replace(/<代表者>/g,shacho.value)
       val = val.replace(/<配送状況>/g,post_info)
       val = val.replace(/<支払方法>/g,`お支払については下記URLよりお願いします。\n${HTTP}payment.php?key=${hash}&val=${String((Number(row.税込総額)+Number(row.postage)).toLocaleString())}`)
-      val = val.replace(/<領収書LINK>/g,`領収書は下記URLよりﾀﾞｳﾝﾛｰﾄﾞしてください。\n${HTTP}pdf_receipt.php?hash=${hash}&val=${row.orderNO*9999}`)
+      val = val.replace(/<領収書LINK>/g,`領収書は下記URLよりﾀﾞｳﾝﾛｰﾄﾞしてください。\n${HTTP}pdf_receipt.php?hash=${hash}&val=${row.orderNO*9999}&tp=1`)
       
       return val
     }
