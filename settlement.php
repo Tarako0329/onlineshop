@@ -18,12 +18,17 @@
 		<style>
 
 		</style>
-		<TITLE><?php echo TITLE;?> 商品管理</TITLE>
+		<TITLE><?php echo TITLE;?> 決済設定</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag_admin.php"  ?>
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
+		<div class='row mb-3'>
+			<div class='col-md-5 col-7'>
+				<p>クレジット決済の設定</p>
+			</div>
+		</div>
 		<div class='row mb-3'>
 			<div class='col-md-5 col-7'>
 				<label for='hinmei' class="form-label">決済名</label>
