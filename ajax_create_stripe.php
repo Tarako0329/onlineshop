@@ -10,19 +10,26 @@
 	}else{
 		try{
 			$stripe = new \Stripe\StripeClient(S_KEY);
-			$account = $stripe->accounts->create([
-				'type' => 'standard',
-				'country' => 'JP',
-				'email' => $_GET["mail"],
-				/*'capabilities' => [
-					'card_payments' => ['requested' => true],
-					'transfers' => ['requested' => true],
-				],*/
-			]);
-			log_writer2("\$account",$account->id,"lv3");
+			$id = $_GET["stripe_id"];
+
+			if($id==="nothing"){
+				$account = $stripe->accounts->create([
+					'type' => 'standard',
+					'country' => 'JP',
+					'email' => $_GET["mail"],
+					/*'capabilities' => [
+						'card_payments' => ['requested' => true],
+						'transfers' => ['requested' => true],
+					],*/
+				]);
+				log_writer2("\$account",$account->id,"lv3");
+				$id = $account->id;
+			}else{
+				log_writer2("\$account","skip create stripe id","lv3");
+			}
 
 			$link = $stripe->accountLinks->create([
-				'account' => $account->id,
+				'account' => $id,
 				'refresh_url' => 'https://example.com/reauth',
 				'return_url' => 'https://example.com/return',
 				'type' => 'account_onboarding',
