@@ -46,7 +46,7 @@
 
 		$return_sts = array(
 			"status" => $alert_status
-			,"link" => $link->link
+			,"link" => $link->url
 			,"msg" => $msg
 		);
 				
