@@ -27,6 +27,7 @@
 		<div class='row mb-3'>
 			<div class='col-md-5 col-7'>
 				<p>クレジット決済の設定</p>
+				<button type="button" class='btn btn-primary' @click='create_stripe()'>アカウント作成</button>
 			</div>
 		</div>
 		<div class='row mb-3'>
@@ -120,7 +121,6 @@
 	</div>
 	</div><!--app-->
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
-	<script src="script/shouhinMS_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		admin_menu('settlement.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 		settlement('settlement.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');

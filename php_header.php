@@ -45,7 +45,12 @@ define("POP_HOST", $_ENV["POP_HOST"]);
 define("POP_USER", $_ENV["POP_USER"]);
 define("POP_PASS", $_ENV["POP_PASS"]);
 
+//stripe
+define("S_KEY",$_ENV["SKey"]);
+define("P_KEY",$_ENV["PKey"]);
+
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+
 //$_SESSION["user_id"] = '2';
 //define("SAVEDIR", $_ENV["SAVEDIR"]);
 //define("NOM", $_ENV["SIO"]);

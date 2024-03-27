@@ -114,6 +114,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const new_type = ref({types:"bank",payname:"",source:"",hosoku:"",flg:true})
     const pay_lists = ref([])
     const loader = ref(false)
+    let stripe_mail = ''
 
     const fileupload = (id,filesubname) => {
       UPLOADFILE(id,filesubname).then((response)=>{
@@ -219,10 +220,23 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       })
     }
 
+    const create_stripe = () =>{
+      axios.get(`ajax_create_stripe.php?mail=${stripe_mail}`)
+      .then((response)=>{
+        console_log(response.data)
+      })
+      .catch((error)=>{
+        console_log(error)
+      })
+      .finally(()=>{})
+    }
+
     onMounted(()=>{
       GET_USER2()
       .then((response)=>{
+        console_log(response.Users_online[0].mail)
         pay_lists.value = response.Users_online_payinfo
+        stripe_mail = response.Users_online[0].mail
       })
     })
 
@@ -241,6 +255,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       submit_payinfo,
       upd_flg,
       del_payinfo,
+      create_stripe,
     }
   }
 })
