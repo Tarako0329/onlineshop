@@ -10,19 +10,31 @@
 		try{
 			$msg="OK";
 			$stripe = new \Stripe\StripeClient(S_KEY);
-			$connect = $stripe->accounts->create([
+			$account = $stripe->accounts->create([
 				'type' => 'standard',
 				'country' => 'JP',
 				'email' => $_GET["mail"],
-				'capabilities' => [
+				/*'capabilities' => [
 					'card_payments' => ['requested' => true],
 					'transfers' => ['requested' => true],
-				],
+				],*/
 			]);
+			log_writer2("\$connect",$connect,"lv3");
+
+			$link = $stripe->accountLinks->create([
+				'account' => $account->ID,
+				'refresh_url' => 'https://example.com/reauth',
+				'return_url' => 'https://example.com/return',
+				'type' => 'account_onboarding',
+			]);
+			log_writer2("\$link",$link,"lv3");
 		}catch(Exception $e){
+			log_writer2("\$e",$e,"lv3");
 			$msg = $e;
 		}
 		$alert_status = "alert-success";
+
+		
 
 		$return_sts = array(
 			"status" => $alert_status

@@ -48,6 +48,7 @@ define("POP_PASS", $_ENV["POP_PASS"]);
 //stripe
 define("S_KEY",$_ENV["SKey"]);
 define("P_KEY",$_ENV["PKey"]);
+define("OAuth",$_ENV["OAuth"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
