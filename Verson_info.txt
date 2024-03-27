@@ -48,13 +48,15 @@ ver1.06.1:bugfix
 ver1.07.0:プライバシーポリシー追加
 ver1.07.1:bugfix;キャンセルできなかった件
 ver1.08.0:メール文面修正
-ver1.09.0:領収書・納品書の追加(番号登録)・サーバー未反映
-ver1.09.1:領収書・納品書の追加(PDF発行)・サーバー未反映
-  ALTER TABLE `Users_online` ADD `invoice` VARCHAR(20) NOT NULL DEFAULT '未登録' COMMENT 'インボイス番号' AFTER `line_id`;
+ver1.09.0:領収書・納品書の追加(番号登録)
+ver1.09.1:領収書・納品書の追加(PDF発行)
+  ALTER TABLE `Users_online` ADD `invoice` VARCHAR(20) NOT NULL DEFAULT 'インボイス未登録' COMMENT 'インボイス番号' AFTER `line_id`;
   ALTER TABLE `juchuu_head` ADD `posate_zeikbn` INT NOT NULL AFTER `postage`, ADD `posate_zei` DECIMAL NOT NULL AFTER `posate_zeikbn`;
   ALTER TABLE `juchuu_head` CHANGE `posate_zei` `posate_zei` DECIMAL(8,2) NOT NULL;
   ALTER TABLE `juchuu_head` CHANGE `posate_zeikbn` `postage_zeikbn` INT(11) NOT NULL, CHANGE `posate_zei` `postage_zei` DECIMAL(8,2) NOT NULL;
   ALTER TABLE `ryoushu` ADD PRIMARY KEY(`uid`, `R_NO`);
+  ALTER TABLE `Users_online` CHANGE `invoice` `invoice` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'インボイス未登録' COMMENT 'インボイス番号';
+ver1.10.0:領収書・納品書の追加(PDF発行)
 
 
 【Issues】
