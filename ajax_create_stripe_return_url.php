@@ -11,6 +11,7 @@
 		try{
 			$stripe = new \Stripe\StripeClient(S_KEY);
 			$id = $_GET["id"];
+			$stripe->accounts->retrieve($id, []);
 
 			if($id==="nothing"){
 				$account = $stripe->accounts->create([
