@@ -42,9 +42,9 @@
 					<p><small>管理画面を開き、追加の入力を求められてないか必ずご確認ください。</small></p>
 					<a :href="stripe_dashboard_link" class='btn btn-primary btn-lg' target="_blank" rel="noopener noreferrer">管理画面を開く</a>
 				</div>
-				<div>
+				<div class='pt-3'>
 					<label for='credit_switch'>クレジット決済を</label>
-					<select class='form-select' id='credit_switch' v-model='credit'>
+					<select class='form-select' id='credit_switch' v-model='credit' @change='upd_credit()'>
 						<option value='able'>利用しない</option>
 						<option value='use'>利用する</option>
 					</select>

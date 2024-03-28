@@ -195,6 +195,35 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       })
     }
 
+    const upd_credit = () =>{
+      loader.value = true
+      const form = new FormData()
+      form.append('credit',credit.value)
+
+      form.append('hash',hash)
+      form.append('csrf_token',token)
+
+      axios.post("ajax_upd_userMSonline_credit.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        token = response.data.csrf_create
+        console_log(response.data)
+        if(response.data.status==="success"){
+        }else if(response.data.status==="warning"){
+          alert('決済名が重複してます')
+        }else{
+          alert('登録処理エラー')
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+        console_log(response)
+        alert('登録処理エラー')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
+
     const del_payinfo = (index) =>{
       loader.value = true
       const form = new FormData()
@@ -285,6 +314,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       upd_flg,
       del_payinfo,
       create_stripe,
+      upd_credit,
     }
   }
 })
