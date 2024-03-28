@@ -117,6 +117,9 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const stripe_id = ref('nothing')
     const btn_name = ref('')
     const stripe_dashboard = ref(false)
+    const stripe_dashboard_link = ref('https://dashboard.stripe.com/account/status')
+    const stripe_url = ref('https://stripe.com/jp')
+
     
     let stripe_mail = ''
     let credit = ''
@@ -250,9 +253,9 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         stripe_id.value = response.Users_online[0].stripe_id
         credit = response.Users_online[0].credit
         if(stripe_id.value==="none"){
-          btn_name="設定開始"
+          btn_name.value="設定開始"
         }else if(credit==="unable"){
-          btn_name="設定再開"
+          btn_name.value="設定再開"
         }
         if(credit==="able"){
           stripe_dashboard.value=true
@@ -271,8 +274,11 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       new_type,
       pay_lists,
       loader,
+      btn_name,
       stripe_id,
       stripe_dashboard,
+      stripe_url,
+      stripe_dashboard_link,
       fileupload,
       submit_payinfo,
       upd_flg,

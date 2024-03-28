@@ -34,10 +34,15 @@
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-3'>
-			<div class='col-md-5 col-7'>
+			<div v-if="stripe_dashboard" class='col-md-5 col-7'>
+				<p>クレジット決済の管理</p>
+				<a :href="stripe_dashboard_link" class='btn btn-primary' target="_blank" rel="noopener noreferrer">クレジット決済管理画面を開く</a>
+				<p>Stripe ID:{{stripe_id}}</p>
+			</div>
+			<div v-else class='col-md-5 col-7'>
 				<p>クレジット決済の設定</p>
+				<p><small>クレジット決済は<a :href="stripe_url" target="_blank" rel="noopener noreferrer">Strip社</a>のシステムを利用します。</small></p>
 				<button v-if="stripe_dashboard===false" type="button" class='btn btn-primary' @click='create_stripe()'>{{btn_name}}</button>
-				<a href="https://dashboard.stripe.com/account/status" v-if="stripe_dashboard" class='btn btn-primary'>クレジット決済管理画面を開く</a>
 				<p>Stripe ID:{{stripe_id}}</p>
 			</div>
 		</div>
