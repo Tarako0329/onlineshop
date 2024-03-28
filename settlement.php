@@ -36,7 +36,8 @@
 		<div class='row mb-3'>
 			<div class='col-md-5 col-7'>
 				<p>クレジット決済の設定</p>
-				<button type="button" class='btn btn-primary' @click='create_stripe()'>アカウント作成</button>
+				<button v-if="stripe_dashboard===false" type="button" class='btn btn-primary' @click='create_stripe()'>{{btn_name}}</button>
+				<a href="https://dashboard.stripe.com/account/status" v-if="stripe_dashboard" class='btn btn-primary'>クレジット決済管理画面を開く</a>
 				<p>Stripe ID:{{stripe_id}}</p>
 			</div>
 		</div>

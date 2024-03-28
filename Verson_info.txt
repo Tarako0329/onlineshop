@@ -59,6 +59,8 @@ ver1.09.1:領収書・納品書の追加(PDF発行)
 ver1.10.0:領収書・納品書の追加(PDF発行)-反映済み
 ver1.11.0:クレジット決済(stripe-connect)
   ALTER TABLE `Users_online` ADD `stripe_id` VARCHAR(100) NULL COMMENT 'stripe connect id' AFTER `invoice`, ADD `credit` VARCHAR(10) NOT NULL DEFAULT 'unable' COMMENT 'クレジット決済可否' AFTER `stripe_id`;
+  ALTER TABLE `Users_online` CHANGE `stripe_id` `stripe_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'none' COMMENT 'stripe connect id';
+  
 
 
 【Issues】

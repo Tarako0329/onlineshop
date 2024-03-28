@@ -114,8 +114,11 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const new_type = ref({types:"bank",payname:"",source:"",hosoku:"",flg:true})
     const pay_lists = ref([])
     const loader = ref(false)
-    let stripe_mail = ''
     const stripe_id = ref('nothing')
+    const btn_name = ref('')
+    const stripe_dashboard = ref(false)
+    
+    let stripe_mail = ''
     let credit = ''
 
     const fileupload = (id,filesubname) => {
@@ -246,6 +249,14 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         stripe_mail = response.Users_online[0].mail
         stripe_id.value = response.Users_online[0].stripe_id
         credit = response.Users_online[0].credit
+        if(stripe_id.value==="none"){
+          btn_name="設定開始"
+        }else if(credit==="unable"){
+          btn_name="設定再開"
+        }
+        if(credit==="able"){
+          stripe_dashboard.value=true
+        }
       })
     })
 
@@ -261,6 +272,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       pay_lists,
       loader,
       stripe_id,
+      stripe_dashboard,
       fileupload,
       submit_payinfo,
       upd_flg,

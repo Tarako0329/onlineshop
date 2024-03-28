@@ -30,7 +30,7 @@
 			$error = $e->error;
 		}
 		
-		header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
+		header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=able");
 		exit();
 				
 	}
