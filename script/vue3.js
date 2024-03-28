@@ -119,10 +119,10 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const stripe_dashboard = ref(false)
     const stripe_dashboard_link = ref('https://dashboard.stripe.com/account/status')
     const stripe_url = ref('https://stripe.com/jp')
+    const credit = ref('')
 
     
     let stripe_mail = ''
-    let credit = ''
 
     const fileupload = (id,filesubname) => {
       UPLOADFILE(id,filesubname).then((response)=>{
@@ -251,13 +251,13 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         pay_lists.value = response.Users_online_payinfo
         stripe_mail = response.Users_online[0].mail
         stripe_id.value = response.Users_online[0].stripe_id
-        credit = response.Users_online[0].credit
+        credit.value = response.Users_online[0].credit
         if(stripe_id.value==="none"){
-          btn_name.value="設定開始"
-        }else if(credit==="unable"){
-          btn_name.value="設定再開"
+          btn_name.value="Stripeアカウントの登録を始める"
+        }else if(credit.value==="unable"){
+          btn_name.value="Stripeアカウントの登録を再開する"
         }
-        if(credit==="able"){
+        if(credit.value==="able"){
           stripe_dashboard.value=true
         }
       })
@@ -279,6 +279,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       stripe_dashboard,
       stripe_url,
       stripe_dashboard_link,
+      credit,
       fileupload,
       submit_payinfo,
       upd_flg,
