@@ -12,7 +12,7 @@
 			$stripe = new \Stripe\StripeClient(S_KEY);
 			$id = $_GET["id"];
 
-			if($id==="nothing"){
+			if($id==="none"){
 				$account = $stripe->accounts->create([
 					'type' => 'standard',
 					'country' => 'JP',
@@ -30,8 +30,8 @@
 
 			$link = $stripe->accountLinks->create([
 				'account' => $id,
-				'refresh_url' => ROOT_URL.'ajax_create_stripe_refresh_url.php?key='.$_GET["hash"]."&id=".$id,	//うまくいかなかった
-				'return_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=able",		//うまくいった？
+				'return_url' => ROOT_URL.'ajax_create_stripe_return_url.php?hash='.$_GET["hash"]."&id=".$id,	//うまくいった？
+				'refresh_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable",		//うまくいかなかった
 				'type' => 'account_onboarding',
 			]);
 			log_writer2("\$link",$link,"lv3");
@@ -42,11 +42,12 @@
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
+			$error="";
 			$alert_status = "success";
 		}catch(Exception $e){
-			log_writer2("\$e",$e->error,"lv3");
+			log_writer2("\$e",$e,"lv3");
 			$alert_status = "danger";
-			$error = $e->error;
+			$error = json_encode($e, JSON_UNESCAPED_UNICODE);
 		}
 		
 
@@ -54,6 +55,7 @@
 			"status" => $alert_status
 			,"stripe_id" => $id
 			,"link" => $link->url
+			,"error" => $error
 		);
 				
 	}

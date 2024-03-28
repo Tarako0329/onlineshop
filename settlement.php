@@ -7,6 +7,7 @@
 	}
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
+	$sqllog="";
 	if($_GET["stripe_setting"]==="able"){
 		$sql = "update Users_online set credit = 'able' where uid = ".$_SESSION["user_id"];
 		$stmt = $pdo_h->prepare( $sql );
