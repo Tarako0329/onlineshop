@@ -115,7 +115,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const pay_lists = ref([])
     const loader = ref(false)
     let stripe_mail = ''
-    let stripe_id = 'nothing'
+    const stripe_id = ref('nothing')
     let credit = ''
 
     const fileupload = (id,filesubname) => {
@@ -223,7 +223,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     }
 
     const create_stripe = () =>{
-      axios.get(`ajax_create_stripe.php?mail=${stripe_mail}&hash=${hash}&id=${stripe_id}`)
+      axios.get(`ajax_create_stripe.php?mail=${stripe_mail}&hash=${hash}&id=${stripe_id.value}`)
       .then((response)=>{
         console_log(response.data)
       })
@@ -239,7 +239,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         console_log(response.Users_online[0].mail)
         pay_lists.value = response.Users_online_payinfo
         stripe_mail = response.Users_online[0].mail
-        stripe_id = response.Users_online[0].stripe_id
+        stripe_id.value = response.Users_online[0].stripe_id
         credit = response.Users_online[0].credit
       })
     })
@@ -255,6 +255,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       new_type,
       pay_lists,
       loader,
+      stripe_id,
       fileupload,
       submit_payinfo,
       upd_flg,

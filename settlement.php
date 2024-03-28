@@ -28,6 +28,7 @@
 			<div class='col-md-5 col-7'>
 				<p>クレジット決済の設定</p>
 				<button type="button" class='btn btn-primary' @click='create_stripe()'>アカウント作成</button>
+				<p>Stripe ID:{{stripe_id}}</p>
 			</div>
 		</div>
 		<div class='row mb-3'>
