@@ -30,7 +30,7 @@
 
 			$link = $stripe->accountLinks->create([
 				'account' => $id,
-				'refresh_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable",	//うまくいかなかった
+				'refresh_url' => ROOT_URL.'ajax_create_stripe_refresh_url.php?key='.$_GET["hash"]."&id=".$id,	//うまくいかなかった
 				'return_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=able",		//うまくいった？
 				'type' => 'account_onboarding',
 			]);

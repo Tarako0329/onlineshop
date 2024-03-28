@@ -11,37 +11,17 @@
 		try{
 			$stripe = new \Stripe\StripeClient(S_KEY);
 			$id = $_GET["id"];
-			$stripe->accounts->retrieve($id, []);
+			$account = $stripe->accounts->retrieve($id, []);
 
-			if($id==="nothing"){
-				$account = $stripe->accounts->create([
-					'type' => 'standard',
-					'country' => 'JP',
-					'email' => $_GET["mail"],
-					/*'capabilities' => [
-						'card_payments' => ['requested' => true],
-						'transfers' => ['requested' => true],
-					],*/
-				]);
-				log_writer2("\$account",$account->id,"lv3");
-				$id = $account->id;
-			}else{
-				log_writer2("\$account","skip create stripe id","lv3");
-			}
+			log_writer2("\$account",$account,"lv3");
 
-			$link = $stripe->accountLinks->create([
-				'account' => $id,
-				'refresh_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable",	//うまくいかなかった
-				'return_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=able",		//うまくいった？
-				'type' => 'account_onboarding',
-			]);
-			log_writer2("\$link",$link,"lv3");
-
+			/*
 			$sql = "update Users_online set stripe_id = '".$id."' where uid = ".$_SESSION["user_id"];
 			$stmt = $pdo_h->prepare( $sql );
 			$sqllog .= rtn_sqllog($sql,[]);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			*/
 
 			$alert_status = "success";
 		}catch(Exception $e){
@@ -50,15 +30,9 @@
 			$error = $e->error;
 		}
 		
-
-		$return_sts = array(
-			"status" => $alert_status
-			,"stripe_id" => $id
-			,"link" => $link->url
-		);
+		header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
+		exit();
 				
 	}
-  header('Content-type: application/json');  
-  echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
   exit();
 ?>
