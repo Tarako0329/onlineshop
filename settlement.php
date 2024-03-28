@@ -34,14 +34,15 @@
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-3'>
-			<div v-if="stripe_dashboard" class='col-md-5 col-7 '>
+			<div v-if="stripe_dashboard" class='col-md-8 col-12 '>
 				<p>クレジット決済の管理（Stripe社が提供する画面を利用します）</p>
 				<div class='box8'>
 					<p><small>Stripeアカウントは作成済みです。</small></p>
-					<p><small>Stripeアカウントは作成済みです。</small></p>
 					<p><small>クレジット決済は可能となってますが、入金を受けるために追加で身分証の提供が必要な場合があります。</small></p>
 					<p><small>管理画面を開き、追加の入力を求められてないか必ずご確認ください。</small></p>
-					<a :href="stripe_dashboard_link" class='btn btn-primary' target="_blank" rel="noopener noreferrer">管理画面を開く</a>
+					<a :href="stripe_dashboard_link" class='btn btn-primary btn-lg' target="_blank" rel="noopener noreferrer">管理画面を開く</a>
+				</div>
+				<div>
 					<label for='credit_switch'>クレジット決済を</label>
 					<select class='form-select' id='credit_switch' v-model='credit'>
 						<option value='able'>利用しない</option>
@@ -51,13 +52,13 @@
 					<p><small>ご利用手数料は決済額の3.6%になります。</small></p>
 				</div>
 			</div>
-			<div v-else class='col-md-5 col-7 '>
+			<div v-else class='col-md-8 col-12 '>
 				<p>クレジット決済の設定</p>
 				<div class='box8'>
 					<p><small>クレジット決済は<a :href="stripe_url" target="_blank" rel="noopener noreferrer">Stripe社</a>のシステムを利用します。</small></p>
 					<p><small>ご利用にはStripeへのアカウント登録作業が必要です。</small></p>
 					<p><small>ご利用手数料は決済額の3.6%になります。</small></p>
-					<button v-if="stripe_dashboard===false" type="button" class='btn btn-primary' @click='create_stripe()'>{{btn_name}}</button>
+					<button v-if="stripe_dashboard===false" type="button" class='btn btn-primary btn-lg' @click='create_stripe()'>{{btn_name}}</button>
 				</div>
 			</div>
 		</div>
