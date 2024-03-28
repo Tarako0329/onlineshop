@@ -62,6 +62,10 @@
 				</div>
 			</div>
 		</div>
+		<hr>
+		<div class='row mb-3 text-center'>
+			その他、決済方法の追加
+		</div>
 		<div class='row mb-3'>
 			<div class='col-md-5 col-7'>
 				<label for='hinmei' class="form-label">決済名</label>
