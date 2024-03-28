@@ -42,13 +42,12 @@
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
+			$alert_status = "success";
 		}catch(Exception $e){
-			log_writer2("\$e",$e,"lv3");
+			log_writer2("\$e",$e->error,"lv3");
 			$alert_status = "danger";
+			$error = $e->error;
 		}
-		$alert_status = "success";
-
-
 		
 
 		$return_sts = array(

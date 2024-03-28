@@ -226,6 +226,11 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       axios.get(`ajax_create_stripe.php?mail=${stripe_mail}&hash=${hash}&id=${stripe_id.value}`)
       .then((response)=>{
         console_log(response.data)
+        if(response.data.status='success'){
+          window.location.href = response.data.link;	
+        }else{
+          alert('処理に失敗しました')
+        }
       })
       .catch((error)=>{
         console_log(error)
