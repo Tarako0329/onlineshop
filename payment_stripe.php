@@ -15,6 +15,7 @@
 
   $stripe = new \Stripe\StripeClient(S_KEY);
 
+  /*
   $pay = $stripe->paymentIntents->create(
     [
       'amount' => $_SESSION["kingaku"],//請求額
@@ -24,20 +25,31 @@
     ],
     ['stripe_account' => $_GET["i"]]
   );
-/*
-  $sessionM = $stripe->checkout->sessions->create([
+  */
+  $product = $stripe->products->create(['name' => 'Fundraising dinner']);
+  $price = $stripe->prices->create([
+    'currency' => 'jpy',
+    'custom_unit_amount' => ['enabled' => true],
+    'product' => $product->id,
+  ]);
+
+  $session = $stripe->checkout->sessions->create([
     'payment_method_types' => ['card'],
-    'line_items' => [[
-      'price' => $plan_m,
+    'line_items' => [
+      [
+      'price' => $$price->id,
       'quantity' => 1,
-      ]],
-      'mode' => 'subscription',
+      ]
+    ],
+    'mode' => 'payment',
+    'payment_intent_data' => ['application_fee_amount' => 100],
+    ['stripe_account' => $_GET["i"]],
       // ご自身のサイトURLを入力
-      'success_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}&M=1',
-      'cancel_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}',
-      'subscription_data' => ['trial_end' => "$trialdate"],
-    ]);
-*/
+    'success_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}&M=1',
+    'cancel_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}',
+    ]
+  );
+
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -46,34 +58,22 @@
     <script src="https://js.stripe.com/v3/"></script>
   </head>
   <BODY>
-    <form id="payment-form" data-secret="<?php echo $pay->client_secret ?>">
-      <div id="payment-element">
-        <!-- Elements will create form elements here -->
-      </div>
-      <button id="submit">Submit</button>
-      <div id="error-message">
-        <!-- Display error message to your customers here -->
-      </div>
-    </form>
-    <script>
-      // Set your publishable key: remember to change this to your live publishable key in production
-      // See your keys here: https://dashboard.stripe.com/apikeys
-      const stripe = Stripe('<?php echo P_KEY;?>');
-      
-      const options = {
-        //clientSecret: '{{CLIENT_SECRET}}',
-        clientSecret: '<?php echo $pay->client_secret ?>',
-        // Fully customizable with appearance API.
-        //appearance: {/*...*/},
-      };
-
-      // Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in a previous step
-      const elements = stripe.elements(options);
-
-      // Create and mount the Payment Element
-      const paymentElement = elements.create('payment');
-      paymentElement.mount('#payment-element');
-
+    <button class="btn--topmenu btn-view" style="width:250px;height:80px;" id="checkout-buttonM">月額500円コース</button>
+        
+    <script type="text/javascript">
+      let stripe = Stripe('<?php echo P_KEY;?>');
+    
+      let checkoutButton = document.getElementById('checkout-buttonM');
+      checkoutButton.addEventListener('click', function() {
+        stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
+        .then(function (result) {
+          if (result.error) {
+            // var displayError = document.getElementById('error-message');
+            // displayError.textContent = result.error.message;
+          }
+        });
+      });
     </script>
+
   </BODY>
 
