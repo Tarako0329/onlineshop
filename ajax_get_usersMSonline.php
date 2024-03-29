@@ -18,6 +18,8 @@
 
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+		$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
+
 		$sql = "select 
 				*,if(flg=1,'true','false') as flg
 			from Users_online_payinfo

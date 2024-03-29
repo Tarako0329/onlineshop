@@ -12,45 +12,47 @@
   /*
   orderNOから請求額を取得して整合性をチェックする処理を追加する
   */
-
-  $stripe = new \Stripe\StripeClient(S_KEY);
-
-  /*
-  $pay = $stripe->paymentIntents->create(
-    [
-      'amount' => $_SESSION["kingaku"],//請求額
-      'currency' => 'jpy',
-      'automatic_payment_methods' => ['enabled' => true],
-      'application_fee_amount' => 0,//手数料
-    ],
-    ['stripe_account' => $_GET["i"]]
-  );
-  */
-  $product = $stripe->products->create(['name' => 'Fundraising dinner']);
-  $price = $stripe->prices->create([
-    'currency' => 'jpy',
-    'custom_unit_amount' => ['enabled' => true],
-    'product' => $product->id,
-  ]);
-
-  $session = $stripe->checkout->sessions->create(
-    [
-      'payment_method_types' => ['card'],
-      'line_items' => [
+  try{
+    $stripe = new \Stripe\StripeClient(S_KEY);
+  
+    $product = $stripe->products->create(
+        ['name' => 'Fundraising dinner']
+        ,['stripe_account' => $_GET["i"]]
+    );
+    log_writer2("\$product",$product,"lv3");
+    
+    $price = $stripe->prices->create(
         [
-        'price' => $$price->id,
-        'quantity' => 1,
+            'currency' => 'jpy',
+            //'custom_unit_amount' => ['enabled' => true],
+            'unit_amount' => 10000,
+            'product' => $product->id,
         ]
+        ,['stripe_account' => $_GET["i"]]
+    );
+    log_writer2("\$price",$price,"lv3");
+    
+    $session = $stripe->checkout->sessions->create(
+      [
+        'payment_method_types' => ['card'],
+        'line_items' => [
+          [
+          'price' => $price->id,
+          'quantity' => 1,
+          ],
+        ],
+        'payment_intent_data' => ['application_fee_amount' => 100],
+        'mode' => 'payment',
+        // ご自身のサイトURLを入力
+        'success_url' => 'https://onlineshop-test.greeen-sys.com/settlement.php?key=543758632f78346f4a632b7856414d71512b6b3541773d3d',
+        'cancel_url' => 'https://onlineshop-test.greeen-sys.com/settlement.php?key=543758632f78346f4a632b7856414d71512b6b3541773d3d',
       ],
-      'payment_intent_data' => ['application_fee_amount' => 100],
-      'mode' => 'payment',
-      // ご自身のサイトURLを入力
-      'success_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}&M=1',
-      'cancel_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}',
-    ],
-    ['stripe_account' => $_GET["i"]],
-  );
-
+      ['stripe_account' => $_GET["i"]]
+    );
+    log_writer2("\$session",$session,"lv3");
+  }catch(Exception $e){
+    log_writer2("Exception \$e",$e,"lv0");
+  }
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
