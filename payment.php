@@ -29,7 +29,7 @@
 			<div class='text-center m-3'><h1>御請求額：<?php echo $_GET["val"];?> - 円</h1></div>
 			<hr>
 			<div v-if='credit==="use"'>
-				<a href="payment_stripe.php?key=<?php echo $user_hash;?>" type="button" class="btn btn-primary">クレジットで決済する⇒</a>
+				<a :href="`payment_stripe.php?key=<?php echo $user_hash;?>&i=${stripe_id}`" type="button" class="btn btn-primary">クレジットで決済する⇒</a>
 				<hr>
 			</div>
 

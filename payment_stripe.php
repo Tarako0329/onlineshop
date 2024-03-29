@@ -8,6 +8,7 @@
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
+
   /*
   orderNOから請求額を取得して整合性をチェックする処理を追加する
   */
@@ -21,7 +22,7 @@
       'automatic_payment_methods' => ['enabled' => true],
       'application_fee_amount' => 0,//手数料
     ],
-    ['stripe_account' => '{{CONNECTED_ACCOUNT_ID}}']
+    ['stripe_account' => $_GET["i"]]
   );
 /*
   $sessionM = $stripe->checkout->sessions->create([
@@ -60,7 +61,8 @@
       const stripe = Stripe('<?php echo P_KEY;?>');
       
       const options = {
-        clientSecret: '{{CLIENT_SECRET}}',
+        //clientSecret: '{{CLIENT_SECRET}}',
+        clientSecret: '<?php echo $pay->client_secret ?>',
         // Fully customizable with appearance API.
         //appearance: {/*...*/},
       };
