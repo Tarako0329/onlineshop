@@ -8,55 +8,53 @@
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	$kingaku = rot13decrypt2($_GET["val"]);
-	$orderNO = rot13decrypt2($_GET["no"]);
+	$kingaku = ($_GET["val"]);
+	$orderNO = ($_GET["no"]);
 
+	log_writer2("\$orderNO",$orderNO,"lv3");
+	log_writer2("\$kingaku",$kingaku,"lv3");
 
-  try{
-    $stripe = new \Stripe\StripeClient(S_KEY);
-  
-    $product = $stripe->products->create(
-        ['name' => $orderNO]
-        ,['stripe_account' => $_SESSION["stripe_connect_id"]]
-    );
-    log_writer2("\$product",$product,"lv3");
-    
-    $price = $stripe->prices->create(
-        [
-            'currency' => 'jpy',
-            //'custom_unit_amount' => ['enabled' => true],
-            'unit_amount' => $kingaku,
-            'product' => $product->id,
-        ]
-        ,['stripe_account' => $_SESSION["stripe_connect_id"]]
-    );
-    log_writer2("\$price",$price,"lv3");
-    
-    $session = $stripe->checkout->sessions->create(
-      [
-        'payment_method_types' => ['card'],
-        'line_items' => [
-          [
-          'price' => $price->id,
-          'quantity' => 1,
-          ],
-        ],
-        'payment_intent_data' => ['application_fee_amount' => 100],
-        'mode' => 'payment',
-        // ご自身のサイトURLを入力
-        'success_url' => ROOT_URL.'settlement.php',	//支払ありがとうページ
-        'cancel_url' => ROOT_URL.'payment.php?key='.$_GET["key"],
-      ]
-      ,['stripe_account' => $_SESSION["stripe_connect_id"]]
-    );
-    log_writer2("\$session",$session,"lv3");
-  }catch(Exception $e){
-    log_writer2("Exception \$e",$e,"lv0");
-  }
-
-
-
-
+	try{
+		$stripe = new \Stripe\StripeClient(S_KEY);
+	
+		$product = $stripe->products->create(
+				['name' => $orderNO]
+				,['stripe_account' => $_SESSION["stripe_connect_id"]]
+		);
+		log_writer2("\$product",$product,"lv3");
+		
+		$price = $stripe->prices->create(
+				[
+						'currency' => 'jpy',
+						//'custom_unit_amount' => ['enabled' => true],
+						'unit_amount' => $kingaku,
+						'product' => $product->id,
+				]
+				,['stripe_account' => $_SESSION["stripe_connect_id"]]
+		);
+		log_writer2("\$price",$price,"lv3");
+		
+		$session = $stripe->checkout->sessions->create(
+			[
+				'payment_method_types' => ['card'],
+				'line_items' => [
+					[
+					'price' => $price->id,
+					'quantity' => 1,
+					],
+				],
+				'payment_intent_data' => ['application_fee_amount' => 100],
+				'mode' => 'payment',
+				// ご自身のサイトURLを入力
+				'success_url' => ROOT_URL.'settlement.php',	//支払ありがとうページ
+				'cancel_url' => ROOT_URL.'payment.php?key='.$_GET["key"],
+			]
+			,['stripe_account' => $_SESSION["stripe_connect_id"]]
+		);
+		log_writer2("\$session",$session,"lv3");
+	}catch(Exception $e){
+		log_writer2("Exception \$e",$e,"lv0");
+	}
 
 ?>
 <!DOCTYPE html>
@@ -77,11 +75,11 @@
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-5'>
-			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($_GET["val"]);?> - 円</h1></div>
+			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
 			<hr>
 			<div v-if='credit==="use"'>
 				<!--<a :href="`payment_stripe.php?key=<?php echo $user_hash;?>`" type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</a>-->
-				<button type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</button>
+				<button type="button" class="btn btn-primary" id='checkout-button' onclick="go_checkout()">クレジットで決済する⇒</button>
 				<hr>
 			</div>
 
@@ -123,20 +121,29 @@
 				}    
 			};    
 	</script>
-  <script>
-    let stripe = Stripe('<?php echo P_KEY;?>');
-  
-    let checkoutButton = document.getElementById('checkout-button');
-    checkoutButton.addEventListener('click', function() {
-      stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
-      .then(function (result) {
-        if (result.error) {
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
-        }
-      });
-    });
-  </script>
+	<script>
+		let stripe = Stripe('<?php echo P_KEY;?>');
+	
+		let checkoutButton = document.getElementById('checkout-button');
+		/*checkoutButton.addEventListener('click', function() {
+			stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
+			.then(function (result) {
+				if (result.error) {
+					// var displayError = document.getElementById('error-message');
+					// displayError.textContent = result.error.message;
+				}
+			});
+		});*/
+		const go_checkout =()=> {
+			stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
+			.then(function (result) {
+				if (result.error) {
+					// var displayError = document.getElementById('error-message');
+					// displayError.textContent = result.error.message;
+				}
+			});
+		}
+	</script>
 	
 </BODY>
 </html>

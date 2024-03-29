@@ -15,7 +15,7 @@ if(empty($_GET)){
 }
 $uid=rot13decrypt2($_GET["hash"]);
 //$orderNO=rot13decrypt2($_GET["orderNO"]);
-$orderNO=($_GET["val"]/9999);
+$orderNO=($_GET["val"]);
 $type = ($_GET["tp"]==="1"?"領　収　書":"納　品　書");
 $filename = ($_GET["tp"]==="1"?"Ryoushusho":"Nouhinsho");
 
