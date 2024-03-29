@@ -33,21 +33,22 @@
     'product' => $product->id,
   ]);
 
-  $session = $stripe->checkout->sessions->create([
-    'payment_method_types' => ['card'],
-    'line_items' => [
-      [
-      'price' => $$price->id,
-      'quantity' => 1,
-      ]
-    ],
-    'mode' => 'payment',
-    'payment_intent_data' => ['application_fee_amount' => 100],
-    ['stripe_account' => $_GET["i"]],
+  $session = $stripe->checkout->sessions->create(
+    [
+      'payment_method_types' => ['card'],
+      'line_items' => [
+        [
+        'price' => $$price->id,
+        'quantity' => 1,
+        ]
+      ],
+      'payment_intent_data' => ['application_fee_amount' => 100],
+      'mode' => 'payment',
       // ご自身のサイトURLを入力
-    'success_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}&M=1',
-    'cancel_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}',
-    ]
+      'success_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}&M=1',
+      'cancel_url' => $return_url.'?session_id={CHECKOUT_SESSION_ID}',
+    ],
+    ['stripe_account' => $_GET["i"]],
   );
 
 ?>
