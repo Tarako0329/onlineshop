@@ -16,6 +16,7 @@
 
 	try{
 		$stripe = new \Stripe\StripeClient(S_KEY);
+		log_writer2("S_KEY",S_KEY,"lv3");
 	
 		$product = $stripe->products->create(
 				['name' => $orderNO]
@@ -78,8 +79,9 @@
 			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
 			<hr>
 			<div v-if='credit==="use"'>
-				<!--<a :href="`payment_stripe.php?key=<?php echo $user_hash;?>`" type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</a>-->
-				<button type="button" class="btn btn-primary" id='checkout-button' onclick="go_checkout()">クレジットで決済する⇒</button>
+				<!--<a :href="`payment_stripe.php?key=<?php //echo $user_hash;?>`" type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</a>-->
+				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary">クレジットで決済する⇒</a>
+				<!--<button type="button" class="btn btn-primary" id='checkout-button' onclick="go_checkout()">クレジットで決済する⇒</button>-->
 				<hr>
 			</div>
 
@@ -93,7 +95,6 @@
 				<hr>
 			</template>
 		</div>
-
 
 	</MAIN>
 	<FOOTER class='container-fluid common_footer'>
@@ -121,29 +122,5 @@
 				}    
 			};    
 	</script>
-	<script>
-		let stripe = Stripe('<?php echo P_KEY;?>');
-	
-		let checkoutButton = document.getElementById('checkout-button');
-		/*checkoutButton.addEventListener('click', function() {
-			stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
-			.then(function (result) {
-				if (result.error) {
-					// var displayError = document.getElementById('error-message');
-					// displayError.textContent = result.error.message;
-				}
-			});
-		});*/
-		const go_checkout =()=> {
-			stripe.redirectToCheckout({sessionId: "<?php echo $session->id;?>"})
-			.then(function (result) {
-				if (result.error) {
-					// var displayError = document.getElementById('error-message');
-					// displayError.textContent = result.error.message;
-				}
-			});
-		}
-	</script>
-	
 </BODY>
 </html>
