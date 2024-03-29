@@ -181,7 +181,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         }else if(credit.value==="unable"){
           btn_name.value="Stripeアカウントの登録を再開する"
         }
-        if(credit.value==="able"){
+        if(credit.value!=="unable"){
           stripe_dashboard.value=true
         }
       })
