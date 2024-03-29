@@ -8,8 +8,8 @@
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	$kingaku = $_GET["val"]/9999;
-	$orderNO = $_GET["no"]/9999;
+	$kingaku = rot13decrypt2($_GET["val"]);
+	$orderNO = rot13decrypt2($_GET["no"]);
 
 
   try{
