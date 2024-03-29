@@ -36,7 +36,7 @@
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-3 mt-3 p-3'>
 			<div class='col-md-8 col-12 '>
-				<a href="payment.php?key=<?php echo $user_hash;?>&val=5980" class='btn btn-success' style='width:100%' target="_blank" rel="noopener noreferrer">お客様に表示される支払画面の確認</a>
+				<a href="payment.php?key=<?php echo $user_hash;?>&val=5980*9999&no=01239999*9999" class='btn btn-success' style='width:100%' target="_blank" rel="noopener noreferrer">お客様に表示される支払画面の確認</a>
 			</div>
 		</div>
 		<div class='row mb-3'>
