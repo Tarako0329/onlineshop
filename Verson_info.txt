@@ -57,10 +57,10 @@ ver1.09.1:領収書・納品書の追加(PDF発行)
   ALTER TABLE `ryoushu` ADD PRIMARY KEY(`uid`, `R_NO`);
   ALTER TABLE `Users_online` CHANGE `invoice` `invoice` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'インボイス未登録' COMMENT 'インボイス番号';
 ver1.10.0:領収書・納品書の追加(PDF発行)-反映済み
-ver1.11.0:クレジット決済(stripe-connect)ID登録
+ver1.11.0:クレジット決済(stripe-connect)ID登録-反映済み
   ALTER TABLE `Users_online` ADD `stripe_id` VARCHAR(100) NULL COMMENT 'stripe connect id' AFTER `invoice`, ADD `credit` VARCHAR(10) NOT NULL DEFAULT 'unable' COMMENT 'クレジット決済可否' AFTER `stripe_id`;
   ALTER TABLE `Users_online` CHANGE `stripe_id` `stripe_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'none' COMMENT 'stripe connect id';
-  
+ver1.12.0:(stripe-connect)決済機能
 
 
 【Issues】

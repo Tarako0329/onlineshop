@@ -7,6 +7,7 @@
 	}
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
+	$_SESSION["kingaku"] = $_GET["val"];
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -21,13 +22,19 @@
 		<TITLE><?php echo TITLE;?> 商品管理</TITLE>
 </head>
 <BODY>
-	<?php include "header_tag_admin.php"  ?>
+	<?php //include "header_tag_admin.php"  ?>
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-5'>
-			<div class='text-center m-3' style='font-size:large;'>御請求額：<?php echo $_GET["val"];?> - 円</div>
+			<div class='text-center m-3'><h1>御請求額：<?php echo $_GET["val"];?> - 円</h1></div>
+			<hr>
+			<div v-if='credit==="use"'>
+				<a href="payment_stripe.php?key=<?php echo $user_hash;?>" type="button" class="btn btn-primary">クレジットで決済する⇒</a>
+				<hr>
+			</div>
+
 			<template v-for='(list,index) in pay_lists' :key='list.source'>
-				<div class='col-md-8 col-12 text-center mb-5'>
+				<div class='col-12 text-center mb-5'>
 					<div style='font-size:medium;'>【　{{list.payname}}　】</div>
 					<div v-if='list.types==="QR"' class='p-3'><div class='img-div mx-auto' style="height:100px;width:100px;"><img :src="list.source" class='img-item-sm'></div></div>
 					<div v-else  class='p-3' style='white-space: pre-wrap;'>{{list.source}}</div>
@@ -46,7 +53,7 @@
 	</div>
 	</div><!--app-->
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
-	<script src="script/shouhinMS_vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/settlement_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		admin_menu('settlement.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 		settlement('settlement.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
