@@ -47,8 +47,8 @@
 				'payment_intent_data' => ['application_fee_amount' => 100],
 				'mode' => 'payment',
 				// ご自身のサイトURLを入力
-				'success_url' => ROOT_URL.'settlement.php',	//支払ありがとうページ
-				'cancel_url' => ROOT_URL.'payment.php?key='.$_GET["key"],
+				'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."orderNO=".$orderNO."&val=".$kingaku,	//支払ありがとうページ
+				'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
 			]
 			,['stripe_account' => $_SESSION["stripe_connect_id"]]
 		);
