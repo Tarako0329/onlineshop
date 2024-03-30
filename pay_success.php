@@ -1,6 +1,7 @@
 <?php
 	require "php_header.php";
-	$rtn = true;//csrf_checker(["payment.php"],["G","C","S"]);
+	//$rtn = true;//csrf_checker(["payment.php"],["G","C","S"]);
+	$rtn = csrf_checker(["payment.php"],["G","C","S"]);
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
@@ -10,7 +11,7 @@
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 	$kingaku = ($_GET["val"]);
-	$orderNO = ($_GET["no"]);
+	$orderNO = ($_GET["orderNO"]);
 
 	log_writer2("\$orderNO",$orderNO,"lv3");
 	log_writer2("\$kingaku",$kingaku,"lv3");
