@@ -19,6 +19,7 @@
 		$stmt = $pdo_h->prepare( $sql );
 		//bind処理
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+		$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_INT);
 		$status = $stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		if($data[0]["cnt"]<>0){
