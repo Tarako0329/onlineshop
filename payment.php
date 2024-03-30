@@ -16,13 +16,13 @@
 
 	try{
 		$stripe = new \Stripe\StripeClient(S_KEY);
-		log_writer2("S_KEY",S_KEY,"lv3");
+		//log_writer2("S_KEY",S_KEY,"lv3");
 	
 		$product = $stripe->products->create(
 				['name' => $orderNO]
 				,['stripe_account' => $_SESSION["stripe_connect_id"]]
 		);
-		log_writer2("\$product",$product,"lv3");
+		//log_writer2("\$product",$product,"lv3");
 		
 		$price = $stripe->prices->create(
 				[
@@ -33,7 +33,7 @@
 				]
 				,['stripe_account' => $_SESSION["stripe_connect_id"]]
 		);
-		log_writer2("\$price",$price,"lv3");
+		//log_writer2("\$price",$price,"lv3");
 		
 		$session = $stripe->checkout->sessions->create(
 			[
@@ -47,7 +47,7 @@
 				'payment_intent_data' => ['application_fee_amount' => 100],
 				'mode' => 'payment',
 				// ご自身のサイトURLを入力
-				'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."orderNO=".$orderNO."&val=".$kingaku."csrf_token=".$token,	//支払ありがとうページ
+				'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."csrf_token=".$token,	//支払ありがとうページ
 				'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
 			]
 			,['stripe_account' => $_SESSION["stripe_connect_id"]]
