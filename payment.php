@@ -15,6 +15,14 @@
 	//log_writer2("\$kingaku",$kingaku,"lv3");
 
 	try{
+		$sql = "select * from Users_online where uid = :uid";
+		$stmt = $pdo_h->prepare( $sql );
+		//bind処理
+		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+		$status = $stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
+
 		$stripe = new \Stripe\StripeClient(S_KEY);
 		//log_writer2("S_KEY",S_KEY,"lv3");
 	
