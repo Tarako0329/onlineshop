@@ -15,6 +15,18 @@
 	//log_writer2("\$kingaku",$kingaku,"lv3");
 
 	try{
+		$sql = "select count(*) as cnt from juchuu_head where uid = :uid and orderNO = :orderNO and payment = 1";
+		$stmt = $pdo_h->prepare( $sql );
+		//bind処理
+		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+		$status = $stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if($data[0]["cnt"]<>0){
+			header("HTTP/1.1 301 Moved Permanently");
+			header("Location: ".ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token);
+			exit();	
+		}
+
 		$sql = "select * from Users_online where uid = :uid";
 		$stmt = $pdo_h->prepare( $sql );
 		//bind処理

@@ -10,18 +10,14 @@
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	$kingaku = ($_GET["val"]);
-	$orderNO = ($_GET["orderNO"]);
-
-	log_writer2("\$orderNO",$orderNO,"lv3");
-	log_writer2("\$kingaku",$kingaku,"lv3");
+	log_writer2("\$_GET",$_GET,"lv3");
 
 	try{
 		$pdo_h->beginTransaction();
 
 		
 		$params["uid"] = $_SESSION["user_id"];
-		$params["orderNO"] = $_POST["orderNO"];
+		$params["orderNO"] = $_GET["orderNO"];
 
 		$sqlstr_h = "update juchuu_head set payment = 1 where orderNO = :orderNO and uid like :uid";
 		$sqllog .= rtn_sqllog("START TRANSACTION",[]);
@@ -71,6 +67,7 @@
   <div id='app' style='min-height: 100%'>
   <?php include "header_tag.php"  ?>
   <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
+		<h1>ありがとうございます。</h1>
 		<h1>お支払いを受付いたしました。</h1>
 	</MAIN>
 	</div>
