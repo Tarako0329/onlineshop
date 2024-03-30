@@ -11,8 +11,8 @@
 	$kingaku = ($_GET["val"]);
 	$orderNO = ($_GET["no"]);
 
-	log_writer2("\$orderNO",$orderNO,"lv3");
-	log_writer2("\$kingaku",$kingaku,"lv3");
+	//log_writer2("\$orderNO",$orderNO,"lv3");
+	//log_writer2("\$kingaku",$kingaku,"lv3");
 
 	try{
 		$stripe = new \Stripe\StripeClient(S_KEY);
@@ -52,7 +52,7 @@
 			]
 			,['stripe_account' => $_SESSION["stripe_connect_id"]]
 		);
-		log_writer2("\$session",$session,"lv3");
+		//log_writer2("\$session",$session,"lv3");
 	}catch(Exception $e){
 		log_writer2("Exception \$e",$e,"lv0");
 	}
@@ -78,9 +78,9 @@
 		<div class='row mb-5'>
 			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
 			<hr>
-			<div v-if='credit==="use"'>
+			<div v-if='credit==="use"' class='p-3'>
 				<!--<a :href="`payment_stripe.php?key=<?php //echo $user_hash;?>`" type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</a>-->
-				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary">クレジットで決済する⇒</a>
+				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary btn-lg" style='width:100%;'>クレジットで決済する⇒</a>
 				<!--<button type="button" class="btn btn-primary" id='checkout-button' onclick="go_checkout()">クレジットで決済する⇒</button>-->
 				<hr>
 			</div>

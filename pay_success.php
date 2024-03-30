@@ -18,6 +18,11 @@
 
 	try{
 		$pdo_h->beginTransaction();
+
+		
+		$params["uid"] = $_SESSION["user_id"];
+		$params["orderNO"] = $_POST["orderNO"];
+
 		$sqlstr_h = "update juchuu_head set payment = 1 where orderNO = :orderNO and uid like :uid";
 		$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
