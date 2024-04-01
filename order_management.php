@@ -81,7 +81,7 @@
 				                    <label class='btn btn-outline-primary ' :for='`stopH_${index}`' style='border-radius:0;'>済</label>
                           </div>
                           <div style='position: absolute;top:10px;right:5px'>
-                            <a :href="`pdf_receipt.php?hash=<?php echo $user_hash;?>&val=${list.orderNO*9999}&tp=0`" class='btn btn-primary mt-3' target="_blank" rel="noopener noreferrer">納品書印刷</a>
+                            <a :href="`pdf_receipt.php?hash=<?php echo $user_hash;?>&val=${list.orderNO}&tp=0`" class='btn btn-primary mt-3' target="_blank" rel="noopener noreferrer">納品書印刷</a>
                           </div>
                         </div>
                         <table class='table table-sm table-bordered caption-top'>

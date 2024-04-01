@@ -46,6 +46,7 @@ $meisai="";
 $meisai_postage="";
 $ZeiKei="";
 
+log_writer2("\$row",$row,"lv3");
 foreach($result as $row){
 	if($i===0){
 		$insDT = (string)$row["juchuu_date"];
