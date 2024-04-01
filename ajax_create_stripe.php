@@ -45,7 +45,7 @@
 			$error="";
 			$alert_status = "success";
 		}catch(Exception $e){
-			log_writer2("\$e",$e,"lv3");
+			log_writer2("\$e",$e,"lv0");
 			$alert_status = "danger";
 			$error = json_encode($e, JSON_UNESCAPED_UNICODE);
 		}

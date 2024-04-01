@@ -46,6 +46,7 @@ if($rtn !== true){
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;
+            log_writer2("\$e",$e,"lv0");
         }
     }
 }

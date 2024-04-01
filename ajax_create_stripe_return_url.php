@@ -37,7 +37,7 @@
 
 			$alert_status = "success";
 		}catch(Exception $e){
-			log_writer2("\$e",$e,"lv3");
+			log_writer2("\$e",$e,"lv0");
 			$alert_status = "danger";
 			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
 			exit();
