@@ -72,7 +72,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         console_log(response.data)
         if(response.data.status==="success"){
         }else if(response.data.status==="warning"){
-          alert('決済名が重複してます')
+          alert('登録処理失敗')
         }else{
           alert('登録処理エラー')
         }

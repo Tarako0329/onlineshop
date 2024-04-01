@@ -13,7 +13,7 @@ function log_writer2($pgname,$msg,$kankyo){
         log_writer($pgname,$msg);
         $log = print_r($msg,true);
         
-        send_mail(SYSTEM_NOTICE_MAIL,"【重要】".TITLE."でシステムエラー発生",$log,"");
+        send_mail(SYSTEM_NOTICE_MAIL,"【重要】".TITLE."でシステムエラー発生",$log,"","");
     }else if($kankyo==="lv1"){
         log_writer($pgname,$msg);
     }else if($kankyo==="lv2" && EXEC_MODE!=="Product"){
@@ -539,7 +539,7 @@ function return_num_disp($number) {
     return $return_number;
 }
 // =========================================================
-// 数字を3桁カンマ区切りで返す(整数のみ対応)
+// fatal error　実行関数
 // =========================================================
 function shutdown_ajax($filename){
     // シャットダウン関数

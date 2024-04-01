@@ -1,7 +1,8 @@
 <?php
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header.php";
-register_shutdown_function('shutdown');
+//register_shutdown_function('shutdown');
+register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
 $alert_status = "alert-warning";    //bootstrap alert class
@@ -146,7 +147,7 @@ echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
 
 exit();
 
-
+/*
 function shutdown(){
     // シャットダウン関数
     // スクリプトの処理が完了する前に
@@ -177,5 +178,5 @@ function shutdown(){
       }
   }
   
-
+*/
 ?>
