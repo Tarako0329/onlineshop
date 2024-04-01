@@ -1,6 +1,8 @@
 <?php
 {
 	require "php_header.php";
+	register_shutdown_function('shutdown_page');
+	
 	if(empty($_GET)){
 		echo "想定外アクセス。";
 		exit();
@@ -46,7 +48,7 @@ $meisai="";
 $meisai_postage="";
 $ZeiKei="";
 
-log_writer2("\$row",$row,"lv3");
+log_writer2("\$result",$result,"lv3");
 foreach($result as $row){
 	if($i===0){
 		$insDT = (string)$row["juchuu_date"];

@@ -538,5 +538,58 @@ function return_num_disp($number) {
     }
     return $return_number;
 }
+// =========================================================
+// 数字を3桁カンマ区切りで返す(整数のみ対応)
+// =========================================================
+function shutdown_ajax($filename){
+    // シャットダウン関数
+    // スクリプトの処理が完了する前に
+    // ここで何らかの操作をすることができます
+    // トランザクション中のエラー停止時は自動rollbackされる。
+      $lastError = error_get_last();
+      
+      //直前でエラーあり、かつ、catch処理出来ていない場合に実行
+      if($lastError!==null && $GLOBALS["reseve_status"] === false){
+        log_writer2($filename,"shutdown","lv3");
+        log_writer2($filename,$lastError,"lv1");
+          
+        $emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
+        if(EXEC_MODE!=="Local"){
+            send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".$filename."でシステム停止",$emsg,"","");
+        }
+        log_writer2($filename." [Exception \$lastError] =>",$lastError,"lv0");
+    
+        $token = csrf_create();
+        $return_sts = array(
+            "MSG" => "システムエラーによる更新失敗。管理者へ通知しました。"
+            ,"status" => "danger"
+            ,"csrf_create" => $token
+            ,"timeout" => false
+        );
+        header('Content-type: application/json');
+        echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
+      }
+  }
+  function shutdown_page(){
+	// シャットダウン関数
+	// スクリプトの処理が完了する前に
+	// ここで何らかの操作をすることができます
+	// トランザクション中のエラー停止時は自動rollbackされる。
+		$lastError = error_get_last();
+		
+		//直前でエラーあり、かつ、catch処理出来ていない場合に実行
+		if($lastError!==null && $GLOBALS["reseve_status"] === false){
+			log_writer2(basename(__FILE__),"shutdown","lv3");
+			log_writer2(basename(__FILE__),$lastError,"lv1");
+				
+			$emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
+			if(EXEC_MODE!=="Local"){
+					send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"","");
+			}
+			log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
+			echo "予期せぬエラーが発生しました。<br>エラー内容は管理者へ自動通報されます。<br>ご迷惑をおかけしますが、復旧までしばらくお待ち下さい。";
+	}
+}
 
+  
 ?>

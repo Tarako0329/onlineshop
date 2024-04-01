@@ -1,5 +1,7 @@
 <?php
 	require "php_header.php";
+	register_shutdown_function('shutdown_page');
+	
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
@@ -34,7 +36,7 @@
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
 		$status = $stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if(!empty($data[0]["stripe_id"])){
+		if($data[0]["stripe_id"]<>"none"){
 			$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 
 			$stripe = new \Stripe\StripeClient(S_KEY);
@@ -149,3 +151,6 @@
 	</script>
 </BODY>
 </html>
+
+<?php
+?>

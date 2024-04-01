@@ -1,5 +1,6 @@
 <?php
   require "php_header.php";
+	register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
