@@ -2,6 +2,10 @@
 	require "php_header.php";
 	//$rtn = true;//csrf_checker(["payment.php"],["G","C","S"]);
 	$rtn = csrf_checker(["payment.php"],["G","C","S"]);
+	if($rtn !== true){
+		echo "不正アクセス。";
+		exit();
+	}
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";

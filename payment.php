@@ -15,7 +15,7 @@
 
 	//log_writer2("\$orderNO",$orderNO,"lv3");
 	//log_writer2("\$kingaku",$kingaku,"lv3");
-
+	$siharai = "still";//まだ
 	try{
 		$sql = "select count(*) as cnt from juchuu_head where uid = :uid and orderNO = :orderNO and payment = 1";
 		$stmt = $pdo_h->prepare( $sql );
@@ -25,62 +25,65 @@
 		$status = $stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		if($data[0]["cnt"]<>0){
-			header("HTTP/1.1 301 Moved Permanently");
-			header("Location: ".ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token);
-			exit();	
-		}
-
-		$sql = "select * from Users_online where uid = :uid";
-		$stmt = $pdo_h->prepare( $sql );
-		//bind処理
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
-		$status = $stmt->execute();
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if($data[0]["stripe_id"]<>"none"){
-			$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
-
-			$stripe = new \Stripe\StripeClient(S_KEY);
-			//log_writer2("S_KEY",S_KEY,"lv3");
-			
-			$product = $stripe->products->create(
-				['name' => $orderNO]
-				,['stripe_account' => $_SESSION["stripe_connect_id"]]
-			);
-			//log_writer2("\$product",$product,"lv3");
-
-			$price = $stripe->prices->create(
-				[
-						'currency' => 'jpy',
-						//'custom_unit_amount' => ['enabled' => true],
-						'unit_amount' => $kingaku,
-						'product' => $product->id,
-				]
-				,['stripe_account' => $_SESSION["stripe_connect_id"]]
-			);
-			//log_writer2("\$price",$price,"lv3");
-
-			$session = $stripe->checkout->sessions->create(
-			[
-				'payment_method_types' => ['card'],
-				'line_items' => [
-					[
-					'price' => $price->id,
-					'quantity' => 1,
-					],
-				],
-				'payment_intent_data' => ['application_fee_amount' => 100],
-				'mode' => 'payment',
-				// ご自身のサイトURLを入力
-				'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
-				'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
-			]
-			,['stripe_account' => $_SESSION["stripe_connect_id"]]
-			);
-			//log_writer2("\$session",$session,"lv3");
+		if($data[0]["cnt"]<>0){//支払ずみ
+			$siharai = "done";//済
+			//header("HTTP/1.1 301 Moved Permanently");
+			//header("Location: ".ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token);
+			//exit();	
 		}else{
-			//stripe登録なし
+			$sql = "select * from Users_online where uid = :uid";
+			$stmt = $pdo_h->prepare( $sql );
+			//bind処理
+			$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+			$status = $stmt->execute();
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if($data[0]["stripe_id"]<>"none"){
+				$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
+	
+				$stripe = new \Stripe\StripeClient(S_KEY);
+				//log_writer2("S_KEY",S_KEY,"lv3");
+				
+				$product = $stripe->products->create(
+					['name' => $orderNO]
+					,['stripe_account' => $_SESSION["stripe_connect_id"]]
+				);
+				//log_writer2("\$product",$product,"lv3");
+	
+				$price = $stripe->prices->create(
+					[
+							'currency' => 'jpy',
+							//'custom_unit_amount' => ['enabled' => true],
+							'unit_amount' => $kingaku,
+							'product' => $product->id,
+					]
+					,['stripe_account' => $_SESSION["stripe_connect_id"]]
+				);
+				//log_writer2("\$price",$price,"lv3");
+	
+				$session = $stripe->checkout->sessions->create(
+					[
+					'payment_method_types' => ['card'],
+					'line_items' => [
+						[
+						'price' => $price->id,
+						'quantity' => 1,
+						],
+					],
+					'payment_intent_data' => ['application_fee_amount' => 100],
+					'mode' => 'payment',
+					// ご自身のサイトURLを入力
+					'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
+					'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
+					]
+					,['stripe_account' => $_SESSION["stripe_connect_id"]]
+				);
+				//log_writer2("\$session",$session,"lv3");
+			}else{
+				//stripe登録なし
+			}
+	
 		}
+
 	}catch(Exception $e){
 		log_writer2("Exception \$e",$e,"lv0");
 	}
@@ -89,15 +92,14 @@
 <!DOCTYPE html>
 <html lang='ja'>
 <head>
-		<?php 
+	<script>
+	</script>
+	<?php 
 		//共通部分、bootstrap設定、フォントCND、ファビコン等
 		include "head_admin.php" 
-		?>
-		<script src="https://js.stripe.com/v3/"></script>
-		<style>
-
-		</style>
-		<TITLE><?php echo TITLE;?> 商品管理</TITLE>
+	?>
+	<script src="https://js.stripe.com/v3/"></script>
+	<TITLE><?php echo TITLE;?> 商品管理</TITLE>
 </head>
 <BODY>
 	<?php //include "header_tag_admin.php"  ?>
@@ -134,21 +136,15 @@
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
 	<script src="script/settlement_vue3.js?<?php echo $time; ?>"></script>
 	<script>
-		admin_menu('settlement.php','','<?php echo $user_hash;?>').mount('#admin_menu');
+		//admin_menu('settlement.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 		settlement('settlement.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
 	</script>
-	<script>// Enterキーが押された時にSubmitされるのを抑制する
-			window.onload = function() {
-				//document.getElementById("menu_01").classList.add("active");
-				//console_log(document.getElementById("menu_01").classList)
-				document.getElementById("app").onkeypress = (e) => {
-					// form1に入力されたキーを取得
-					const key = e.keyCode || e.charCode || 0;
-					if (key == 13) {// 13はEnterキーのキーコード
-						//e.preventDefault();// アクションを行わない
-					}
-				}    
-			};    
+	<script>
+		if("<?php echo $siharai;?>"==="done"){
+			window.location.assign('<?php echo ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
+		}else{
+			//console_log("なんで？")
+		}
 	</script>
 </BODY>
 </html>
