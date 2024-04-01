@@ -34,18 +34,19 @@
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
 		$status = $stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
+		if(!empty($data[0]["stripe_id"])){
+			$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 
-		$stripe = new \Stripe\StripeClient(S_KEY);
-		//log_writer2("S_KEY",S_KEY,"lv3");
-	
-		$product = $stripe->products->create(
+			$stripe = new \Stripe\StripeClient(S_KEY);
+			//log_writer2("S_KEY",S_KEY,"lv3");
+			
+			$product = $stripe->products->create(
 				['name' => $orderNO]
 				,['stripe_account' => $_SESSION["stripe_connect_id"]]
-		);
-		//log_writer2("\$product",$product,"lv3");
-		
-		$price = $stripe->prices->create(
+			);
+			//log_writer2("\$product",$product,"lv3");
+
+			$price = $stripe->prices->create(
 				[
 						'currency' => 'jpy',
 						//'custom_unit_amount' => ['enabled' => true],
@@ -53,10 +54,10 @@
 						'product' => $product->id,
 				]
 				,['stripe_account' => $_SESSION["stripe_connect_id"]]
-		);
-		//log_writer2("\$price",$price,"lv3");
-		
-		$session = $stripe->checkout->sessions->create(
+			);
+			//log_writer2("\$price",$price,"lv3");
+
+			$session = $stripe->checkout->sessions->create(
 			[
 				'payment_method_types' => ['card'],
 				'line_items' => [
@@ -72,8 +73,11 @@
 				'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
 			]
 			,['stripe_account' => $_SESSION["stripe_connect_id"]]
-		);
-		//log_writer2("\$session",$session,"lv3");
+			);
+			//log_writer2("\$session",$session,"lv3");
+		}else{
+			//stripe登録なし
+		}
 	}catch(Exception $e){
 		log_writer2("Exception \$e",$e,"lv0");
 	}

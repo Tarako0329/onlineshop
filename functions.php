@@ -307,6 +307,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 	//$to		: 送信先アドレス
 	//$subject	: 件名
 	//$body		: 本文
+    //$fromname : 送信者
 
 	//SMTP送信
     $return_flag = 'false';
