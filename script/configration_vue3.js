@@ -156,6 +156,22 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       return get_mail_sample(mail_body_cancel.value)
     })
 
+    const mail_temp_ins = (id,val) =>{
+      let textarea = document.getElementById(id);
+
+      let sentence = textarea.value;
+      let len      = sentence.length;
+      let pos      = textarea.selectionStart;
+
+      let before   = sentence.substr(0, pos);
+      let word     = val;
+      let after    = sentence.substr(pos, len);
+
+      sentence = before + word + after;
+
+      textarea.value = sentence;
+
+    }
     const line_test = () =>{
       LINE_PUSH(line_id.value,"テスト：「オーダーが入りました」")
     }
@@ -239,6 +255,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       line_test,
       input_file_btn,
       uploadfile,
+      mail_temp_ins,
     }
   }
 })

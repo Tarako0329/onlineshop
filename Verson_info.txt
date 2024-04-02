@@ -62,6 +62,7 @@ ver1.11.0:クレジット決済(stripe-connect)ID登録-反映済み
   ALTER TABLE `Users_online` CHANGE `stripe_id` `stripe_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'none' COMMENT 'stripe connect id';
 ver1.12.0:(stripe-connect)決済機能-反映済み
 ver1.12.1:bugfix-反映済み
+ver1.13.0:細かな修正
 
 
 【Issues】
