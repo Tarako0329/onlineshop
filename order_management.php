@@ -207,7 +207,9 @@
                             <div class="input-group">
                               <button type='button' class='btn btn-outline-secondary' @click='unlock(`od_mail${index}`,`p_mail${index}`)'><i class="bi bi-pencil-square"></i></button>
                               <input type='email' v-model='list.mail' class='form-control' :id='`od_mail${index}`' placeholder='必須' @change='set_order_sts(list.orderNO,"mail",list.mail,index)' disabled readonly style='display:none;'>
-                              <p style='margin-left:8px;font-size:larger;' :id='`p_mail${index}`'>{{list.mail}}</p>
+                              <a :href="`mailto:${list.mail}?subject=受付NO:[${list.orderNO}]のご注文について&body=${list.name} 様%0D%0A%0D%0Aいつもお世話になっております。%0D%0A`">
+                                <p style='margin-left:8px;font-size:larger;' :id='`p_mail${index}`'>{{list.mail}}</p>
+                              </a>
                             </div>
                           </div>
                         </div>
