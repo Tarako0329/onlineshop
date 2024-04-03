@@ -107,7 +107,8 @@
                                 <td>{{(Number(list2.goukeitanka)+Number(list2.zei)).toLocaleString()}}</td>
                               </tr>
                               <tr v-if='list2.zei==="0.00"'>
-                                <td colspan="4">備考:{{list.customer_bikou}}</td>
+                                <!--<td colspan="4">備考:{{list.customer_bikou}}</td>-->
+                                <td colspan="4">備考:{{list2.bikou}}</td>
                               </tr>
                             </template>
                           </tbody>
