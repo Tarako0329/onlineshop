@@ -348,7 +348,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail ->text($body);
     
         //送信
-        $return_flag = $mail ->send();
+        $mail ->send();
         $return_flag = 'success';
     }catch(Exception $e){
         log_writer2("send_mail [Exception] \$e",$e,"lv0");

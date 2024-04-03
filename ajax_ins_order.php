@@ -52,6 +52,9 @@ if($rtn !== true){
         $params["st_jusho"] = $_POST["st_jusho"];
         $params["st_tel"] = $_POST["st_tel"];
 
+        //通知メール用
+        $head_bikou = $params["bikou"];
+
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
@@ -144,7 +147,7 @@ if($rtn !== true){
                 $jusho = $params['jusho'];
                 $tel = $params['tel'];
                 $mail = $params['mail'];
-                $bikou = $params['bikou'];
+                //$bikou = $params["bikou"];    $head_bikouを使う
                 $st_name = $params['st_name'];
                 $st_yubin = $params['st_yubin'];
                 $st_jusho = $params['st_jusho'];
@@ -169,7 +172,7 @@ if($rtn !== true){
                 $tel
                 $mail
                 オーダー備考：
-                $bikou
+                $head_bikou
                 
                 【お届け先】(表示がない場合は同上)
                 $st_name
@@ -178,7 +181,7 @@ if($rtn !== true){
                 $st_tel
                 EOM;
                 
-                if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){
+                if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
                     $url = ROOT_URL.'line_push_msg.php';
 
                     $data = array(
@@ -212,7 +215,8 @@ if($rtn !== true){
                 $body = str_replace("<購入者名>",$name,$body);
                 $body = str_replace("<注文内容>",$orderlist."ご注文総額：".$sougaku."  内税(".$goukeizei.")",$body);
                 $body = str_replace("<送料込の注文内容>",$orderlist,$body);
-                $body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$bikou.'',$body);
+                //$body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$bikou.'',$body);
+                $body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$head_bikou.'',$body);
                 $body = str_replace("<届け先情報>","【お届け先】\r\nお名前：".$st_name."\r\n郵便番号：".$st_yubin."\r\n送付先住所：".$st_jusho."\r\nTEL：".$st_tel.'',$body);
                 $body = str_replace("<自社名>",$owner[0]["yagou"],$body);
                 $body = str_replace("<自社住所>",$owner[0]["jusho"],$body);
