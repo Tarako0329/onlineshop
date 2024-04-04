@@ -128,6 +128,7 @@
 
 		<hr>
 		<h4>受注管理画面の設定</h4>
+		<!--
 		<div class='row mb-3 pt-3'>
 			<div class='col-md-6 col-12'>
 				<p>受注管理に利用するステータス</p>
@@ -145,7 +146,7 @@
 				</div>
 				<small>何も選択しない場合、「完了 or 未完了 or キャンセル」での管理となります。</small>
 			</div>
-		</div>
+		</div>-->
 		<div class='row mb-5 pt-3'>
 			<div class='col-md-6 col-12'>
 				<label for='lock_sts' class="form-label">オーダーキャンセルロック</label>

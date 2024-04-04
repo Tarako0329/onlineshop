@@ -22,3 +22,4 @@ upload/temp/*.png
 upload/temp/*.jpeg
 upload/temp/*.jpg
 *test*
+*template*

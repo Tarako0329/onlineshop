@@ -64,6 +64,7 @@ if($rtn !== true){
             //オーダー番号作成
             $stmt = $pdo_h->prepare("select orderNO from juchuu_head where orderNO = :orderNO FOR UPDATE");
             while(true){
+                //乱数からオーダーナンバーを発行し、受注ヘッダで重複してなければ使用する
                 $params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
                 $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
                 $stmt->execute();
