@@ -14,7 +14,8 @@
 		$sql = "select 
 				*
 			from Users_online
-			where uid like :uid ";
+			where uid like :uid 
+			order by RAND()";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->execute();
