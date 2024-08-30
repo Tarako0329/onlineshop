@@ -33,6 +33,7 @@ const GET_USER_SHORI = (resolve) =>{
   .get(`ajax_get_usersMSonline.php`)
   .then((response) => {
     obj = response.data
+    //console_log(obj)
     console_log('ajax_get_usersMSonline succsess')
   })
   .catch((error)=>{

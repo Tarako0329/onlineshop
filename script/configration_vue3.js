@@ -112,6 +112,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       })
       .catch((error,response)=>{
         console_log(error)
+        //console_log(response.data)
         token = response.data.csrf_create
         alert('更新error')
       })
@@ -176,6 +177,8 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       LINE_PUSH(line_id.value,"テスト：「オーダーが入りました」")
     }
 
+    const security_lock = ref(false)
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -183,6 +186,11 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
       GET_USER2()
       .then((response)=>{
+        console_log(response.status)
+        if(response.status!=="alert-success"){
+          alert(response.msg)
+          security_lock.value=true
+        }
         yagou.value = response.Users_online[0].yagou
         invoice.value = response.Users_online[0].invoice
         site_name.value = response.Users_online[0].site_name
@@ -256,6 +264,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       input_file_btn,
       uploadfile,
       mail_temp_ins,
+      security_lock,
     }
   }
 })

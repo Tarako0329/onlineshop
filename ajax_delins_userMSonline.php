@@ -50,7 +50,8 @@ if($rtn !== true){
         $params["mail_body_paid"] = $_POST["mail_body_paid"];
         $params["mail_body_sent"] = $_POST["mail_body_sent"];
         $params["mail_body_cancel"] = $_POST["mail_body_cancel"];
-        $params["site_name"] = $_POST["site_name"];
+        //$params["site_name"] = $_POST["site_name"];
+        $params["site_name"] = $_POST["yagou"]; //とりあえず今は屋号を転記
         $params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
         $params["cc_mail"] = $_POST["cc_mail"];
         $params["line_id"] = $_POST["line_id"];
@@ -148,36 +149,4 @@ echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
 
 exit();
 
-/*
-function shutdown(){
-    // シャットダウン関数
-    // スクリプトの処理が完了する前に
-    // ここで何らかの操作をすることができます
-    // トランザクション中のエラー停止時は自動rollbackされる。
-      $lastError = error_get_last();
-      
-      //直前でエラーあり、かつ、catch処理出来ていない場合に実行
-      if($lastError!==null && $GLOBALS["reseve_status"] === false){
-        log_writer2(basename(__FILE__),"shutdown","lv3");
-        log_writer2(basename(__FILE__),$lastError,"lv1");
-          
-        $emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
-        if(EXEC_MODE!=="Local"){
-            send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"");
-        }
-        log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
-    
-        $token = csrf_create();
-        $return_sts = array(
-            "MSG" => "システムエラーによる更新失敗。管理者へ通知しました。"
-            ,"status" => "alert-danger"
-            ,"csrf_create" => $token
-            ,"timeout" => false
-        );
-        header('Content-type: application/json');
-        echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
-      }
-  }
-  
-*/
 ?>

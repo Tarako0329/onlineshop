@@ -66,12 +66,13 @@ ver1.13.0:細かな修正
 ver1.13.1:bugfix：受注管理の明細備考が表示されてなかった
 ver1.13.2:bugfix:注文メールのヘッダ備考に明細の備考が入ってた
 ver1.14.0:受注管理改良：mailto実装
-ver1.15.0:WebRezと統合
+ver1.15.0:細かな修正
 
 
 
 【Issues】
 ・商品管理から品名CDを廃止する
+・WebRezと統合
 
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/onlineshop/onlineshop

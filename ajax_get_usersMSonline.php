@@ -9,6 +9,8 @@
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
+		$alert_status = "alert-success";
+		$msg="";
 		$sql = "select 
 				*
 			from Users_online
@@ -18,6 +20,11 @@
 		$stmt->execute();
 
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if(empty($data)){
+			$alert_status = "alert-danger";
+			$msg="User_Not_Found";
+		}
 
 		$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 
@@ -31,10 +38,11 @@
 
 		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$alert_status = "alert-success";
+		//$alert_status = "alert-success";
 
 		$return_sts = array(
 			"status" => $alert_status
+			,"msg" => $msg
 			,"Users_online" => $data
 			,"Users_online_payinfo" => $data2
 		);

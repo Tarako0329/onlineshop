@@ -42,6 +42,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       if(colum==="cancel" && val===1){
         if(confirm("ご注文をキャンセルしてよいですか？")===false){
           loader.value = false
+          haita_flg = 'stop'
           return
         }
       }
@@ -52,6 +53,50 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       form.append(`value`, val)
       form.append(`csrf_token`, token)
       form.append(`hash`, hash)
+
+      if(colum==="first_answer" && val===1){//注文受付メール・送料未入力チェック
+        if(confirm(`配送業者『${orderlist_hd.value[index].post_corp}』　送料 ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
+          document.getElementById(`postage${index}`).style.backgroundColor="rgb(243, 149, 235)"
+          document.getElementById(`post_corp${index}`).style.backgroundColor="rgb(243, 149, 235)"
+          orderlist_hd.value[index].オーダー受付 = "未"
+          loader.value = false
+          haita_flg = 'stop'
+          return
+        }else{
+          document.getElementById(`postage${index}`).style.backgroundColor="#fff"
+          document.getElementById(`post_corp${index}`).style.backgroundColor="#fff"
+          //send_mailbody.value=get_mail_sample(mail_body.value,index)
+          //document.getElementById("modalon").click()
+        }
+      }
+
+      if(colum==="sent" && val===1){//発送メール・配送確認情報未入力チェック
+        if(String(orderlist_hd.value[index].postage_url).length<9){
+          if(confirm("配送確認URLは未入力のままでよいですか？")===false){
+            document.getElementById(`postage_url_${index}`).style.backgroundColor="rgb(243, 149, 235)"
+            orderlist_hd.value[index].発送 = "未"
+            loader.value = false
+            haita_flg = 'stop'
+            return
+          }
+        }
+        if(String(orderlist_hd.value[index].postage_no).length<=1){
+          if(confirm("配送確認番号は未入力のままでよいですか？")===false){
+            document.getElementById(`postage_no_${index}`).style.backgroundColor="rgb(243, 149, 235)"
+            orderlist_hd.value[index].発送 = "未"
+            loader.value = false
+            haita_flg = 'stop'
+            return
+          }
+        }
+        document.getElementById(`postage_url_${index}`).style.backgroundColor="#fff"
+        document.getElementById(`postage_no_${index}`).style.backgroundColor="#fff"
+
+        //send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
+        //document.getElementById("modalon").click()
+      }
+
+
 
       axios.post("ajax_upd_order_h.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
@@ -68,6 +113,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
                 document.getElementById("modalon").click()
               }
               if(colum==="sent" && val===1){
+                /*
                 if(String(orderlist_hd.value[index].postage_url).length<9){
                   if(confirm("配送確認URLは未入力のままでよいですか？")===false){
                     document.getElementById(`postage_url_${index}`).style.backgroundColor="rgb(243, 149, 235)"
@@ -82,21 +128,24 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
                 }
                 document.getElementById(`postage_url_${index}`).style.backgroundColor="#fff"
                 document.getElementById(`postage_no_${index}`).style.backgroundColor="#fff"
-
+                */
                 send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
                 document.getElementById("modalon").click()
               }
               if(colum==="first_answer" && val===1){
+                /*
                 if(confirm(`配送業者『${orderlist_hd.value[index].post_corp}』　送料 ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
                   document.getElementById(`postage${index}`).style.backgroundColor="rgb(243, 149, 235)"
                   document.getElementById(`post_corp${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                  //return
                 }else{
                   document.getElementById(`postage${index}`).style.backgroundColor="#fff"
                   document.getElementById(`post_corp${index}`).style.backgroundColor="#fff"
                   send_mailbody.value=get_mail_sample(mail_body.value,index)
                   document.getElementById("modalon").click()
                 }
+                */
+                send_mailbody.value=get_mail_sample(mail_body.value,index)
+                document.getElementById("modalon").click()
               }
             }
           }
@@ -333,6 +382,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       set_serch_mail,
       send_mail_btn,
       copy_target,
+      site_name,
     }
   }
 })

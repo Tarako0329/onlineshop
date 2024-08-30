@@ -21,11 +21,6 @@
 	<?php include "header_tag_admin.php"  ?>
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
-		<!--<transition>
-			<div v-show="msg!==''" class="alert alert-warning" role="alert">
-				{{msg}}
-			</div>
-		</transition>-->
 		<div class='row mb-3 pt-3'>
 			<div class='col-md-6 col-12'>
 				<label for='yagou' class="form-label">屋号・ショップ名</label>
@@ -101,7 +96,7 @@
 			<div class='col-md-6 col-12'>
 				<label for='cc_mail' class="form-label">CC Mail</label>
 				<input type='mail' class='form-control' id='cc_mail' v-model='cc_mail'>
-				<small>お客様宛に送信したメールをBCCで自身に送りたい場合は設定してください。</small>
+				<small>お客様宛に送信したメールをBCCで、ご自身にも送りたい場合は設定してください。</small>
 			</div>
 		</div>
 		<div class='row mb-5 pt-3'>
@@ -184,18 +179,6 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<!--<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_auto=mail_body_auto+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>-->
-
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
@@ -223,20 +206,6 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<!--
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<支払方法>"}' style='width:70px;min-width:50px;'>支払方法</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body=mail_body+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
-								-->
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
@@ -264,18 +233,6 @@
 						</div>
 							<div class='row mb-3'>
 								<div class='col-12'>
-									<!--<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
-									<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_sent=mail_body_sent+"<配送状況>"}' style='width:70px;min-width:50px;'>配送状況</button>-->
 									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
 									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
 									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
@@ -304,19 +261,6 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<!--
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_paid=mail_body_paid+"<領収書LINK>"}' style='width:70px;min-width:50px;'>領収書LINK</button>-->
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
@@ -345,18 +289,6 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<!--
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<購入者名>"}' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<注文内容>"}' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<送料込の注文内容>"}' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<購入者情報>"}' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<届け先情報>"}' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合担当者>"}' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合せ受付TEL>"}' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<問合せ受付MAIL>"}' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<自社名>"}' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<代表者>"}' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='()=>{mail_body_cancel=mail_body_cancel+"<自社住所>"}' style='width:70px;min-width:50px;'>自社住所</button>-->
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
 								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
@@ -380,41 +312,11 @@
 
 
 
-		<div class='row mb-3'>
+		<div class='row mb-3' style='position:fixed;bottom:0;'>
 			<div class='col-md-6 col-12'>
-				<button type='button' class='btn btn-primary m-2 btn-lg' @click='set_user' style='width:80px;'>登録</button>
-				<!--<a href="#scrollspyHeading" type='button' class='btn btn-primary m-2' @click='set_user'>登録</a>-->
+				<button v-if='security_lock!==true' type='button' class='btn btn-primary m-2 btn-lg' @click='set_user' style='width:80px;'>登録</button>
 			</div>
 		</div>
-
-
-<!--
-		<div class='row mb-3'>
-			<div class='col-md-6 col-12'>
-				<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
-				<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
-			</div>
-		</div>
-		<div class='row mb-3'>
-			<div class='col-md-6 col-12'>
-				<div class='row'>
-				<template v-for='(list,index) in pic_list' :key='list.filename'>
-					<div class='col-md-3 col-6' style='padding:10px;'>
-						<button type='button' class='btn btn-info mb-1' @click='resort(index)' style='min-width: 50px;'>表示順：{{list.sort}}</button>
-						<img :src="list.filename" class="d-block" style='width:90%;margin-bottom:5px;'>
-					</div>
-				</template>
-				</div>
-			</div>
-		</div>
-
-		 <div class='row mb-3'>
-			<div class='col-md-6 col-12'>
-				<button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
-			</div>
-		</div>
--->
-
 	</MAIN>
 	<FOOTER class='container-fluid common_footer'>
 	</FOOTER>
