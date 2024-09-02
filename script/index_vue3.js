@@ -104,10 +104,26 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       return orderlist
     })
 
+    const search_word = ref('')
+    const serch_type = ref('商品名＋説明文') //or 商品名
     const shouhinMS_SALE = computed(()=>{
-      return shouhinMS.value.filter((row)=>{
-        return (row.status==='show')
-      })
+      if(search_word.value==''){
+        return shouhinMS.value.filter((row)=>{
+          return (row.status==='show')
+        })
+      }else{
+        if(serch_type.value==="商品名"){
+          return shouhinMS.value.filter((row)=>{
+            return row.shouhinNM.includes(search_word.value)
+          })        
+        }else if(serch_type.value==="商品名＋説明文"){
+          return shouhinMS.value.filter((row)=>{
+            let words = row.shouhinNM + row.short_info + row.infomation
+            return words.includes(search_word.value)
+            //return row.short_info.includes(search_word.value)
+          })        
+        }
+      }
     })    
  
     const order_kakaku = ref(0) //オーダー税込総額
@@ -335,6 +351,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       img_zoom,
       pic_zoom,
       shouhinMS_pic_sel,//写真拡大
+      search_word,
+      serch_type,
     }
   }
 });

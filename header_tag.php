@@ -1,7 +1,4 @@
   <HEADER class='common_header'>
-    <!--<img src='img/icon-48x48.png' id="scrollspyHeading">
-    <h1 class='mt-3 alice-regular'><a href="index.php"><?php //echo TITLE;?></a></h1>-->
-
     <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" style='padding:0;'>
       <div class="container common_header">
         <img src="img/icon-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">

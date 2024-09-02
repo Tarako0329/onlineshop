@@ -23,13 +23,24 @@
     <TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY >
-  <div id='app' style='min-height: 100%'>
+  <div id='app' style='min-height: 100%' >
   <?php include "header_tag.php"  ?>
+  <div class='container start-50 translate-middle-x' style='position:fixed;top:50px;height:30px;z-index:100;'>
+    <div class='row ' style=''>
+      <div class='input-group position-absolute start-50 translate-middle-x' style='max-width:500px;'>
+        <input type="search" class='form-control' v-model='search_word' placeholder="商品検索：">
+        <select class='form-select' v-model='serch_type' style='max-width:120px;'>
+          <option value='商品名＋説明文'>商品名＋説明文</option>
+          <option value='商品名'>商品名</option>
+        </select>
+        <button class="btn btn-outline-secondary" type='button'><i class="bi bi-search"></i></button>
+      </div>
+    </div>
+  </div>
   <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
-
     <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
-      <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD'>
+      <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD+list.uid'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
@@ -37,7 +48,7 @@
                 <div :id="`carouselExample_${index}`" class="carousel slide">
                   <div class="carousel-inner">
 
-                    <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD'>
+                    <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD+pic_list.filename'>
                       <div v-if='list.shouhinCD===pic_list.shouhinCD && list.uid===pic_list.uid'>
                         <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
                           <img :src="pic_list.filename" class="d-block img-item" @click='pic_zoom(pic_list.uid,list.shouhinCD)'>
