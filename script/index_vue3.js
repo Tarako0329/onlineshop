@@ -114,13 +114,12 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       }else{
         if(serch_type.value==="商品名"){
           return shouhinMS.value.filter((row)=>{
-            return row.shouhinNM.includes(search_word.value)
+            return row.shouhinNM.includes(search_word.value) && row.status==='show'
           })        
         }else if(serch_type.value==="商品名＋説明文"){
           return shouhinMS.value.filter((row)=>{
             let words = row.shouhinNM + row.short_info + row.infomation
-            return words.includes(search_word.value)
-            //return row.short_info.includes(search_word.value)
+            return words.includes(search_word.value) && row.status==='show'
           })        
         }
       }
