@@ -16,7 +16,7 @@
   fwrite($fp, "</url>\r\n");
   foreach($dataset as $row){
     fwrite($fp, "<url>\r\n");
-    fwrite($fp, "\t<loc>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"].$row["shouhinCD"]."</loc>\r\n");
+    fwrite($fp, "\t<loc>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</loc>\r\n");
     //fwrite($fp, "\t<loc>https://cafe-present.greeen-sys.com/product.php?shop_id=".$row["uid"]."</loc>\r\n");
     fwrite($fp, "\t<lastmod>".date("Y-m-d")."</lastmod>\r\n");
     fwrite($fp, "</url>\r\n");

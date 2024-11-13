@@ -318,7 +318,7 @@
   </FOOTER>
   <Transition><!--写真ズーム-->
     <div v-show='img_zoom' class='img-wrap' >
-      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;' @click='pic_zoom(0,0)'></button>
+      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;opacity:1;width: 4em;height: 4em;' @click='pic_zoom(0,0)'></button>
       <div id="carousel" class="carousel slide" style='max-width:90%;width: 800px;aspect-ratio: 4 / 3;'>
         <div class="carousel-inner">
           <template v-for='(pic_list,index2) in shouhinMS_pic_sel' :key='pic_list.shouhinCD'>

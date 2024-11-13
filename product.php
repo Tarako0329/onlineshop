@@ -51,6 +51,7 @@
       p{
         font-size:14px;
       }
+
     </style>
     <script type="importmap">
       {
@@ -70,7 +71,7 @@
     <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
       <!--<template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD+list.uid'>-->
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
-        <div class='col-12'><!--外枠-->
+        <div v-if='list.uid + "-" + list.shouhinCD ==="<?php echo $shouhin_id; ?>"' class='col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
               <div class='col-md-6 mb-3'><!--写真-->
@@ -167,10 +168,10 @@
   </FOOTER>
   <Transition><!--写真ズーム-->
     <div v-show='img_zoom' class='img-wrap' >
-      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;' @click='pic_zoom(0,0)'></button>
+      <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;opacity:1;width: 4em;height: 4em;' @click='pic_zoom(0,0)'></button>
       <div id="carousel" class="carousel slide" style='max-width:90%;width: 800px;aspect-ratio: 4 / 3;'>
         <div class="carousel-inner">
-          <template v-for='(pic_list,index2) in shouhinMS_pic_sel' :key='pic_list.shouhinCD'>
+          <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
             <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
               <img :src="pic_list.filename" class="d-block img-item-xl">
             </div>

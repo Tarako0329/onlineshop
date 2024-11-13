@@ -31,7 +31,7 @@
 			from shouhinMS_online online 
 			inner join Users_online ums_inline
 			on online.uid = ums_inline.uid
-			where concat(online.uid,online.shouhinCD) = :hinmei 
+			where concat(online.uid,'-',online.shouhinCD) = :hinmei 
 			order by online.uid,online.shouhinCD";
 
 		$stmt = $pdo_h->prepare($sql);
@@ -52,7 +52,7 @@
 			left join shouhinMS_online_pic pic 
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
-			where concat(online.uid,online.shouhinCD) = :hinmei 
+			where concat(online.uid,'-',online.shouhinCD) = :hinmei 
 			order by online.uid,online.shouhinCD,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		//$stmt->bindValue("uid", $shop, PDO::PARAM_INT);

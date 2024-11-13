@@ -18,14 +18,32 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
 
     const get_shouhinMS_online = (product) => {//商品マスタ取得
       axios
-      //.get(`ajax_get_shouhinMS_online.php?s=${shop}&p=${product}`)
-      .get(`ajax_get_shouhinMS_online_pinpoint.php?p=${product}`)
+      .get(`ajax_get_shouhinMS_online.php?f=%`)
+      //.get(`ajax_get_shouhinMS_online_pinpoint.php?p=${product}`)
       .then((response) => {
         if(response.data.alert==="success"){
           shouhinMS.value = [...response.data.dataset]
           shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
-          //console_log(response.data.pic_set)
+          
+          shouhinMS.value.forEach((list,index)=>{
+            if(list.uid + "-" + list.shouhinCD === p_shouhin_cd){
+              console_log(`みつけた！${list.shouhinNM}`)
+              useHead({
+                title: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』`,
+                meta: [
+                  { name: "description", content: `${list.short_info}` }
+                  ,{ property: "og:title", content: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』` }
+                  ,{ property: "og:description", content: `${list.short_info}` }
+                  ,{ property: "og:url", content: `https://cafe-present.greeen-sys.com/product.php?id=${p_shouhin_cd}` }
+                  ,{ property: "og:type", content: `website` }
+                  ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
+                  ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
+                ],
+              });
+            }
+          })
+          /*
           useHead({
             title: `${shouhinMS.value[0].shouhinNM} - 通販サイト『${p_site_name} of ${shouhinMS.value[0].site_name}』`,
             meta: [
@@ -38,7 +56,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
               ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
             ],
           });
-    
+          */
         }else{
           console_log('get_shouhinMS_online succsess:NoData')
         }
@@ -64,7 +82,6 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
         if(row.ordered != 0){
           kingaku_temp = kingaku_temp.add(num1.mul(num2)) //税込合計
         }
-        //if(index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0){
         if(((index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0) 
             || index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0)){
           kingakus.push({
@@ -127,11 +144,11 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
 
     //const search_word = ref('')
     //const serch_type = ref('商品名＋説明文') //or 商品名
-    const shouhinMS_SALE = computed(()=>{
+    /*const shouhinMS_SALE = computed(()=>{
       return shouhinMS.value.filter((row)=>{
         return (row.status==='show' && (row.uid + row.shouhinCD) == p_shouhin_cd)
       })
-    })
+    })*/
  
     const order_kakaku = ref(0) //オーダー税込総額
     const order_shop_id = ref('')
@@ -150,18 +167,25 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
     const st_tel = ref('')
     */
     const order_count =(index,val) =>{//注文画面の数量増減ボタン
-      let order = Number(shouhinMS_SALE.value[index].ordered)
+      let order = Number(shouhinMS.value[index].ordered)
       if(order + Number(val) < 0){
-        shouhinMS_SALE.value[index].ordered = 0
+        shouhinMS.value[index].ordered = 0
       }else{
-        shouhinMS_SALE.value[index].ordered = order + Number(val)
-        let tanka = new Decimal(Number(shouhinMS_SALE.value[index].tanka))
-        let shouhizei = new Decimal(Number(shouhinMS_SALE.value[index].shouhizei))
+        shouhinMS.value[index].ordered = order + Number(val)
+        let tanka = new Decimal(Number(shouhinMS.value[index].tanka))
+        let shouhizei = new Decimal(Number(shouhinMS.value[index].shouhizei))
         let order_kin = new Decimal(order_kakaku.value)
         let zougen = new Decimal(val)
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
+      IDD_Write('cart',[{
+        id:p_shouhin_cd
+        ,shop_id:shouhinMS.value[index].uid
+        ,shouhinCD:shouhinMS.value[index].shouhinCD
+        ,shouhinMS_index:index
+        ,ordered:shouhinMS.value[index].ordered
+      }])
     }
     /*
     const ordered_count =(index,val) =>{//注文確認画面の数量増減ボタン
@@ -182,6 +206,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
     const btn_name = ref('カート')
     const ordering = (uid) =>{
       console_log(`ordering:${uid}`)
+      /*
       if(mode.value==="shopping"){
         order_shop_id.value = uid
         btn_name.value='戻る'
@@ -191,7 +216,8 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
         btn_name.value='カート'
         mode.value="shopping"
       }
-
+      */
+      //IDD_Write('cart',[{id:p_shouhin_cd,shop_id:shouhinMS.value[0].uid,shouhinCD:shouhinMS.value[0].shouhinCD,ordered:shouhinMS.value[0].ordered}])
     }
 
     watch(msg,()=>{
@@ -199,7 +225,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       setTimeout(()=>{msg.value=""}, 3000);//3s
       
     })
-
+/*
     const orderNO = ref('')
     const order_submit = () =>{//注文送信
       let msg = ''
@@ -289,6 +315,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       })
 
     } 
+*/
     const order_clear =()=>{//注文クリア
       mode.value='shopping'
       shouhinMS.value.forEach((row)=>{
@@ -323,15 +350,10 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
     */
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
-      //console_log(shouhinMS_SALE.value)
-      //console_log(p_shouhin_cd)
-
       
       get_shouhinMS_online(p_shouhin_cd)
       mode.value='shopping'
       document.getElementById("menu_home").classList.add("active");
-      
-      //document.getElementById('page_title').innerText = 'test'//shouhinMS_SALE.value[0].shouhinNM
       
     })
 
@@ -364,8 +386,8 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       get_ordered,
       //shouhinMS_SALE,
       shouhinMS,
-      order_submit,
-      orderNO,
+      //order_submit,
+      //orderNO,
       order_clear,
       img_zoom,
       pic_zoom,
