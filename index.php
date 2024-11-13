@@ -20,7 +20,15 @@
         min-width: 50px;
       }
     </style>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <meta name="description" content="アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー,アレルギー対応（小麦・卵・乳 不使用）">
+    <meta property="og:title" content="cafe present オンラインショップ" />
+    <meta property="og:description" content="アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cafe-present.greeen-sys.com/" />
+    <meta property="og:image" content="https://cafe-present.greeen-sys.com/img/android-chrome-256x256.png" />
+    <meta property="og:site_name" content="<?php echo TITLE;?> 通販サイト" />
+
+    <TITLE><?php echo TITLE;?> 通販サイト</TITLE>
 </head>
 <BODY >
   <div id='app' style='min-height: 100%' >

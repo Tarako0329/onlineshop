@@ -74,6 +74,7 @@
     <div class='row mb-3'>
       <div class='col-md-8 col-12'>
         <label for='midasi' class="form-label">商品説明(見出し)</label>
+        <small>Googleの検索結果や商品一覧の画面に表示されます。商品のアピールポイントを記入してください。(推奨80～110文字)</small>
         <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi' placeholder="商品一覧の画面に表示されます。商品のアピールポイントを記入してください。"></textarea>
       </div>
     </div>

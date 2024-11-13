@@ -2,15 +2,7 @@
 
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-    <meta content="卵・乳・小麦・白砂糖を使わない食べ物を販売します" name="description">
-    <meta property="og:title" content="cafe present オンラインショップ" />
-    <meta property="og:description" content="卵・乳・小麦・白砂糖を使わない食べ物を販売します" />
-    <meta property="og:type" content="web shop" />
-    <meta property="og:url" content="https://cafe-present.greeen-sys.com/" />
-    <meta property="og:image" content="img/android-chrome-256x256.png" />
-    <meta property="og:site_name" content="cafe present オンラインショップ" />
     <meta property="og:locale" content="ja_JP"  />
-
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
