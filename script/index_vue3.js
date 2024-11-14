@@ -18,6 +18,18 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
           //console_log(response.data.pic_set)
+
+          IDD_Read_All('cart',(cart)=>{//indexDBのカートの内容を反映
+            cart.forEach((list)=>{
+              shouhinMS.value.forEach((slist,index)=>{
+                if(list.id === slist.uid + '-' + slist.shouhinCD){
+                  shouhinMS.value[index].ordered = list.ordered
+                  return
+                }
+              })
+            })
+          })
+
         }else{
           console_log('get_shouhinMS_online succsess:NoData')
         }
@@ -152,6 +164,14 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
+      IDD_Write('cart',[{
+        id:String(shouhinMS_SALE.value[index].uid) + '-' + String(shouhinMS_SALE.value[index].shouhinCD)
+        ,shop_id:shouhinMS_SALE.value[index].uid
+        ,shouhinCD:shouhinMS_SALE.value[index].shouhinCD
+        //,shouhinMS_index:index
+        ,ordered:shouhinMS_SALE.value[index].ordered
+      }])
+
     }
     const ordered_count =(index,val) =>{//注文確認画面の数量増減ボタン
       let order = Number(get_ordered.value[index].ordered)
@@ -166,7 +186,15 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         get_ordered.value[index].ordered = order + Number(val)
       }
       console_log(order_kakaku.value)
+      IDD_Write('cart',[{
+        id:String(get_ordered.value[index].uid) + '-' + String(get_ordered.value[index].shouhinCD)
+        ,shop_id:get_ordered.value[index].uid
+        ,shouhinCD:get_ordered.value[index].shouhinCD
+        //,shouhinMS_index:index
+        ,ordered:get_ordered.value[index].ordered
+      }])
     }
+
     const btn_name = ref('カート')
     const ordering = (uid) =>{
       console_log(`ordering:${uid}`)

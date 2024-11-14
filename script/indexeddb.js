@@ -66,7 +66,34 @@ const IDD_Read = (tbname,keyValue,callback) =>{
     let getReq = objectStore.get(keyValue);
 
     getReq.onsuccess = function(event){
-      //console_log(event.target.result); // {id : 'A1', name : 'test'}
+      console_log(event.target.result); // {id : 'A1', name : 'test'}
+      
+      if(callback !== null){
+        callback(event.target.result)
+      }else{
+        
+      }
+    }
+    
+    getReq.onerror = (event) => {
+      // エラー制御を忘れずに!
+    };
+  }
+}
+
+const IDD_Read_All = (tbname,callback) =>{
+  const openReq  = indexedDB.open(dbName,dbVersion);
+  
+  openReq.onsuccess = function(event){
+    console_log('[IDD_Read]db open success');
+    const DBCon = event.target.result;
+    const transaction = DBCon.transaction(tbname, "readonly");
+
+    const objectStore = transaction.objectStore(tbname);
+    const getReq = objectStore.getAll();
+
+    getReq.onsuccess = function(event){
+      console_log(event.target.result); // {id : 'A1', name : 'test'}
       
       if(callback !== null){
         callback(event.target.result)
