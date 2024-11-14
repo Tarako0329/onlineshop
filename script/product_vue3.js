@@ -43,7 +43,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
               });
             }
           })
-          IDD_Read_All('cart',(cart)=>{//indexDBのカートの内容を反映
+          IDD_Read_All(tableNM,(cart)=>{//indexDBのカートの内容を反映
             cart.forEach((list)=>{
               shouhinMS.value.forEach((slist,index)=>{
                 if(list.id === slist.uid + '-' + slist.shouhinCD){
@@ -153,7 +153,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
-      IDD_Write('cart',[{
+      IDD_Write(tableNM,[{
         id:p_shouhin_cd
         ,shop_id:shouhinMS.value[index].uid
         ,shouhinCD:shouhinMS.value[index].shouhinCD
@@ -164,18 +164,9 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
     const btn_name = ref('カート')
     const ordering = (uid) =>{
       console_log(`ordering:${uid}`)
-      /*
-      if(mode.value==="shopping"){
-        order_shop_id.value = uid
-        btn_name.value='戻る'
-        mode.value="ordering"
-      }else if(mode.value==="ordering"){
-        order_shop_id.value = ''
-        btn_name.value='カート'
-        mode.value="shopping"
-      }
-      */
-      //IDD_Write('cart',[{id:p_shouhin_cd,shop_id:shouhinMS.value[0].uid,shouhinCD:shouhinMS.value[0].shouhinCD,ordered:shouhinMS.value[0].ordered}])
+      sessionStorage.setItem('from','product_cart');
+      sessionStorage.setItem('from_uid',uid);
+      window.location.href = './'
     }
 
     watch(msg,()=>{

@@ -19,7 +19,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           console_log('get_shouhinMS_online succsess')
           //console_log(response.data.pic_set)
 
-          IDD_Read_All('cart',(cart)=>{//indexDBのカートの内容を反映
+          IDD_Read_All(tableNM,(cart)=>{//indexDBのカートの内容を反映
             cart.forEach((list)=>{
               shouhinMS.value.forEach((slist,index)=>{
                 if(list.id === slist.uid + '-' + slist.shouhinCD){
@@ -29,6 +29,15 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
               })
             })
           })
+          if(sessionStorage.getItem('from')==='product_cart'){
+            loader.value = true
+            let id = sessionStorage.getItem('from_uid')
+            console_log(`productページから来たよ:${sessionStorage.getItem('from_uid')}`)
+            setTimeout(()=>{
+              loader.value = false
+              ordering(Number(id))
+            },"500")
+          }
 
         }else{
           console_log('get_shouhinMS_online succsess:NoData')
@@ -40,6 +49,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       })
       .finally(()=>{
         //loader.value = false
+        //sessionStorage.clear();
       })
     }
 
@@ -164,11 +174,10 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
       }
       console_log(order_kakaku.value)
-      IDD_Write('cart',[{
+      IDD_Write(tableNM,[{
         id:String(shouhinMS_SALE.value[index].uid) + '-' + String(shouhinMS_SALE.value[index].shouhinCD)
         ,shop_id:shouhinMS_SALE.value[index].uid
         ,shouhinCD:shouhinMS_SALE.value[index].shouhinCD
-        //,shouhinMS_index:index
         ,ordered:shouhinMS_SALE.value[index].ordered
       }])
 
@@ -186,11 +195,10 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         get_ordered.value[index].ordered = order + Number(val)
       }
       console_log(order_kakaku.value)
-      IDD_Write('cart',[{
+      IDD_Write(tableNM,[{
         id:String(get_ordered.value[index].uid) + '-' + String(get_ordered.value[index].shouhinCD)
         ,shop_id:get_ordered.value[index].uid
         ,shouhinCD:get_ordered.value[index].shouhinCD
-        //,shouhinMS_index:index
         ,ordered:get_ordered.value[index].ordered
       }])
     }

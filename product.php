@@ -69,7 +69,6 @@
   <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
     <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
-      <!--<template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD+list.uid'>-->
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
         <div v-if='list.uid + "-" + list.shouhinCD ==="<?php echo $shouhin_id; ?>"' class='col-12'><!--外枠-->
           <div class='container-fluid'>
@@ -189,7 +188,6 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      <!--<div><img src="upload/2_1_20240222-111959_41d6edd81784741326e30c20678fad59_t.jpeg" class="d-block img-item-xl"></div>-->
     </div>
   </Transition>
   <div class="loader-wrap" v-show='loader'>
@@ -197,15 +195,9 @@
 	</div>
 
   </div>
-  <!--<script type="module" src="script/vue3.js?<?php echo $time; ?>"></script>-->
-  <!--<script type="module" src="script/product_vue3.js?<?php echo $time; ?>">-->
   <script type="module">
     import {product_page} from "./script/product_vue3.js?<?php echo $time; ?>"
-    //product_page('index','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo $shop_id; ?>','<?php echo TITLE; ?>').mount('#app');
-    product_page('index','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo TITLE; ?>').mount('#app');
-  </script>
-  <script>
-    //product_page('index','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo $shop_id; ?>').mount('#app');
+    product_page('product','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo TITLE; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

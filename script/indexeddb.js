@@ -1,5 +1,6 @@
 const dbName = 'PresentSelection';
-const dbVersion=3;
+const dbVersion=5;
+const tableNM = (KANKYO!=='Product')?'cart_test':'cart'
 
 const openReq  = indexedDB.open(dbName,dbVersion);
 //　DB名を指定して接続。DBがなければ新規作成される。
@@ -7,7 +8,8 @@ const openReq  = indexedDB.open(dbName,dbVersion);
 openReq.onupgradeneeded = function(event){
 //onupgradeneededは、DBのバージョン更新(DBの新規作成も含む)時のみ実行
   let db = event.target.result;
-  db.createObjectStore('cart', {keyPath : 'id'})
+  
+  db.createObjectStore(tableNM, {keyPath : 'id'})
   //IDD_Write('LocalParameters',[{id:'menu_color',No:'0'}])
   console_log('db upgrade');
 }
