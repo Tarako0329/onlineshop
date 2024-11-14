@@ -49,7 +49,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       })
       .finally(()=>{
         //loader.value = false
-        //sessionStorage.clear();
+        sessionStorage.clear();
       })
     }
 
