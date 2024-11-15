@@ -28,7 +28,16 @@
     <!--Vue.js-->
     <!--<script src="https://unpkg.com/vue@next"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/vue@3.4.4"></script>
-    <script src="https://unpkg.com/vue-cookies@1.8.2/vue-cookies.js"></script>
+    <!--<script src="https://unpkg.com/vue-cookies@1.8.2/vue-cookies.js"></script>-->
+    <script type="importmap">
+      {
+        "imports": {
+          "unheadvue": "https://cdn.jsdelivr.net/npm/@unhead/vue@1.11.11/+esm"
+          ,"vue":"https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
+
     <!--ajaxライブラリ-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>axios.defaults.baseURL = <?php echo "'".ROOT_URL."'" ?>;</script>
@@ -40,7 +49,7 @@
         var COLOR_NO 
     </script>
     <script src="script/function.js?<?php echo $time; ?>"></script>
-    <script src="script/class.js?<?php echo $time; ?>"></script>
+    <!--<script src="script/class.js?<?php //echo $time; ?>"></script>-->
     <script src="script/indexeddb.js?<?php echo $time; ?>"></script>
 
 

@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
+define("VERSION","ver1.16.0");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
@@ -20,12 +21,13 @@ define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 session_start();
 //$_SESSION = [];
 
-if(MAIN_DOMAIN==="localhost:81"){
+//if(MAIN_DOMAIN==="localhost:81"){
+if(EXEC_MODE<>"Product"){
   $time=date('Ymd-His');
   $id="demo";
   $pass="00000000";
 }else{
-  $time=date('Ymd-His')."up03";
+  $time=VERSION;
   $id="";
   $pass="";
 }

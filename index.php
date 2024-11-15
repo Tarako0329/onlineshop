@@ -15,6 +15,7 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_bs5.php" 
     ?>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.4"></script>
     <style>
       .btn{
         min-width: 50px;
@@ -179,7 +180,6 @@
                 <td></td>
                 <td></td>
                 <td>合計金額</td>
-                <!--<td>{{Math.floor(order_kakaku).toLocaleString()}}</td>-->
                 <td>{{Math.floor(Charge_amount_by_store[0].seikyu).toLocaleString()}}</td>
               </tr>
             </tfoot>
@@ -275,7 +275,8 @@
     <div v-show='mode==="ordered"'>
       <div id="scrollspyHeading2">受付番号：[<span style='color:red;'>{{orderNO}}</span>] にてショップにご注文を送信いたしました。</div>
       <div>
-        <p>ご注文内容を確認する自動配信メールを送信いたしましたのでご確認ください。</p>
+        <p class='mb-3'>ご注文内容を確認する自動配信メールを送信いたしましたのでご確認ください。</p>
+        <p>『購入履歴』メニューにて『受付番号』を入力すると、今回の購入内容やショップ側の対応状況が確認できます。</p>
         <br>
         <p>その後、ショップより改めてご注文内容、配送、お支払い等 についてのメールをお送りいたします。</p>
         <br>
@@ -290,7 +291,6 @@
         <p>{{Charge_amount_by_store[0].mail}}</p>
         <br>
         <br>
-        <!--<button type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</button>-->
         <div id='scrollspy'><a href="#scrollspyHeading" type='button' class='btn btn-warning' @click='order_clear()'>上記を確認の上、受付番号を控えたらボタンを押してください。</a></div>
         <div id='scrollspy'><a href="#scrollspyHeading" id='spy2'></a></div>
       </div>

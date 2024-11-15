@@ -53,15 +53,6 @@
       }
 
     </style>
-    <script type="importmap">
-      {
-        "imports": {
-          "unheadvue": "https://cdn.jsdelivr.net/npm/@unhead/vue@1.11.11/+esm"
-          ,"vue":"https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-        }
-      }
-    </script>
-
 </head>
 <BODY >
   <div id='app' style='min-height: 100%' >
@@ -170,13 +161,15 @@
       <button type="button" class="btn-close" aria-label="Close" style='position:fixed;top:55px;right:5px;opacity:1;width: 4em;height: 4em;' @click='pic_zoom(0,0)'></button>
       <div id="carousel" class="carousel slide" style='max-width:90%;width: 800px;aspect-ratio: 4 / 3;'>
         <div class="carousel-inner">
-          <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.shouhinCD'>
-            <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
-              <img :src="pic_list.filename" class="d-block img-item-xl">
-            </div>
-            <div v-else class="carousel-item" style='text-align: center;'>
-              <img :src="pic_list.filename" class="d-block img-item-xl">
-            </div>
+          <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid + pic_list.shouhinCD'>
+            <template v-if='pic_list.uid + "-" + pic_list.shouhinCD ==="<?php echo $shouhin_id; ?>"'>
+              <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
+                <img :src="pic_list.filename" class="d-block img-item-xl">
+              </div>
+              <div v-else class="carousel-item" style='text-align: center;'>
+                <img :src="pic_list.filename" class="d-block img-item-xl">
+              </div>
+            </template>
           </template>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">

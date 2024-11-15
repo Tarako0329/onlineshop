@@ -47,7 +47,30 @@ const IDD_Write = (tbname,objs) =>{
     });
 
     transaction.oncomplete = (event) => {
-      console_log("All done!");
+      console_log("IDD_Write All done!");
+    };
+    
+    transaction.onerror = (event) => {
+      // エラー制御を忘れずに!
+    };  
+  }
+}
+const IDD_Delete = (tbname,key) =>{
+  const openReq  = indexedDB.open(dbName,dbVersion);
+
+  openReq.onsuccess = function(event){
+    console_log('[IDD_Write]db open success');
+    let DBCon = event.target.result;
+    let transaction = DBCon.transaction(tbname, "readwrite");
+
+    const objectStore = transaction.objectStore(tbname);
+    const request = objectStore.delete(key);
+    request.onsuccess = (event) => {
+      // event.target.result === customer.ssn;
+    };
+
+    transaction.oncomplete = (event) => {
+      console_log("IDD_Delete All done!");
     };
     
     transaction.onerror = (event) => {
