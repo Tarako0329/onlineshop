@@ -50,7 +50,7 @@
     fwrite($fp, "<item>\r\n");
     fwrite($fp, "\t<g:id>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:id>\r\n");
     fwrite($fp, "\t<g:title>".str_replace("&","＆",$row["shouhinNM"])."</g:title>\r\n");
-    fwrite($fp, "\t<g:description>".str_replace("&","＆",$row["short_info"])."</g:description>\r\n");
+    fwrite($fp, "\t<g:description>".str_replace("&","＆",$row["short_info"])."\r\n\r\n".str_replace("&","＆",$row["infomation"])."</g:description>\r\n");
     fwrite($fp, "\t<g:link>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
     fwrite($fp, "\t<g:image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:image_link> \r\n");
     fwrite($fp, "\t<g:condition>new</g:condition> \r\n");//新品or中古
@@ -61,10 +61,11 @@
     fwrite($fp, "\t\t<g:service>標準</g:service> \r\n");
     fwrite($fp, "\t\t<g:price>0 JPY</g:price> \r\n");
     fwrite($fp, "\t</g:shipping> \r\n");//送料
+    fwrite($fp, "\t<g:shipping_label>注文内容確定後、販売車より連絡</g:shipping_label> \r\n");//送料
     fwrite($fp, "\t<g:gtin></g:gtin> \r\n");//JANコード事業者登録が必要。あると有利
     fwrite($fp, "\t<g:brand>".str_replace("&","＆",$row["yagou"])."</g:brand> \r\n");
-    fwrite($fp, "\t \r\n");
     fwrite($fp, "</item>\r\n");
+    //fwrite($fp, "\t \r\n");
   }
   fwrite($fp, "</channel>\r\n");
   fwrite($fp, "</rss>\r\n");
