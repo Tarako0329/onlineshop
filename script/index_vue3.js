@@ -300,6 +300,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           orderNO.value=response.data.orderNO
           document.getElementById('spy2').click()
           document.getElementById('header').style.pointerEvents = 'none'
+          document.getElementById('navbarNav').style.opacity = 0
         }else{
           alert('注文送信失敗')
         }
@@ -326,6 +327,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       btn_name.value='カート'
       order_kakaku.value=0
       document.getElementById('header').style.pointerEvents = 'auto'
+      document.getElementById('navbarNav').style.opacity = 1
     }
 
     const img_zoom =ref(false)
