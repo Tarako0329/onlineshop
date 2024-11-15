@@ -46,13 +46,13 @@
   foreach($dataset as $row){
     fwrite($fp, "<item>\r\n");
     fwrite($fp, "\t<g:id>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:id>\r\n");
-    fwrite($fp, "\t<g:title>".$row["shouhinNM"]."</g:title>\r\n");
-    fwrite($fp, "\t<g:description>".$row["short_info"]."</g:description>\r\n");
+    fwrite($fp, "\t<g:title>".str_replace("&","＆",$row["shouhinNM"])."</g:title>\r\n");
+    fwrite($fp, "\t<g:description>".str_replace("&","＆",$row["short_info"])."</g:description>\r\n");
     fwrite($fp, "\t<g:link>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
     fwrite($fp, "\t<g:image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:image_link> \r\n");
     fwrite($fp, "\t<g:condition>new</g:condition> \r\n");//新品or中古
     fwrite($fp, "\t<g:availability>in stock</g:availability> \r\n");//在庫状態あり
-    fwrite($fp, "\t<g:price>".$row["uid"]." JPY</g:price> \r\n");
+    fwrite($fp, "\t<g:price>".$row["tanka"]." JPY</g:price> \r\n");
     fwrite($fp, "\t<g:shipping> \r\n");//送料
     fwrite($fp, "\t\t<g:country>JP</g:country> \r\n");
     fwrite($fp, "\t\t<g:service>標準</g:service> \r\n");
