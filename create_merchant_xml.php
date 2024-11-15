@@ -1,0 +1,76 @@
+<?php
+  date_default_timezone_set('Asia/Tokyo'); 
+  $mypath = dirname(__FILE__);
+  require $mypath."/vendor/autoload.php";
+
+  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+  $dotenv->load();
+  define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
+  define("EXEC_MODE",$_ENV["EXEC_MODE"]);
+  define("TITLE",$_ENV["TITLE"]);
+
+  if(EXEC_MODE<>"Product"){
+  }else{
+  }
+  
+  
+  // DBとの接続
+  define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
+  define("USER_NAME", $_ENV["DBUSER"]);
+  define("PASSWORD", $_ENV["PASS"]);
+  
+  $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+  
+  $sql = "select 
+  online.*
+  ,pic.pic as filename
+  from shouhinMS_online online 
+  left join shouhinMS_online_pic pic 
+  on online.uid = pic.uid 
+  and online.shouhinCD = pic.shouhinCD 
+  and pic.sort=1
+  where status<>'stop'" ;
+  $stmt = $pdo_h->prepare($sql);
+  $stmt->execute();
+  $dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $fp = fopen("$mypath/product_list.xml", "w");
+
+  fwrite($fp, "<?xml version='1.0' encoding='UTF-8'?>\r\n");
+  fwrite($fp, "<rss xmlns:g='http://base.google.com/ns/1.0' version='2.0'>\r\n");
+  fwrite($fp, "<channel>\r\n");
+  fwrite($fp, "<title>".TITLE."</title>\r\n");
+  fwrite($fp, "<link>https://cafe-present.greeen-sys.com</link>\r\n");
+  fwrite($fp, "<description>アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー,アレルギー対応（小麦・卵・乳 不使用）</description>\r\n");
+  
+  foreach($dataset as $row){
+    fwrite($fp, "<item>\r\n");
+    fwrite($fp, "\t<g:id>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:id>\r\n");
+    fwrite($fp, "\t<g:title>".$row["shouhinNM"]."</g:title>\r\n");
+    fwrite($fp, "\t<g:description>".$row["short_info"]."</g:description>\r\n");
+    fwrite($fp, "\t<g:link>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
+    fwrite($fp, "\t<g:image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:image_link> \r\n");
+    fwrite($fp, "\t<g:condition>new</g:condition> \r\n");//新品or中古
+    fwrite($fp, "\t<g:availability>in stock</g:availability> \r\n");//在庫状態あり
+    fwrite($fp, "\t<g:price>".$row["uid"]." JPY</g:price> \r\n");
+    fwrite($fp, "\t<g:shipping> \r\n");//送料
+    fwrite($fp, "\t\t<g:country>JP</g:country> \r\n");
+    fwrite($fp, "\t\t<g:service>標準</g:service> \r\n");
+    fwrite($fp, "\t\t<g:price>ASK</g:price> \r\n");
+    fwrite($fp, "\t</g:shipping> \r\n");//送料
+    fwrite($fp, "\t<g:gtin></g:gtin> \r\n");//JANコード事業者登録が必要。あると有利
+    fwrite($fp, "\t<g:brand>Google</g:brand> \r\n");
+    fwrite($fp, "\t \r\n");
+    fwrite($fp, "</item>\r\n");
+  }
+  fwrite($fp, "</channel>\r\n");
+  fwrite($fp, "</rss>\r\n");
+  fclose($fp);
+  exit();
+
+  function get_pdo_options() {
+    return array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                 PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,   //sqlの複文禁止 "select * from hoge;delete from hoge"みたいなの
+                 PDO::ATTR_EMULATE_PREPARES => false);        //同上
+  }
+?>

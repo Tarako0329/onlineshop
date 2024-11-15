@@ -1,8 +1,6 @@
 <?php
-  //require "php_header.php";
   date_default_timezone_set('Asia/Tokyo'); 
   $mypath = dirname(__FILE__);
-  //require "/home/pcntfsrg/public_html/onlineshop/Present/vendor/autoload.php";
   require $mypath."/vendor/autoload.php";
 
   $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
