@@ -59,7 +59,7 @@
     fwrite($fp, "\t<g:shipping> \r\n");//送料
     fwrite($fp, "\t\t<g:country>JP</g:country> \r\n");
     fwrite($fp, "\t\t<g:service>標準</g:service> \r\n");
-    fwrite($fp, "\t\t<g:price>ASK</g:price> \r\n");
+    fwrite($fp, "\t\t<g:price>0 JPY</g:price> \r\n");
     fwrite($fp, "\t</g:shipping> \r\n");//送料
     fwrite($fp, "\t<g:gtin></g:gtin> \r\n");//JANコード事業者登録が必要。あると有利
     fwrite($fp, "\t<g:brand>".str_replace("&","＆",$row["yagou"])."</g:brand> \r\n");
