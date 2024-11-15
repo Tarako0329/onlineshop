@@ -29,7 +29,11 @@
 						<div class='row'>
 							<div class='col-12 d-flex original-gradient' style='height:80px;'><!--詳細-->
 								<div style='height:80px;padding:2px;border:solid 2px #fff;'><img style='height:100%' :src="list.logo" ></div>
-								<div class='ms-3 pt-3'><h3 class="card-title">{{list.yagou}}</h3></div>
+								<div class='ms-3 pt-3'>
+									<h3 class="card-title mb-3">{{list.yagou}}</h3>
+									<p class='m-0'>代表：{{list.shacho}}</p>
+									<p class='m-0'>mail：{{list.mail}}</p>
+								</div>
 							</div><!--詳細-->
 							<div class='col-12 p-3'>
 								<div style='white-space: pre-wrap;' v-html='list.site_pr'></div>

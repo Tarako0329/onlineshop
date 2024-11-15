@@ -24,11 +24,14 @@
   $sql = "select 
   online.*
   ,pic.pic as filename
+  ,ums_inline.yagou
   from shouhinMS_online online 
   left join shouhinMS_online_pic pic 
   on online.uid = pic.uid 
   and online.shouhinCD = pic.shouhinCD 
   and pic.sort=1
+  inner join Users_online ums_inline
+  on online.uid = ums_inline.uid
   where status<>'stop'" ;
   $stmt = $pdo_h->prepare($sql);
   $stmt->execute();
@@ -59,7 +62,7 @@
     fwrite($fp, "\t\t<g:price>ASK</g:price> \r\n");
     fwrite($fp, "\t</g:shipping> \r\n");//送料
     fwrite($fp, "\t<g:gtin></g:gtin> \r\n");//JANコード事業者登録が必要。あると有利
-    fwrite($fp, "\t<g:brand>Google</g:brand> \r\n");
+    fwrite($fp, "\t<g:brand>".str_replace("&","＆",$row["yagou"])."</g:brand> \r\n");
     fwrite($fp, "\t \r\n");
     fwrite($fp, "</item>\r\n");
   }
