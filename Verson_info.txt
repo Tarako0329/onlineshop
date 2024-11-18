@@ -68,9 +68,9 @@ ver1.13.2:bugfix:注文メールのヘッダ備考に明細の備考が入って
 ver1.14.0:受注管理改良：mailto実装
 ver1.15.0:細かな修正-commited
 ver1.15.1:細かな修正:商品・店舗の並びランダムと商品検索-commited
-ver1.16.0:商品単独ページとサチコ用サイトマップの追加
-ver1.17.0:GoogleMerchant_xml作成対応
-ver1.17.1:GoogleMerchant_xml作成対応
+ver1.16.0:商品単独ページとサチコ用サイトマップの追加-commited
+ver1.17.0:GoogleMerchant_xml作成対応-commited
+ver1.18.0:出店者へのクレジット支払通知
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 
 

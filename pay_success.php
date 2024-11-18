@@ -1,11 +1,11 @@
 <?php
 	require "php_header.php";
 	//$rtn = true;//csrf_checker(["payment.php"],["G","C","S"]);
-	$rtn = csrf_checker(["payment.php"],["G","C","S"]);
+	/*$rtn = csrf_checker(["payment.php"],["G","C","S"]);
 	if($rtn !== true){
 		echo "不正アクセス。";
 		exit();
-	}
+	}*/
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
@@ -40,6 +40,38 @@
 		$pdo_h->commit();
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
+
+		
+		//入金完了を出店者へ通知
+		$stmt = $pdo_h->prepare("select * from Users_online where uid = :uid");
+		$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+		$stmt->execute();
+		$owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$stmt = $pdo_h->prepare("select juchuu_head.*,(本体額+postage) as 入金額 from juchuu_head 
+		inner join (select orderNO,sum(goukeitanka+zei) as 本体額 from juchuu_meisai group by orderNO) as Meisai 
+		on juchuu_head.orderNO = Meisai.orderNO 
+		where juchuu_head.orderNO = :orderNO and juchuu_head.uid like :uid");
+		$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+		$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+		$stmt->execute();
+		$juchuu_head = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$body = <<<EOM
+		$juchuu_head[0]["name"]様よりクレジットカード決済による入金を確認しました。
+
+		受付No：$juchuu_head[0]["orderNO"]
+		ご入金額：$juchuu_head[0]["入金額"]
+
+		受注管理画面の入金ステータスを「入金済み」に変更しました。
+		EOM;
+
+		if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
+			$html = send_line($owner[0]["line_id"],$body);
+		}else if(!empty($owner[0]["mail"])){
+			$rtn = send_mail($owner[0]["mail"],"入金通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+		}
+
 		
 		$reseve_status=true;
 	}catch(Exception $e){

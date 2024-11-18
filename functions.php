@@ -352,6 +352,24 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
     return $return_flag;
 }
 
+function send_line($to,$body){
+    $url = ROOT_URL.'line_push_msg.php';
+
+    $data = array(
+        'LINE_USER_ID' => $to,
+        'MSG' => $body,
+    );
+
+    $context = array(
+        'http' => array(
+            'method'  => 'POST',
+            'header'  => implode("\r\n", array('Content-Type: application/x-www-form-urlencoded',)),
+            'content' => http_build_query($data)
+        )
+    );
+
+    return file_get_contents($url, false, stream_context_create($context));
+}
 // =========================================================
 // GUID取得
 // =========================================================

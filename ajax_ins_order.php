@@ -207,26 +207,26 @@ if($rtn !== true){
                     $rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
                 }
 
-                //お客様向けメール
+                //お客様向けメール 
                 {
-                $title = TITLE;
-
-                $body = $owner[0]["mail_body_auto"];
-
-                $body = str_replace("<購入者名>",$name,$body);
-                $body = str_replace("<注文内容>",$orderlist."ご注文総額：".$sougaku."  内税(".$goukeizei.")",$body);
-                $body = str_replace("<送料込の注文内容>",$orderlist,$body);
-                //$body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$bikou.'',$body);
-                $body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$head_bikou.'',$body);
-                $body = str_replace("<届け先情報>","【お届け先】\r\nお名前：".$st_name."\r\n郵便番号：".$st_yubin."\r\n送付先住所：".$st_jusho."\r\nTEL：".$st_tel.'',$body);
-                $body = str_replace("<自社名>",$owner[0]["yagou"],$body);
-                $body = str_replace("<自社住所>",$owner[0]["jusho"],$body);
-                $body = str_replace("<問合せ受付TEL>",$owner[0]["tel"],$body);
-                $body = str_replace("<問合せ受付MAIL>",$owner[0]["mail"],$body);
-                $body = str_replace("<問合担当者>",$owner[0]["name"],$body);
-                $body = str_replace("<代表者>",$owner[0]["shacho"],$body);
-          
-                $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["CC_mail"]);
+                    $title = TITLE;
+                    
+                    $body = $owner[0]["mail_body_auto"];
+                    
+                    $body = str_replace("<購入者名>",$name,$body);
+                    $body = str_replace("<注文内容>",$orderlist."ご注文総額：".$sougaku."  内税(".$goukeizei.")",$body);
+                    $body = str_replace("<送料込の注文内容>",$orderlist,$body);
+                    //$body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$bikou.'',$body);
+                    $body = str_replace("<購入者情報>","【ご注文主】\r\nお名前：".$name."\r\n郵便番号：".$yubin."\r\n住所：".$jusho."\r\nTEL：".$tel."\r\nMAIL：".$mail."\r\nオーダー備考：\r\n".$head_bikou.'',$body);
+                    $body = str_replace("<届け先情報>","【お届け先】\r\nお名前：".$st_name."\r\n郵便番号：".$st_yubin."\r\n送付先住所：".$st_jusho."\r\nTEL：".$st_tel.'',$body);
+                    $body = str_replace("<自社名>",$owner[0]["yagou"],$body);
+                    $body = str_replace("<自社住所>",$owner[0]["jusho"],$body);
+                    $body = str_replace("<問合せ受付TEL>",$owner[0]["tel"],$body);
+                    $body = str_replace("<問合せ受付MAIL>",$owner[0]["mail"],$body);
+                    $body = str_replace("<問合担当者>",$owner[0]["name"],$body);
+                    $body = str_replace("<代表者>",$owner[0]["shacho"],$body);
+                    
+                    $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["CC_mail"]);
                 }
             }
 

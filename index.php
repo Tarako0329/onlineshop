@@ -21,6 +21,7 @@
         min-width: 50px;
       }
     </style>
+    <link rel='canonical' href='https://cafe-present.greeen-sys.com/'>
     <meta name="description" content="アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー,アレルギー対応（小麦・卵・乳 不使用）">
     <meta property="og:title" content="cafe present オンラインショップ" />
     <meta property="og:description" content="アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー" />
