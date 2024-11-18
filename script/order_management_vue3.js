@@ -113,37 +113,10 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
                 document.getElementById("modalon").click()
               }
               if(colum==="sent" && val===1){
-                /*
-                if(String(orderlist_hd.value[index].postage_url).length<9){
-                  if(confirm("配送確認URLは未入力のままでよいですか？")===false){
-                    document.getElementById(`postage_url_${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                    return
-                  }
-                }
-                if(String(orderlist_hd.value[index].postage_no).length<=1){
-                  if(confirm("配送確認番号は未入力のままでよいですか？")===false){
-                    document.getElementById(`postage_no_${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                    return
-                  }
-                }
-                document.getElementById(`postage_url_${index}`).style.backgroundColor="#fff"
-                document.getElementById(`postage_no_${index}`).style.backgroundColor="#fff"
-                */
                 send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
                 document.getElementById("modalon").click()
               }
               if(colum==="first_answer" && val===1){
-                /*
-                if(confirm(`配送業者『${orderlist_hd.value[index].post_corp}』　送料 ${orderlist_hd.value[index].postage} 円でよろしいですか？`)===false){
-                  document.getElementById(`postage${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                  document.getElementById(`post_corp${index}`).style.backgroundColor="rgb(243, 149, 235)"
-                }else{
-                  document.getElementById(`postage${index}`).style.backgroundColor="#fff"
-                  document.getElementById(`post_corp${index}`).style.backgroundColor="#fff"
-                  send_mailbody.value=get_mail_sample(mail_body.value,index)
-                  document.getElementById("modalon").click()
-                }
-                */
                 send_mailbody.value=get_mail_sample(mail_body.value,index)
                 document.getElementById("modalon").click()
               }

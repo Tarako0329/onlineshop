@@ -57,14 +57,22 @@
 		$stmt->execute();
 		$juchuu_head = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+		$kokyaku = $juchuu_head[0]['name'];
+		$orderno = $juchuu_head[0]['orderNO'];
+		$nyukin = $juchuu_head[0]['入金額'];
+
 		$body = <<<EOM
-		$juchuu_head[0]["name"]様よりクレジットカード決済による入金を確認しました。
+			$kokyaku 様よりクレジットカード決済による入金を確認しました。
 
-		受付No：$juchuu_head[0]["orderNO"]
-		ご入金額：$juchuu_head[0]["入金額"]
+			受付No：$orderno
+			ご入金額：￥ $nyukin -
 
-		受注管理画面の入金ステータスを「入金済み」に変更しました。
+			受注管理画面の入金ステータスを「入金済み」に変更しました。
+
+			念のため、Stripe管理画面を確認してください。
+			https://dashboard.stripe.com/payments
 		EOM;
+
 
 		if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
 			$html = send_line($owner[0]["line_id"],$body);
@@ -72,7 +80,24 @@
 			$rtn = send_mail($owner[0]["mail"],"入金通知[No:".$juchuu_head[0]["orderNO"]."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 		}
 
-		
+		//クレジット支払自動返信のONOFF設定を追加してから有効にする
+		/*
+		$ryoushu_url = ROOT_URL."pdf_receipt.php?hash=".$user_hash."&val=".$orderno."&tp=1";
+		$body2 = <<<EOM
+			$kokyaku 様よりクレジットカード決済によるお支払いを確認しました。
+
+			受付No：$orderno
+			ご入金額：￥ $nyukin -
+
+			お支払いありがとうございました。
+			商品の発送まで今しばらくお待ちください。
+
+			領収書は下記ＵＲＬよりダウンロードをお願いいたします。
+			$ryoushu_url
+		EOM;
+		$rtn = send_mail($owner[0]["mail"],"お支払い完了通知[No:".$juchuu_head[0]["orderNO"]."]",$body2,TITLE." onLineShop",$juchuu_head[0]["mail"]);
+		*/
+
 		$reseve_status=true;
 	}catch(Exception $e){
 		$pdo_h->rollBack();
