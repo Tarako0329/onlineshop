@@ -25,3 +25,4 @@ upload/temp/*.jpg
 *template*
 *.mm
 sitemap.xml
+product_list.xml
