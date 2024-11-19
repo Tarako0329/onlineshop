@@ -47,7 +47,7 @@
               <tr>
                 <td>{{list.shouhinNM}}</td>
                 <td>
-                  <select style='width: 90px' class='form-select' v-model='list.status'>
+                  <select style='width: 90px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
                     <option value='show'>販売中</option>
                     <option value='soldout'>受付停止</option>
                     <option value='stop'>販売停止</option>
@@ -60,7 +60,8 @@
         </table>
       </div>
     </div>
-    <div v-show='mode!=="list"'>
+    <div v-show='disp!=="none"'>
+      <hr>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <label for='hinmei' class="form-label">商品名</label>
@@ -82,7 +83,7 @@
 		  		<input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' id='stop'>
 		  		<label class='btn btn-outline-danger ' for='stop' style='border-radius:0;min-width: 90px;'>販売停止</label>
         </div>
-        <small>受付停止：商品表示は残るが受付は停止（Google等の検索に認知されるのでお勧め）</small>
+        <small>受付停止：品切れ中で表示（お勧め）</small>
         <small>販売停止：商品は非表示（今後販売予定がない場合はコチラ）</small>
       </div>
       <div class='row mb-3'>
