@@ -19,11 +19,12 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		let hash = p_hash
 		const msg=ref('')
 		const loader = ref(false)
+		
 
 		const shouhinMS = ref([])
 		const shouhinMS_pic = ref([])
 		
-		const mode = ref('new')
+		const mode = ref('upd')
 		const get_shouhinMS = (serch) => {
 			let url=`ajax_get_shouhinMS.php?f=${serch}`
 			console_log('get_shouhinMS start')
@@ -98,7 +99,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(mode.value==="new"){
 				clear_ms()
 				shouhinMS.value = []
-				get_shouhinMS()
+				//get_shouhinMS()
 				get_shouhinMS_newcd()
 			}else if(mode.value==="upd"){
 				clear_ms()
@@ -108,6 +109,15 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				return
 			}
 		})
+
+		const set_shouhinNM = (p_shouhinNM) =>{
+			if(shouhinNM.value){
+				if(confirm('現在の変更内容は破棄されますがよろしいですか？')==false){
+					return 0
+				}}
+			shouhinNM.value = p_shouhinNM
+			mode.value = 'upd'
+		}
 
 		watch(shouhinNM,()=>{//入力された商品名からマスタ情報を取得
 			let shouhin = shouhinMS.value.filter((row)=>{
@@ -131,6 +141,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				if(mode.value==="upd"){
 					shouhinCD.value = shouhin[0].shouhinCD
 				}
+			}else{
+				clear_ms()
 			}
 
 			if(mode.value==="new"){
@@ -260,7 +272,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				if(response.data.status==="alert-success"){
 					//画面のクリア
 					if(mode.value==="new"){
-						get_shouhinMS()
+						//get_shouhinMS()
 						get_shouhinMS_newcd()
 					}else if(mode.value==="upd"){
 						get_shouhinMS_online()
@@ -334,8 +346,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
-				get_shouhinMS()
-				get_shouhinMS_newcd()
+				//get_shouhinMS()
+				//get_shouhinMS_newcd()
+				get_shouhinMS_online()
 			}
 		})
 
@@ -365,6 +378,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			resort,
 			shouhizei,
 			zeikomi,
+			set_shouhinNM,
 		}
 	}
 });

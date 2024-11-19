@@ -54,7 +54,11 @@
     fwrite($fp, "\t<g:link>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
     fwrite($fp, "\t<g:image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:image_link> \r\n");
     fwrite($fp, "\t<g:condition>new</g:condition> \r\n");//新品or中古
-    fwrite($fp, "\t<g:availability>in stock</g:availability> \r\n");//在庫状態あり
+    if($row["status"]==="show"){
+      fwrite($fp, "\t<g:availability>in stock</g:availability> \r\n");//在庫状態あり
+    }else{
+      fwrite($fp, "\t<g:availability>out of stock</g:availability> \r\n");//在庫状態なし
+    }
     fwrite($fp, "\t<g:price>".$row["tanka"]." JPY</g:price> \r\n");
     fwrite($fp, "\t<g:shipping> \r\n");//送料
     fwrite($fp, "\t\t<g:country>JP</g:country> \r\n");

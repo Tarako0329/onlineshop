@@ -63,6 +63,7 @@
       <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
         <div v-if='list.uid + "-" + list.shouhinCD ==="<?php echo $shouhin_id; ?>"' class='col-12'><!--外枠-->
           <div class='container-fluid'>
+            <div v-if='list.status==="soldout"' class='row'><div class='alert alert-warning'>品切れ中です</div></div>
             <div class='row pb-1'>
               <div class='col-md-6 mb-3'><!--写真-->
                 <div :id="`carouselExample_${index}`" class="carousel slide">
@@ -112,7 +113,7 @@
                       <div class="accordion-body">
                         <div class='pb-1'><p>{{list.infomation}}</p></div>
                         <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
-                        <div class='pb-3'>
+                        <div v-if='list.status==="show"' class='pb-3'>
                           <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show_${index}`'>
 				                  <label class='btn btn-primary ' :for='`show_${index}`' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
 				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off'  :id='`stop_${index}`'>

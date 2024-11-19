@@ -71,6 +71,8 @@ ver1.15.1:細かな修正:商品・店舗の並びランダムと商品検索-co
 ver1.16.0:商品単独ページとサチコ用サイトマップの追加-commited
 ver1.17.0:GoogleMerchant_xml作成対応-commited
 ver1.18.0:出店者へのクレジット支払通知
+ver1.19.0:商品一覧の追加・品切れステータス追加
+
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 
 
