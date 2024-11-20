@@ -18,7 +18,7 @@ if(empty($_POST["hash"])){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-$rtn = csrf_checker(["order_management.php",""],["P","C","S"]);
+$rtn = csrf_checker(["order_management.php","index.php"],["P","C","S"]);
 if($rtn !== true){
     $msg=$rtn;
     $alert_status = "alert-warning";

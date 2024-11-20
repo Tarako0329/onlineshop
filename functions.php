@@ -308,7 +308,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 	//SMTP送信
     $return_flag = 'false';
     if(EXEC_MODE==="Local"){
-        log_writer2("\$body",$body,"lv3");
+        log_writer2("send_mail - \$body",$body,"lv3");
         return "success";
     }
 
@@ -353,6 +353,11 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 }
 
 function send_line($to,$body){
+    if(EXEC_MODE==="Local"){
+        log_writer2("send_line - \$body",$body,"lv3");
+        return "success";
+    }
+
     $url = ROOT_URL.'line_push_msg.php';
 
     $data = array(

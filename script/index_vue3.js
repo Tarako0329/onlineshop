@@ -351,6 +351,64 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       return rtn
     })
 
+    const qa_index = ref(0)
+    const qa_yagou = ref('')
+    const qa_shouhinNM = ref('')
+    const qa_name = ref('')
+    const qa_mail = ref('')
+    const qa_text = ref('')
+    const qa_head = ref('')
+    const set_qa_index = (p_index) => {
+      qa_index.value = p_index
+      qa_yagou.value = shouhinMS_SALE.value[p_index].yagou
+      qa_shouhinNM.value = shouhinMS_SALE.value[p_index].shouhinNM
+    }
+    const send_email = () =>{
+      if(confirm('お問い合わせ内容に変更はないですか？')){
+      }else{
+        return
+      }
+      
+      loader.value = true
+
+      const form = new FormData();
+      form.append(`mailto`, qa_mail.value)
+      form.append(`mailtoBCC`, shouhinMS_SALE.value[qa_index.value].mail)
+      form.append(`lineid`, shouhinMS_SALE.value[qa_index.value].line_id)
+      form.append(`shop_id`, shouhinMS_SALE.value[qa_index.value].uid)
+      form.append(`qa_head`, qa_head.value)
+      form.append(`qa_name`, qa_name.value)
+      form.append(`subject`, `【${qa_yagou.value}】ご質問を受付ました「${qa_head.value}」`)
+      form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\nお問い合わせ内容\n\n${qa_text.value}`)
+      form.append(`qa_text`, qa_text.value)
+      form.append(`sts`, "Q")
+      form.append(`csrf_token`, token)
+      //form.append(`hash`, hash)
+
+      axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        loader.value = false
+        if(response.data.status==="alert-success"){
+          token = response.data.csrf_create
+          alert('メールを送信しました')
+        }else{
+          alert('送信失敗')
+          token = response.data.csrf_create
+        }
+        
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+
+    }
+
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
 
@@ -395,6 +453,15 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       shouhinMS_pic_sel,//写真拡大
       search_word,
       serch_type,
+      qa_index,
+      qa_yagou,
+      qa_shouhinNM,
+      qa_mail,
+      qa_name,
+      qa_head,
+      qa_text,
+      set_qa_index,
+      send_email,
     }
   }
 });
