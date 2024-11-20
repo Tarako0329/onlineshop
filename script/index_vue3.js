@@ -362,6 +362,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       qa_index.value = p_index
       qa_yagou.value = shouhinMS_SALE.value[p_index].yagou
       qa_shouhinNM.value = shouhinMS_SALE.value[p_index].shouhinNM
+      qa_head.value = qa_shouhinNM.value
+      
     }
     const send_email = () =>{
       if(confirm('お問い合わせ内容に変更はないですか？')){
@@ -391,6 +393,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         loader.value = false
         if(response.data.status==="alert-success"){
           token = response.data.csrf_create
+          qa_text.value=""
           alert('メールを送信しました')
         }else{
           alert('送信失敗')
