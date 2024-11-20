@@ -96,6 +96,16 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			})
 		}
 
+		const cg_mode =(p_mode) =>{
+			if(shouhinNM.value && mode.value !== p_mode){
+				if(confirm('現在の変更内容は破棄されますがよろしいですか？')==false){
+					console_log(`破棄しない`)
+					mode.value=(p_mode==="new")?"upd":"new"
+					return 0
+				}
+			}
+			mode.value=p_mode
+		}
 		watch(mode,()=>{//マスタ登録モードに合わせて商品名のリストを取得する
 			if(mode.value==="new"){
 				clear_ms()
@@ -117,7 +127,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(shouhinNM.value){
 				if(confirm('現在の変更内容は破棄されますがよろしいですか？')==false){
 					return 0
-				}}
+				}
+			}
 			shouhinNM.value = p_shouhinNM
 			//mode.value = 'upd'
 			disp.value = 'show'
@@ -146,7 +157,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					shouhinCD.value = shouhin[0].shouhinCD
 				}
 			}else{
-				clear_ms()
+				//clear_ms()
 			}
 
 			if(mode.value==="new"){
@@ -414,6 +425,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			set_shouhinNM,
 			upd_status,
 			disp,
+			cg_mode,
 		}
 	}
 });

@@ -31,12 +31,26 @@
         {{msg}}
       </div>
     </transition>
-    <div class='row mb-3 pt-3'>
-      <div class='col-md-8 col-12'>
-				<input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
-				<label class='btn btn-outline-success ' for='eatin' style='border-radius:0;'>新規登録</label>
-				<input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='takeout'>
-				<label class='btn btn-outline-success ' for='takeout' style='border-radius:0;'>修正</label>
+    <div class='row mb-5 pt-3'>
+      <div class='col-md-8 col-12 mb-0'>
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+          <button type='button' class='btn btn-light btn-sm' @click='cg_mode("new")'>新規登録</button>
+          <button type='button' class='btn btn-light btn-sm' @click='cg_mode("upd")'>修正</button>
+        </div>
+      </div>
+      <div class='col-md-8 col-12 mt-0' style='position:relative;'>
+        <!--
+          <input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
+				  <label class='btn btn-outline-success ' for='eatin' style='border-radius:0;' @click='cg_mode("new")'>新規登録</label>
+				  <input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='takeout'>
+				  <label class='btn btn-outline-success ' for='takeout' style='border-radius:0;' @click='cg_mode("upd")'>修正</label>
+        -->
+        <div class="btn-group" role="group" aria-label="Basic outlined example" style='position:absolute ;top:2px;'>
+          <input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='new' disabled>
+				  <label class='btn btn-outline-success ' for='new' style='border-radius:0;' ></label>
+				  <input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='upd' disabled>
+				  <label class='btn btn-outline-success ' for='upd' style='border-radius:0;' ></label>
+        </div>
       </div>
     </div>
     <div v-show='mode==="upd"' class='row' style=''>
