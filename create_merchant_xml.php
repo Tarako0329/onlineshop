@@ -65,8 +65,9 @@
     fwrite($fp, "\t\t<g:service>標準</g:service> \r\n");
     fwrite($fp, "\t\t<g:price>0 JPY</g:price> \r\n");
     fwrite($fp, "\t</g:shipping> \r\n");//送料
-    fwrite($fp, "\t<g:shipping_label>注文内容確定後、販売車より連絡</g:shipping_label> \r\n");//送料
+    fwrite($fp, "\t<g:shipping_label>注文内容確定後、販売元より連絡</g:shipping_label> \r\n");//送料
     fwrite($fp, "\t<g:gtin></g:gtin> \r\n");//JANコード事業者登録が必要。あると有利
+    fwrite($fp, "\t<g:mpn>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:mpn> \r\n");//商品アイテムの製造者が定める製品番号
     fwrite($fp, "\t<g:brand>".str_replace("&","＆",$row["yagou"])."</g:brand> \r\n");
     fwrite($fp, "</item>\r\n");
     //fwrite($fp, "\t \r\n");
