@@ -308,6 +308,8 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 	//SMTP送信
     $return_flag = 'false';
     if(EXEC_MODE==="Local"){
+        log_writer2("send_mail - \$to",$to,"lv3");
+        log_writer2("send_mail - \$bcc",$bcc,"lv3");
         log_writer2("send_mail - \$body",$body,"lv3");
         return "success";
     }
