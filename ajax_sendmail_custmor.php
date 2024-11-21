@@ -8,7 +8,6 @@ $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
 log_writer2("\$_POST",$_POST,"lv3");
-log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["order_management.php","index.php","Q_and_A.php",""],["P","C","S"]);
 if($rtn !== true){
@@ -82,7 +81,7 @@ if($rtn !== true){
                 if(empty($_SESSION["askNO"])){
                     //新規問い合わせは受付メールを客にも送る
                     $head = "お客様よりお問い合わせがありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\nお客様ヘ以下の内容で受付メールを自動返信しました。\r\n\r\n";
-                    if(!empty($_POST["lineid"])){
+                    if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
                         $bcc = "";
                         send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
