@@ -113,6 +113,20 @@
 				</small>
 			</div>
 		</div>
+		<div class='row mb-3 pt-3'>
+			<div class='col-md-6 col-12'>
+				<label for='cc_mail' class="form-label">SNSアカウント（商品URLをシェアするときに効果的です）</label>
+				
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="basic-addon1"><i class="bi bi-facebook"></i></span>
+					<input type='text' class='form-control' id='fb_id' v-model='fb_id'>
+				</div>
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="basic-addon2"><i class="bi bi-twitter-x"></i></span>
+					<input type='text' class='form-control' id='x_id' v-model='x_id'>
+				</div>
+			</div>
+		</div>
 		<div class='row mb-3'>
 			<div class='col-md-6 col-12'>
 				<label for='cancel_rule' class="form-label">キャンセル規定</label>

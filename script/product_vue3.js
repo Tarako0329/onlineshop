@@ -39,6 +39,10 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
                   ,{ property: "og:type", content: `website` }
                   ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
                   ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
+                  ,{ property: "og:locale", content: `ja_JP`}
+                  ,{ property: "fb:app_id", content: ``}
+                  ,{ name: "twitter:card", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
+                  ,{ name: "twitter:site", content: ``}
                 ],
               });
             }

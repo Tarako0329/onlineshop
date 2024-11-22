@@ -82,8 +82,9 @@ ver1.20.1:問合せ機能-QA-やり取り画面・出店者-commited
 ver1.21.0:GoogleMerchant_xml微修正-commited
 ver1.22.0:Gmail URLが届かない問題対応-commited
 ver1.23.0:軽微な修正-commited
-ver1.24.0:ポリシー編集
-
+ver1.24.0:ポリシー編集-commited
+ver1.25.0:SNS対応
+  ALTER TABLE `Users_online` ADD `fb_id` VARCHAR(50) NULL AFTER `line_id`, ADD `x_id` VARCHAR(50) NULL AFTER `fb_id`;
 
 【Issues】
 ・商品管理から品名CDを廃止する
