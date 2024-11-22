@@ -332,10 +332,10 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail->smtpServer($param);
         $mail->charsetBody('UTF-8','base64');
         $mail->kana(true);
-        //$mail->errorDisplay(false);
-        $mail->errorDisplay(true);
-        //$mail->smtpObject()->error_display = false;
-        $mail->smtpObject()->error_display = true;
+        $mail->errorDisplay(false);
+        //$mail->errorDisplay(true);
+        $mail->smtpObject()->error_display = false;
+        //$mail->smtpObject()->error_display = true;
         $mail->logLevel(1);//0:ログを出力しない（デフォルト）/1:シンプルタイプ（送信ログ）/2:ヘッダー情報も含むログ/3:メール本文も含めたログ
         
         $mail->errorlogLevel( 1 );//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
@@ -352,10 +352,16 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail ->text($body);
     
         //送信
-        //$mail ->send();
         $mail ->send();
-        log_writer2("\$mail_send_rtn",$mail -> errorStatment(),"lv3");
-        $return_flag = 'success';
+        $rtn = $mail -> errorStatment();
+        if(empty($rtn)){
+            $return_flag = 'success';
+        }else{
+            $rtn = $to." / ".$bcc." へのメール送信に失敗しました。\r\n".$rtn;
+            log_writer2("\$mail_send_rtn",$rtn,"lv0");
+            $return_flag = 'false';
+        }
+        //$return_flag = 'success';
     }catch(Exception $e){
         log_writer2("send_mail [Exception] \$e",$e,"lv0");
     }
