@@ -395,6 +395,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         if(response.data.status==="alert-success"){
           qa_text.value=""
           alert('メールを送信しました')
+          document.getElementById('mail_modal_close').click()
         }else{
           alert('送信失敗')
         }
