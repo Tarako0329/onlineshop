@@ -336,14 +336,14 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail->errorDisplay(true);
         //$mail->smtpObject()->error_display = false;
         $mail->smtpObject()->error_display = true;
-        $mail->logLevel(1);//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
+        $mail->logLevel(1);//0:ログを出力しない（デフォルト）/1:シンプルタイプ（送信ログ）/2:ヘッダー情報も含むログ/3:メール本文も含めたログ
         
-        $mail->errorlogLevel( 3 );//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
+        $mail->errorlogLevel( 1 );//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
         $mail -> smtpLoglevelLink( true );//QdmailとQdsmtpを併用している場合、Qdmailのログのレベルを以下のメソッドで、Qdsmtpに渡して、同レベルのログをとるよう、Qdsmtpに指示することができます。
         //$mail->logPath('./log/');
         //$mail->logFilename('anpi.log');
         //$smtp ->timeOut(10);
-        $mail->smtpObject()->timeOut(10);
+        $mail->smtpObject()->timeOut(3);
         
         $mail ->to($to);
         if(!empty($bcc)){$mail ->bcc($bcc);}
@@ -352,7 +352,9 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail ->text($body);
     
         //送信
-        $mail ->send();
+        //$mail ->send();
+        $rtn = $mail ->send();
+        log_writer2("\$$mail ->send()",$rtn,"lv3");
         $return_flag = 'success';
     }catch(Exception $e){
         log_writer2("send_mail [Exception] \$e",$e,"lv0");
