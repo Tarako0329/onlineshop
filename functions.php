@@ -365,6 +365,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
     }catch(Exception $e){
         log_writer2("send_mail [Exception] \$e",$e,"lv0");
     }
+    log_writer2("send_mail \$return_flag",$return_flag,"lv3");
     return $return_flag;
 }
 

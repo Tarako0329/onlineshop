@@ -79,6 +79,7 @@ if($rtn !== true){
 
             $Q_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("Q");
             $A_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("A");
+            $rtn="success";
             if($sts==="Q"){
                 if(empty($_SESSION["askNO"])){//新規問い合わせ
                     //新規問い合わせは受付メールを客にも送る
@@ -133,7 +134,7 @@ if($rtn !== true){
             $pdo_h->rollBack();
             $sqllog .= rtn_sqllog("rollBack",[]);
             sqllogger($sqllog,$e);
-            
+
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;
