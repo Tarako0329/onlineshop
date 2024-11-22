@@ -20,6 +20,9 @@
             <li class="nav-item">
               <a class="nav-link" href="privacy_policy.php" id='menu_privacy'>プライバシーポリシー</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="toiawase.php" id='menu_toiawase'>特定商取引法に基づく表記</a>
+            </li>
           </ul>
         </div>
       </div>

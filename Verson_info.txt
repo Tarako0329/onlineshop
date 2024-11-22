@@ -73,15 +73,16 @@ ver1.17.0:GoogleMerchant_xml作成対応-commited
 ver1.18.0:出店者へのクレジット支払通知
 ver1.19.0:商品一覧の追加・品切れステータス追加
 ver1.19.1:bugfix新規商品の商品名が入力できない！
-ver1.20.0:問合せ機能-mail/line-send-dbinsert
+ver1.20.0:問合せ機能-mail/line-send-dbinsert-commited
   CREATE TABLE `online_q_and_a` (`shop_id` VARCHAR(6) NOT NULL , `customer` VARCHAR(300) NOT NULL COMMENT 'メアド' , `seq` INT(11) NOT NULL AUTO_INCREMENT , `insdate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `shouhinNM` VARCHAR(200) NULL , `body` TEXT NOT NULL , PRIMARY KEY (`seq`)) ENGINE = InnoDB;
   ALTER TABLE `online_q_and_a` ADD `name` VARCHAR(20) NOT NULL AFTER `customer`;
-ver1.20.1:問合せ機能-QA-やり取り画面・出店者
+ver1.20.1:問合せ機能-QA-やり取り画面・出店者-commited
   ALTER TABLE `online_q_and_a` ADD `askNO` INT(11) NOT NULL COMMENT '問合番号' AFTER `shop_id`;
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 ver1.21.0:GoogleMerchant_xml微修正-commited
-ver1.22.0:Gmail URLが届かない問題対応
-ver1.23.0:軽微な修正
+ver1.22.0:Gmail URLが届かない問題対応-commited
+ver1.23.0:軽微な修正-commited
+ver1.24.0:ポリシー編集
 
 
 【Issues】

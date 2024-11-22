@@ -10,7 +10,8 @@
 	?>
 	<style>
 	</style>
-	<TITLE><?php echo TITLE;?> 商品管理</TITLE>
+	<meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
+	<TITLE><?php echo TITLE;?> プライバシーポリシー</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag.php"  ?>
@@ -21,16 +22,12 @@
 					<div class='text-center'> <h1>プライバシーポリシー</h1></div>
 					<div class='p-5'>
 						<div class='mb-3'>
-						<h4>１ 個人情報の定義 </h4>
-						<p  class='ps-4'>本プライバシーポリシーにおける、「個人情報」とは、個人情報の保護に関する法律規定される「個人情報」を指します。 </p>
+							<h4>１ 個人情報の定義 </h4>
+							<p  class='ps-4'>本プライバシーポリシーにおける、「個人情報」とは、個人情報の保護に関する法律規定される「個人情報」を指します。 </p>
 						</div>
 						<div class='mb-3'>
 							<h4>２ 個人情報の取得 </h4>
 							<p class='ps-4'>当社は、利用目的の達成に必要な範囲で、個人情報を適正に取得し、不正の手段により取得することはありません。 </p>
-						</div>
-						<div class='mb-3'>
-							<h4>２ 個人情報の取得 </h4>
-							<p  class='ps-4'>当社は、利用目的の達成に必要な範囲で、個人情報を適正に取得し、不正の手段により取得することはありません。 </p>
 						</div>
 						<div class='mb-3'>
 							<h4>３ 利用目的  </h4>
@@ -50,6 +47,7 @@
 						<div class='mb-3'>
 							<h4>６ お問い合わせ窓口 </h4>
 							<p  class='ps-4'>個人情報の取り扱いに関するお問い合わせは、下記の窓口までお願いいたします。 </p>
+							<p  class='ps-4'><a href='https://site.greeen-sys.com/contact-page/'>https://site.greeen-sys.com/contact-page/</a></p>
 						</div>
 						<div class='mb-3'>
 							<h4>７ プライバシーポリシー </h4>
