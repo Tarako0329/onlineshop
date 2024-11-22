@@ -332,9 +332,11 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail->smtpServer($param);
         $mail->charsetBody('UTF-8','base64');
         $mail->kana(true);
-        $mail->errorDisplay(false);
-        $mail->smtpObject()->error_display = false;
-        $mail->logLevel(1);
+        //$mail->errorDisplay(false);
+        $mail->errorDisplay(true);
+        //$mail->smtpObject()->error_display = false;
+        $mail->smtpObject()->error_display = true;
+        $mail->logLevel(3);
         //$mail->logPath('./log/');
         //$mail->logFilename('anpi.log');
         //$smtp ->timeOut(10);

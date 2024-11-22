@@ -167,6 +167,7 @@
         let token = '<?php echo $token;?>'
 
         const send_msg = () =>{
+          loader.value=true
           const form = new FormData();
           form.append(`mailto`, talk.value[0].customer)
           form.append(`mailtoBCC`, talk.value[0].mail)
@@ -199,6 +200,9 @@
           .catch((error,response)=>{
             console_log(error)
             token = response.data.csrf_create
+          })
+          .finally(()=>{
+            loader.value=false
           })
 
         }
