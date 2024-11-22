@@ -101,7 +101,7 @@ if($rtn !== true){
                 }else{//継続問合せ
                     //その後のやり取りはトーク風画面なので回答通知を出店者のみに送る
                     $head = "お客様より返信がありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\n";
-                    if(!empty($_POST["lineid"])){
+                    if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
                         $bcc = "";
                         send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
