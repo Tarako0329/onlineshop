@@ -34,9 +34,13 @@ if($rtn !== true){
 
         try{
             $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,$_POST["mailtoCC"]);
-
-			$msg = "登録が完了しました。";
-			$alert_status = "alert-success";
+            if($rtn==="success"){
+                $msg = "送信完了";
+                $alert_status = "alert-success";
+            }else{
+                $msg = "送信　失敗";
+                $alert_status = "alert-warning";
+            }
 			$reseve_status=true;
 
         }catch(Exception $e){

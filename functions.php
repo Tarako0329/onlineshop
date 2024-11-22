@@ -357,7 +357,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         if(empty($rtn)){
             $return_flag = 'success';
         }else{
-            $rtn = $to." / ".$bcc." へのメール送信に失敗しました。\r\n".$rtn;
+            array_unshift($rtn,$to." / ".$bcc." へのメール送信に失敗しました");
             log_writer2("\$mail_send_rtn",$rtn,"lv0");
             $return_flag = 'false';
         }
