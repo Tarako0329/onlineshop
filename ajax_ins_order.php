@@ -182,7 +182,9 @@ if($rtn !== true){
                 $st_tel
                 EOM;
                 
-                if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
+                $lineID =(!empty($owner[0]["line_id"]) && $owner[0]["line_id"] <> "null")?$owner[0]["line_id"]:"none";
+                //if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
+                if($lineID <> "none"){//LINEで通知
                     $url = ROOT_URL.'line_push_msg.php';
 
                     $data = array(

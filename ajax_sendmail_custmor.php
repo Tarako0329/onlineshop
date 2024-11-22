@@ -80,11 +80,14 @@ if($rtn !== true){
             $Q_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("Q");
             $A_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("A");
             $rtn="success";
+            $lineID =(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null")?$_POST["lineid"]:"none";
+
             if($sts==="Q"){
                 if(empty($_SESSION["askNO"])){//新規問い合わせ
                     //新規問い合わせは受付メールを客にも送る
                     $head = "お客様よりお問い合わせがありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\nお客様ヘ以下の内容で受付メールを自動返信しました。\r\n\r\n";
-                    if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
+                    //if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
+                    if($lineID <> "none"){
                         $bcc = "";
                         send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
@@ -101,7 +104,8 @@ if($rtn !== true){
                 }else{//継続問合せ
                     //その後のやり取りはトーク風画面なので回答通知を出店者のみに送る
                     $head = "お客様より返信がありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\n";
-                    if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
+                    //if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
+                    if($lineID <> "none"){
                         $bcc = "";
                         send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
