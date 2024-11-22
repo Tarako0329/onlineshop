@@ -391,13 +391,12 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       .then((response)=>{
         console_log(response.data)
         loader.value = false
+        token = response.data.csrf_create
         if(response.data.status==="alert-success"){
-          token = response.data.csrf_create
           qa_text.value=""
           alert('メールを送信しました')
         }else{
           alert('送信失敗')
-          token = response.data.csrf_create
         }
         
       })

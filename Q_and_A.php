@@ -185,15 +185,14 @@
           axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
           .then((response)=>{
             console_log(response.data)
-            //loader.value = false
+            loader.value = false
+            token = response.data.csrf_create
             if(response.data.status==="alert-success"){
-              token = response.data.csrf_create
               message.value = ""
               alert('メールを送信しました')
               get_talk()
             }else{
               alert('送信失敗')
-              token = response.data.csrf_create
             }
 
           })

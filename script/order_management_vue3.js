@@ -250,13 +250,12 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       .then((response)=>{
         console_log(response.data)
         loader.value = false
+        token = response.data.csrf_create
         if(response.data.status==="alert-success"){
-          token = response.data.csrf_create
           alert('メールを送信しました')
           document.getElementById('mail_modal_close').click()
         }else{
           alert('送信失敗')
-          token = response.data.csrf_create
         }
         
       })
