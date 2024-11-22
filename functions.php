@@ -354,7 +354,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         //送信
         //$mail ->send();
         $rtn = $mail ->send();
-        log_writer2("\$$mail ->send()",$rtn,"lv3");
+        log_writer2("\$mail_send_rtn",$rtn,"lv3");
         $return_flag = 'success';
     }catch(Exception $e){
         log_writer2("send_mail [Exception] \$e",$e,"lv0");
