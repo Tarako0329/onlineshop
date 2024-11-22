@@ -89,10 +89,12 @@ if($rtn !== true){
                         send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
                         $bcc = $_POST["mailtoBCC"];
-                        $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,$bcc);//出店者へお知らせメール
+                        $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
                     }
+                    log_writer2("to出店者 - send_mail() \$rtn","[".$bcc."] send ".$rtn,"lv3");
                     if($rtn==="success"){
                         $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
+                        log_writer2("toお客さん - send_mail() \$rtn","[".$bcc."] send ".$rtn,"lv3");
                     }else{
                         //出店者への通知メールが失敗した場合は受付メールを送らない(rollback)
                     }
@@ -160,4 +162,3 @@ header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
 
 exit();
-
