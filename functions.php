@@ -336,9 +336,10 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail->errorDisplay(true);
         //$mail->smtpObject()->error_display = false;
         $mail->smtpObject()->error_display = true;
-        //0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
-        $mail->logLevel(3);
-        $mail->errorlogLevel( 3 );
+        $mail->logLevel(1);//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
+        
+        $mail->errorlogLevel( 3 );//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
+        $mail -> smtpLoglevelLink( true );//QdmailとQdsmtpを併用している場合、Qdmailのログのレベルを以下のメソッドで、Qdsmtpに渡して、同レベルのログをとるよう、Qdsmtpに指示することができます。
         //$mail->logPath('./log/');
         //$mail->logFilename('anpi.log');
         //$smtp ->timeOut(10);
