@@ -185,7 +185,7 @@
           axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
           .then((response)=>{
             console_log(response.data)
-            loader.value = false
+            //loader.value = false
             if(response.data.status==="alert-success"){
               token = response.data.csrf_create
               message.value = ""
@@ -199,13 +199,14 @@
           })
           .catch((error,response)=>{
             console_log(error)
+            alert('送信失敗(catch error)')
             token = response.data.csrf_create
           })
           .finally(()=>{
             loader.value=false
           })
-
         }
+
         onBeforeMount(()=>{
           console_log(`onBeforeMount`)
           get_talk()

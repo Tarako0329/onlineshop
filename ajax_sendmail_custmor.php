@@ -70,15 +70,17 @@ if($rtn !== true){
                 $status = $stmt->execute();
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
                 
-                $pdo_h->commit();
-                $sqllog .= rtn_sqllog("commit",[]);
-                sqllogger($sqllog,0);
+                /*メール送信が正常終了したらコミットする
+                    $pdo_h->commit();
+                    $sqllog .= rtn_sqllog("commit",[]);
+                    sqllogger($sqllog,0);
+                */
             }
 
             $Q_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("Q");
             $A_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("A");
             if($sts==="Q"){
-                if(empty($_SESSION["askNO"])){
+                if(empty($_SESSION["askNO"])){//新規問い合わせ
                     //新規問い合わせは受付メールを客にも送る
                     $head = "お客様よりお問い合わせがありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\nお客様ヘ以下の内容で受付メールを自動返信しました。\r\n\r\n";
                     if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
@@ -89,7 +91,7 @@ if($rtn !== true){
                         $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,$bcc);//出店者へお知らせメール
                     }
                     $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
-                }else{
+                }else{//継続問合せ
                     //その後のやり取りはトーク風画面なので回答通知を出店者のみに送る
                     $head = "お客様より返信がありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\n";
                     if(!empty($_POST["lineid"])){
@@ -104,20 +106,34 @@ if($rtn !== true){
                 $head = "出店者より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
                 $rtn = send_mail($_POST["mailto"],$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
             }else{
-
+                exit();//想定外
             }
 
+            if($rtn==="success"){
+                $msg = "送信完了";
+                $alert_status = "alert-success";
 
+                $pdo_h->commit();
+                $sqllog .= rtn_sqllog("commit",[]);
+                sqllogger($sqllog,0);
+            }else{
+                $msg = "送信　失敗";
+                $alert_status = "alert-warning";
+    
+                $pdo_h->rollBack();
+                $sqllog .= rtn_sqllog("rollBack",[]);
+                sqllogger($sqllog,$e);
+            }
 
-
-			$msg = "登録が完了しました。";
-			$alert_status = "alert-success";
+			//$msg = "登録が完了しました。";
+			//$alert_status = "alert-success";
 			$reseve_status=true;
 
         }catch(Exception $e){
-            //$pdo_h->rollBack();
-            //$sqllog .= rtn_sqllog("rollBack",[]);
-            //sqllogger($sqllog,$e);
+            $pdo_h->rollBack();
+            $sqllog .= rtn_sqllog("rollBack",[]);
+            sqllogger($sqllog,$e);
+            
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;
