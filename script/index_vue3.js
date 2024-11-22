@@ -301,7 +301,12 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           document.getElementById('spy2').click()
           document.getElementById('header').style.pointerEvents = 'none'
           document.getElementById('navbarNav').style.opacity = 0
-          IDD_Delete_ALL(tableNM)
+          shouhinMS.value.forEach((row)=>{
+            if(row.uid === order_shop_id.value){
+              IDD_Delete(tableNM,row.uid + '-' + row.shouhinCD)
+            }
+          })
+              
         }else{
           alert('注文送信失敗')
         }
@@ -321,7 +326,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       shouhinMS.value.forEach((row)=>{
         if(row.uid === order_shop_id.value){
           row.ordered=0
-          IDD_Delete(tableNM,row.uid + '-' + row.shouhinCD)
+          //IDD_Delete(tableNM,row.uid + '-' + row.shouhinCD)
         }
       })
       order_shop_id.value = ''

@@ -87,7 +87,7 @@ const IDD_Delete_ALL = (tbname) =>{
     let transaction = DBCon.transaction(tbname, "readwrite");
 
     const objectStore = transaction.objectStore(tbname);
-    const request = objectStore.clear(key);
+    const request = objectStore.clear();
     request.onsuccess = (event) => {
       // event.target.result === customer.ssn;
     };
