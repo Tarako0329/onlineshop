@@ -342,7 +342,7 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         $mail -> smtpLoglevelLink( true );//QdmailとQdsmtpを併用している場合、Qdmailのログのレベルを以下のメソッドで、Qdsmtpに渡して、同レベルのログをとるよう、Qdsmtpに指示することができます。
         //$mail->logPath('./log/');
         //$mail->logFilename('anpi.log');
-        //$smtp ->timeOut(10);
+        $smtp ->timeOut(10);
         
         $mail ->to($to);
         if(!empty($bcc)){$mail ->bcc($bcc);}
