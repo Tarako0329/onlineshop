@@ -301,6 +301,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
           document.getElementById('spy2').click()
           document.getElementById('header').style.pointerEvents = 'none'
           document.getElementById('navbarNav').style.opacity = 0
+          IDD_Delete_ALL(tableNM)
         }else{
           alert('注文送信失敗')
         }

@@ -78,6 +78,29 @@ const IDD_Delete = (tbname,key) =>{
     };  
   }
 }
+const IDD_Delete_ALL = (tbname) =>{
+  const openReq  = indexedDB.open(dbName,dbVersion);
+
+  openReq.onsuccess = function(event){
+    console_log('[IDD_Write]db open success');
+    let DBCon = event.target.result;
+    let transaction = DBCon.transaction(tbname, "readwrite");
+
+    const objectStore = transaction.objectStore(tbname);
+    const request = objectStore.clear(key);
+    request.onsuccess = (event) => {
+      // event.target.result === customer.ssn;
+    };
+
+    transaction.oncomplete = (event) => {
+      console_log("IDD_Delete_ALL All done!");
+    };
+    
+    transaction.onerror = (event) => {
+      // エラー制御を忘れずに!
+    };  
+  }
+}
 
 const IDD_Read = (tbname,keyValue,callback) =>{
   const openReq  = indexedDB.open(dbName,dbVersion);
