@@ -192,15 +192,35 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
         let order_kin = new Decimal(order_kakaku.value)
         let zougen = new Decimal(val)
         order_kakaku.value = order_kin.add(zougen.mul(tanka.add(shouhizei))).toNumber()
+
+        IDD_Write(tableNM,[{
+          id:String(get_ordered.value[index].uid) + '-' + String(get_ordered.value[index].shouhinCD)
+          ,shop_id:get_ordered.value[index].uid
+          ,shouhinCD:get_ordered.value[index].shouhinCD
+          ,ordered:get_ordered.value[index].ordered + Number(val)
+        }])
+
         get_ordered.value[index].ordered = order + Number(val)
+        //console_log(`件数：${get_ordered.value.length}`)
+        if(get_ordered.value.length===0){
+          //console_log(`注文消えた！`)
+          alert('カートが空です。ショッピング画面に戻ります。')
+          order_shop_id.value = ''
+          btn_name.value='カート'
+          mode.value="shopping"
+        }else{
+          //console_log(`注文消えてない！`)
+        }
       }
       console_log(order_kakaku.value)
+      /*
       IDD_Write(tableNM,[{
         id:String(get_ordered.value[index].uid) + '-' + String(get_ordered.value[index].shouhinCD)
         ,shop_id:get_ordered.value[index].uid
         ,shouhinCD:get_ordered.value[index].shouhinCD
         ,ordered:get_ordered.value[index].ordered
       }])
+      */
     }
 
     const btn_name = ref('カート')
