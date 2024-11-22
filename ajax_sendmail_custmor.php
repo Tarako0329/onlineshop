@@ -91,7 +91,11 @@ if($rtn !== true){
                         $bcc = $_POST["mailtoBCC"];
                         $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,$bcc);//出店者へお知らせメール
                     }
-                    $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
+                    if($rtn==="success"){
+                        $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
+                    }else{
+                        //出店者への通知メールが失敗した場合は受付メールを送らない(rollback)
+                    }
                 }else{//継続問合せ
                     //その後のやり取りはトーク風画面なので回答通知を出店者のみに送る
                     $head = "お客様より返信がありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\n";

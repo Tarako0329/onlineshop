@@ -372,6 +372,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       }
       
       loader.value = true
+      
+      document.getElementById('mail_send_btn').disabled = true
 
       const form = new FormData();
       form.append(`mailto`, qa_mail.value)
@@ -407,6 +409,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       })
       .finally(()=>{
         loader.value = false
+        document.getElementById('mail_send_btn').disabled = false
       })
 
     }
