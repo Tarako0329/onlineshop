@@ -3,7 +3,7 @@
 	"short_name":		"present Shop",
 	"description":		"",
 	"start_url":		"/",
-	"display":			"standalone",
+	"display":			"browser",
 	"orientation":		"any",
 	"background_color":	"rgb(191, 223, 155)",
 	"theme_color":		"rgb(191, 223, 155)",

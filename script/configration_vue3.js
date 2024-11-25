@@ -85,6 +85,8 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       form.append(`mail`, mail.value)
       form.append(`cc_mail`, cc_mail.value)
       form.append(`line_id`, line_id.value)
+      form.append(`fb_id`, fb_id.value)
+      form.append(`x_id`, x_id.value)
       form.append(`mail_body`, mail_body.value)
       form.append(`mail_body_auto`, mail_body_auto.value)
       form.append(`mail_body_paid`, mail_body_paid.value)

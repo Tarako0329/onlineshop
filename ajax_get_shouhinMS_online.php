@@ -25,11 +25,23 @@
 				,'0' as ordered
 				,'0' as goukeikingaku
 				,ums_inline.*
+				,pic.pic as filename
 			from shouhinMS_online online 
 			inner join Users_online ums_inline
 			on online.uid = ums_inline.uid
+			left join shouhinMS_online_pic pic 
+			on online.uid = pic.uid 
+			and online.shouhinCD = pic.shouhinCD
+			and pic.sort=1
 			where online.uid like :uid and online.shouhinNM like :hinmei 
-			order by online.uid,online.shouhinCD";
+			order by 
+				online.uid
+				,case 
+					when online.status = 'show' then 1
+					when online.status = 'soldout' then 2
+					when online.status = 'stop' then 3
+				end
+				,online.shouhinCD";
 
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);

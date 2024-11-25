@@ -38,11 +38,11 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
                   ,{ property: "og:url", content: `https://cafe-present.greeen-sys.com/product.php?id=${p_shouhin_cd}` }
                   ,{ property: "og:type", content: `website` }
                   ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
-                  ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
+                  ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${list.filename}`}
                   ,{ property: "og:locale", content: `ja_JP`}
-                  ,{ property: "fb:app_id", content: ``}
-                  ,{ name: "twitter:card", content: `https://cafe-present.greeen-sys.com/${shouhinMS_pic.value[0].filename}`}
-                  ,{ name: "twitter:site", content: ``}
+                  ,{ property: "fb:app_id", content: `${list.fb_id}`}
+                  ,{ name: "twitter:card", content: `https://cafe-present.greeen-sys.com/${list.filename}`}
+                  ,{ name: "twitter:site", content: `${list.x_id}`}
                 ],
               });
             }

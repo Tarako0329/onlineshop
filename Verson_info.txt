@@ -83,7 +83,7 @@ ver1.21.0:GoogleMerchant_xml微修正-commited
 ver1.22.0:Gmail URLが届かない問題対応-commited
 ver1.23.0:軽微な修正-commited
 ver1.24.0:ポリシー編集-commited
-ver1.25.0:SNS対応
+ver1.25.0:SNS対応・product_xml複数画像対応
   ALTER TABLE `Users_online` ADD `fb_id` VARCHAR(50) NULL AFTER `line_id`, ADD `x_id` VARCHAR(50) NULL AFTER `fb_id`;
 
 【Issues】

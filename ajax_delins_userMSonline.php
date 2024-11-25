@@ -35,8 +35,10 @@ if($rtn !== true){
 
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
+        //$INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
+        //$INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -55,6 +57,8 @@ if($rtn !== true){
         $params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
         $params["cc_mail"] = $_POST["cc_mail"];
         $params["line_id"] = $_POST["line_id"];
+        $params["fb_id"] = $_POST["fb_id"];
+        $params["x_id"] = $_POST["x_id"];
         $params["site_pr"] = $_POST["site_pr"];
         $params["chk_recept"] = $_POST["chk_recept"];
         $params["chk_sent"] = $_POST["chk_sent"];
@@ -103,6 +107,8 @@ if($rtn !== true){
             $stmt->bindValue("logo", $params["logo"], PDO::PARAM_STR);
             $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_STR);
             $stmt->bindValue("line_id", $params["line_id"], PDO::PARAM_STR);
+            $stmt->bindValue("fb_id", $params["fb_id"], PDO::PARAM_STR);
+            $stmt->bindValue("x_id", $params["x_id"], PDO::PARAM_STR);
             $stmt->bindValue("site_pr", $params["site_pr"], PDO::PARAM_STR);
             $stmt->bindValue("chk_recept", $params["chk_recept"], PDO::PARAM_INT);
             $stmt->bindValue("chk_sent", $params["chk_sent"], PDO::PARAM_INT);

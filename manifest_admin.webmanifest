@@ -2,7 +2,7 @@
 	"name":				"Present管理",
 	"short_name":		"Present管理",
 	"description":		"",
-	"display":			"standalone",
+	"display":			"browser",
 	"orientation":		"any",
 	"background_color":	"#fff",
 	"theme_color":		"#fff",
