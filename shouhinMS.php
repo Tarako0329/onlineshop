@@ -61,7 +61,7 @@
               <tr>
                 <td>{{list.shouhinNM}}</td>
                 <td><i class="bi bi-share" @click='copy_target(`${list.uid}-${list.shouhinCD}`)'></i></td>
-                <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>https://cafe-present.greeen-sys.com/product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
+                <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>{{RTURL}}product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
                 <td style='width: 90px'>
                   <select style='width: 90px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
                     <option value='show'>販売中</option>

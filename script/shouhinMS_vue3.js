@@ -19,7 +19,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		let hash = p_hash
 		const msg=ref('')
 		const loader = ref(false)
-		
+		const RTURL = ref(HTTP)
 
 		const shouhinMS = ref([])
 		const shouhinMS_pic = ref([])
@@ -403,6 +403,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		return{
 			msg,
 			loader,
+			RTURL,
 			mode,
 			shouhinMS,
 			shouhinMS_pic,
