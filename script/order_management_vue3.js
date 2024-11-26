@@ -4,6 +4,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
     let hash = p_hash
     let haita_flg = 'stop'//set_order_stsをシングルスレッドに
 
+    const mode = ref('未完了')
     const orderlist_hd = ref([])
     const orderlist_bd = ref([])
     const get_orderlist = () =>{
@@ -355,6 +356,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       send_mail_btn,
       copy_target,
       site_name,
+      mode,
     }
   }
 })

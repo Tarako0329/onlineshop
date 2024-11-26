@@ -39,12 +39,6 @@
         </div>
       </div>
       <div class='col-md-8 col-12 mt-0' style='position:relative;'>
-        <!--
-          <input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='eatin'>
-				  <label class='btn btn-outline-success ' for='eatin' style='border-radius:0;' @click='cg_mode("new")'>新規登録</label>
-				  <input type='radio' class='btn-check' name='mode' value='upd' autocomplete='off' v-model='mode' id='takeout'>
-				  <label class='btn btn-outline-success ' for='takeout' style='border-radius:0;' @click='cg_mode("upd")'>修正</label>
-        -->
         <div class="btn-group" role="group" aria-label="Basic outlined example" style='position:absolute ;top:2px;'>
           <input type='radio' class='btn-check' name='mode' value='new' autocomplete='off' v-model='mode' id='new' disabled>
 				  <label class='btn btn-outline-success ' for='new' style='border-radius:0;' ></label>

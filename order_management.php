@@ -19,6 +19,9 @@
       .btn{
         min-width: 30px;
       }
+      .common_main{
+        padding-top:55px;
+      }
     </style>
     <TITLE><?php echo TITLE;?> 受注管理</TITLE>
 </head>
@@ -26,10 +29,25 @@
   <?php include "header_tag_admin.php"  ?>
   <div id='app'>
   <MAIN class='container common_main'>
-    <!--<div class='cart text-center' role='button'><i class="bi bi-cart4" style="font-size: 3rem; color: cornflowerblue;"></i></div>-->
+    <div class='row mb-2 pt-3 ps-3'>
+      <div class='col-12 mb-0'>
+        <div class="btn-group" role="group" aria-label="Basic outlined example" >
+        <input type='radio' class='btn-check' name='mode' value='未完了' autocomplete='off' v-model='mode' id='未完了' >
+				  <label class='btn btn-outline-success ' for='未完了' style='border-radius:0;' >未完了</label>
+          <input type='radio' class='btn-check' name='mode' value='未受付' autocomplete='off' v-model='mode' id='未受付' >
+				  <label class='btn btn-outline-success ' for='未受付' style='border-radius:0;' >未受付</label>
+          <input type='radio' class='btn-check' name='mode' value='未入金' autocomplete='off' v-model='mode' id='未入金' >
+				  <label class='btn btn-outline-success ' for='未入金' style='border-radius:0;' >未入金</label>
+          <input type='radio' class='btn-check' name='mode' value='未発送' autocomplete='off' v-model='mode' id='未発送' >
+				  <label class='btn btn-outline-success ' for='未発送' style='border-radius:0;' >未発送</label>
+				  <input type='radio' class='btn-check' name='mode' value='完了' autocomplete='off' v-model='mode' id='全件' >
+				  <label class='btn btn-outline-success ' for='全件' style='border-radius:0;' >全件</label>
+        </div>
+      </div>
+    </div>
     <div class='row pb-3 pt-3'>
       <template v-for='(list,index) in orderlist_hd' :key='list.orderNO'>
-        <div class='col-xl-6 col-md-6 col-12'><!--外枠-->
+        <div v-if='list.完了FLG.includes(mode)' class='col-xl-6 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
             </div>
@@ -294,7 +312,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <textarea type='memo' class='form-control' rows="30" v-model='send_mailbody'></textarea>
+          <textarea type='memo' class='form-control' rows="25" v-model='send_mailbody'></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
