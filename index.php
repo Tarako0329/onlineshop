@@ -7,6 +7,7 @@
   }else{
     $_SESSION["user_id"]='%';
   }
+  $_SESSION["askNO"]="";
 ?>
 <!DOCTYPE html>
 <html lang='ja'>

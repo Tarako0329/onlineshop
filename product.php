@@ -11,6 +11,7 @@
     echo "URLが不正です";
     exit();
   }
+  $_SESSION["askNO"]="";
   $hinmei = $_GET["id"];
   $shouhin_id = $_GET["id"];
   $sql = "select 
@@ -76,26 +77,6 @@
   $meta .= "<meta property='fb:app_id' content='".$dataset[0]["fb_id"]."'>\r\n";
   $meta .= "<meta name='twitter:card' content='summary'>\r\n";
   $meta .= "<meta name='twitter:site' content='@".$dataset[0]["x_id"]."'>\r\n";
-
-/*
-                title: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』`,
-                meta: [
-                  { name: "description", content: `${list.short_info}` }
-                  ,{ property: "og:title", content: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』` }
-                  ,{ property: "og:description", content: `${list.short_info}` }
-                  ,{ property: "og:url", content: `${HTTP}product.php?id=${p_shouhin_cd}` }
-                  ,{ property: "og:type", content: `website` }
-                  ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
-                  ,{ property: "og:image", content: `${HTTP}${list.filename}`}
-                  ,{ property: "og:locale", content: `ja_JP`}
-                  ,{ property: "fb:app_id", content: `${list.fb_id}`}
-                  ,{ name: "twitter:card", content: `${HTTP}${list.filename}`}
-                  ,{ name: "twitter:site", content: `${list.x_id}`}
-*/
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -179,6 +160,11 @@
                 </div>
                 <p>{{list.short_info}}</p>
               </div><!--見出-->
+            </div>
+            <div class='row'>
+              <div class='col-12 mt-2 mb-2 ps-3'>
+                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>商品・ショップへの質問<i class="bi bi-envelope-at-fill ms-2"></i></button>
+              </div>
             </div>
             <div class='row'>
               <div class='col-12'><!--詳細-->
@@ -267,6 +253,37 @@
   <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
 	</div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">お問い合わせ</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label for='umail' class="form-label">お名前</label>
+          <input v-model='qa_name' type='mail' class='form-control mb-3' id='umail' placeholder="匿名可">
+          <label for='umail' class="form-label">回答送付先メールアドレス</label>
+          <input v-model='qa_mail' type='mail' class='form-control mb-3' id='umail'>
+          <div class="form-check">
+            <input v-model='qa_head' name='qa_head' type='radio' :value='qa_shouhinNM' class='form-check-input' id='qa_shouhinNM'>
+            <label for='qa_shouhinNM' class="form-check-label">{{qa_shouhinNM}} について</label>
+          </div>
+          <div class="form-check mb-3">
+            <input v-model='qa_head' name='qa_head' type='radio' :value='qa_yagou' class='form-check-input' id='qa_yagou'>
+            <label for='qa_yagou' class="form-check-label">{{qa_yagou}} への問合せ</label>
+          </div>
+          <label for='send_mailbody' class="form-label">お問い合わせ内容</label>
+          <textarea v-model='qa_text' type='memo' class='form-control' rows="20" id='send_mailbody' placeholder="なんでもお気軽にお問い合わせください。"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
+          <button type='button' class='btn btn-primary' @click='send_email()' id='mail_send_btn'>送信</button>
+        </div>
+      </div>
+    </div>
+  </div>  
 
   </div>
   <script type="module">

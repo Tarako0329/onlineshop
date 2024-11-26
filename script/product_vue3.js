@@ -204,6 +204,70 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       }
       console_log(`pic_zoom:${pic_zoom_cd}`)
     }
+
+    const qa_index = ref(0)
+    const qa_yagou = ref('')
+    const qa_shouhinNM = ref('')
+    const qa_name = ref('')
+    const qa_mail = ref('')
+    const qa_text = ref('')
+    const qa_head = ref('')
+    const set_qa_index = (p_index) => {
+      qa_index.value = p_index
+      qa_yagou.value = shouhinMS.value[p_index].yagou
+      qa_shouhinNM.value = shouhinMS.value[p_index].shouhinNM
+      qa_head.value = qa_shouhinNM.value
+      
+    }
+    const send_email = () =>{
+      if(confirm('お問い合わせ内容に変更はないですか？')){
+      }else{
+        return
+      }
+      
+      loader.value = true
+      
+      document.getElementById('mail_send_btn').disabled = true
+
+      const form = new FormData();
+      form.append(`mailto`, qa_mail.value)
+      form.append(`mailtoBCC`, shouhinMS.value[qa_index.value].mail)
+      form.append(`lineid`, shouhinMS.value[qa_index.value].line_id)
+      form.append(`shop_id`, shouhinMS.value[qa_index.value].uid)
+      form.append(`qa_head`, qa_head.value)
+      form.append(`qa_name`, qa_name.value)
+      form.append(`subject`, `【${qa_yagou.value}】ご質問を受付ました「${qa_head.value}」`)
+      form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\nお問い合わせ内容\n\n${qa_text.value}`)
+      form.append(`qa_text`, qa_text.value)
+      form.append(`sts`, "Q")
+      form.append(`csrf_token`, token)
+      //form.append(`hash`, hash)
+
+      axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        loader.value = false
+        token = response.data.csrf_create
+        if(response.data.status==="alert-success"){
+          qa_text.value=""
+          alert('メールを送信しました')
+          document.getElementById('mail_modal_close').click()
+        }else{
+          alert('送信失敗')
+        }
+        
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+      })
+      .finally(()=>{
+        loader.value = false
+        document.getElementById('mail_send_btn').disabled = false
+      })
+
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       
@@ -229,6 +293,16 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       img_zoom,
       pic_zoom,
       shouhinMS_pic,//写真拡大
+      qa_index,
+      qa_yagou,
+      qa_shouhinNM,
+      qa_mail,
+      qa_name,
+      qa_head,
+      qa_text,
+      set_qa_index,
+      send_email,
+
     }
   }
 });
