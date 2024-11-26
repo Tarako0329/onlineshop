@@ -389,8 +389,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		}
 
-		const copy_target = (id) =>{
+		const copy_target = (id,p_shouhinNM) =>{
       COPY_TARGET(id)
+			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)

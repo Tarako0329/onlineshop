@@ -61,16 +61,16 @@
             <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
               <tr>
                 <td>{{list.shouhinNM}}</td>
-                <td><i class="bi bi-share" @click='copy_target(`${list.uid}-${list.shouhinCD}`)'></i></td>
+                <td><i class="bi bi-share" @click='copy_target(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'></i></td>
                 <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>{{RTURL}}product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
-                <td style='width: 90px'>
-                  <select style='width: 90px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
+                <td style='width: 80px'>
+                  <select style='width: 80px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
                     <option value='show'>販売中</option>
                     <option value='soldout'>受付停止</option>
                     <option value='stop'>販売停止</option>
                   </select>
                 </td>
-                <td style='width: 50px'><button type='button' style='min-width: 50px' class='btn btn-primary' @click='set_shouhinNM(list.shouhinNM)'>編集</button></td>
+                <td style='width: 50px'><button type='button' style='min-width: 40px' class='btn btn-primary' @click='set_shouhinNM(list.shouhinNM)'>編集</button></td>
               </tr>
             </template>
           </tbody>
