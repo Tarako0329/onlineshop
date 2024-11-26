@@ -63,7 +63,7 @@
   $stmt->execute();
   $pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  $discription = "製造:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
+  $discription = "販売元:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
 
   $meta  = "<title>".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』</title> \r\n";
   $meta .= "<meta name='description' content='".$discription."'>\r\n";

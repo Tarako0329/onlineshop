@@ -123,7 +123,7 @@
 				</div>
 				<div class="input-group mb-3">
 					<span class="input-group-text" id="basic-addon2"><i class="bi bi-twitter-x"></i></span>
-					<input type='text' class='form-control' id='x_id' v-model='x_id'>
+					<input type='text' class='form-control' id='x_id' v-model='x_id' placeholder="@から始まるIDです">
 				</div>
 			</div>
 		</div>
