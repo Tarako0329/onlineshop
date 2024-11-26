@@ -26,6 +26,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		
 		const mode = ref('upd')
 		const disp = ref('none')
+		const shouhin_table = computed(()=>{
+			if(disp.value!=="none"){return {height:'100px;',backgroundColor:'blanchedalmond'}}else{return {maxHeight:'400px',backgroundColor:'blanchedalmond'}}
+		})
 		const get_shouhinMS = (serch) => {
 			let url=`ajax_get_shouhinMS.php?f=${serch}`
 			console_log('get_shouhinMS start')
@@ -292,18 +295,16 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					}else if(mode.value==="upd"){
 						get_shouhinMS_online()
 					}
-					//msg.value=`${shouhinNM.value} を登録しました`
 					alert(`${shouhinNM.value} を登録しました`)
 					clear_ms()
+					disp.value='none'
 				}else{
-					//msg.value=`${shouhinNM.value} の登録に失敗しました`
 					alert(`${shouhinNM.value} の登録に失敗しました`)
 				}
 				token = response.data.csrf_create
 			})
 			.catch((error,response)=>{
 				console_log(error)
-				//msg.value=`${shouhinNM.value} の登録に失敗しました`
 				alert(`${shouhinNM.value} の登録に失敗しました`)
 				token = response.data.csrf_create
 			})
@@ -405,6 +406,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			loader,
 			RTURL,
 			mode,
+			shouhin_table,
 			shouhinMS,
 			shouhinMS_pic,
 			get_shouhinMS,

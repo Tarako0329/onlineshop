@@ -54,7 +54,8 @@
       </div>
     </div>
     <div v-show='mode==="upd"' class='row' style=''>
-      <div class='col-md-8 col-12 overflow-y-scroll ps-3 pe-3 mb-3' style='height:100px;'>
+      <!--<div class='col-md-8 col-12 overflow-y-scroll ps-3 pe-3 mb-3' style='height:100px;' :id='shouhin_table'>-->
+      <div class='col-md-8 col-12 overflow-y-scroll p-1 mb-3' :style='shouhin_table'>
         <table class='table table-sm'>
           <tbody>
             <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
@@ -82,12 +83,6 @@
         <div class='col-md-8 col-12'>
           <label for='hinmei' class="form-label">商品名</label>
           <input type='text' v-model='shouhinNM' class='form-control' id='hinmei'>
-          <!--<input type='text' list='hinmeilist' v-model='shouhinNM' class='form-control' id='hinmei'>
-          <datalist id='hinmeilist'>
-            <template v-for='list in shouhinMS' :key='list.shouhinCD'>
-              <option :value='list.shouhinNM'></option>
-            </template>
-          </datalist>-->
         </div>
       </div>
       <div class='row mb-3'>
