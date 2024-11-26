@@ -16,9 +16,9 @@
 			,if(sent_flg=0,'無','有')	as 発送先有無
 			,sum(MS.goukeitanka + MS.zei) as 税込総額
 			,concat(if((first_answer + sent + payment = 3 || cancel=1),'完了','未完了')
-				, if(first_answer=0,'未受付','')
-				, if(sent=0,'未発送','')
-				, if(payment=0,'未入金',''))
+				, if(first_answer=0 && cancel=0,'未受付','')
+				, if(sent=0 && cancel=0,'未発送','')
+				, if(payment=0 && cancel=0,'未入金',''))
 				as 完了FLG
 			from juchuu_head HD
 			inner join juchuu_meisai MS
@@ -28,10 +28,7 @@
 	    where HD.uid like :uid
 			group by HD.uid,HD.orderNO,HD.juchuu_date,HD.name,HD.yubin,HD.jusho,HD.tel,HD.mail,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,HD.bikou,HD.post_corp,HD.postage,HD.postage_zeikbn,HD.postage_url,HD.postage_no,UMS.lock_sts,HD.cancel,UMS.yagou,UMS.tel,UMS.mail,if(first_answer=0,'未','済'),if(sent=0,'未','済'),if(payment=0,'未','済'),if(sent_flg=0,'無','有')
 			order by 
-				if((first_answer + sent + payment = 3 || cancel=0),99,0)
-				,cancel
-				,first_answer
-				,juchuu_date desc";//未完了・未受付・受注日の順
+				juchuu_date desc";//未完了・未受付・受注日の順
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->execute();
