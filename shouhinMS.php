@@ -54,6 +54,9 @@
             <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
               <tr>
                 <td>{{list.shouhinNM}}</td>
+                <td style='width: 30px' class='pt-2' role='button' @click='open_product_page(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'>
+                  <i class="bi bi-window-plus"></i>
+                </td>
                 <td style='width: 30px' class='pt-2' role='button' @click='copy_target(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'>
                   <i class="bi bi-share"></i>
                 </td>

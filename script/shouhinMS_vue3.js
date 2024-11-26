@@ -401,6 +401,13 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		}
 
+		const open_product_page = (id,p_shouhinNM) =>{
+			if(confirm(`${p_shouhinNM} の販売ページを確認しますか？（新しいタブで販売ページを開きます）`)===false){
+				return 0
+			}
+			const url = document.getElementById(id).innerText
+			window.open(url)
+		}
 		const copy_target = (id,p_shouhinNM) =>{
       COPY_TARGET(id)
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
@@ -447,6 +454,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			disp,
 			cg_mode,
 			copy_target,
+			open_product_page,
 		}
 	}
 });

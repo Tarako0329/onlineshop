@@ -86,6 +86,7 @@ ver1.25.0:SNS対応・product_xml複数画像対応-commited
   ALTER TABLE `Users_online` ADD `fb_id` VARCHAR(50) NULL AFTER `line_id`, ADD `x_id` VARCHAR(50) NULL AFTER `fb_id`;
 ver1.26.0:軽微な修正-commited
 ver1.27.0:受注管理改善-commited
+ver1.27.1:軽微な修正
 
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 【Issues】
