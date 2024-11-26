@@ -5,7 +5,7 @@
     }
 ?>
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
-    <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
     <meta property="og:locale" content="ja_JP"  />
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>
 

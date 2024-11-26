@@ -66,8 +66,8 @@
       fwrite($fp, "\t<g:id>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:id>\r\n");
       fwrite($fp, "\t<g:title>".str_replace("&","＆",$row["shouhinNM"])."</g:title>\r\n");
       fwrite($fp, "\t<g:description>".str_replace("&","＆",$row["short_info"])."\r\n\r\n".str_replace("&","＆",$row["infomation"])."</g:description>\r\n");
-      fwrite($fp, "\t<g:link>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
-      fwrite($fp, "\t<g:image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:image_link> \r\n");//メイン画像
+      fwrite($fp, "\t<g:link>".ROOT_URL."product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</g:link>\r\n");
+      fwrite($fp, "\t<g:image_link>".ROOT_URL."".$row["filename"]."</g:image_link> \r\n");//メイン画像
       fwrite($fp, "\t<g:condition>new</g:condition> \r\n");//新品or中古
       if($row["status"]==="show"){
         fwrite($fp, "\t<g:availability>in stock</g:availability> \r\n");//在庫状態あり
@@ -85,7 +85,7 @@
       fwrite($fp, "\t<g:mpn>presentJP".$row["uid"]."-".$row["shouhinCD"]."</g:mpn> \r\n");//商品アイテムの製造者が定める製品番号
       fwrite($fp, "\t<g:brand>".str_replace("&","＆",$row["yagou"])."</g:brand> \r\n");
     }else{
-      fwrite($fp, "\t<g:additional_image_link>https://cafe-present.greeen-sys.com/".$row["filename"]."</g:additional_image_link> \r\n");//追加画像
+      fwrite($fp, "\t<g:additional_image_link>".ROOT_URL."".$row["filename"]."</g:additional_image_link> \r\n");//追加画像
       //<g:additional_image_link>https://www.example.com/image2.jpg </g:additional_image_link>//追加画像
     }
     /*

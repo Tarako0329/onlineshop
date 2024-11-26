@@ -30,12 +30,12 @@
   fwrite($fp, "<?xml version='1.0' encoding='UTF-8'?>\r\n");
   fwrite($fp, "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\r\n");
   fwrite($fp, "<url>\r\n");
-  fwrite($fp, "\t<loc>https://cafe-present.greeen-sys.com/</loc>\r\n");
+  fwrite($fp, "\t<loc>".ROOT_URL."</loc>\r\n");
   fwrite($fp, "\t<lastmod>".date("Y-m-d")."</lastmod>\r\n");
   fwrite($fp, "</url>\r\n");
   foreach($dataset as $row){
     fwrite($fp, "<url>\r\n");
-    fwrite($fp, "\t<loc>https://cafe-present.greeen-sys.com/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</loc>\r\n");
+    fwrite($fp, "\t<loc>".ROOT_URL."product.php?id=".$row["uid"]."-".$row["shouhinCD"]."</loc>\r\n");
     fwrite($fp, "\t<lastmod>".date("Y-m-d")."</lastmod>\r\n");
     fwrite($fp, "</url>\r\n");
 

@@ -11,19 +11,99 @@
     echo "URLが不正です";
     exit();
   }
-  /*if(empty($_GET["shop_id"])){
-    echo "URLが不正です";
-    exit();
-  }*/
+  $hinmei = $_GET["id"];
   $shouhin_id = $_GET["id"];
-//  $shop_id = $_GET["shop_id"];
+  $sql = "select 
+    online.shouhinCD
+    ,online.shouhinNM
+    ,online.status
+    ,online.short_info
+    ,online.infomation
+    ,online.customer_bikou
+    ,online.tanka
+    ,online.zeikbn
+    ,online.shouhizei
+    ,NULL as rezCD
+    ,online.tanka + online.shouhizei as zeikomikakaku
+    ,'0' as ordered
+    ,'0' as goukeikingaku
+    ,ums_inline.*
+    ,pic.pic as filename
+  from shouhinMS_online online 
+  inner join Users_online ums_inline
+  on online.uid = ums_inline.uid
+  left join shouhinMS_online_pic pic 
+  on online.uid = pic.uid 
+  and online.shouhinCD = pic.shouhinCD
+  and pic.sort=1
+  where concat(online.uid,'-',online.shouhinCD) = :hinmei 
+  order by online.uid,online.shouhinCD";
+
+  $stmt = $pdo_h->prepare($sql);
+  $stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
+  $stmt->execute();
+  $count = $stmt->rowCount();
+  $dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+  $sql = "select 
+    online.uid
+    ,online.shouhinCD
+    ,online.shouhinNM
+    ,pic.sort
+    ,pic.pic as filename
+  from shouhinMS_online online 
+  left join shouhinMS_online_pic pic 
+  on online.uid = pic.uid 
+  and online.shouhinCD = pic.shouhinCD
+  where concat(online.uid,'-',online.shouhinCD) = :hinmei 
+  order by online.uid,online.shouhinCD,pic.sort";
+  $stmt = $pdo_h->prepare($sql);
+  $stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
+  $stmt->execute();
+  $pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $discription = "製造:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
+
+  $meta  = "<title>".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』</title> \r\n";
+  $meta .= "<meta name='description' content='".$discription."'>\r\n";
+  $meta .= "<meta property='og:title' content='".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』'>\r\n";
+  $meta .= "<meta property='og:description' content=''.$discription.''>\r\n";
+  $meta .= "<meta property='og:url' content=''.ROOT_URL.'product.php?id=".$hinmei."'>\r\n";
+  $meta .= "<meta property='og:type' content='website'>\r\n";
+  $meta .= "<meta property='og:site_name' content='通販サイト『".TITLE."』'>\r\n";
+  $meta .= "<meta property='og:image' content='".ROOT_URL.$dataset[0]['filename']."'>\r\n";
+  $meta .= "<meta property='fb:app_id' content='".$dataset[0]["fb_id"]."'>\r\n";
+  $meta .= "<meta name='twitter:card' content='summary'>\r\n";
+  $meta .= "<meta name='twitter:site' content='@".$dataset[0]["x_id"]."'>\r\n";
+
+/*
+                title: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』`,
+                meta: [
+                  { name: "description", content: `${list.short_info}` }
+                  ,{ property: "og:title", content: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』` }
+                  ,{ property: "og:description", content: `${list.short_info}` }
+                  ,{ property: "og:url", content: `${HTTP}product.php?id=${p_shouhin_cd}` }
+                  ,{ property: "og:type", content: `website` }
+                  ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
+                  ,{ property: "og:image", content: `${HTTP}${list.filename}`}
+                  ,{ property: "og:locale", content: `ja_JP`}
+                  ,{ property: "fb:app_id", content: `${list.fb_id}`}
+                  ,{ name: "twitter:card", content: `${HTTP}${list.filename}`}
+                  ,{ name: "twitter:site", content: `${list.x_id}`}
+*/
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
 <head prefix="og: http://ogp.me/ns#">
     <?php 
     //共通部分、bootstrap設定、フォントCND、ファビコン等
-    include "head_bs5.php" 
+    include "head_bs5.php" ;
+    echo $meta;
     ?>
     <style>
       .btn{

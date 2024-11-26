@@ -1,7 +1,7 @@
 //const { createApp, ref, onMounted, onBeforeMount, computed,watch,unheadvue } = Vue;
 import { createApp, ref, onMounted, onBeforeMount,computed,watch } from 'vue';
-import { createHead,useHead   } from 'unheadvue';
-createHead()
+//import { createHead,useHead   } from 'unheadvue';
+//createHead()
 
 //export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_shop_id,p_site_name) => createApp({//販売画面
 export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => createApp({//販売画面
@@ -25,7 +25,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
           shouhinMS.value = [...response.data.dataset]
           shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
-          
+          /*
           shouhinMS.value.forEach((list,index)=>{//SEOmetaタグ関連の設定
             if(list.uid + "-" + list.shouhinCD === p_shouhin_cd){
               console_log(`みつけた！${list.shouhinNM}`)
@@ -35,18 +35,19 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
                   { name: "description", content: `${list.short_info}` }
                   ,{ property: "og:title", content: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』` }
                   ,{ property: "og:description", content: `${list.short_info}` }
-                  ,{ property: "og:url", content: `https://cafe-present.greeen-sys.com/product.php?id=${p_shouhin_cd}` }
+                  ,{ property: "og:url", content: `${HTTP}product.php?id=${p_shouhin_cd}` }
                   ,{ property: "og:type", content: `website` }
                   ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
-                  ,{ property: "og:image", content: `https://cafe-present.greeen-sys.com/${list.filename}`}
+                  ,{ property: "og:image", content: `${HTTP}${list.filename}`}
                   ,{ property: "og:locale", content: `ja_JP`}
                   ,{ property: "fb:app_id", content: `${list.fb_id}`}
-                  ,{ name: "twitter:card", content: `https://cafe-present.greeen-sys.com/${list.filename}`}
+                  ,{ name: "twitter:card", content: `${HTTP}${list.filename}`}
                   ,{ name: "twitter:site", content: `${list.x_id}`}
                 ],
               });
             }
           })
+          */
           IDD_Read_All(tableNM,(cart)=>{//indexDBのカートの内容を反映
             cart.forEach((list)=>{
               shouhinMS.value.forEach((slist,index)=>{

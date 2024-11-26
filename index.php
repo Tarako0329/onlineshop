@@ -10,7 +10,7 @@
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
-<head>
+<head prefix="og: http://ogp.me/ns#">
     <?php 
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_bs5.php" 
