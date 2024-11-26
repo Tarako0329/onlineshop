@@ -26,8 +26,13 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		
 		const mode = ref('upd')
 		const disp = ref('none')
+		//const shouhin_table = ref({maxHeight:'100px',backgroundColor:'blanchedalmond'})
 		const shouhin_table = computed(()=>{
-			if(disp.value!=="none"){return {height:'100px;',backgroundColor:'blanchedalmond'}}else{return {maxHeight:'400px',backgroundColor:'blanchedalmond'}}
+			if(disp.value!=="none"){
+				return {maxHeight:'100px',backgroundColor:'blanchedalmond'}
+			}else{
+				return {maxHeight:'400px',backgroundColor:'blanchedalmond'}
+			}
 		})
 		const get_shouhinMS = (serch) => {
 			let url=`ajax_get_shouhinMS.php?f=${serch}`
@@ -132,9 +137,16 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					return 0
 				}
 			}
-			shouhinNM.value = p_shouhinNM
+			if(!p_shouhinNM){
+				clear_ms()
+				disp.value = 'none'
+				return 0
+			}else{
+				shouhinNM.value = p_shouhinNM
+				disp.value = 'show'
+			}
 			//mode.value = 'upd'
-			disp.value = 'show'
+			
 		}
 
 		watch(shouhinNM,()=>{//入力された商品名からマスタ情報を取得

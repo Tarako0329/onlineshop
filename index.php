@@ -15,7 +15,6 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_bs5.php" 
     ?>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.4"></script>
     <style>
       .btn{
         min-width: 50px;

@@ -54,14 +54,15 @@
       </div>
     </div>
     <div v-show='mode==="upd"' class='row' style=''>
-      <!--<div class='col-md-8 col-12 overflow-y-scroll ps-3 pe-3 mb-3' style='height:100px;' :id='shouhin_table'>-->
-      <div class='col-md-8 col-12 overflow-y-scroll p-1 mb-3' :style='shouhin_table'>
-        <table class='table table-sm'>
+      <div class='col-md-8 col-12 overflow-y-scroll p-1 mb-1' :style='shouhin_table'>
+        <table class='table table-sm mb-1'>
           <tbody>
             <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
               <tr>
                 <td>{{list.shouhinNM}}</td>
-                <td><i class="bi bi-share" @click='copy_target(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'></i></td>
+                <td style='width: 30px' class='pt-2' role='button' @click='copy_target(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'>
+                  <i class="bi bi-share"></i>
+                </td>
                 <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>{{RTURL}}product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
                 <td style='width: 80px'>
                   <select style='width: 80px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
@@ -76,6 +77,7 @@
           </tbody>
         </table>
       </div>
+      <div class='col-12'><i class="bi bi-share me-2 ms-2"></i><small>商品販売ページのURLをコピー。SNS投稿等に利用できます。</small></div>
     </div>
     <div v-show='disp!=="none"'>
       <hr>
