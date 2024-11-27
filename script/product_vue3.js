@@ -12,42 +12,20 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
     const loader = ref(false)
 
     const shouhinMS = ref([])
+    //const shouhinMS = ref(p_shouhin_info)
     const shouhinMS_pic = ref([])
+    //const shouhinMS_pic = ref(p_shouhin_pic)
     
     const mode = ref('new')
 
     const get_shouhinMS_online = (product) => {//商品マスタ取得
       axios
       .get(`ajax_get_shouhinMS_online.php?f=%`)
-      //.get(`ajax_get_shouhinMS_online_pinpoint.php?p=${product}`)
       .then((response) => {
         if(response.data.alert==="success"){
           shouhinMS.value = [...response.data.dataset]
           shouhinMS_pic.value = [...response.data.pic_set]
           console_log('get_shouhinMS_online succsess')
-          /*
-          shouhinMS.value.forEach((list,index)=>{//SEOmetaタグ関連の設定
-            if(list.uid + "-" + list.shouhinCD === p_shouhin_cd){
-              console_log(`みつけた！${list.shouhinNM}`)
-              useHead({
-                title: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』`,
-                meta: [
-                  { name: "description", content: `${list.short_info}` }
-                  ,{ property: "og:title", content: `${list.shouhinNM} - 通販サイト『${p_site_name} of ${list.site_name}』` }
-                  ,{ property: "og:description", content: `${list.short_info}` }
-                  ,{ property: "og:url", content: `${HTTP}product.php?id=${p_shouhin_cd}` }
-                  ,{ property: "og:type", content: `website` }
-                  ,{ property: "og:site_name", content: `通販サイト『${p_site_name}』` }
-                  ,{ property: "og:image", content: `${HTTP}${list.filename}`}
-                  ,{ property: "og:locale", content: `ja_JP`}
-                  ,{ property: "fb:app_id", content: `${list.fb_id}`}
-                  ,{ name: "twitter:card", content: `${HTTP}${list.filename}`}
-                  ,{ name: "twitter:site", content: `${list.x_id}`}
-                ],
-              });
-            }
-          })
-          */
           IDD_Read_All(tableNM,(cart)=>{//indexDBのカートの内容を反映
             cart.forEach((list)=>{
               shouhinMS.value.forEach((slist,index)=>{
@@ -281,7 +259,7 @@ export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => c
       loader,
       mode,
       shouhinMS_pic,
-      get_shouhinMS_online,
+      //get_shouhinMS_online,
       order_count,
       Charge_amount_by_store,
       order_shop_id,

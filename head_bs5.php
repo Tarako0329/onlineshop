@@ -3,6 +3,16 @@
     if(EXEC_MODE<>'Product'){
         echo "<meta name='robots' content='noindex' />\r\n";
     }
+    if(EXEC_MODE==='Product'){
+        echo "<!-- Google tag (gtag.js) -->\r\n";
+        echo "<script async src='https://www.googletagmanager.com/gtag/js?id=G-GYJFG67WPE'></script>\r\n";
+        echo "<script>\r\n";
+        echo "  window.dataLayer = window.dataLayer || [];\r\n";
+        echo "  function gtag(){dataLayer.push(arguments);}\r\n";
+        echo "  gtag('js', new Date());\r\n";
+        echo "  gtag('config', 'G-GYJFG67WPE');\r\n";
+        echo "</script>\r\n";
+    }
 ?>
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>

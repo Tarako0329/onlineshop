@@ -88,6 +88,8 @@
     include "head_bs5.php" ;
     echo $meta;
     ?>
+    <script async crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v19.0" nonce="XYnRGtqe"></script>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" ></script>
     <style>
       .btn{
         min-width: 50px;
@@ -164,8 +166,16 @@
               </div><!--見出-->
             </div>
             <div class='row'>
-              <div class='col-12 mt-2 mb-2 ps-3'>
-                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>商品・ショップへの質問<i class="bi bi-envelope-at-fill ms-2"></i></button>
+            <div class='col-6 mt-2 mb-2 ps-3'>
+                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+              </div>
+              <div class='col-6 mt-2 mb-2 ps-3'>
+                <div class="line-it-button" data-lang="ja" data-type="share-b" data-env="REAL" data-url="https://www.generosity.co.jp/" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="ここが本文" data-url="https://www.generosity.co.jp/" data-hashtags="tag1" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <div id="fb-root"></div>
+                <div class="fb-share-button" data-href="https://generosity.co.jp/" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgenerosity.co.jp%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェアする</a></div>
+
+
               </div>
             </div>
             <div class='row'>
