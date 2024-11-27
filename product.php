@@ -180,7 +180,8 @@
                 </div>
                 <div class=''>
                   <!--TWITTER-->
-                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow"><i class="bi bi-twitter-x"></i></a>
+                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow">
+                  <i class="bi bi-twitter-x twitter-black"></i>ポストする</a>
                 </div>
 
               </div>

@@ -7,6 +7,7 @@
   $dotenv->load();
   define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
   define("EXEC_MODE",$_ENV["EXEC_MODE"]);
+  define("ROOT_URL",$_ENV["HTTP"]);
 
   if(EXEC_MODE<>"Product"){
   }else{
