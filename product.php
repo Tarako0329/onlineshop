@@ -79,6 +79,8 @@
   $meta .= "<meta property='fb:app_id' content='".$dataset[0]["fb_id"]."'>\r\n";
   $meta .= "<meta name='twitter:card' content='summary'>\r\n";
   $meta .= "<meta name='twitter:site' content='@".$dataset[0]["x_id"]."'>\r\n";
+
+  $url = ROOT_URL."product.php?id=".$shouhin_id;
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -88,8 +90,6 @@
     include "head_bs5.php" ;
     echo $meta;
     ?>
-    <script async crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v19.0" nonce="XYnRGtqe"></script>
-    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" ></script>
     <style>
       .btn{
         min-width: 50px;
@@ -170,11 +170,18 @@
                 <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
               </div>
               <div class='col-6 mt-2 mb-2 ps-3'>
-                <div class="line-it-button" data-lang="ja" data-type="share-b" data-env="REAL" data-url="https://www.generosity.co.jp/" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>
-                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="ここが本文" data-url="https://www.generosity.co.jp/" data-hashtags="tag1" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <div id="fb-root"></div>
-                <div class="fb-share-button" data-href="https://generosity.co.jp/" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgenerosity.co.jp%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェアする</a></div>
-
+                <div class=''>
+                    <!--LINE-->
+                    <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>'><i class="bi bi-line line-green"></i>紹介する</a>
+                </div>
+                <div class=''>
+                    <!--FACEBOOK-->
+                    <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' ><i class="bi bi-facebook facebook-blue"></i>シェアする</a>
+                </div>
+                <div class=''>
+                  <!--TWITTER-->
+                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow"><i class="bi bi-twitter-x"></i></a>
+                </div>
 
               </div>
             </div>
