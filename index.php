@@ -91,8 +91,24 @@
               </div><!--見出-->
             </div>
             <div class='row'>
-              <div class='col-12 mt-2 mb-2 ps-3'>
-                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>商品・ショップへの質問<i class="bi bi-envelope-at-fill ms-2"></i></button>
+              <div class='col-6 mt-2 mb-2 ps-3'>
+                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問い合わせ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+              </div>
+              <div class='col-6 mt-2 mb-2 ps-3'>
+                <div class=''>
+                    <!--LINE-->
+                    <a :href='`https://line.me/R/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green"></i>紹介する</a>
+                </div>
+                <div class=''>
+                    <!--FACEBOOK-->
+                    <a :href='`https://www.facebook.com/share.php?u=${product_url}${list.uid}-${list.shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue"></i>シェアする</a>
+                </div>
+                <div class=''>
+                  <!--TWITTER-->
+                  <a :href='`https://twitter.com/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&url=${product_url}${list.uid}-${list.shouhinCD}&hashtags=#`' rel="nofollow noopener noreferrer" target="_blank">
+                  <i class="bi bi-twitter-x twitter-black"></i>ポストする</a>
+                </div>
+
               </div>
             </div>
             <div class='row'>
@@ -268,6 +284,14 @@
         </div>
       </div>
       <hr>
+      <!--開発中
+      <div class='row mb-3'>
+        <div class='col-md-6 col-12'>
+          <input type='checkbox' class='form-check-input' id='shop_osirase'>
+          <label for='shop_osirase' class='form-check-label' style='margin-left:5px;'>新商品・セール等の情報メール(メルマガ)を受け取る</label>
+        </div>
+      </div>
+      -->
       <div class='row mb-3'>
         <small>ご注文送信後、お客様メールアドレスにご注文内容確認のメールが自動配信されます。</small>
         <small>その後、別途ショップオーナーからのメールをもってご注文確定となります。</small>

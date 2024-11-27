@@ -166,7 +166,7 @@
               </div><!--見出-->
             </div>
             <div class='row'>
-            <div class='col-6 mt-2 mb-2 ps-3'>
+              <div class='col-6 mt-2 mb-2 ps-3'>
                 <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
               </div>
               <div class='col-6 mt-2 mb-2 ps-3'>
@@ -180,10 +180,9 @@
                 </div>
                 <div class=''>
                   <!--TWITTER-->
-                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow noopener noreferrer" target="_blank">
+                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?> &hashtags=#<?php echo TITLE;?>" rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black"></i>ポストする</a>
                 </div>
-
               </div>
             </div>
             <div class='row'>
