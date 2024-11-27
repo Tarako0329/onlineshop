@@ -172,15 +172,15 @@
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>
                     <!--LINE-->
-                    <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>'><i class="bi bi-line line-green"></i>紹介する</a>
+                    <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green"></i>紹介する</a>
                 </div>
                 <div class=''>
                     <!--FACEBOOK-->
-                    <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' ><i class="bi bi-facebook facebook-blue"></i>シェアする</a>
+                    <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue"></i>シェアする</a>
                 </div>
                 <div class=''>
                   <!--TWITTER-->
-                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow">
+                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=#<?php echo TITLE;?>" rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black"></i>ポストする</a>
                 </div>
 
