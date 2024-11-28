@@ -20,7 +20,7 @@
 	      min-width: 120px;
       }
     </style>
-    <TITLE><?php echo TITLE;?> 商品管理</TITLE>
+    <TITLE>商品管理</TITLE>
 </head>
 <BODY>
   <?php include "header_tag_admin.php"  ?>

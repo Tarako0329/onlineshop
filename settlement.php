@@ -29,7 +29,7 @@
 		<style>
 
 		</style>
-		<TITLE><?php echo TITLE;?> 決済設定</TITLE>
+		<TITLE>決済設定</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag_admin.php"  ?>

@@ -15,7 +15,7 @@
 		//共通部分、bootstrap設定、フォントCND、ファビコン等
 		include "head_admin.php" 
 		?>
-		<TITLE><?php echo TITLE;?> 設定</TITLE>
+		<TITLE>サイト設定</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag_admin.php"  ?>

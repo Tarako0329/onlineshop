@@ -23,7 +23,7 @@
         padding-top:55px;
       }
     </style>
-    <TITLE><?php echo TITLE;?> 受注管理</TITLE>
+    <TITLE>受注管理</TITLE>
 </head>
 <BODY>
   <?php include "header_tag_admin.php"  ?>

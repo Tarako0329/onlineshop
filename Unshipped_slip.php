@@ -15,7 +15,7 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_admin.php" 
     ?>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE>発送サポート</TITLE>
 </head>
 <BODY>
   <div id='app'>
