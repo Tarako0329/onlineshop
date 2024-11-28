@@ -20,7 +20,7 @@
 				,online.tanka
 				,online.zeikbn
 				,online.shouhizei
-				,online.hash_tag
+				,ifnull(online.hash_tag,'') as hash_tag
 				,NULL as rezCD
 				,online.tanka + online.shouhizei as zeikomikakaku
 				,'0' as ordered

@@ -26,6 +26,7 @@
     ,online.tanka
     ,online.zeikbn
     ,online.shouhizei
+    ,ifnull(online.hash_tag,'') as hash_tag
     ,NULL as rezCD
     ,online.tanka + online.shouhizei as zeikomikakaku
     ,'0' as ordered
@@ -171,17 +172,14 @@
               </div>
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>
-                    <!--LINE-->
-                    <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green"></i>紹介する</a>
-                </div>
-                <div class=''>
-                    <!--FACEBOOK-->
-                    <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue"></i>シェアする</a>
-                </div>
-                <div class=''>
+                  <!--LINE-->
+                  <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                  <!--FACEBOOK-->
+                  <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                   <!--TWITTER-->
-                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?> &hashtags=#<?php echo TITLE;?>" rel="nofollow noopener noreferrer" target="_blank">
-                  <i class="bi bi-twitter-x twitter-black"></i>ポストする</a>
+                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?> &hashtags=<?php echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">
+                  <i class="bi bi-twitter-x twitter-black fs-1"></i></a>
+                  紹介する
                 </div>
               </div>
             </div>
