@@ -78,6 +78,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const zei = ref(1101)
 		const midasi = ref('')
 		const info = ref('')
+		const hash_tag = ref('')
 		const customer_bikou = ref('ご要望等ございましたらご記入ください。')
 		const pic_list = ref([])
 		const rez_shouhinCD = ref('')
@@ -159,6 +160,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				status.value = shouhin[0].status
 				zei.value = String(shouhin[0].zeikbn)
 				info.value = shouhin[0].infomation
+				hash_tag.value = shouhin[0].hash_tag
 				customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
 				midasi.value = shouhin[0].short_info
 				pic_list.value=[]
@@ -278,6 +280,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				return
 			}
 			loader.value = true
+			//let p_hash_tag = hash_tag.value.replace('、',',')
+			hash_tag.value = hash_tag.value.replace('、',',')
+			hash_tag.value = hash_tag.value.replace('＃','#')
+			hash_tag.value = hash_tag.value.replace(' ','')
+			hash_tag.value = hash_tag.value.replace('　','')
 			const form = new FormData();
 			form.append(`shouhinCD`, shouhinCD.value)
 			form.append(`shouhinNM`, shouhinNM.value)
@@ -286,6 +293,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			form.append(`zeikbn`, zei.value)
 			form.append(`shouhizei`, shouhizei.value)
 			form.append(`infomation`, info.value)
+			form.append(`hash_tag`, hash_tag.value)
 			form.append(`customer_bikou`, customer_bikou.value)
 			form.append(`short_info`, midasi.value)
 			form.append(`csrf_token`, token)
@@ -333,6 +341,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			zei.value = 1101
 			midasi.value = ''
 			info.value = ''
+			hash_tag.value=''
 			customer_bikou.value='ご要望等ございましたらご記入ください。'
 			pic_list.value=[]
 		}
@@ -432,6 +441,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			get_shouhinMS,
 			shouhinCD,
 			shouhinNM,
+			hash_tag,
 			status,
 			tanka,
 			zei,

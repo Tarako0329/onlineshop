@@ -34,8 +34,8 @@ if($rtn !== true){
         $DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
         $DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
-        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,customer_bikou,tanka,zeikbn,shouhizei) ";
-        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:customer_bikou,:tanka,:zeikbn,:shouhizei)";
+        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,customer_bikou,tanka,zeikbn,shouhizei,hash_tag) ";
+        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag)";
         $INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
 
         $params["uid"] = $_SESSION["user_id"];
@@ -48,6 +48,7 @@ if($rtn !== true){
         $params["tanka"] = $_POST["tanka"];
         $params["zeikbn"] = $_POST["zeikbn"];
         $params["shouhizei"] = $_POST["shouhizei"];
+        $params["hash_tag"] = $_POST["hash_tag"];
 
         try{
             $pdo_h->beginTransaction();
@@ -83,6 +84,7 @@ if($rtn !== true){
             $stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
             $stmt->bindValue("zeikbn", $params["zeikbn"], PDO::PARAM_INT);
             $stmt->bindValue("shouhizei", $params["shouhizei"], PDO::PARAM_INT);
+            $stmt->bindValue("hash_tag", $params["hash_tag"], PDO::PARAM_INT);
             
             $sqllog .= rtn_sqllog($INSsql,$params);
 
@@ -147,35 +149,4 @@ echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
 
 exit();
 
-/*
-function shutdown(){
-    // シャットダウン関数
-    // スクリプトの処理が完了する前に
-    // ここで何らかの操作をすることができます
-    // トランザクション中のエラー停止時は自動rollbackされる。
-      $lastError = error_get_last();
-      
-      //直前でエラーあり、かつ、catch処理出来ていない場合に実行
-      if($lastError!==null && $GLOBALS["reseve_status"] === false){
-        log_writer2(basename(__FILE__),"shutdown","lv3");
-        log_writer2(basename(__FILE__),$lastError,"lv1");
-          
-        $emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
-        if(EXEC_MODE!=="Local"){
-            send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"");
-        }
-        log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
-    
-        $token = csrf_create();
-        $return_sts = array(
-            "MSG" => "システムエラーによる更新失敗。管理者へ通知しました。"
-            ,"status" => "alert-danger"
-            ,"csrf_create" => $token
-            ,"timeout" => false
-        );
-        header('Content-type: application/json');
-        echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
-      }
-  }
-*/
 ?>
