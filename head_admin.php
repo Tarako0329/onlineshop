@@ -4,10 +4,10 @@
     <META http-equiv='Content-Type' content='text/html; charset=UTF-8'>
     <link rel='apple-touch-icon' href='apple-touch-icon.png'>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!--<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alice&family=Zen+Antique&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">-->
 
     <!-- Bootstrap5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -24,11 +24,11 @@
     <!--Vue.js-->
     <!--<script src="https://unpkg.com/vue@next"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/vue@3.4.4"></script>
-    <script src="https://unpkg.com/vue-cookies@1.8.2/vue-cookies.js"></script>
+    <!--<script src="https://unpkg.com/vue-cookies@1.8.2/vue-cookies.js"></script>-->
     <!--ajaxライブラリ-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>axios.defaults.baseURL = <?php echo "'".ROOT_URL."'" ?>;</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script><!--QRコードライブラリ-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>QRコードライブラリ-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/9.0.0/decimal.min.js"></script><!--小数演算ライブラリ-->
 
     <script>
