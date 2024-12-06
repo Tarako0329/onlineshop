@@ -43,13 +43,21 @@
 		end as kurikoshi
 		from
 		(
-			SELECT ym.uid,:getudo as nendo,DATE_FORMAT(juchuu_date, '%Y%m') as getudo,sum(ifnull(jm.goukeitanka,0)) as juchu_jisseki 
+			SELECT 
+				ym.uid,:getudo as nendo,DATE_FORMAT(juchuu_date, '%Y%m') as getudo
+				,sum(if(cancel is null,ifnull(jm.goukeitanka,0),0)) as juchu_jisseki 
+				,sum(if(cancel is null,0,(ifnull(jm.goukeitanka,0) * (-1)))) as cancel_jisseki 
+				,sum(if(cancel is null,ifnull(jm.goukeitanka,0),(ifnull(jm.goukeitanka,0) * (-1)))) as juchu_jisseki_goukei 
 			FROM 
 			Users_online ym
 			left join `juchuu_head` jh 
 			on ym.uid = jh.uid
-			and cancel=0
-			and DATE_FORMAT(juchuu_date, '%Y%m') = :getudo2
+			and (
+				DATE_FORMAT(juchuu_date, '%Y%m') = :getudo2
+				or
+				DATE_FORMAT(cancel, '%Y%m') = :getudo4
+				)
+			and DATE_FORMAT(juchuu_date, '%Y%m') <> DATE_FORMAT(cancel, '%Y%m')
 			left join juchuu_meisai jm 
 			on jh.orderNO = jm.orderNO 
 			group by ym.uid,DATE_FORMAT(juchuu_date, '%Y%m')
@@ -59,11 +67,12 @@
 		and seikyu.getudo = :getudo3
 		where jisseki.uid = :uid
 		order by jisseki.uid,jisseki.getudo;";
-
+		
 	$stmt = $pdo_h->prepare($sql);
   $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
   $stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
   $stmt->bindValue("getudo2", $getudo, PDO::PARAM_STR);
+  $stmt->bindValue("getudo4", $getudo, PDO::PARAM_STR);
   $stmt->bindValue("getudo3", $getudo, PDO::PARAM_STR);
   $stmt->execute();
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

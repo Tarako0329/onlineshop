@@ -32,7 +32,7 @@
     <div class='row mb-2 pt-3 ps-3'>
       <div class='col-12 mb-0'>
         <div class="btn-group" role="group" aria-label="Basic outlined example" >
-        <input type='radio' class='btn-check' name='mode' value='未完了' autocomplete='off' v-model='mode' id='未完了' >
+          <input type='radio' class='btn-check' name='mode' value='未完了' autocomplete='off' v-model='mode' id='未完了' >
 				  <label class='btn btn-outline-success ' for='未完了' style='border-radius:0;' >未完了</label>
           <input type='radio' class='btn-check' name='mode' value='未受付' autocomplete='off' v-model='mode' id='未受付' >
 				  <label class='btn btn-outline-success ' for='未受付' style='border-radius:0;' >未受付</label>
@@ -61,7 +61,7 @@
                           <div style="width: 100%;">注文日[{{String(list.juchuu_date).substring(0,10)}}] 注文者：{{list.name}}  ￥{{Number(list.税込総額).toLocaleString()}}</div>
                           <div style="width: 100%;">
                             受付NO:[{{list.orderNO}}] 　
-                            <template v-if='list.cancel===0'>
+                            <template v-if='list.cancel===null'>
                               <template v-if='chk_recept'><template v-if='list.オーダー受付==="済"'><span style='color:blue;'>受付{{list.オーダー受付}}</span></template><template v-else ><span style='color:red;'>{{list.オーダー受付}}受付</span></template> 　</template>
                               <template v-if='chk_paid'><template v-if='list.入金==="済"'><span style='color:blue;'>入金{{list.入金}}</span></template><template v-else ><span style='color:red;'>{{list.入金}}入金</span></template> 　</template>
                               <template v-if='chk_sent'><template v-if='list.発送==="済"'><span style='color:blue;'>発送{{list.発送}}</span></template><template v-else ><span style='color:red;'>{{list.発送}}発送</span></template> </template>
@@ -76,7 +76,7 @@
                     </h2>
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
-                        <div class='d-flex' style="position: relative;">
+                        <div v-if='list.cancel===null' class='d-flex' style="position: relative;">
                           <div v-if='chk_recept' class='me-3'>
                             <p>受付</p>
                             <input type='radio' class='btn-check' :name='`statusU_${index}`' value="未" autocomplete='off' :id='`showU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",0,index)'>

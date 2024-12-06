@@ -15,10 +15,10 @@
 			,if(payment=0,'未','済') as 入金
 			,if(sent_flg=0,'無','有')	as 発送先有無
 			,sum(MS.goukeitanka + MS.zei) as 税込総額
-			,concat(if((first_answer + sent + payment = 3 || cancel=1),'完了','未完了')
-				, if(first_answer=0 && cancel=0,'未受付','')
-				, if(sent=0 && cancel=0,'未発送','')
-				, if(payment=0 && cancel=0,'未入金',''))
+			,concat(if((first_answer + sent + payment = 3 || cancel is not null),'完了','未完了')
+				, if(first_answer=0 && cancel is null,'未受付','')
+				, if(sent=0 && cancel is null,'未発送','')
+				, if(payment=0 && cancel is null,'未入金',''))
 				as 完了FLG
 			from juchuu_head HD
 			inner join juchuu_meisai MS

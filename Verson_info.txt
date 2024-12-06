@@ -91,6 +91,8 @@ ver1.28.0:SNS対応-commited
   ALTER TABLE `shouhinMS_online` ADD `hash_tag` TEXT NULL DEFAULT NULL COMMENT 'ハッシュタグ' AFTER `infomation`;
 ver1.28.1:軽微な修正-commited
 ver1.29.0:システム利用料関連
+ver1.29.1:システム利用料関連：キャンセル処理
+  ALTER TABLE `juchuu_head` CHANGE `cancel` `cancel` DATE NULL DEFAULT NULL COMMENT '注文キャンセル' AFTER `juchuu_date`;
 
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 【Issues】

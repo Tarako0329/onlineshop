@@ -99,7 +99,7 @@
 		include "head_admin.php" 
 	?>
 	<script src="https://js.stripe.com/v3/"></script>
-	<TITLE><?php echo TITLE;?> 商品管理</TITLE>
+	<TITLE><?php echo TITLE;?> お支払い</TITLE>
 </head>
 <BODY>
 	<?php //include "header_tag_admin.php"  ?>
@@ -109,9 +109,7 @@
 			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
 			<hr>
 			<div v-if='credit==="use"' class='p-3'>
-				<!--<a :href="`payment_stripe.php?key=<?php //echo $user_hash;?>`" type="button" class="btn btn-primary" id='checkout-button'>クレジットで決済する⇒</a>-->
 				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary btn-lg" style='width:100%;'>クレジットで決済する⇒</a>
-				<!--<button type="button" class="btn btn-primary" id='checkout-button' onclick="go_checkout()">クレジットで決済する⇒</button>-->
 				<hr>
 			</div>
 

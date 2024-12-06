@@ -49,7 +49,7 @@
                           <div style="width: 100%;">注文日[{{String(list.juchuu_date).substring(0,10)}}] 注文者：{{list.name}}  ￥{{Number(list.税込総額).toLocaleString()}}</div>
                           <div style="width: 100%;">
                             受付NO:[{{list.orderNO}}] 　
-                            <template v-if='list.cancel===0'>
+                            <template v-if='list.cancel===null'>
                               <template v-if='chk_recept'><template v-if='list.オーダー受付==="済"'><span style='color:blue;'>受付{{list.オーダー受付}}</span></template><template v-else ><span style='color:red;'>{{list.オーダー受付}}受付</span></template> 　</template>
                               <template v-if='chk_paid'><template v-if='list.入金==="済"'><span style='color:blue;'>入金{{list.入金}}</span></template><template v-else ><span style='color:red;'>{{list.入金}}入金</span></template> 　</template>
                               <template v-if='chk_sent'><template v-if='list.発送==="済"'><span style='color:blue;'>発送{{list.発送}}</span></template><template v-else ><span style='color:red;'>{{list.発送}}発送</span></template> </template>
@@ -181,11 +181,12 @@
                         </div>
                         <hr>
                         <div class='row mb-3'>
-                          <div v-if='list.cancel===0 && cancel_lock[index].cancel==="unlock"' class='col-md-6 col-12'>
+                          <div v-if='list.cancel===null && cancel_lock[index].cancel==="unlock"' class='col-md-6 col-12'>
                             <button type='button' class='btn btn-danger ms-3' @click='set_order_sts(list.orderNO,"cancel",1,index)'>ご注文キャンセル</button>
                           </div>
-                          <div v-else-if='list.cancel===1' class='col-md-6 col-12'>
-                          <button type='button' class='btn btn-danger ms-3' @click='set_order_sts(list.orderNO,"cancel",1,index)' disabled>キャンセル済です</button>
+                          <div v-else-if='list.cancel!==null' class='col-md-6 col-12'>
+                            <!--<button type='button' class='btn btn-danger ms-3' @click='set_order_sts(list.orderNO,"cancel",1,index)' disabled>キャンセル済です</button>-->
+                            <button type='button' class='btn btn-danger ms-3' disabled>キャンセル済です</button>
                           </div>
                           <div v-else-if='cancel_lock[index].cancel==="lock"'class='col-md-6 col-12'>
                             ご注文の対応中のためキャンセルできません。<br>

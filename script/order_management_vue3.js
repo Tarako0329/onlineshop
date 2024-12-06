@@ -34,18 +34,24 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         console_log('set_order_sts：排他')
         return
       }
+      const today = new Date().toLocaleDateString('sv-SE')
       haita_flg = 'start'
       loader.value = true
       //colum項目にvalを設定
       console_log(orderNO)
       console_log(colum)
-      console_log(orderlist_hd.value[index])
+      //console_log(orderlist_hd.value[index])
       if(colum==="cancel" && val===1){
         if(confirm("ご注文をキャンセルしてよいですか？")===false){
           loader.value = false
           haita_flg = 'stop'
           return
-        }
+        }else[
+          val = today //キャンセル日をセット
+        ]
+        console_log(order_hd_serch.value[index])
+      }else{
+        console_log(orderlist_hd.value[index])
       }
 
       const form = new FormData();
@@ -123,9 +129,9 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
               }
             }
           }
-          if(colum==="cancel" && val===1){
+          if(colum==="cancel" && val===today){
             alert("キャンセルしました")
-            orderlist_hd.value[index].cancel=1
+            order_hd_serch.value[index].cancel=today
           }
         }else{
           alert('更新失敗')
@@ -273,7 +279,8 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
 
     const cancel_lock = computed(()=>{
       let retn = []
-      orderlist_hd.value.forEach((row,index)=>{
+      //orderlist_hd.value.forEach((row,index)=>{
+      order_hd_serch.value.forEach((row,index)=>{
         let sts = 'unlock'
         if(row.lock_sts === "recept" && row.オーダー受付==="済"){sts = 'lock'}
         if(row.lock_sts === "paid" && row.入金==="済"){sts = 'lock'}
