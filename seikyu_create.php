@@ -4,14 +4,14 @@
 
 	
 	//$date = new DateTime(date('Y-m-d'));
-	$date = new DateTime('2024-11-01');
+	$date = new DateTime('2024-03-01');
 	//echo $date->format('Ym')."<br>";
+	$yokugetu=$date->format('Ym');
+	
+	$date->modify('-10 day');
 	$getudo=$date->format('Ym');
-
-	$date->modify('+1 month');
 	//echo $date->format('Y-m-d');
 	//echo $date->format('Ym');
-	$yokugetu=$date->format('Ym');
 	
 	echo $getudo."<br>".$yokugetu;
 	//$getudo="202403";
@@ -118,6 +118,14 @@
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
 
+		$to="green.green.midori@gmail.com";
+		$subject="【".EXEC_MODE."】ONLINESHOP_請求データ作成完了-".$getudo;
+		$body=$getudo."月度の請求データを作成しました。";
+		$fromname=TITLE."@".EXEC_MODE;
+		$bcc="";
+
+		send_mail($to,$subject,$body,$fromname,$bcc);
+		exit();
 	}catch(Exception $e){
       $pdo_h->rollBack();
       $sqllog .= rtn_sqllog("rollBack",[]);
