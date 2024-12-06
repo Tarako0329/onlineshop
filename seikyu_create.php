@@ -3,8 +3,8 @@
 	require "php_header.php";
 
 	
-	//$date = new DateTime(date('Y-m-d'));
-	$date = new DateTime('2024-03-01');
+	$date = new DateTime(date('Y-m-d'));
+	//$date = new DateTime('2024-12-01');
 	//echo $date->format('Ym')."<br>";
 	$yokugetu=$date->format('Ym');
 	
