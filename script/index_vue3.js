@@ -440,7 +440,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
 
     }
 
-    const product_url = ref(`${HTTP}pruduct.php?id=`)
+    const product_url = ref(`${HTTP}product.php?id=`)
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
 
