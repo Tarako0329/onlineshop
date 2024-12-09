@@ -23,8 +23,10 @@
 
 	$sql = "select 
 		jisseki.uid
-		,jisseki.nendo as 月度
+		,jisseki.getudo as 月度
 		,ifnull(seikyu.zenkuri,0) as 前月繰越
+		,jisseki.juchu_jisseki1
+		,jisseki.cancel_jisseki
 		,jisseki.juchu_jisseki
 		,if(ifnull(seikyu.zenkuri,0)=0,`get_seikyuu_ritu`(jisseki.juchu_jisseki),'０％') as 率
 		,if(ifnull(seikyu.zenkuri,0)=0,`get_seikyuu`(jisseki.juchu_jisseki),0) as seikyu
@@ -44,36 +46,32 @@
 		from
 		(
 			SELECT 
-				ym.uid,:getudo as nendo,DATE_FORMAT(juchuu_date, '%Y%m') as getudo
-				,sum(if(cancel is null,ifnull(jm.goukeitanka,0),0)) as juchu_jisseki 
-				,sum(if(cancel is null,0,(ifnull(jm.goukeitanka,0) * (-1)))) as cancel_jisseki 
-				,sum(if(cancel is null,ifnull(jm.goukeitanka,0),(ifnull(jm.goukeitanka,0) * (-1)))) as juchu_jisseki_goukei 
+				ym.uid,ym.getudo
+				,sum(if(DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo,ifnull(jm.goukeitanka,0),0)) as juchu_jisseki1
+				,sum(if(DATE_FORMAT(cancel, '%Y%m') = ym.getudo,(ifnull(jm.goukeitanka,0) * (-1)),0)) as cancel_jisseki 
+				,sum(if(DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo,ifnull(jm.goukeitanka,0),0) + if(DATE_FORMAT(cancel, '%Y%m') = ym.getudo,(ifnull(jm.goukeitanka,0) * (-1)),0)) as juchu_jisseki
 			FROM 
-			Users_online ym
+			(select *,:getudo as getudo from Users_online) ym
 			left join `juchuu_head` jh 
 			on ym.uid = jh.uid
 			and (
-				DATE_FORMAT(juchuu_date, '%Y%m') = :getudo2
+				DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo
 				or
-				DATE_FORMAT(cancel, '%Y%m') = :getudo4
+				DATE_FORMAT(cancel, '%Y%m') = ym.getudo
 				)
-			and DATE_FORMAT(juchuu_date, '%Y%m') <> DATE_FORMAT(cancel, '%Y%m')
 			left join juchuu_meisai jm 
 			on jh.orderNO = jm.orderNO 
 			group by ym.uid,DATE_FORMAT(juchuu_date, '%Y%m')
 		) as jisseki
 		left join online_seikyu seikyu
 		on jisseki.uid = seikyu.uid
-		and seikyu.getudo = :getudo3
+		and jisseki.getudo = seikyu.getudo
 		where jisseki.uid = :uid
 		order by jisseki.uid,jisseki.getudo;";
 		
 	$stmt = $pdo_h->prepare($sql);
   $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
   $stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo2", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo4", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo3", $getudo, PDO::PARAM_STR);
   $stmt->execute();
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -85,7 +83,7 @@
 				,zenkuri+jisseki)
 			,if(jisseki<100000,0,jisseki)
 		) as taishou
-		,concat(left(getudo,4),'-',right(getudo,2),'-01') as gessho
+		,LAST_DAY(concat(left(getudo,4),'-',right(getudo,2),'-01')) + INTERVAL 1 DAY as gessho
 		,seikyu+seikyu2+seikyu3 as goukei from online_seikyu where uid = :uid and getudo < :getudo order by getudo desc";
 	$stmt = $pdo_h->prepare($sql);
   $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
@@ -128,6 +126,8 @@
 							</thead>
 							<tbody class="table-group-divider">
 								<tr scope="row"><td>前月繰越</td><td class='text-end'>{{Number(seikyu[0].前月繰越).toLocaleString()}} 円</td><td class='text-center'>-</td><td class='text-end'>-</td></tr>
+								<tr scope="row"><th>当月受注</th><td class='text-end'>{{Number(seikyu[0].juchu_jisseki1).toLocaleString()}} 円</td><td class='text-center'>-</td><td class='text-end'>-</td></tr>
+								<tr scope="row"><th>当月キャンセル</th><td class='text-end'>{{Number(seikyu[0].cancel_jisseki).toLocaleString()}} 円</td><td class='text-center'>-</td><td class='text-end'>-</td></tr>
 								<tr scope="row"><th>当月実績</th><td class='text-end'>{{Number(seikyu[0].juchu_jisseki).toLocaleString()}} 円</td><td class='text-center'>{{seikyu[0].率}}</td><td class='text-end'>{{Number(seikyu[0].seikyu).toLocaleString()}} 円</td></tr>
 								<tr v-if='seikyu[0].前月繰越!=0' scope="row"><th>繰越+当月</th><td class='text-end'>{{Number(Number(seikyu[0].juchu_jisseki)+Number(seikyu[0].前月繰越)).toLocaleString()}} 円</td><td class='text-center'>-</td><td class='text-end'>-</td></tr>
 								<tr v-if='seikyu[0].前月繰越!=0' scope="row"><th>繰越精算対象額</th><td class='text-end'>{{Number(seikyu[0].繰越精算対象額).toLocaleString()}} 円</td><td class='text-center'>{{seikyu[0].累積率}}</td><td class='text-end'>{{Number(seikyu[0].seikyu2).toLocaleString()}} 円</td></tr>
@@ -153,12 +153,12 @@
 					<thead>
 						<tr>
 							<th class='text-center'>ご利用月</th>
-							<th class='text-center'>前月迄未請求受注</th>
+							<th class='text-center'>前月繰越</th>
 							<th class='text-center'>当月受注</th>
 							<th class='text-center'>請求対象受注額</th>
 							<th class='text-center'>ご利用請求額</th>
 							<th class='text-center'>請求日</th>
-							<th class='text-center'>次月繰越</th>
+							<th class='text-center'>次月繰越分</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -169,7 +169,8 @@
 								<td class='text-end'>{{Number(list.jisseki).toLocaleString()}} 円</td>
 								<td class='text-end'>{{Number(list.taishou).toLocaleString()}} 円</td>
 								<td class='text-end'>{{Number(list.goukei).toLocaleString()}} 円</td>
-								<td class='text-end'>{{Number(list.goukei).toLocaleString()}} 円</td>
+								<td v-if='list.goukei > 0' class='text-center'>{{list.gessho}}</td>
+								<td v-else class='text-center'>請求なし</td>
 								<td class='text-end'>{{Number(list.kurikoshi).toLocaleString()}} 円</td>
 
 							</tr>

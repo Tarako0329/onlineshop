@@ -4,7 +4,7 @@
 
 	
 	$date = new DateTime(date('Y-m-d'));
-	$date = new DateTime('2025-01-01');
+	//$date = new DateTime('2024-12-01');
 	//echo $date->format('Ym')."<br>";
 	$yokugetu=$date->format('Ym');
 	
@@ -19,7 +19,7 @@
 
 	$sql = "select 
 		jisseki.uid
-		,jisseki.nendo as 月度
+		,jisseki.getudo as 月度
 		,ifnull(seikyu.zenkuri,0) as 前月繰越
 		,jisseki.juchu_jisseki
 		,if(ifnull(seikyu.zenkuri,0)=0,`get_seikyuu`(jisseki.juchu_jisseki),0) as seikyu
@@ -34,16 +34,18 @@
 		from
 		(
 			SELECT 
-				ym.uid,:getudo as nendo,DATE_FORMAT(juchuu_date, '%Y%m') as getudo
-				,sum(if(cancel is null,ifnull(jm.goukeitanka,0),(ifnull(jm.goukeitanka,0) * (-1)))) as juchu_jisseki 
+				ym.uid,ym.getudo
+				,sum(if(DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo,ifnull(jm.goukeitanka,0),0)) as juchu_jisseki1
+				,sum(if(DATE_FORMAT(cancel, '%Y%m') = ym.getudo,(ifnull(jm.goukeitanka,0) * (-1)),0)) as cancel_jisseki 
+				,sum(if(DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo,ifnull(jm.goukeitanka,0),0) + if(DATE_FORMAT(cancel, '%Y%m') = ym.getudo,(ifnull(jm.goukeitanka,0) * (-1)),0)) as juchu_jisseki
 			FROM 
-			Users_online ym
+			(select *,:getudo as getudo from Users_online) ym
 			left join `juchuu_head` jh 
 			on ym.uid = jh.uid
 			and (
-				DATE_FORMAT(juchuu_date, '%Y%m') = :getudo2
+				DATE_FORMAT(juchuu_date, '%Y%m') = ym.getudo
 				or
-				DATE_FORMAT(cancel, '%Y%m') = :getudo4
+				DATE_FORMAT(cancel, '%Y%m') = ym.getudo
 				)
 			left join juchuu_meisai jm 
 			on jh.orderNO = jm.orderNO 
@@ -51,14 +53,11 @@
 		) as jisseki
 		left join online_seikyu seikyu
 		on jisseki.uid = seikyu.uid
-		and seikyu.getudo = :getudo3
+		and jisseki.getudo = seikyu.getudo
 		order by jisseki.uid,jisseki.getudo;";
 
 	$stmt = $pdo_h->prepare($sql);
   $stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo2", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo3", $getudo, PDO::PARAM_STR);
-  $stmt->bindValue("getudo4", $getudo, PDO::PARAM_STR);
   $stmt->execute();
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -140,6 +139,7 @@
       $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
       $alert_status = "alert-danger";
       $reseve_status=true;
+			echo $msg."<br>".$e;
   }
 
 
