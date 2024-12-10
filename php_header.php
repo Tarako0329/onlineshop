@@ -52,6 +52,8 @@ define("S_KEY",$_ENV["SKey"]);
 define("P_KEY",$_ENV["PKey"]);
 define("OAuth",$_ENV["OAuth"]);
 
+define("GEMINI",$_ENV["GOOGLE_API"]);
+
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 //$_SESSION["user_id"] = '2';
