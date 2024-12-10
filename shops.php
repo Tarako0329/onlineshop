@@ -22,9 +22,10 @@
 	<div id='app' style='height: 100%'>
 	<?php include "header_tag.php"  ?>
 	<MAIN class='container common_main'>
+		<div class='row ps-3'>各ショップへのお問い合わせは、商品販売ページ(HOME)の「お問い合わせ」ボタンよりお願いいたします。</div>
 		<div class='row pb-3 pt-3'>
 			<template v-for='(list,index) in shoplist' :key='list.uid'>
-				<div class='col-xl-6 col-md-6 col-12'><!--外枠-->
+				<div v-if='list.sel_cnt!==0' class='col-xl-6 col-md-6 col-12'><!--外枠-->
 					<div class='container-fluid'>
 						<div class='row'>
 							<div class='col-12 d-flex original-gradient' style='height:80px;'><!--詳細-->
@@ -46,7 +47,6 @@
 				
 			</template>
 		</div>
-
 	</MAIN>
 	<FOOTER class='container-fluid common_footer'>
 	</FOOTER>

@@ -12,9 +12,12 @@
 		$alert_status = "alert-success";
 		$msg="";
 		$sql = "select 
-				*
-			from Users_online
-			where uid like :uid 
+				um.*
+				,ifnull(sm.sel_cnt,0) as sel_cnt
+			from Users_online um
+			left join (SELECT uid,count(*) as sel_cnt FROM `shouhinMS_online` where status <> 'stop' group by uid) as sm
+			on um.uid = sm.uid
+			where um.uid like :uid 
 			order by RAND()";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);

@@ -25,6 +25,11 @@
 					<div class='text-center'> <h1>規約</h1></div>
 					<div class='p-5'>
 						<div class='mb-3'>
+							<h4>０ 当サイトのご利用にあたり</h4>
+							<p  class='ps-4 mb-2'>当サイトを利用する事業者は<a href='privacy_policy.php' target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>、<a href='https://www.no-trouble.caa.go.jp/what/mailorder/' target="_blank" rel="noopener noreferrer">特定商取引法に基づく表記</a>を理解し、順守することに同意するものとします。</p>
+							<p  class='ps-4 mb-2'>違反が発覚した場合は即販売停止とします。</p>
+						</div>
+						<div class='mb-3'>
 							<h4>１ 当サイトがご提供する機能について </h4>
 							<p  class='ps-4 mb-2'>当サイトはインターネット販売の機会を提供する目的で運営されてます。</p>
 							<p  class='ps-4 mb-3'>商品の発送については事業者様にて行って頂きます。</p>

@@ -23,14 +23,14 @@
 					<div class='p-5'>
 						<div class='mb-3'>
 							<h4>１ サイト運営元・基本ポリシー</h4>
-							<p  class='ps-4'>MidoriSystemu </p>
+							<p  class='ps-4'>Midori System </p>
 							<p  class='ps-4'><a href='https://site.greeen-sys.com/'>https://site.greeen-sys.com/</a></p>
 							<p  class='ps-4'>商品サービス販売における商品・金銭の授受に関しては項２以降に基づき、当事者間で責任をもって実施するものとする。</p>
-							<p  class='ps-4'>なお、お客様お支払い後商品未発送や、商品発送後お客様未支払いについては法にのっとり対処するものとする。</p>
+							<p  class='ps-4'>なお、商品未発送、未支払いについては法にのっとり対処するものとする。</p>
 						</div>
 						<div class='mb-3'>
 							<h4>２  返品について  </h4>
-							<p  class='ps-4'>お届けした商品が不良品だった場合のみ、返品を受け付け致します。 </p>
+							<p  class='ps-4'>お届けした商品が不良品だった場合、返品を受け付け致します。 </p>
 							<p  class='ps-4'>上記以外の理由における返品・交換については出店者の判断により、対応いたします。  </p>
 						</div>
 						<div class='mb-3'>
