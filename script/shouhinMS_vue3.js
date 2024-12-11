@@ -445,8 +445,18 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				loader2.value = false
 				document.getElementById('gemini_btn').disabled=false
 			})
-		
 		}
+		const tags_add = (p_tag) =>{
+			if(hash_tag.value.indexOf(p_tag)===-1){
+				console_log('ない。たす')
+				hash_tag.value = hash_tag.value + String(p_tag) + ','
+			}else{
+				console_log('ある。けす')
+				hash_tag.value = hash_tag.value.replace(p_tag+',','')
+			}
+			console_log(hash_tag.value)
+		}
+
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
@@ -495,6 +505,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			open_product_page,
 			get_AI_post,
 			AI_answer,
+			tags_add,
 		}
 	}
 });

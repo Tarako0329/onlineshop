@@ -201,12 +201,12 @@
         </div>
         <div class="modal-body">
           <template v-for='(list,index) in AI_answer.posts'>
-            <template v-for='(tag,index) in list.tags'>
-              <span>
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                {{tag}}
-              </label>
+            <template v-for='(tag,index2) in list.tags'>
+              <span class='me-2' role='button'>
+                <input class="form-check-input" type="checkbox" :value="`${tag}`" :id="`tag_${tag}`" @click='tags_add(`${tag}`)' >
+                <label class="form-check-label" :for="`tag_${tag}`">
+                  {{tag}}
+                </label>
               </span>
             </template>
           </template>
