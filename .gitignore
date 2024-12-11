@@ -26,4 +26,4 @@ upload/temp/*.jpg
 *.mm
 sitemap.xml
 product_list.xml
-composer/platform_check.php
+vendor/composer/platform_check.php
