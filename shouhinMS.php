@@ -200,14 +200,13 @@
         <div class="modal-header">
         </div>
         <div class="modal-body">
-          <template v-for='(list,index) for AI_answer'>
+          <template v-for='(list,index) in AI_answer'>
             {{list.tags}}
           </template>
           
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
-          <button type='button' class='btn btn-primary' @click='send_email()'>{{send_mail_btn}}</button>
         </div>
       </div>
     </div>

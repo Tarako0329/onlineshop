@@ -425,7 +425,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
 
-		const AI_answer = ref()
+		const AI_answer = ref([{'tags':'def'}])
 		const get_AI_post = () =>{
 			loader2.value = true
 			document.getElementById('gemini_btn').disabled = true
