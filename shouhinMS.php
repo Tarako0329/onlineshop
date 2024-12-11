@@ -200,8 +200,8 @@
         <div class="modal-header">
         </div>
         <div class="modal-body">
-          <template v-for='(list,index) in AI_answer'>
-            {{list.tags}}
+          <template v-for='(list,index) in AI_answer.posts'>
+            {{list.tags[0]}}
           </template>
           
         </div>
