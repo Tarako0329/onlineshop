@@ -102,6 +102,7 @@ const LINE_PUSH = (ID,MSG) =>{
 
 const GET_AI = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash) =>{
   return new Promise((resolve, reject) => {
+    let obj
     const params = new FormData();
     params.append(`hinmei`, p_hinmei);
     params.append(`sort_info`, p_sort_info);

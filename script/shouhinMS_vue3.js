@@ -429,9 +429,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			console_log('get_AI_post start')
 			GET_AI(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash)
 			.then((response) => {
-				AI_answer = response.data
-				//console_log(AI_answer)
 				console_log('get_AI_post succsess')
+				console_log(response.data)
+				AI_answer = response.data
 			})
 			.catch((error)=>{
 				console_log('get_AI_post.php ERROR')
