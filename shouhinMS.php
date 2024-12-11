@@ -202,7 +202,12 @@
         <div class="modal-body">
           <template v-for='(list,index) in AI_answer.posts'>
             <template v-for='(tag,index) in list.tags'>
-              <span>{{tag}}</span>
+              <span>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                {{tag}}
+              </label>
+              </span>
             </template>
           </template>
           
