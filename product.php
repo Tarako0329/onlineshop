@@ -194,7 +194,13 @@
                     </h2>
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse show" :data-bs-parent="`#accordion_${index}`">
                       <div class="accordion-body">
-                        <div class='pb-1'><p>{{list.infomation}}</p></div>
+                        <div class='pb-1'>
+                          <p>【商品詳細】</p>
+                          <p>{{list.infomation}}</p></div>
+                        <div class='pb-1'>
+                          <p>【送料・配送・納期などについて】</p>
+                          <p>{{list.haisou}}</p>
+                        </div>
                         <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
                         <div v-if='list.status==="show"' class='pb-3'>
                           <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show_${index}`'>

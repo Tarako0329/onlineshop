@@ -94,9 +94,11 @@ ver1.29.0:システム利用料関連
 ver1.29.1:システム利用料関連：キャンセル処理-commited
   ALTER TABLE `juchuu_head` CHANGE `cancel` `cancel` DATE NULL DEFAULT NULL COMMENT '注文キャンセル' AFTER `juchuu_date`;
 ver1.30.0:規約修正-commited
-ver1.31.0:GoogleAI搭載
+ver1.31.0:GoogleAI搭載-commited
   ALTER TABLE `shouhinMS_online` ADD `haisou` TEXT NULL COMMENT '配送など' AFTER `infomation`;
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
+ver1.31.1:配送関連追加
+
 【Issues】
 ・商品管理から品名CDを廃止する
 ・WebRezと統合
