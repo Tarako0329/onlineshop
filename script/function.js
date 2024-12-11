@@ -112,8 +112,10 @@ const GET_AI = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash) =>{
 
     axios.post("ajax_Gemini_Answer.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
     .then((response) => {
-      console_log(obj)
+      //console_log(response)
+      console_log(response.data)
       obj = response.data
+      //console_log(obj)
       console_log('ajax_Gemini_Answer succsess')
       resolve(obj)
     })
