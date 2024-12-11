@@ -124,6 +124,12 @@
       </div>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
+          <label for='setumei' class="form-label">配送・送料等について</label>
+          <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='haisou' placeholder='配送方法、送料、納期などについて'></textarea>
+        </div>
+      </div>
+      <div class='row mb-3'>
+        <div class='col-md-8 col-12'>
           <label for='customer_bikou' class="form-label">お客様の備考</label>
           <textarea type='memo' class='form-control' id='customer_bikou' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
           <div id="customer_bikou_help" class="form-text">
@@ -144,6 +150,7 @@
         <div class='col-md-8 col-12'>
           <button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
           <input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
+          <small>写真は正方形がおすすめです。</small>
         </div>
       </div>
       <div class='row mb-3'>
