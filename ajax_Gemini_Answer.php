@@ -3,6 +3,8 @@
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
+$user_hash = $_POST["hash"] ;
+$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;

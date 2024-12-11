@@ -142,6 +142,7 @@
         <div class='col-md-8 col-12'>
           <label for='hash_tag' class="form-label">ハッシュタグ</label>
           <small>X(twitter)のシェアするボタンで投稿するときに自動で入ります</small>
+          <button class='btn btn-sm btn-info' @click='get_AI_post()'>Google AI が提案</button>
           <textarea type='memo' class='form-control' id='hash_tag' rows="2" v-model='hash_tag' placeholder="#おいしい,#お菓子,#おすすめ"></textarea>
         </div>
       </div>

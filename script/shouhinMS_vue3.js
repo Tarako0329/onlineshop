@@ -78,6 +78,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const zei = ref(1101)
 		const midasi = ref('')
 		const info = ref('')
+		const haisou = ref('')
 		const hash_tag = ref('')
 		const customer_bikou = ref('ご要望等ございましたらご記入ください。')
 		const pic_list = ref([])
@@ -160,6 +161,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				status.value = shouhin[0].status
 				zei.value = String(shouhin[0].zeikbn)
 				info.value = shouhin[0].infomation
+				haisou.value = shouhin[0].haisou
 				hash_tag.value = shouhin[0].hash_tag
 				customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
 				midasi.value = shouhin[0].short_info
@@ -421,6 +423,24 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
       COPY_TARGET(id)
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
+
+		const AI_answer = ref([])
+		const get_AI_post = () =>{
+			console_log('get_AI_post start')
+			GET_AI(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash)
+			.then((response) => {
+				AI_answer = response.data
+				//console_log(AI_answer)
+				console_log('get_AI_post succsess')
+			})
+			.catch((error)=>{
+				console_log('get_AI_post.php ERROR')
+				console_log(error)
+			})
+			.finally(()=>{
+			})
+		
+		}
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
@@ -447,6 +467,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			zei,
 			midasi,
 			info,
+			haisou,
 			customer_bikou,
 			pic_list,
 			rez_shouhinCD,
@@ -465,6 +486,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			cg_mode,
 			copy_target,
 			open_product_page,
+			get_AI_post,
+			AI_answer,
 		}
 	}
 });

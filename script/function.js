@@ -83,7 +83,6 @@ const UPLOADFILE_SHORI = (id,filesubname,resolve) =>{//写真アップロード�
 }
 
 
-
 const LINE_PUSH = (ID,MSG) =>{
   const form = new FormData();
   form.append(`LINE_USER_ID`, ID)
@@ -98,5 +97,32 @@ const LINE_PUSH = (ID,MSG) =>{
     console_log(error)
   })
   .finally(()=>{
+  })
+}
+
+const GET_AI = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash) =>{
+  return new Promise((resolve, reject) => {
+    const params = new FormData();
+    params.append(`hinmei`, p_hinmei);
+    params.append(`sort_info`, p_sort_info);
+    params.append(`information`, p_information);
+    params.append(`hinCD`,p_hinCD);
+    params.append(`hash`,p_hash);
+
+    axios.post("ajax_Gemini_Answer.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+    .then((response) => {
+      obj = response.data
+      //console_log(obj)
+      console_log('ajax_Gemini_Answer succsess')
+      resolve(obj)
+    })
+    .catch((error)=>{
+      console_log('ajax_Gemini_Answer.php ERROR')
+      console_log(error)
+      reject(error)
+    })
+    .finally(()=>{
+      
+    })
   })
 }
