@@ -19,6 +19,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		let hash = p_hash
 		const msg=ref('')
 		const loader = ref(false)
+		const loader2 = ref(false)
 		const RTURL = ref(HTTP)
 
 		const shouhinMS = ref([])
@@ -426,18 +427,23 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		const AI_answer = ref()
 		const get_AI_post = () =>{
+			loader2.value = true
+			document.getElementById('gemini_btn').disabled = true
 			console_log('get_AI_post start')
 			GET_AI(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash)
 			.then((response) => {
 				console_log('get_AI_post succsess')
 				console_log(response)
 				AI_answer.value = response
+				document.getElementById('modalon').click()
 			})
 			.catch((error)=>{
 				console_log('get_AI_post.php ERROR')
 				console_log(error)
 			})
 			.finally(()=>{
+				loader2.value = false
+				document.getElementById('gemini_btn').disabled=false
 			})
 		
 		}
@@ -453,6 +459,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		return{
 			msg,
 			loader,
+			loader2,
 			RTURL,
 			mode,
 			shouhin_table,

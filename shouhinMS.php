@@ -141,9 +141,18 @@
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <label for='hash_tag' class="form-label">ハッシュタグ</label>
-          <small>X(twitter)のシェアするボタンで投稿するときに自動で入ります</small>
-          <button class='btn btn-sm btn-info' @click='get_AI_post()'>Google AI が提案</button>
-          <textarea type='memo' class='form-control' id='hash_tag' rows="2" v-model='hash_tag' placeholder="#おいしい,#お菓子,#おすすめ"></textarea>
+          <small>X(twitter)のシェアボタン投稿時に自動で入ります</small>
+          <div class='row'>
+            <div class='col-9'>
+              <textarea type='memo' class='form-control' id='hash_tag' rows="2" v-model='hash_tag' placeholder="#おいしい,#お菓子,#おすすめ"></textarea>
+            </div>
+            <div class='col-3 ps-0'>
+              <button class='btn btn-sm btn-info' style='min-width:90px' @click='get_AI_post()' id='gemini_btn'>
+                <template v-if='loader2===false'><p>Google AI</p><p>が提案</p></template>
+                <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI</p><p>考え中...</p></template>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <hr>
@@ -151,7 +160,7 @@
         <div class='col-md-8 col-12'>
           <button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
           <input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
-          <small>写真は正方形がおすすめです。</small>
+          <p><small>写真は正方形がおすすめです。</small></p>
         </div>
       </div>
       <div class='row mb-3'>
@@ -183,6 +192,27 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+  <!-- Modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;" id="modalon"></button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+          <template v-for='(list,index) for AI_answer'>
+            {{list.tags}}
+          </template>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
+          <button type='button' class='btn btn-primary' @click='send_email()'>{{send_mail_btn}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
 	</div>
