@@ -34,8 +34,8 @@ if($rtn !== true){
         $DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
         $DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
-        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,customer_bikou,tanka,zeikbn,shouhizei,hash_tag) ";
-        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag)";
+        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,haisou,customer_bikou,tanka,zeikbn,shouhizei,hash_tag) ";
+        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:haisou,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag)";
         $INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
 
         $params["uid"] = $_SESSION["user_id"];
@@ -44,6 +44,7 @@ if($rtn !== true){
         $params["status"] = $_POST["status"];
         $params["short_info"] = $_POST["short_info"];
         $params["infomation"] = $_POST["infomation"];
+        $params["haisou"] = $_POST["haisou"];
         $params["customer_bikou"] = $_POST["customer_bikou"];
         $params["tanka"] = $_POST["tanka"];
         $params["zeikbn"] = $_POST["zeikbn"];

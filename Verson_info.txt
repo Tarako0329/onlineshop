@@ -98,6 +98,7 @@ ver1.31.0:GoogleAI搭載-commited
   ALTER TABLE `shouhinMS_online` ADD `haisou` TEXT NULL COMMENT '配送など' AFTER `infomation`;
   ALTER TABLE `shouhinMS_online` ADD `Category` VARCHAR(10) NULL COMMENT 'google用' AFTER `rez_shouhinCD`;
 ver1.31.1:配送関連追加
+ver1.31.2:配送関連追加bugfix
 
 【Issues】
 ・商品管理から品名CDを廃止する

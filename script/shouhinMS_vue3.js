@@ -275,6 +275,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(info.value == '' || info.value == null){
 				msg = msg + ' 商品説明（詳細）'
 			}
+			if(haisou.value == '' || haisou.value == null){
+				msg = msg + ' 送料・配送・納期'
+			}
 			if(pic_list.value.length === 0){
 				msg = msg + ' 写真'
 			}
@@ -296,6 +299,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			form.append(`zeikbn`, zei.value)
 			form.append(`shouhizei`, shouhizei.value)
 			form.append(`infomation`, info.value)
+			form.append(`haisou`, haisou.value)
 			form.append(`hash_tag`, hash_tag.value)
 			form.append(`customer_bikou`, customer_bikou.value)
 			form.append(`short_info`, midasi.value)
