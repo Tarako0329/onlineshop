@@ -195,13 +195,15 @@
   <!-- Modal -->
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;" id="modalon"></button>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
         </div>
         <div class="modal-body">
           <template v-for='(list,index) in AI_answer.posts'>
-            {{list.tags[0]}}
+            <template v-for='(tag,index) in list.tags'>
+              <span>{{tag}}</span>
+            </template>
           </template>
           
         </div>
