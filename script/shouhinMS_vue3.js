@@ -454,6 +454,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.catch((error)=>{
 				console_log('get_AI_post.php ERROR')
 				console_log(error)
+				alert('Google AI が不調なようです。時間を空けて再実行してみてください。')
 			})
 			.finally(()=>{
 				loader2.value = false
@@ -489,6 +490,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.catch((error)=>{
 				console_log('get_AI_seo.php ERROR')
 				console_log(error)
+				alert('Google AI が不調なようです。時間を空けて再実行してみてください。')
 			})
 			.finally(()=>{
 				loader2.value = false
