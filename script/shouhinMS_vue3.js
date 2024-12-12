@@ -358,6 +358,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			customer_bikou.value='ご要望等ございましたらご記入ください。'
 			pic_list.value=[]
 			AI_answer.value = {'posts':[{'tags':'def'}]}
+			AI_answer_seo.value = {'introductions':['def']}
 		}
 
 		const shouhizei = computed(()=>{//消費税計算
@@ -439,6 +440,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const AI_answer = ref({'posts':[{'tags':'def'}]})
 		const get_AI_post = () =>{
 			loader2.value = true
+			AI_answer.value = {'posts':[{'tags':'def'}]}
 			document.getElementById('gemini_btn').disabled = true
 			document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
@@ -473,6 +475,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const AI_answer_seo = ref({'introductions':['def']})
 		const get_AI_seo = () =>{
 			loader2.value = true
+			AI_answer_seo.value = {'introductions':['def']}
 			document.getElementById('gemini_btn').disabled = true
 			document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')

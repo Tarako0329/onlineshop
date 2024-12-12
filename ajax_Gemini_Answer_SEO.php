@@ -25,7 +25,7 @@ $response = $client->withV1BetaVersion()
     ->generativeModel(ModelName::GEMINI_1_5_FLASH)
     ->withSystemInstruction('商品販売SEO対策のプロとして')
     ->generateContent(
-        new TextPart('GOOGLE検索で上位になりやすい魅力的な紹介文(100文字程度)を３つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。'.$discription),
+        new TextPart('GOOGLE検索で上位になりやすい魅力的な紹介文(80文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。'.$discription),
     );
 
 //print nl2br($response->text());

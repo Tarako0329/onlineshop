@@ -114,7 +114,7 @@
           <label for='midasi' class="form-label">商品説明(見出し)</label>
           <div class='row'>
             <div class='col-9'>
-              <textarea @focus='set_elm_hi("midasi","20vh")' @blur='set_elm_hi("midasi","49px")' style='height:85px' type='memo' class='form-control' id='midasi'  v-model='midasi' placeholder="商品のアピールポイントを記入。AIを使う場合は必要最低限のアピール文を記入。（AIは商品名、商品説明詳細も加味してPR文を作成します。）"></textarea>
+              <textarea @focus='set_elm_hi("midasi","20vh")' @blur='set_elm_hi("midasi","110px")' style='height:110px' type='memo' class='form-control' id='midasi'  v-model='midasi' placeholder="商品のアピールポイントを記入。AIを使う場合は必要最低限のアピール文を記入。（AIは商品名、商品説明詳細も加味してPR文を作成します。）"></textarea>
               <p class='m-0'><small>Googleの検索結果や商品一覧画面に表示。</small></p>
               <p class='m-0'><small>商品のPR文になります。(推奨80～100文字)</small></p>
             </div>
@@ -239,8 +239,8 @@
         <div class="modal-body fs-2">
           <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
             <template v-for='(list,index) in AI_answer_seo.introductions'>
-                <input class="btn-check" type="radio" :value="`${list.rei}`" name='gemini_seo' :id="`tag_${list.rei}`" @click='set_midasi(list.rei)' >
-                <label class="btn btn-outline-primary text-start mb-2" style='border-radius:2px;' :for="`tag_${list.rei}`">
+                <input class="btn-check" type="radio" name='gemini_seo' :id="`tag_${index}`" @click='set_midasi(list.rei)' >
+                <label class="btn btn-outline-primary text-start mb-2" style='border-radius:2px;' :for="`tag_${index}`">
                   {{list.rei}}
                 </label>
             </template>
