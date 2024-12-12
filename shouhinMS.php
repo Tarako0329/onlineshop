@@ -113,7 +113,17 @@
         <div class='col-md-8 col-12'>
           <label for='midasi' class="form-label">商品説明(見出し)</label>
           <small>Googleの検索結果や商品一覧の画面に表示されます。商品のアピールポイントを記入してください。(推奨80～100文字)</small>
-          <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi' placeholder="商品一覧の画面に表示されます。商品のアピールポイントを記入してください。"></textarea>
+          <div class='row'>
+            <div class='col-9'>
+              <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi' placeholder="商品一覧の画面に表示されます。商品のアピールポイントを記入してください。"></textarea>
+            </div>
+            <div class='col-3 ps-0'>
+              <button class='btn btn-sm btn-info' style='min-width:90px' @click='get_AI_seo()' id='gemini_seo_btn'>
+                <template v-if='loader2===false'><p>Google AI</p><p>が魅力的な提案</p></template>
+                <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI</p><p>考え中...</p></template>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div class='row mb-3'>
