@@ -81,6 +81,7 @@ if($rtn !== true){
             $stmt->bindValue("status", $params["status"], PDO::PARAM_STR);
             $stmt->bindValue("short_info", $params["short_info"], PDO::PARAM_STR);
             $stmt->bindValue("infomation", $params["infomation"], PDO::PARAM_STR);
+            $stmt->bindValue("haisou", $params["haisou"], PDO::PARAM_STR);
             $stmt->bindValue("customer_bikou", $params["customer_bikou"], PDO::PARAM_STR);
             $stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
             $stmt->bindValue("zeikbn", $params["zeikbn"], PDO::PARAM_INT);

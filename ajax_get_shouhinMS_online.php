@@ -16,6 +16,7 @@
 				,online.status
 				,online.short_info
 				,online.infomation
+				,online.haisou
 				,online.customer_bikou
 				,online.tanka
 				,online.zeikbn

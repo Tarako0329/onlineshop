@@ -177,7 +177,8 @@
                   <!--FACEBOOK-->
                   <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                   <!--TWITTER-->
-                  <a href="https://twitter.com/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?> &hashtags=<?php echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">
+                  <!--<a href="https://twitter.com/share?text=<?php //echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php //echo $url; ?>&hashtags=<?php //echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">-->
+                  <a href="https://x.com/intent/tweet?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=<?php echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black fs-1"></i></a>
                   紹介する
                 </div>
