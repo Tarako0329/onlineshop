@@ -111,7 +111,7 @@ const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou) 
     params.append(`hash`,p_hash);
     params.append(`yagou`,p_yagou);
 
-    axios.post("ajax_Gemini_Answer.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+    axios.post("ajax_Gemini_Answer_POST.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
     .then((response) => {
       //console_log(response)
       console_log(response.data)
@@ -139,7 +139,7 @@ const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
     params.append(`sort_info`, p_sort_info);
     params.append(`information`, p_information);
 
-    axios.post("ajax_Gemini_Answer2.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+    axios.post("ajax_Gemini_Answer_SEO.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
     .then((response) => {
       //console_log(response)
       console_log(response.data)
