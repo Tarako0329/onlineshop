@@ -68,6 +68,7 @@
   $pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   $discription = "販売元:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
+  $x_id = !empty($dataset[0]["x_id"])?"&via=".$dataset[0]["x_id"]."&related=".$dataset[0]["x_id"]:"";
 
   $meta  = "<title>".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』</title> \r\n";
   $meta .= "<meta name='description' content='".$discription."'>\r\n";
@@ -178,7 +179,7 @@
                   <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                   <!--TWITTER-->
                   <!--<a href="https://twitter.com/share?text=<?php //echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php //echo $url; ?>&hashtags=<?php //echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">-->
-                  <a href="https://x.com/intent/tweet?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php echo $url; ?>&hashtags=<?php echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">
+                  <a href="https://x.com/intent/tweet?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url).$x_id?>&url=<?php echo $url; ?>&hashtags=<?php echo str_replace("#","",$dataset[0]["hash_tag"]);?>" rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black fs-1"></i></a>
                   紹介する
                 </div>

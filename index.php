@@ -102,7 +102,7 @@
                     <a :href='`https://www.facebook.com/share.php?u=${product_url}${list.uid}-${list.shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                     <!--TWITTER-->
                     <!--<a :href='`https://twitter.com/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&url=${product_url}${list.uid}-${list.shouhinCD}&hashtags=${list.hash_tag}`' rel="nofollow noopener noreferrer" target="_blank">-->
-                    <a :href='`https://x.com/intent/tweet?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&url=${product_url}${list.uid}-${list.shouhinCD}&hashtags=${list.hash_tag}`' rel="nofollow noopener noreferrer" target="_blank">
+                    <a :href='`https://x.com/intent/tweet?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&url=${product_url}${list.uid}-${list.shouhinCD}&via=${list.x_id}&related=${list.x_id}&hashtags=${list.hash_tag.replaceAll("#","")}`' rel="nofollow noopener noreferrer" target="_blank">
                       <i class="bi bi-twitter-x twitter-black fs-1"></i>
                     </a>
                     紹介する
