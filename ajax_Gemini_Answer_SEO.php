@@ -13,7 +13,7 @@ if(EXEC_MODE==="Local"){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-$discription = "URL：".ROOT_URL."product.php?id=".$_SESSION["user_id"]."-".$_POST["hinCD"]."販売元:".$_POST["yagou"]." 商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$POST["information"];
+$discription = "商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$POST["information"];
 
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;
@@ -23,9 +23,9 @@ $client = new Client(GEMINI);
 
 $response = $client->withV1BetaVersion()
     ->generativeModel(ModelName::GEMINI_1_5_FLASH)
-    ->withSystemInstruction('凄腕インフルエンサーとして')
+    ->withSystemInstruction('商品販売SEO対策のプロとして')
     ->generateContent(
-        new TextPart('Xでバズるハッシュタグと日本語の投稿例を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、ハッシュタグはtags。投稿例はrei1,rei2,rei3で。'.$discription),
+        new TextPart('GOOGLE検索で上位になりやすい魅力的な紹介文(100文字程度)を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、紹介文はrei1,rei2,rei3で。'.$discription),
     );
 
 //print nl2br($response->text());

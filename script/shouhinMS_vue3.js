@@ -81,6 +81,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const info = ref('')
 		const haisou = ref('')
 		const hash_tag = ref('')
+		const yagou = ref('')
 		const customer_bikou = ref('ご要望等ございましたらご記入ください。')
 		const pic_list = ref([])
 		const rez_shouhinCD = ref('')
@@ -164,6 +165,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				info.value = shouhin[0].infomation
 				haisou.value = shouhin[0].haisou
 				hash_tag.value = shouhin[0].hash_tag
+				yagou.value = shouhin[0].yagou
 				customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
 				midasi.value = shouhin[0].short_info
 				pic_list.value=[]
@@ -291,6 +293,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			hash_tag.value = hash_tag.value.replace('＃','#')
 			hash_tag.value = hash_tag.value.replace(' ','')
 			hash_tag.value = hash_tag.value.replace('　','')
+			hash_tag.value = hash_tag.value.replace('?','')
+			hash_tag.value = hash_tag.value.replace('？','')
+			hash_tag.value = hash_tag.value.replace('&','')
+			hash_tag.value = hash_tag.value.replace('＆','')
 			const form = new FormData();
 			form.append(`shouhinCD`, shouhinCD.value)
 			form.append(`shouhinNM`, shouhinNM.value)
@@ -434,7 +440,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			loader2.value = true
 			document.getElementById('gemini_btn').disabled = true
 			console_log('get_AI_post start')
-			GET_AI(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash)
+			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value)
 			.then((response) => {
 				console_log('get_AI_post succsess')
 				console_log(response)
@@ -460,6 +466,26 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			}
 			console_log(hash_tag.value)
 		}
+		const get_AI_seo = () =>{
+			loader2.value = true
+			document.getElementById('gemini_btn').disabled = true
+			console_log('get_AI_post start')
+			GET_AI_SEO(shouhinNM.value,midasi.value,info.value)
+			.then((response) => {
+				console_log('get_AI_seo succsess')
+				console_log(response)
+				AI_answer.value = response
+				//document.getElementById('modalon').click()
+			})
+			.catch((error)=>{
+				console_log('get_AI_seo.php ERROR')
+				console_log(error)
+			})
+			.finally(()=>{
+				loader2.value = false
+				document.getElementById('gemini_btn').disabled=false
+			})
+		}
 
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
@@ -483,6 +509,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			shouhinCD,
 			shouhinNM,
 			hash_tag,
+			yagou,
 			status,
 			tanka,
 			zei,
@@ -508,6 +535,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			copy_target,
 			open_product_page,
 			get_AI_post,
+			get_AI_seo,
 			AI_answer,
 			tags_add,
 		}

@@ -79,7 +79,7 @@
   $meta .= "<meta property='og:site_name' content='通販サイト『".TITLE."』'>\r\n";
   $meta .= "<meta property='og:image' content='".ROOT_URL.$dataset[0]['filename']."'>\r\n";
   $meta .= "<meta property='fb:app_id' content='".$dataset[0]["fb_id"]."'>\r\n";
-  $meta .= "<meta name='twitter:card' content='summary'>\r\n";
+  $meta .= "<meta name='twitter:card' content='summary_large_image'>\r\n";
   $meta .= "<meta name='twitter:site' content='@".$dataset[0]["x_id"]."'>\r\n";
 
   $url = ROOT_URL."product.php?id=".$shouhin_id;
@@ -174,12 +174,12 @@
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>
                   <!--LINE-->
-                  <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                  <a href='https://line.me/R/share?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$url)?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
                   <!--FACEBOOK-->
                   <a href='https://www.facebook.com/share.php?u=<?php echo $url; ?>' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                   <!--TWITTER-->
                   <!--<a href="https://twitter.com/share?text=<?php //echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url)?>&url=<?php //echo $url; ?>&hashtags=<?php //echo $dataset[0]["hash_tag"];?>" rel="nofollow noopener noreferrer" target="_blank">-->
-                  <a href="https://x.com/intent/tweet?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$discription."\n".$url).$x_id?>&url=<?php echo $url; ?>&hashtags=<?php echo str_replace("#","",$dataset[0]["hash_tag"]);?>" rel="nofollow noopener noreferrer" target="_blank">
+                  <a href="https://x.com/intent/tweet?text=<?php echo urlencode("私のおすすめ！".$dataset[0]["shouhinNM"]."\n".$url).$x_id?>&url=<?php echo $url; ?>&hashtags=<?php echo str_replace("#","",$dataset[0]["hash_tag"]);?>" rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black fs-1"></i></a>
                   紹介する
                 </div>

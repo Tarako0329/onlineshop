@@ -100,7 +100,7 @@ const LINE_PUSH = (ID,MSG) =>{
   })
 }
 
-const GET_AI = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash) =>{
+const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou) =>{
   return new Promise((resolve, reject) => {
     let obj
     const params = new FormData();
@@ -109,8 +109,37 @@ const GET_AI = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash) =>{
     params.append(`information`, p_information);
     params.append(`hinCD`,p_hinCD);
     params.append(`hash`,p_hash);
+    params.append(`yagou`,p_yagou);
 
     axios.post("ajax_Gemini_Answer.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+    .then((response) => {
+      //console_log(response)
+      console_log(response.data)
+      obj = response.data
+      //console_log(obj)
+      console_log('ajax_Gemini_Answer succsess')
+      resolve(obj)
+    })
+    .catch((error)=>{
+      console_log('ajax_Gemini_Answer.php ERROR')
+      console_log(error)
+      reject(error)
+    })
+    .finally(()=>{
+      
+    })
+  })
+}
+
+const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
+  return new Promise((resolve, reject) => {
+    let obj
+    const params = new FormData();
+    params.append(`hinmei`, p_hinmei);
+    params.append(`sort_info`, p_sort_info);
+    params.append(`information`, p_information);
+
+    axios.post("ajax_Gemini_Answer2.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
     .then((response) => {
       //console_log(response)
       console_log(response.data)
