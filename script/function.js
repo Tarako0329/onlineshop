@@ -158,3 +158,8 @@ const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
     })
   })
 }
+
+const SET_ELEM_HEIGHT = (p_id,p_px) =>{
+  console_log(`start SET_ELEM_HEIGHT`)
+  document.getElementById(p_id).style.height=`${p_px}`
+}

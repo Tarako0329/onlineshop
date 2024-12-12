@@ -193,17 +193,17 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<購入者情報>")' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<届け先情報>")' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合担当者>")' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合せ受付TEL>")' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合せ受付MAIL>")' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<自社名>")' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<代表者>")' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<自社住所>")' style='width:70px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<購入者名>")' style='width:80px;min-width:50px;'>購入者名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<注文内容>")' style='width:80px;min-width:50px;'>注文内容</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<送料込の注文内容>")' style='width:80px;min-width:50px;'>注文+送料</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<購入者情報>")' style='width:80px;min-width:50px;'>購入者情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<届け先情報>")' style='width:80px;min-width:50px;'>届け先情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合担当者>")' style='width:80px;min-width:50px;'>問合担当者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合せ受付TEL>")' style='width:80px;min-width:50px;'>問合TEL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<問合せ受付MAIL>")' style='width:80px;min-width:50px;'>問合MAIL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<自社名>")' style='width:80px;min-width:50px;'>自社名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<代表者>")' style='width:80px;min-width:50px;'>代表者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_auto","<自社住所>")' style='width:80px;min-width:50px;'>自社住所</button>
 							</div>
 						</div>
 						<small>メールサンプル</small>
@@ -220,18 +220,18 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<購入者情報>")' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<届け先情報>")' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<支払方法>")' style='width:70px;min-width:50px;'>支払方法</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合担当者>")' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合せ受付TEL>")' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合せ受付MAIL>")' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<自社名>")' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<代表者>")' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<自社住所>")' style='width:70px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<購入者名>")' style='width:80px;min-width:50px;'>購入者名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<注文内容>")' style='width:80px;min-width:50px;'>注文内容</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<送料込の注文内容>")' style='width:80px;min-width:50px;'>注文+送料</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<購入者情報>")' style='width:80px;min-width:50px;'>購入者情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<届け先情報>")' style='width:80px;min-width:50px;'>届け先情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<支払方法>")' style='width:80px;min-width:50px;'>支払方法</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合担当者>")' style='width:80px;min-width:50px;'>問合担当者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合せ受付TEL>")' style='width:80px;min-width:50px;'>問合TEL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<問合せ受付MAIL>")' style='width:80px;min-width:50px;'>問合MAIL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<自社名>")' style='width:80px;min-width:50px;'>自社名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<代表者>")' style='width:80px;min-width:50px;'>代表者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body","<自社住所>")' style='width:80px;min-width:50px;'>自社住所</button>
 							</div>
 						</div>
 						<small>メールサンプル</small>
@@ -247,18 +247,18 @@
 						</div>
 							<div class='row mb-3'>
 								<div class='col-12'>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<購入者情報>")' style='width:70px;min-width:50px;'>購入者情報</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<届け先情報>")' style='width:70px;min-width:50px;'>届け先情報</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合担当者>")' style='width:70px;min-width:50px;'>問合担当者</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合せ受付TEL>")' style='width:70px;min-width:50px;'>問合TEL</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合せ受付MAIL>")' style='width:70px;min-width:50px;'>問合MAIL</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<自社名>")' style='width:70px;min-width:50px;'>自社名</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<代表者>")' style='width:70px;min-width:50px;'>代表者</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<自社住所>")' style='width:70px;min-width:50px;'>自社住所</button>
-									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<配送状況>")' style='width:70px;min-width:50px;'>配送状況</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<購入者名>")' style='width:80px;min-width:50px;'>購入者名</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<注文内容>")' style='width:80px;min-width:50px;'>注文内容</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<送料込の注文内容>")' style='width:80px;min-width:50px;'>注文+送料</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<購入者情報>")' style='width:80px;min-width:50px;'>購入者情報</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<届け先情報>")' style='width:80px;min-width:50px;'>届け先情報</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合担当者>")' style='width:80px;min-width:50px;'>問合担当者</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合せ受付TEL>")' style='width:80px;min-width:50px;'>問合TEL</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<問合せ受付MAIL>")' style='width:80px;min-width:50px;'>問合MAIL</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<自社名>")' style='width:80px;min-width:50px;'>自社名</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<代表者>")' style='width:80px;min-width:50px;'>代表者</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<自社住所>")' style='width:80px;min-width:50px;'>自社住所</button>
+									<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_sent","<配送状況>")' style='width:80px;min-width:50px;'>配送状況</button>
 								</div>
 						</div>
 						<small>メールサンプル</small>
@@ -275,18 +275,18 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<購入者情報>")' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<届け先情報>")' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合担当者>")' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合せ受付TEL>")' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合せ受付MAIL>")' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<自社名>")' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<代表者>")' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<自社住所>")' style='width:70px;min-width:50px;'>自社住所</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<領収書LINK>")' style='width:70px;min-width:50px;'>領収書LINK</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<購入者名>")' style='width:80px;min-width:50px;'>購入者名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<注文内容>")' style='width:80px;min-width:50px;'>注文内容</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<送料込の注文内容>")' style='width:80px;min-width:50px;'>注文+送料</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<購入者情報>")' style='width:80px;min-width:50px;'>購入者情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<届け先情報>")' style='width:80px;min-width:50px;'>届け先情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合担当者>")' style='width:80px;min-width:50px;'>問合担当者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合せ受付TEL>")' style='width:80px;min-width:50px;'>問合TEL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<問合せ受付MAIL>")' style='width:80px;min-width:50px;'>問合MAIL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<自社名>")' style='width:80px;min-width:50px;'>自社名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<代表者>")' style='width:80px;min-width:50px;'>代表者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<自社住所>")' style='width:80px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_paid","<領収書LINK>")' style='width:80px;min-width:50px;'>領収書LINK</button>
 								</div>
 						</div>
 						<small>メールサンプル</small>
@@ -303,17 +303,17 @@
 						</div>
 						<div class='row mb-3'>
 							<div class='col-12'>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<購入者名>")' style='width:70px;min-width:50px;'>購入者名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<注文内容>")' style='width:70px;min-width:50px;'>注文内容</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<送料込の注文内容>")' style='width:70px;min-width:50px;'>注文+送料</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<購入者情報>")' style='width:70px;min-width:50px;'>購入者情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<届け先情報>")' style='width:70px;min-width:50px;'>届け先情報</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合担当者>")' style='width:70px;min-width:50px;'>問合担当者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合せ受付TEL>")' style='width:70px;min-width:50px;'>問合TEL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合せ受付MAIL>")' style='width:70px;min-width:50px;'>問合MAIL</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<自社名>")' style='width:70px;min-width:50px;'>自社名</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<代表者>")' style='width:70px;min-width:50px;'>代表者</button>
-								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<自社住所>")' style='width:70px;min-width:50px;'>自社住所</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<購入者名>")' style='width:80px;min-width:50px;'>購入者名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<注文内容>")' style='width:80px;min-width:50px;'>注文内容</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<送料込の注文内容>")' style='width:80px;min-width:50px;'>注文+送料</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<購入者情報>")' style='width:80px;min-width:50px;'>購入者情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<届け先情報>")' style='width:80px;min-width:50px;'>届け先情報</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合担当者>")' style='width:80px;min-width:50px;'>問合担当者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合せ受付TEL>")' style='width:80px;min-width:50px;'>問合TEL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<問合せ受付MAIL>")' style='width:80px;min-width:50px;'>問合MAIL</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<自社名>")' style='width:80px;min-width:50px;'>自社名</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<代表者>")' style='width:80px;min-width:50px;'>代表者</button>
+								<button type='button' class='btn btn-info m-2' @click='mail_temp_ins("mail_body_cancel","<自社住所>")' style='width:80px;min-width:50px;'>自社住所</button>
 							</div>
 						</div>
 						<small>メールサンプル</small>

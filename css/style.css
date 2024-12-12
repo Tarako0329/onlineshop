@@ -41,6 +41,12 @@ body,html {
 	/*width: 100%;*/
 	min-height: 100vh;
 }
+.btn{
+	font-size:12px;
+}
+textarea.form-control{
+	font-size:12px;
+}
 .common_header,.navbar{
 	background-color: var(--header_bg_color);
 	/*height: auto;

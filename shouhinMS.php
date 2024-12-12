@@ -109,17 +109,18 @@
           <p>税込価格：{{zeikomi.toLocaleString()}} ({{shouhizei.toLocaleString()}})</p>
         </div>
       </div>
-      <div class='row mb-3'>
+      <div class='row mb-5'>
         <div class='col-md-8 col-12'>
           <label for='midasi' class="form-label">商品説明(見出し)</label>
-          <small>Googleの検索結果や商品一覧の画面に表示されます。商品のアピールポイントを記入してください。(推奨80～100文字)</small>
           <div class='row'>
             <div class='col-9'>
-              <textarea type='memo' class='form-control' id='midasi' rows="2" v-model='midasi' placeholder="商品一覧の画面に表示されます。商品のアピールポイントを記入してください。"></textarea>
+              <textarea @focus='set_elm_hi("midasi","20vh")' @blur='set_elm_hi("midasi","49px")' style='height:85px' type='memo' class='form-control' id='midasi'  v-model='midasi' placeholder="商品のアピールポイントを記入。AIを使う場合は必要最低限のアピール文を記入。（AIは商品名、商品説明詳細も加味してPR文を作成します。）"></textarea>
+              <p class='m-0'><small>Googleの検索結果や商品一覧画面に表示。</small></p>
+              <p class='m-0'><small>商品のPR文になります。(推奨80～100文字)</small></p>
             </div>
             <div class='col-3 ps-0'>
               <button class='btn btn-sm btn-info' style='min-width:90px' @click='get_AI_seo()' id='gemini_seo_btn'>
-                <template v-if='loader2===false'><p>Google AI</p><p>が魅力的な提案</p></template>
+                <template v-if='loader2===false'><p>Google AI</p><p>で魅力的に編集</p></template>
                 <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI</p><p>考え中...</p></template>
               </button>
             </div>
@@ -129,19 +130,19 @@
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <label for='setumei' class="form-label">商品説明(詳細)</label>
-          <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='info' placeholder='商品の仕様・原材料名　等、商品に関する詳細を記入'></textarea>
+          <textarea @focus='set_elm_hi("setumei","30vh")' @blur='set_elm_hi("setumei","100px")' style='height:100px' type='memo' class='form-control' id='setumei' v-model='info' placeholder='商品の仕様・原材料名　等、商品に関する詳細を記入'></textarea>
         </div>
       </div>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <label for='setumei' class="form-label">配送・送料等について</label>
-          <textarea type='memo' class='form-control' id='setumei' rows="5" v-model='haisou' placeholder='配送方法、送料、納期などについて'></textarea>
+          <textarea @focus='set_elm_hi("haisou","30vh")' @blur='set_elm_hi("haisou","100px")' style='height:100px' type='memo' class='form-control' id='haisou' v-model='haisou' placeholder='配送方法、送料、納期などについて'></textarea>
         </div>
       </div>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <label for='customer_bikou' class="form-label">お客様の備考</label>
-          <textarea type='memo' class='form-control' id='customer_bikou' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
+          <textarea @focus='set_elm_hi("customer_bikou","30vh")' @blur='set_elm_hi("customer_bikou","65px")' style='height:65px' type='memo' class='form-control' id='customer_bikou' rows="3" v-model='customer_bikou' aria-labelledby="customer_bikou_help"></textarea>
           <div id="customer_bikou_help" class="form-text">
             お客様に記入いただくエリアの初期表示です。<br>
             例：セット商品の場合 => A～Eの商品から３種類を入力してください。
@@ -202,25 +203,48 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
-  <!-- Modal -->
+  <!-- Modal TAGS-->
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;" id="modalon"></button>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
+          お気に入りのタグを選択してください。（5個ぐらいまでが良いようです）
         </div>
-        <div class="modal-body">
-          <template v-for='(list,index) in AI_answer.posts'>
-            <template v-for='(tag,index2) in list.tags'>
-              <span class='me-2' role='button'>
+        <div class="modal-body fs-2">
+          <template v-for='(tag,index) in AI_answer.posts.tags'>
+              <div class='ms-3' role='button'>
                 <input class="form-check-input" type="checkbox" :value="`${tag}`" :id="`tag_${tag}`" @click='tags_add(`${tag}`)' >
                 <label class="form-check-label" :for="`tag_${tag}`">
                   {{tag}}
                 </label>
-              </span>
-            </template>
+              </div>
           </template>
-          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal SEO-->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_seo" style="display: none;" id="modalon_seo"></button>
+  <div class="modal fade" id="exampleModal_seo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          お気に入りの紹介文を選択してください。（後から編集できます）
+        </div>
+        <div class="modal-body fs-2">
+          <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+            <template v-for='(list,index) in AI_answer_seo.introductions'>
+                <input class="btn-check" type="radio" :value="`${list.rei}`" name='gemini_seo' :id="`tag_${list.rei}`" @click='set_midasi(list.rei)' >
+                <label class="btn btn-outline-primary text-start mb-2" style='border-radius:2px;' :for="`tag_${list.rei}`">
+                  {{list.rei}}
+                </label>
+            </template>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>

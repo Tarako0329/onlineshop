@@ -357,6 +357,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			hash_tag.value=''
 			customer_bikou.value='ご要望等ございましたらご記入ください。'
 			pic_list.value=[]
+			AI_answer.value = {'posts':[{'tags':'def'}]}
 		}
 
 		const shouhizei = computed(()=>{//消費税計算
@@ -435,10 +436,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
 
-		const AI_answer = ref([{'tags':'def'}])
+		const AI_answer = ref({'posts':[{'tags':'def'}]})
 		const get_AI_post = () =>{
 			loader2.value = true
 			document.getElementById('gemini_btn').disabled = true
+			document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
 			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value)
 			.then((response) => {
@@ -454,6 +456,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.finally(()=>{
 				loader2.value = false
 				document.getElementById('gemini_btn').disabled=false
+				document.getElementById('gemini_seo_btn').disabled=false
 			})
 		}
 		const tags_add = (p_tag) =>{
@@ -466,16 +469,19 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			}
 			console_log(hash_tag.value)
 		}
+
+		const AI_answer_seo = ref({'introductions':['def']})
 		const get_AI_seo = () =>{
 			loader2.value = true
 			document.getElementById('gemini_btn').disabled = true
+			document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
 			GET_AI_SEO(shouhinNM.value,midasi.value,info.value)
 			.then((response) => {
 				console_log('get_AI_seo succsess')
 				console_log(response)
-				AI_answer.value = response
-				//document.getElementById('modalon').click()
+				AI_answer_seo.value = response
+				document.getElementById('modalon_seo').click()
 			})
 			.catch((error)=>{
 				console_log('get_AI_seo.php ERROR')
@@ -484,7 +490,16 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.finally(()=>{
 				loader2.value = false
 				document.getElementById('gemini_btn').disabled=false
+				document.getElementById('gemini_seo_btn').disabled=false
 			})
+		}
+
+		const set_elm_hi = (p_id,p_px) =>{
+			SET_ELEM_HEIGHT(p_id,p_px)
+		}
+
+		const set_midasi = (p_midasi) =>{
+			midasi.value = p_midasi
 		}
 
 		onMounted(()=>{
@@ -495,7 +510,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				get_shouhinMS_online()
 			}
 		})
-
+	
 		return{
 			msg,
 			loader,
@@ -537,7 +552,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			get_AI_post,
 			get_AI_seo,
 			AI_answer,
+			AI_answer_seo,
 			tags_add,
+			set_elm_hi,
+			set_midasi,
 		}
 	}
 });
