@@ -1,5 +1,4 @@
 <?php
-//テスト用
 //１日５０ツイートまでかつ月１５００ツイートまで
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
@@ -10,7 +9,7 @@ $status="false";
 
 if(EXEC_MODE<>"Product"){
     $msg = "ツイートが送信されました！\n";
-
+    $status = "success";
 }else{
     
     $user_hash = $_POST["hash"] ;
