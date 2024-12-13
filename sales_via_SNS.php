@@ -65,18 +65,47 @@
           </tbody>
         </table>
       </div>
-      <div class='col-12'><i class="bi bi-share me-2 ms-2"></i><small>商品販売ページのURLをコピー。SNS投稿等に利用できます。</small></div>
     </div>
     <div v-show='disp!=="none"'>
       <hr>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
+          <div class='row'>
+            <div class='col-6 pt-2'>
+              <label for='post_sns' class="form-label">投稿内容</label>
+            </div>
+            <div class='col-6 text-end'>
+              <button class='btn btn-sm btn-info' style='min-width:110px' @click='get_AI_post()' id='gemini_btn'>
+                <template v-if='loader2===false'><p>Google AIが提案</p></template>
+                <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI 考え中...</p></template>
+              </button>
+            </div>
+          </div>
+          
+          <textarea type='memo' class='form-control mt-2' id='post_sns' rows="14" v-model='post_sns' ></textarea>
+          <div class='row text-center'>
+                    <!--LINE ${shouhinMS[0].uid}-->
+                    <a :href='`https://line.me/R/share?text=私のおすすめ！\n${product_url}${shouhinMS[0].uid}-${shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                    <!--FACEBOOK-->
+                    <a :href='`https://www.facebook.com/share.php?u=${product_url}${shouhinMS[0].uid}-${shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
+                    <!--TWITTER-->
+                    <a :href='`https://x.com/intent/tweet?text=私のおすすめ！\n${product_url}${shouhinMS[0].uid}-${shouhinCD}&url=${product_url}${shouhinMS[0].uid}-${shouhinCD}&via=${list.x_id}&related=${list.x_id}&hashtags=${list.hash_tag.replaceAll("#","")}`' rel="nofollow noopener noreferrer" target="_blank">
+                      <i class="bi bi-twitter-x twitter-black fs-1"></i>
+                    </a>
+                    紹介する
+                </div>
+
+        </div>
+      </div>
+      <hr>
+      <div class='row mb-3'>
+        <div class='col-md-8 col-12 ps-3'>
           <span for='hinmei' >商品名</span>
           <h1>{{shouhinNM}}</h1>
         </div>
       </div>
       <div class='row mb-3'>
-        <div class='col-md-8 col-12'>
+        <div class='col-md-8 col-12 text-end pe-3'>
           <p>税込価格：{{zeikomi.toLocaleString()}} ({{shouhizei.toLocaleString()}})</p>
         </div>
       </div>
@@ -90,24 +119,9 @@
       </div>
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
-          <label for='setumei' class="form-label">商品説明(詳細)</label>
-          <p>{{info}}</p>
-        </div>
-      </div>
-      <div class='row mb-3'>
-        <div class='col-md-8 col-12'>
-          <label for='hash_tag' class="form-label">ハッシュタグ</label>
-          <small>X(twitter)のシェアボタン投稿時に自動で入ります</small>
-          <div class='row'>
-            <div class='col-9'>
-              <textarea type='memo' class='form-control' id='hash_tag' rows="2" v-model='hash_tag' placeholder="#おいしい,#お菓子,#おすすめ"></textarea>
-            </div>
-            <div class='col-3 ps-0'>
-              <button class='btn btn-sm btn-info' style='min-width:90px' @click='get_AI_post()' id='gemini_btn'>
-                <template v-if='loader2===false'><p>Google AI</p><p>が提案</p></template>
-                <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI</p><p>考え中...</p></template>
-              </button>
-            </div>
+          <div class='frame'>
+            <h4>商品説明(詳細)</h4>
+            <p>{{info}}</p>
           </div>
         </div>
       </div>
@@ -131,19 +145,19 @@
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
   <!-- Modal SEO-->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_seo" style="display: none;" id="modalon_seo"></button>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal_seo" style="display: none;" id="modalon"></button>
   <div class="modal fade" id="exampleModal_seo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          お気に入りの紹介文を選択してください。（後から編集できます）
+          お気に入りの投稿文を選択してください。（後から編集できます）
         </div>
         <div class="modal-body fs-2">
           <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
-            <template v-for='(list,index) in AI_answer_seo.introductions'>
-                <input class="btn-check" type="radio" name='gemini_seo' :id="`tag_${index}`" @click='set_midasi(list.rei)' >
+            <template v-for='(list,index) in AI_answer.posts.texts'>
+                <input class="btn-check" type="radio" name='gemini_seo' :id="`tag_${index}`" @click='set_sns(list)' >
                 <label class="btn btn-outline-primary text-start mb-2" style='border-radius:2px;' :for="`tag_${index}`">
-                  {{list.rei}}
+                  {{list}}
                 </label>
             </template>
           </div>
@@ -163,7 +177,7 @@
   <script src="script/shouhinMS_vue3.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('shouhinMS.php','','<?php echo $user_hash;?>').mount('#admin_menu');
-    shouhinMS('shouhinMS.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
+    shouhinMS('sales_via_SNS.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

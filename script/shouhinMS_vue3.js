@@ -440,9 +440,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const AI_answer = ref({'posts':[{'tags':'def'}]})
 		const get_AI_post = () =>{
 			loader2.value = true
-			AI_answer.value = {'posts':[{'tags':'def'}]}
+			AI_answer.value = {'posts':[{'tags':'def','texts':'def'}]}
 			document.getElementById('gemini_btn').disabled = true
-			document.getElementById('gemini_seo_btn').disabled = true
+			if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
 			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value)
 			.then((response) => {
@@ -459,7 +459,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.finally(()=>{
 				loader2.value = false
 				document.getElementById('gemini_btn').disabled=false
-				document.getElementById('gemini_seo_btn').disabled=false
+				if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled=false
 			})
 		}
 		const tags_add = (p_tag) =>{
@@ -506,14 +506,18 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const set_midasi = (p_midasi) =>{
 			midasi.value = p_midasi
 		}
-
+		const post_sns = ref('')
+		const set_sns = (p_midasi) =>{
+			post_sns.value = p_midasi
+		}
+		const product_url = ref(`${HTTP}product.php?id=`)
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
 				//get_shouhinMS()
 				//get_shouhinMS_newcd()
-				get_shouhinMS_online()
 			}
+			get_shouhinMS_online()
 		})
 	
 		return{
@@ -561,6 +565,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			tags_add,
 			set_elm_hi,
 			set_midasi,
+			post_sns,
+			set_sns,
+			product_url
 		}
 	}
 });
