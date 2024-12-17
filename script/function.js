@@ -20,6 +20,13 @@ const COPY_TARGET = (id) =>{
   navigator.clipboard.writeText(copyTarget);
 
 }
+const COPY_TARGET2 = (id) =>{
+  console_log(document.getElementById(id))
+  let copyTarget = document.getElementById(id).value;
+  // 選択しているテキストをクリップボードにコピーする
+  navigator.clipboard.writeText(copyTarget);
+
+}
 
 //グローバル関数
 const GET_USER2 = ()=>{//サイト設定情報取得

@@ -92,7 +92,8 @@
           <div class='row mt-3'>
             <div class=col-12>
               <div class='frame'>
-                <h4>ご自身のアカウントに投稿</h4>
+                <h4>ご自身のアカウントに投稿(各SNSに移動します)</h4>
+                <p><small>FACEBOOKのみ、文章が自動反映されません。<button type='button' @click='copy_sns("post_sns")' class='btn btn-primary btn-sm p-0' style='height:20px;min-width:40px;'>copy</button>ボタンでコピペしてください</small></p>
                 <!--LINE-->
                 <a :href='`https://line.me/R/share?text=${post_sns}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
                 <!--FACEBOOK-->
@@ -104,19 +105,22 @@
               </div>
             </div>
           </div>
-          <div class='row mt-3'>
+          <div class='row mt-4'>
             <div class=col-12>
               <div class='frame'>
                 <h4 class='mb-1'>ショップアカウントに一括投稿</h4>
                 <div class='row'>
                   <div class=col-6>
                     <p><small>第三者として投稿できます。</small></p>
-                    <button type='button' class='btn btn-primary'>一括投稿</button>
+                    <button type='button' class='btn btn-primary btn-sm' @click='posting'>
+                      <template v-if='loader2===false'><p>投稿</p></template>
+                      <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>投稿中...</p></template>
+                    </button>
                   </div>
                   <div class=col-6>
                     <p><small>ショップアカウントを確認</small></p>  
                     <!--FACEBOOK-->
-                    <a :href='`https://www.facebook.com/share.php?u=${product_url}${uid}-${shouhinCD}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
+                    <!--<a :href='`https://www.facebook.com/`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>-->
                     <!--TWITTER-->
                     <a href='https://x.com/presentselect' rel="nofollow noopener noreferrer" target="_blank">
                       <i class="bi bi-twitter-x twitter-black fs-1"></i>

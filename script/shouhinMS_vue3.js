@@ -440,6 +440,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
       COPY_TARGET(id)
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
+		const copy_sns = (id) =>{
+      COPY_TARGET2(id)
+			msg.value = `紹介文をコピーしました。`
+    }
 
 		const AI_answer = ref({'posts':[{'tags':'def'}]})
 		const get_AI_post = () =>{
@@ -515,7 +519,36 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			post_sns.value = p_midasi
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)
-		
+
+		const posting = () =>{
+			loader2.value = true
+			const params = new FormData();
+			params.append(`tweet`, post_sns.value);
+			params.append(`hash`,p_hash);
+			params.append(`csrf_token`, token)
+	
+			axios.post("tweet_as_shop.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+			.then((response) => {
+				//console_log(response)
+				console_log(response)
+				obj = response.data
+				token = response.data.csrf_create
+				//console_log(obj)
+				console_log('tweet_as_shop succsess')
+				alert('投稿しました')
+			})
+			.catch((error)=>{
+				token = response.data.csrf_create
+				console_log('tweet_as_shop.php ERROR')
+				console_log(error)
+				alert('投稿失敗')
+			})
+			.finally(()=>{
+				loader2.value = false
+			})
+	
+		}
+
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
@@ -564,6 +597,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			disp,
 			cg_mode,
 			copy_target,
+			copy_sns,
 			open_product_page,
 			get_AI_post,
 			get_AI_seo,
@@ -574,7 +608,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			set_midasi,
 			post_sns,
 			set_sns,
-			product_url
+			product_url,
+			posting
 		}
 	}
 });

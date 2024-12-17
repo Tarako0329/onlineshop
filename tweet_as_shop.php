@@ -6,12 +6,19 @@ log_writer2("\$_POST",$_POST,"lv3");
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 $status="false";
+$rtn = csrf_checker(["sales_via_SNS.php"],["P","C","S"]);
+if($rtn !== true){
+    $msg=$rtn;
+    $alert_status = "alert-warning";
+    $reseve_status = true;
+    $msg='不正アクセス';
+}
 
 if(EXEC_MODE<>"Product"){
     $msg = "ツイートが送信されました！\n";
     $status = "success";
 }else{
-    
+    $text = $_POST["tweet"];
     $user_hash = $_POST["hash"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
     
@@ -53,6 +60,7 @@ if(EXEC_MODE<>"Product"){
     }
 }
 
+$token = csrf_create();
 $return_sts = array(
     "MSG" => $msg
     ,"status" => $status
