@@ -441,7 +441,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			msg.value = `${p_shouhinNM} 販売ページのURLをコピーしました。`
     }
 		const copy_sns = (id) =>{
-      COPY_TARGET2(id)
+      //COPY_TARGET2(id)
+			navigator.clipboard.writeText(post_sns.value.text + post_sns.value.URL +" "+ post_sns.value.tag_disp)
 			msg.value = `紹介文をコピーしました。`
     }
 
@@ -514,7 +515,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const set_midasi = (p_midasi) =>{
 			midasi.value = p_midasi
 		}
+
 		const post_sns = ref('')
+		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
 			let tag = ""
 			post_sns.value = p_midasi
@@ -522,7 +525,6 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				tag += `${item},`
 			})
 			post_sns.value.tag_disp = tag.slice(0, -1)
-			post_sns.value.tag_param = post_sns.value.tag_disp.replaceAll("#", "")
 			console_log(post_sns.value)
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)
@@ -530,7 +532,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const posting = () =>{
 			loader2.value = true
 			const params = new FormData();
-			params.append(`tweet`, post_sns.value);
+			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL} ${post_sns.value.tag_disp}`);
 			params.append(`hash`,p_hash);
 			params.append(`csrf_token`, token)
 	
@@ -616,7 +618,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			post_sns,
 			set_sns,
 			product_url,
-			posting
+			posting,
+			tag_param,
 		}
 	}
 });
