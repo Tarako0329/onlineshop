@@ -72,6 +72,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			})
 		}
 		
+		const uid = ref('')
+		const x_id = ref('')
 		const shouhinCD = ref('')
 		const shouhinNM = ref('')
 		const status = ref('show')
@@ -159,6 +161,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			})
 			console_log(shouhin)
 			if(shouhin.length!==0){
+				uid.value = shouhin[0].uid
+				x_id.value = shouhin[0].x_id
 				tanka.value = shouhin[0].tanka
 				status.value = shouhin[0].status
 				zei.value = String(shouhin[0].zeikbn)
@@ -511,6 +515,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			post_sns.value = p_midasi
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)
+		
 		onMounted(()=>{
 			console_log(`onMounted : ${Where_to_use}`)
 			if(Where_to_use==="shouhinMS.php"){
@@ -530,6 +535,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			shouhinMS,
 			shouhinMS_pic,
 			get_shouhinMS,
+			uid,
+			x_id,
 			shouhinCD,
 			shouhinNM,
 			hash_tag,
