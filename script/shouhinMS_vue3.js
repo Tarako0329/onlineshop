@@ -516,6 +516,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 		const post_sns = ref('')
 		const set_sns = (p_midasi) =>{
+			console_log(p_midasi)
 			post_sns.value = p_midasi
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)

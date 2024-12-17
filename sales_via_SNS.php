@@ -194,7 +194,7 @@
                 <input class="btn-check" type="radio" name='gemini_seo' :id="`tag_${index}`" @click='set_sns(list)' >
                 <label class="btn btn-outline-primary text-start mb-2" style='border-radius:2px;' :for="`tag_${index}`">
                   <p>{{list.text}}</p>
-                  <p>{{list.tags}}</p>
+                  <span><template v-for='(tag) in list.tags'>{{tag}}</template></span>
                 </label>
             </template>
           </div>
