@@ -38,7 +38,7 @@ if(EXEC_MODE<>"Product"){
         
         $connection->setApiVersion('2');
         
-        $text = "Twitter APIテストです。\n";
+        //$text = "Twitter APIテストです。\n";
         
         
         $result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
