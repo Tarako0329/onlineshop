@@ -516,8 +516,14 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 		const post_sns = ref('')
 		const set_sns = (p_midasi) =>{
-			console_log(p_midasi)
+			let tag = ""
 			post_sns.value = p_midasi
+			post_sns.value.tags.forEach((item)=>{
+				tag = `${item},`
+			})
+			post_sns.value.tag_disp = tag.slice(0, -1)
+			post_sns.value.tag_param = post_sns.value.tag_disp.replaceAll("#", "")
+			console_log(post_sns.value)
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)
 
