@@ -27,7 +27,7 @@ $response = $client->withV1BetaVersion()
     ->generateContent(
         //new TextPart('Xでバズるハッシュタグとハッシュタグを含めた日本語の投稿例を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、ハッシュタグはtags。投稿例はrei1,rei2,rei3で。'.$discription),
         //new TextPart('Xでバズるハッシュタグを10個と,URL,ハッシュタグを含めた日本語の投稿例をXに投稿できる文字数内で３つをJSON形式{"posts":{"tags":[tag1,tag2], "texts":[紹介文1,紹介文2,紹介文3]}}で出力。'.$discription),
-        new TextPart('Xでバズるハッシュタグを10個と,日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は110文字程度。投稿例はハッシュタグを含めない。投稿例はURLを含めない。'.$discription),
+        new TextPart('Xでバズるハッシュタグを10個と,日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は110文字程度。URLとハッシュタグは別途JSONで出力。'.$discription),
     );
 
 //print nl2br($response->text());

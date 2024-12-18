@@ -2,7 +2,7 @@
 //１日５０ツイートまでかつ月１５００ツイートまで
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
-log_writer2("\$_POST",$_POST,"lv3");
+log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 $status="false";
@@ -18,7 +18,7 @@ if(EXEC_MODE<>"Product"){
     $msg = "ツイートが送信されました！";
     $status = "success";
 }else{
-    $text = $_POST["tweet"];
+    $text = $_POST["tweet"].$_POST["hash_tag"]." ".$_POST["URL"];
     $user_hash = $_POST["hash"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
     
@@ -40,7 +40,7 @@ if(EXEC_MODE<>"Product"){
       
       //$text = "Twitter APIテストです。\n";
       
-      if(strlen($text) <= (280-23)){//URLが半角23文字扱い。ハッシュタグは含まない
+      if(strlen($_POST["tweet"]) <= (280-23)){//URLが半角23文字扱い。ハッシュタグは含まない
         $result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
       
         $httpCode = $connection->getLastHttpCode();

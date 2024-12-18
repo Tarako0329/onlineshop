@@ -534,7 +534,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const posting = () =>{
 			loader2.value = true
 			const params = new FormData();
-			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL}X ${post_sns.value.tag_disp}`);
+			params.append(`tweet`, `${post_sns.value.text}`);
+			params.append(`URL`, `${post_sns.value.URL}X`);
+			params.append(`hash_tag`, ` ${post_sns.value.tag_disp}`);
 			params.append(`hash`,p_hash);
 			params.append(`csrf_token`, token)
 	
