@@ -544,7 +544,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				token = response.data.csrf_create
 				//console_log(obj)
 				console_log('tweet_as_shop succsess')
-				alert('投稿しました')
+				alert(response.data.MSG)
 			})
 			.catch((error)=>{
 				token = response.data.csrf_create
