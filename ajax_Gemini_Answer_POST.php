@@ -13,7 +13,7 @@ if(EXEC_MODE==="Local"){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-$discription = "URL：".ROOT_URL."product.php?id=".$_SESSION["user_id"]."-".$_POST["hinCD"]."販売元:".$_POST["yagou"]." 商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$POST["information"];
+$discription = "URL：".ROOT_URL."product.php?id=".$_SESSION["user_id"]."-".$_POST["hinCD"]."販売元:".$_POST["yagou"]." 商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$_POST["information"];
 
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;

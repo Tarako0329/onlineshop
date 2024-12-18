@@ -228,7 +228,7 @@ if($rtn !== true){
                     $body = str_replace("<問合担当者>",$owner[0]["name"],$body);
                     $body = str_replace("<代表者>",$owner[0]["shacho"],$body);
                     
-                    $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["CC_mail"]);
+                    $rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["cc_mail"]);
                 }
             }
 

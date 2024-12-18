@@ -1,6 +1,6 @@
 <?php
 require "php_header.php";
-//log_writer2("\$POST",$_POST,"lv3");
+//log_writer2("\$_POST",$_POST,"lv3");
 
 // LINE Messaging API プッシュメッセージを送る
 $LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push";

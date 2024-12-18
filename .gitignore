@@ -27,3 +27,4 @@ upload/temp/*.jpg
 sitemap.xml
 product_list.xml
 vendor/composer/platform_check.php
+access_log.txt

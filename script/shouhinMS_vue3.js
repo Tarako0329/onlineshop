@@ -190,6 +190,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				get_shouhinMS_newcd()
 			}else{
 			}
+			post_sns.value = {'URL':`${HTTP}product.php?id=${uid.value}-${shouhinCD.value}`}
 		})
 
 		let sort = 1
@@ -442,7 +443,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
     }
 		const copy_sns = (id) =>{
       //COPY_TARGET2(id)
-			navigator.clipboard.writeText(post_sns.value.text + post_sns.value.URL +" "+ post_sns.value.tag_disp)
+			navigator.clipboard.writeText(post_sns.value.text + post_sns.value.URL +"&z=fb "+ post_sns.value.tag_disp)
 			msg.value = `紹介文をコピーしました。`
     }
 
@@ -532,7 +533,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const posting = () =>{
 			loader2.value = true
 			const params = new FormData();
-			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL} ${post_sns.value.tag_disp}`);
+			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL}&z=X ${post_sns.value.tag_disp}`);
 			params.append(`hash`,p_hash);
 			params.append(`csrf_token`, token)
 	

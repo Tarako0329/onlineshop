@@ -7,6 +7,10 @@ define("VERSION","ver1.33.0");
 require "./vendor/autoload.php";
 require "functions.php";
 
+//リファイラの取得
+aclog_writer("\$_SERVER['HTTP_REFERER']",$_SERVER['HTTP_REFERER']);
+aclog_writer("\$_GET['z']",$_GET['z']);
+
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -48,9 +52,9 @@ define("POP_USER", $_ENV["POP_USER"]);
 define("POP_PASS", $_ENV["POP_PASS"]);
 
 //stripe
-define("S_KEY",$_ENV["SKey"]);
-define("P_KEY",$_ENV["PKey"]);
-define("OAuth",$_ENV["OAuth"]);
+//define("S_KEY",$_ENV["SKey"]);
+//define("P_KEY",$_ENV["PKey"]);
+//define("OAuth",$_ENV["OAuth"]);
 
 define("GEMINI",$_ENV["GOOGLE_API"]);
 

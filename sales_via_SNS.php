@@ -88,7 +88,7 @@
             </div>
           </div>
           
-          <textarea type='memo' class='form-control mt-2' id='post_sns' rows="10" v-model='post_sns.text' ></textarea>
+          <textarea type='memo' class='form-control mt-2' id='post_sns' rows="10" v-model='post_sns.text' placeholder="AI は商品名・見出し・詳細をもとに文章を自動作成します"></textarea>
           <label for='hash_tag'>ハッシュタグ(カンマ区切り)</label>
           <input type='text' class='form-control' v-model='post_sns.tag_disp'>
 
@@ -98,11 +98,11 @@
                 <h4>ご自身のアカウントに投稿(各SNSに移動します)</h4>
                 <p><small>FACEBOOKのみ、文章が自動反映されません。<button type='button' @click='copy_sns("post_sns")' class='btn btn-primary btn-sm p-0' style='height:20px;min-width:40px;'>copy</button>ボタンでコピペしてください</small></p>
                 <!--LINE-->
-                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL}&z=ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
                 <!--FACEBOOK-->
-                <a :href='`https://www.facebook.com/share.php?u=${post_sns.URL}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
+                <a :href='`https://www.facebook.com/share.php?u=${post_sns.URL}&z=fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                 <!--TWITTER-->
-                <a :href='`https://x.com/intent/tweet?text=${post_sns.text}&url=${post_sns.URL}&via=${x_id}&related=${x_id}&hashtags=${tag_param}`' rel="nofollow noopener noreferrer" target="_blank">
+                <a :href='`https://x.com/intent/tweet?text=${post_sns.text}&url=${post_sns.URL}&z=X&via=${x_id}&related=${x_id}&hashtags=${tag_param}`' rel="nofollow noopener noreferrer" target="_blank">
                   <i class="bi bi-twitter-x twitter-black fs-1"></i>
                 </a>
               </div>

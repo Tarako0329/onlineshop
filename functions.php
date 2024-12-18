@@ -24,6 +24,13 @@ function log_writer2($pgname,$msg,$kankyo){
         return;
     }
 }
+// =========================================================
+// オリジナルログ出力(access_log)
+// =========================================================
+function aclog_writer($pgname,$msg){
+    $log = print_r($msg,true);
+    file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
+}
 
 // =========================================================
 // トークンを作成
