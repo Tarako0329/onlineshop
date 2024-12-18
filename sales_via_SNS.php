@@ -78,7 +78,7 @@
         <div class='col-md-8 col-12'>
           <div class='row'>
             <div class='col-6 pt-2'>
-              <label for='post_sns' class="form-label">投稿内容</label>
+              <label for='post_sns' class="form-label">投稿内容(文字バイト数{{text_len}})</label>
             </div>
             <div class='col-6 text-end'>
               <button class='btn btn-sm btn-info' style='min-width:110px' @click='get_AI_post()' id='gemini_btn'>

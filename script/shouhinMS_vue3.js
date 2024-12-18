@@ -531,6 +531,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 		const product_url = ref(`${HTTP}product.php?id=`)
 
+		const text_len = computed(()=>{return encodeURI(post_sns.value.text).split(/%..|./).length - 1;})
 		const posting = () =>{
 			loader2.value = true
 			const params = new FormData();
@@ -623,6 +624,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			product_url,
 			posting,
 			tag_param,
+			text_len,
 		}
 	}
 });
