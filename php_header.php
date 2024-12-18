@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
-define("VERSION","ver1.33.1");
+define("VERSION","ver1.33.2");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
@@ -9,6 +9,17 @@ require "functions.php";
 
 //リファイラの取得
 $get_z = !empty($_GET["amp;z"])?$_GET["amp;z"]:$_GET["z"];
+
+if($get_z==="X"){
+  $get_z = "X.com";
+}else if($get_z==="fb"){
+  $get_z = "facebook";
+}else if($get_z==="ln"){
+  $get_z = "Line";
+}else{
+  $get_z = "direct";
+}
+
 aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
 //aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
 //aclog_writer("\$_GET['z']",$get_z);
