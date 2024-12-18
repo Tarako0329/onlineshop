@@ -190,7 +190,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				get_shouhinMS_newcd()
 			}else{
 			}
-			post_sns.value = {'URL':`${HTTP}product.php?id=${uid.value}-${shouhinCD.value}`}
+			post_sns.value = {'URL':`${HTTP}product.php?id=${uid.value}-${shouhinCD.value}&z=`}
 		})
 
 		let sort = 1

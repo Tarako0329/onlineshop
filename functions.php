@@ -28,6 +28,10 @@ function log_writer2($pgname,$msg,$kankyo){
 // オリジナルログ出力(access_log)
 // =========================================================
 function aclog_writer($pgname,$msg){
+    if(!($_SERVER["PHP_SELF"]==="/index.php" || $_SERVER["PHP_SELF"]==="/product.php")){
+        file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => 対象外:".$_SERVER["PHP_SELF"]."\n",FILE_APPEND);
+        return 0;
+    }
     $log = print_r($msg,true);
     file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 }

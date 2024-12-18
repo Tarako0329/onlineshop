@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
-define("VERSION","ver1.33.0");
+define("VERSION","ver1.33.1");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
@@ -8,8 +8,9 @@ require "./vendor/autoload.php";
 require "functions.php";
 
 //リファイラの取得
+$get_z = !empty($_GET["amp;z"])?$_GET["amp;z"]:$_GET["z"];
 aclog_writer("\$_SERVER['HTTP_REFERER']",$_SERVER['HTTP_REFERER']);
-aclog_writer("\$_GET['z']",$_GET['z']);
+aclog_writer("\$_GET['z']",$get_z);
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
