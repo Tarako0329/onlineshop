@@ -15,7 +15,7 @@ if($rtn !== true){
 }
 
 if(EXEC_MODE<>"Product"){
-    $msg = "ツイートが送信されました！\n";
+    $msg = "ツイートが送信されました！";
     $status = "success";
 }else{
     $text = $_POST["tweet"];
@@ -29,20 +29,20 @@ if(EXEC_MODE<>"Product"){
     define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
     
     try{
-        $connection = new TwitterOAuth(
-          API_KEY,
-          API_SECRET_KEY,
-          ACCESS_TOKEN,
-          SECRET_ACCESS_TOKEN
-        );
-        
-        $connection->setApiVersion('2');
-        
-        //$text = "Twitter APIテストです。\n";
-        
-        
+      $connection = new TwitterOAuth(
+        API_KEY,
+        API_SECRET_KEY,
+        ACCESS_TOKEN,
+        SECRET_ACCESS_TOKEN
+      );
+      
+      $connection->setApiVersion('2');
+      
+      //$text = "Twitter APIテストです。\n";
+      
+      if(strlen($text) <= (280-23)){//URLが半角23文字扱い。ハッシュタグは含まない
         $result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
-        
+      
         $httpCode = $connection->getLastHttpCode();
         
         if ($httpCode == 201) { // 201は作成成功を示すステータスコード
@@ -50,13 +50,18 @@ if(EXEC_MODE<>"Product"){
           $msg = "ツイートが送信されました！\n";
           $status = "success";
         } else {
-          $errorMessage=isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
+          $errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
           //$this->error("ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage");
-          $msg = "ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage\n";
+          $msg = "ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage ";
+          log_writer2("\$msg",$msg,"lv1");
         }
+      }else{
+        $msg = "文章が長すぎます。全角100文字程度に収めてください。 - ".strlen($text);
+      }
     }catch(Exception $e){
-        print_r($e,true);
-        echo "catch(Exception \$e)";
+      print_r($e,true);
+      echo "catch(Exception \$e)";
+      log_writer2("\$e",$e,"lv0");
     }
 }
 

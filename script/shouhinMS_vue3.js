@@ -533,15 +533,14 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const posting = () =>{
 			loader2.value = true
 			const params = new FormData();
-			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL}&z=X ${post_sns.value.tag_disp}`);
+			params.append(`tweet`, `${post_sns.value.text}${post_sns.value.URL}X ${post_sns.value.tag_disp}`);
 			params.append(`hash`,p_hash);
 			params.append(`csrf_token`, token)
 	
 			axios.post("tweet_as_shop.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				//console_log(response)
-				console_log(response)
-				obj = response.data
+				console_log(response.data)
 				token = response.data.csrf_create
 				//console_log(obj)
 				console_log('tweet_as_shop succsess')
