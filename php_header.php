@@ -9,7 +9,7 @@ require "functions.php";
 
 //リファイラの取得
 $get_z = !empty($_GET["amp;z"])?$_GET["amp;z"]:$_GET["z"];
-aclog_writer("リファイラ：IP：SNS",$_SERVER['HTTP_REFERER'].":".$_SERVER['REMOTE_ADDR'].":".$get_z);
+aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
 //aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
 //aclog_writer("\$_GET['z']",$get_z);
 
