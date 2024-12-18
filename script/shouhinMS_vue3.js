@@ -443,7 +443,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
     }
 		const copy_sns = (id) =>{
       //COPY_TARGET2(id)
-			navigator.clipboard.writeText(post_sns.value.text + post_sns.value.URL +"&z=fb "+ post_sns.value.tag_disp)
+			navigator.clipboard.writeText(post_sns.value.text + post_sns.value.URL +"fb "+ post_sns.value.tag_disp)
 			msg.value = `紹介文をコピーしました。`
     }
 
@@ -454,6 +454,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			document.getElementById('gemini_btn').disabled = true
 			if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
+
 			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value)
 			.then((response) => {
 				console_log('get_AI_post succsess')
