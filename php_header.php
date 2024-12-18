@@ -9,9 +9,9 @@ require "functions.php";
 
 //リファイラの取得
 $get_z = !empty($_GET["amp;z"])?$_GET["amp;z"]:$_GET["z"];
-aclog_writer("\$_SERVER['HTTP_REFERER']",$_SERVER['HTTP_REFERER']);
-aclog_writer("\$_SERVER",$_SERVER);
-aclog_writer("\$_GET['z']",$get_z);
+aclog_writer("リファイラ：IP：SNS",$_SERVER['HTTP_REFERER'].":".$_SERVER['REMOTE_ADDR'].":".$get_z);
+//aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
+//aclog_writer("\$_GET['z']",$get_z);
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
