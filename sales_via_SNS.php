@@ -78,7 +78,7 @@
         <div class='col-md-8 col-12'>
           <div class='row'>
             <div class='col-6 pt-2'>
-              <label for='post_sns' class="form-label">投稿内容(文字バイト数{{text_len}})</label>
+              <label for='post_sns' class="form-label">投稿内容 (文字バイト数{{text_len}})</label>
             </div>
             <div class='col-6 text-end'>
               <button class='btn btn-sm btn-info' style='min-width:110px' @click='get_AI_post()' id='gemini_btn'>
@@ -88,7 +88,8 @@
             </div>
           </div>
           
-          <textarea type='memo' class='form-control mt-2' id='post_sns' rows="10" v-model='post_sns.text' placeholder="AI は商品名・見出し・詳細をもとに文章を自動作成します"></textarea>
+          <textarea type='memo' class='form-control mt-2 ' id='post_sns' rows="10" v-model='post_sns.text' placeholder="AI は商品名・見出し・詳細をもとに文章を自動作成します"></textarea>
+          <div class='row ps-3 mb-3'><small>X.com の場合、文字バイト数250程度を目安としてください。</small></div>
           <label for='hash_tag'>ハッシュタグ(カンマ区切り)</label>
           <input type='text' class='form-control' v-model='post_sns.tag_disp'>
 

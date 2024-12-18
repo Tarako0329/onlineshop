@@ -18,7 +18,7 @@ $_SESSION["user_id"] = rot13decrypt2($user_hash);
 		$to = empty($_GET["to"])?"3000-01-01":$_GET["to"];
 		$from = empty($_GET["from"])?"2000-01-01":$_GET["from"];
 		$sql="select BD.shouhinNM,BD.tanka,sum(BD.su) as goukei from juchuu_head HD inner join juchuu_meisai BD on HD.orderNO = BD.orderNO 
-		where zei = 0 and sent = 0 and cancel = 0 
+		where zei = 0 and sent = 0 and cancel is null 
 		and uid = :uid 
 		and CAST(HD.juchuu_date AS DATE) between :from and :to
 		group by BD.shouhinNM,BD.tanka order by juchuu_date,shouhinNM";
@@ -35,7 +35,7 @@ $_SESSION["user_id"] = rot13decrypt2($user_hash);
 		from juchuu_head HD 
 		inner join juchuu_meisai BD 
 		on HD.orderNO = BD.orderNO 
-		where zei = 0 and sent = 0 and cancel = 0 and uid = :uid 
+		where zei = 0 and sent = 0 and cancel  is null and uid = :uid 
 		and CAST(HD.juchuu_date AS DATE) between :from and :to
 		order by juchuu_date,HD.name,HD.orderNO,shouhinNM";
 		$stmt = $pdo_h->prepare($sql);
