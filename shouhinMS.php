@@ -53,7 +53,11 @@
           <tbody>
             <template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
               <tr>
-                <td>{{list.shouhinNM}}</td>
+                <!--<td>{{list.shouhinNM}}</td>-->
+                <td v-if='list.status==="show"' style='color:blue'>{{list.shouhinNM}}</td>
+                <td v-if='list.status==="soldout"' style='color:darkorange'>{{list.shouhinNM}}</td>
+                <td v-if='list.status==="stop"' style='color:gray'>{{list.shouhinNM}}</td>
+
                 <td style='width: 30px' class='pt-2' role='button' @click='open_product_page(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'>
                   <i class="bi bi-window-plus"></i>
                 </td>
@@ -62,7 +66,7 @@
                 </td>
                 <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>{{RTURL}}product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
                 <td style='width: 80px'>
-                  <select style='width: 80px' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
+                  <select style='width: 80px;' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
                     <option value='show'>販売中</option>
                     <option value='soldout'>受付停止</option>
                     <option value='stop'>販売停止</option>

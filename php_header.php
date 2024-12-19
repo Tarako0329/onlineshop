@@ -65,9 +65,9 @@ define("POP_USER", $_ENV["POP_USER"]);
 define("POP_PASS", $_ENV["POP_PASS"]);
 
 //stripe
-//define("S_KEY",$_ENV["SKey"]);
-//define("P_KEY",$_ENV["PKey"]);
-//define("OAuth",$_ENV["OAuth"]);
+define("S_KEY",$_ENV["SKey"]);
+define("P_KEY",$_ENV["PKey"]);
+define("OAuth",$_ENV["OAuth"]);
 
 define("GEMINI",$_ENV["GOOGLE_API"]);
 
