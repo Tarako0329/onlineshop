@@ -107,7 +107,7 @@ const LINE_PUSH = (ID,MSG) =>{
   })
 }
 
-const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou) =>{
+const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou,p_sns_type) =>{
   return new Promise((resolve, reject) => {
     let obj
     const params = new FormData();
@@ -117,6 +117,7 @@ const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou) 
     params.append(`hinCD`,p_hinCD);
     params.append(`hash`,p_hash);
     params.append(`yagou`,p_yagou);
+    params.append(`sns_type`,p_sns_type);
 
     axios.post("ajax_Gemini_Answer_POST.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
     .then((response) => {

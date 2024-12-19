@@ -455,7 +455,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
 
-			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value)
+			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
 			.then((response) => {
 				console_log('get_AI_post succsess')
 				console_log(response)
@@ -519,6 +519,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 
 		const post_sns = ref('')
+		const sns_type = ref('')
 		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
 			let tag = ""
@@ -620,6 +621,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			set_elm_hi,
 			set_midasi,
 			post_sns,
+			sns_type,
 			set_sns,
 			product_url,
 			posting,

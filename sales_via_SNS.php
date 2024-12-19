@@ -77,11 +77,19 @@
       <div class='row mb-3'>
         <div class='col-md-8 col-12'>
           <div class='row'>
-            <div class='col-6 pt-2'>
-              <label for='post_sns' class="form-label">投稿内容 (文字バイト数{{text_len}})</label>
+            <div class='col-12 pt-2'>
+              <label for='post_sns' class="form-label">投稿内容 (文字バイト数　{{text_len}})</label>
             </div>
-            <div class='col-6 text-end'>
-              <button class='btn btn-sm btn-info' style='min-width:110px' @click='get_AI_post()' id='gemini_btn'>
+            <div class='col-12 d-flex justify-content-end'>
+              <!--<label for='sns_type' class='form-label'>AI に SNS を伝える</label>-->
+              <select class='form-select' id='sns_type' style='width:110px' v-model='sns_type'>
+                <option value="X.com">X(twitter) 向け</option>
+                <option value="FACEBOOK">FACEBOOK 向け</option>
+                <option value="instagram">instagram 向け</option>
+                <option value="公式line">公式Line 向け</option>
+              </select>
+              <span class='p-3'>に</span>
+              <button class='btn btn-sm btn-info ' style='min-width:110px' @click='get_AI_post()' id='gemini_btn'>
                 <template v-if='loader2===false'><p>Google AIが提案</p></template>
                 <template v-else><p><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Google AI 考え中...</p></template>
               </button>
@@ -90,23 +98,25 @@
           
           <textarea type='memo' class='form-control mt-2 ' id='post_sns' rows="10" v-model='post_sns.text' placeholder="AI は商品名・見出し・詳細をもとに文章を自動作成します"></textarea>
           <div class='row ps-3 mb-3'><small>X.com の場合、文字バイト数250程度を目安としてください。</small></div>
-          <label for='hash_tag'>ハッシュタグ(カンマ区切り)</label>
-          <input type='text' class='form-control' v-model='post_sns.tag_disp'>
+          <label for='hash_tag'>ハッシュタグ(半角カンマ区切り)</label>
+          <input type='text' class='form-control ' v-model='post_sns.tag_disp' placeholder='例：#おいしい,#お土産,#ティータイム'>
 
-          <div class='row mt-3'>
+          <div class='row mt-5'>
             <div class=col-12>
               <div class='frame'>
                 <h4>ご自身のアカウントに投稿(各SNSに移動します)</h4>
-                <p><small>FACEBOOKのみ、文章が自動反映されません。<button type='button' @click='copy_sns("post_sns")' class='btn btn-primary btn-sm p-0' style='height:20px;min-width:40px;'>copy</button>ボタンでコピペしてください</small></p>
+                <p><small>FACEBOOK,instagram は、文章が自動反映されません。<button type='button' @click='copy_sns("post_sns")' class='btn btn-primary btn-sm p-0' style='height:20px;min-width:40px;'>copy</button>ボタンでコピペしてください</small></p>
                 <!--LINE-->
-                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL}ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL}ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1 p-2"></i></a>
                 <!--FACEBOOK-->
-                <a :href='`https://www.facebook.com/share.php?u=${post_sns.URL}fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
+                <a :href='`https://www.facebook.com/share.php?u=${post_sns.URL}fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-2"></i></a>
+                <!--instagram-->
+                <a :href='`https://instagram.com`' target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram instagram-orange fs-1 p-2"></i></a>
                 <!--TWITTER-->
                 <a :href='`https://x.com/intent/tweet?text=${post_sns.text}&url=${post_sns.URL}X&via=${x_id}&related=${x_id}&hashtags=${tag_param}`' rel="nofollow noopener noreferrer" target="_blank">
-                  <i class="bi bi-twitter-x twitter-black fs-1"></i>
+                  <i class="bi bi-twitter-x twitter-black fs-1 p-2"></i>
                 </a>
-              </div>
+              </div><i class="bi bi-instagram"></i>
             </div>
           </div>
           <div class='row mt-4'>
