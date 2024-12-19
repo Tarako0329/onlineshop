@@ -23,6 +23,7 @@ if($get_z==="X"){
 aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
 //aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
 //aclog_writer("\$_GET['z']",$get_z);
+aclog_writer("\$_GET",$_GET);
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
