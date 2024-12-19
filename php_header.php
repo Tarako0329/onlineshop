@@ -25,11 +25,11 @@ $pattern_list_string = file_get_contents('bot_list.txt');
 // 作成したパターン文字列を使い正規表現によるマッチングを行う
 if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
   //bot
-  aclog_writer("bot",$ua);
+  aclog_writer("bot",$_SERVER['REMOTE_ADDR']."：".$ua);
 }else{
-  aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
+  aclog_writer("IP：リファイラ：SNS",",".$_SERVER['REMOTE_ADDR'].",".$_SERVER['HTTP_REFERER'].",".$get_z);
   aclog_writer("\$_GET",$_GET);
-  aclog_writer("human",$ua);
+  aclog_writer("human",$_SERVER['REMOTE_ADDR']."：".$ua);
 }
 
 //aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
