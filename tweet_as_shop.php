@@ -54,7 +54,7 @@ if(EXEC_MODE<>"Product"){
           //$this->error("ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage");
           $msg = "ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage ";
           log_writer2("\$msg",$msg,"lv1");
-          $msg = "ツイートの送信に失敗しました。文章をもう少し短くしてみてください。 250バイト程度が目安です。";
+          $msg = "ツイートの送信に失敗しました。文章をもう少し短くしてみてください。 95文字程度が目安です。";
         }
       /*}else{
         $msg = "文章が長すぎます。全角100文字程度に収めてください。 - ".strlen($_POST["tweet"]);

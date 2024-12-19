@@ -89,7 +89,7 @@
               </select>
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='sns_type' >
                 <option value="">SNS選択</option>
-                <option value="85">X(twitter) 向けに</option>
+                <option value="92">X(twitter) 向けに</option>
                 <option value="125">FACEBOOK 向けに</option>
                 <option value="125">instagram 向けに</option>
                 <option value="200">公式Line 向けに</option>
