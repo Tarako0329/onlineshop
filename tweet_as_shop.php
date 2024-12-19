@@ -40,7 +40,7 @@ if(EXEC_MODE<>"Product"){
       
       //$text = "Twitter APIテストです。\n";
       
-      if(strlen($_POST["tweet"]) <= (280-23)){//URLが半角23文字扱い。ハッシュタグは含まない
+      //if(strlen($_POST["tweet"]) <= (280-23)){//URLが半角23文字扱い。ハッシュタグは含まない
         $result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
       
         $httpCode = $connection->getLastHttpCode();
@@ -56,9 +56,9 @@ if(EXEC_MODE<>"Product"){
           log_writer2("\$msg",$msg,"lv1");
           $msg = "ツイートの送信に失敗しました。文章をもう少し短くしてみてください。 250バイト程度が目安です。";
         }
-      }else{
+      /*}else{
         $msg = "文章が長すぎます。全角100文字程度に収めてください。 - ".strlen($_POST["tweet"]);
-      }
+      }*/
     }catch(Exception $e){
       print_r($e,true);
       echo "catch(Exception \$e)";
