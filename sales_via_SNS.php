@@ -89,7 +89,7 @@
               </select>
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='sns_type' >
                 <option value="">SNS選択</option>
-                <option value="92">X(twitter) 向けに</option>
+                <option value="90">X(twitter) 向けに</option>
                 <option value="125">FACEBOOK 向けに</option>
                 <option value="125">instagram 向けに</option>
                 <option value="200">公式Line 向けに</option>
@@ -102,7 +102,7 @@
           </div>
 
           <textarea type='memo' class='form-control mt-1 ' id='post_sns' rows="10" v-model='post_sns.text' placeholder="AI は商品名・見出し・詳細をもとに文章を自動作成します"></textarea>
-          <div class='row ps-3 mb-3'><small>X.com の場合、85文字程度を目安としてください。</small></div>
+          <div class='row ps-3 mb-3'><small>X.com の場合、95文字程度を目安としてください。</small></div>
           <label for='hash_tag'>ハッシュタグ(半角カンマ区切り)</label>
           <input type='text' class='form-control ' v-model='post_sns.tag_disp' placeholder='例：#おいしい,#お土産,#ティータイム'>
 
