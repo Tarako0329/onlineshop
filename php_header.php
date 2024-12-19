@@ -19,11 +19,21 @@ if($get_z==="X"){
 }else{
   $get_z = "direct";
 }
+// クライアントのユーザエージェントを取得
+$ua = $_SERVER['HTTP_USER_AGENT'];
+$pattern_list_string = file_get_contents('bot_list.txt');
+// 作成したパターン文字列を使い正規表現によるマッチングを行う
+if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
+  //bot
+  aclog_writer("bot",$ua);
+}else{
+  aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
+  aclog_writer("\$_GET",$_GET);
+  aclog_writer("human",$ua);
+}
 
-aclog_writer("IP：リファイラ：SNS",$_SERVER['REMOTE_ADDR']."：".$_SERVER['HTTP_REFERER']."：".$get_z);
 //aclog_writer("\$_SERVER",$_SERVER['REMOTE_ADDR']);
 //aclog_writer("\$_GET['z']",$get_z);
-aclog_writer("\$_GET",$_GET);
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);

@@ -25,4 +25,5 @@ foreach ($arr as $key => $value) {
 $pattern_list_string = implode('|', $pattern_list);
 
 file_put_contents("bot_list.txt",$pattern_list_string);
+exit();
 ?>
