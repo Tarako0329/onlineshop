@@ -29,7 +29,7 @@ $response = $client->withV1BetaVersion()
         //new TextPart('Xでバズるハッシュタグとハッシュタグを含めた日本語の投稿例を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、ハッシュタグはtags。投稿例はrei1,rei2,rei3で。'.$discription),
         //new TextPart('Xでバズるハッシュタグを10個と,URL,ハッシュタグを含めた日本語の投稿例をXに投稿できる文字数内で３つをJSON形式{"posts":{"tags":[tag1,tag2], "texts":[紹介文1,紹介文2,紹介文3]}}で出力。'.$discription),
         //new TextPart('Xでバズるハッシュタグを10個と,日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は110文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
-        new TextPart($sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'に適した文字数でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
+        new TextPart($sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
     );
 
 //print nl2br($response->text());

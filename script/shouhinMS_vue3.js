@@ -190,7 +190,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				get_shouhinMS_newcd()
 			}else{
 			}
-			post_sns.value = {'URL':`${HTTP}product.php?id=${uid.value}-${shouhinCD.value}&z=`}
+			post_sns.value = {'URL':`${HTTP}product.php?id=${uid.value}-${shouhinCD.value}&z=`,'text':''}
 		})
 
 		let sort = 1
@@ -455,7 +455,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled = true
 			console_log('get_AI_post start')
 
-			GET_AI_POST(shouhinNM.value,midasi.value,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
+			GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
 			.then((response) => {
 				console_log('get_AI_post succsess')
 				console_log(response)
@@ -518,7 +518,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			midasi.value = p_midasi
 		}
 
-		const post_sns = ref('')
+		const post_sns = ref({'text':''})
+		const timing = ref('')
 		const sns_type = ref('')
 		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
@@ -627,6 +628,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			posting,
 			tag_param,
 			text_len,
+			timing,
 		}
 	}
 });
