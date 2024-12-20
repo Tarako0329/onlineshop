@@ -27,13 +27,25 @@ function log_writer2($pgname,$msg,$kankyo){
 // =========================================================
 // オリジナルログ出力(access_log)
 // =========================================================
-function aclog_writer($pgname,$msg){
+function aclog_writer($param,$pdo){
     if(!($_SERVER["PHP_SELF"]==="/index.php" || $_SERVER["PHP_SELF"]==="/product.php")){
         //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => 対象外:".$_SERVER["PHP_SELF"]."\n",FILE_APPEND);
         return 0;
     }
-    $log = print_r($msg,true);
-    file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
+    //$log = print_r($msg,true);
+    $sql = "insert into access_log(ip,bot,ua,ref,page,pram,product_name,get_param) values(:ip,:bot,:ua,:ref,:page,:pram,:product_name,:get_param)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
+    $stmt->bindValue("bot", $param[1], PDO::PARAM_STR);
+    $stmt->bindValue("ua", $param[2], PDO::PARAM_STR);
+    $stmt->bindValue("ref", $param[3], PDO::PARAM_STR);
+    $stmt->bindValue("page", $param[4], PDO::PARAM_STR);
+    $stmt->bindValue("pram", $param[5], PDO::PARAM_STR);
+    $stmt->bindValue("product_name", $param[6], PDO::PARAM_STR);
+    $stmt->bindValue("get_param", $param[7], PDO::PARAM_STR);
+    $stmt->bindValue("ip", $param[8], PDO::PARAM_STR);
+    $stmt->execute();
+    //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 }
 
 // =========================================================
