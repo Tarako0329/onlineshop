@@ -33,7 +33,7 @@ function aclog_writer($param,$pdo){
         return 0;
     }
     //$log = print_r($msg,true);
-    $sql = "insert into access_log(ip,bot,ua,ref,page,pram,get_param) values(:ip,:bot,:ua,:ref,:page,:pram,:get_param)";
+    $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param) values(:ip,:bot,:ua,:ref,:page,:pram,:get_param)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
     $stmt->bindValue("bot", $param[1], PDO::PARAM_STR);
