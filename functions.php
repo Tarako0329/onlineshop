@@ -33,16 +33,16 @@ function aclog_writer($param,$pdo){
         return 0;
     }
     //$log = print_r($msg,true);
-    $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param) values(:ip,:bot,:ua,:ref,:page,:pram,:get_param)";
+    $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
     $stmt->bindValue("bot", $param[1], PDO::PARAM_STR);
     $stmt->bindValue("ua", $param[2], PDO::PARAM_STR);
     $stmt->bindValue("ref", $param[3], PDO::PARAM_STR);
     $stmt->bindValue("page", $param[4], PDO::PARAM_STR);
-    $stmt->bindValue("pram", $param[5], PDO::PARAM_STR);
-    $stmt->bindValue("get_param", $param[7], PDO::PARAM_STR);
-    $stmt->bindValue("ip", $param[8], PDO::PARAM_STR);
+    $stmt->bindValue("param", $param[5], PDO::PARAM_STR);
+    $stmt->bindValue("get_param", $param[6], PDO::PARAM_STR);
+    $stmt->bindValue("koukoku_sns", $param[7], PDO::PARAM_STR);
     $stmt->execute();
     //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 }

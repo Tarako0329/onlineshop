@@ -69,24 +69,26 @@ if($get_z==="X"){
   $get_z = "direct";
 }
 // クライアントのユーザエージェントを取得
-$ua = $_SERVER['HTTP_USER_AGENT'];
+$ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
 $pattern_list_string = file_get_contents('bot_list.txt');
 // 作成したパターン文字列を使い正規表現によるマッチングを行う
 if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
-  //bot
   $bot = "bot";
 }else{
   $bot = "user";
 }
 $get = print_r($_GET,true);
+$get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
 $log_param = [
-  !empty($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:""
+  //!empty($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:""
+  $_SERVER['REMOTE_ADDR']
   ,$bot
-  ,!empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:""
+  ,$ua
   ,!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:""
   ,!empty($_SERVER['PHP_SELF'])?$_SERVER['PHP_SELF']:""
   ,!empty($_GET['id'])?$_GET['id']:""
   ,$get
+  ,$get_z
 ];
 aclog_writer($log_param,$pdo_h);
 
