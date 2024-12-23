@@ -81,7 +81,13 @@
                 </div>
               </div><!--写真-->
               <div class='col-6'><!--見出-->
-                <small><i class="bi bi-shop"></i>【 {{list.yagou}} 】</small>
+                <!--<small><i class="bi bi-shop"></i>【 {{list.yagou}} 】</small>-->
+                <div class='row'>
+                  <div class='col-12 d-flex align-items-end mb-3'>
+                  <div style='width:30px;height:30px;padding:0;' class="me-3"><img class='img_icon' :src='list.logo'></div>
+                  <div><small>【 {{list.yagou}} 】</small></div>
+                  </div>
+                </div>
                 <h3>『{{list.shouhinNM}}』</h3>
                 <div class='pb-3'>
                   <p>税込価格：<span class='kakaku'>{{(Number(list.zeikomikakaku)).toLocaleString()}} 円</span></p>

@@ -105,7 +105,8 @@ ver1.33.1:x post機能-bugfix/acclog機能-commited
 ver1.33.2:acclog機能-commited
 ver1.33.3:軽微な修正-commited
 ver1.33.4:軽微な修正-commited
-ver1.33.5:acclog機能table
+ver1.33.5:acclog機能table-commited
+ver1.33.6:軽微な変更
 
 【Issues】
 ・商品管理から品名CDを廃止する

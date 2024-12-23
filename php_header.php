@@ -57,7 +57,14 @@ define("GEMINI",$_ENV["GOOGLE_API"]);
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 //リファイラの取得
-$get_z = !empty($_GET["amp;z"])?$_GET["amp;z"]:$_GET["z"];
+
+if(!empty($_GET["amp;z"])){
+  $get_z = $_GET["amp;z"];
+}else if(!empty($_GET["z"])){
+  $get_z = $_GET["z"];
+}else{
+  $get_z = "";
+}
 
 if($get_z==="X"){
   $get_z = "X.com";

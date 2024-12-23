@@ -2,7 +2,10 @@
   require "php_header.php";
   if(false === strpos($_SERVER['HTTP_REFERER'],ROOT_URL."shouhinMS.php")){
     $token = csrf_create();
+  }else{
+    $token = "";
   }
+  
   if(!empty($_GET["key"])){
     $user_hash = $_GET["key"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
