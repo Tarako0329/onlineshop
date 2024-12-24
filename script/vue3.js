@@ -118,6 +118,115 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     }
   }
 })
+const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
+  setup() {
+    const shoplist = ref([])
+
+
+    //chartjs
+		let graph_obj
+
+    const get_graph_data = () => {
+			console_log("get_graph_data : daikoumoku")
+			let return_data = {
+        labels:[]
+        ,datasets:[
+          {
+            label : '初訪問'
+            ,data : []
+            ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+          },{
+            label : 'リピーター'
+            ,data : []
+            ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+          }
+        ]
+      }
+			//console_log(data)
+			analysis_data.value.forEach((row)=>{
+        return_data.labels.push(row.date)
+				return_data.datasets[0].data.push(row.初訪問)
+				return_data.datasets[1].data.push(row.再訪問)
+			})
+			return return_data
+		}
+
+
+
+		const create_graph = (ctx) =>{
+			console_log("create_graph : graph_data")
+			/*
+			const graph_data = {
+				labels    : readdata_summary.value.label
+				,datasets : get_graph_data(open_fil.value)
+			}
+      */
+			if(graph_obj){
+				graph_obj.destroy()
+			}
+
+			graph_obj = new Chart(ctx, {
+				type : 'bar'
+				//,data: graph_data
+				,data: get_graph_data()
+				,options: {
+					plugins: {
+						title: {
+							display: true,
+							text: "sample"
+						},
+					},
+					responsive: true,
+					scales: {
+						x: {
+							stacked: true,
+						},
+						y: {
+							stacked: true
+						}
+					}
+				}
+			})      
+		}
+
+		
+    const analysis_data = ref() //初回かリピーターか
+
+    const get_acc_analysis = () => {
+      const params = new FormData();
+
+      axios.post("ajax_get_analysis.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response) => {
+        console_log(response)
+        analysis_data.value = response.data
+        //console_log(get_graph_data())
+        create_graph(document.getElementById('myChart'))
+        console_log('ajax_get_analysis succsess')
+      })
+      .catch((error)=>{
+        console_log('ajax_get_analysis.php ERROR')
+        console_log(error)
+      })
+      .finally(()=>{
+      })
+    }
+
+    onMounted(()=>{
+      get_acc_analysis()
+      GET_USER2()
+      .then((response)=>{
+        console_log(response)
+        shoplist.value = response.Users_online
+      })
+      document.getElementById("menu_Shops").classList.add("active");
+    })
+
+    return {
+      shoplist,
+      analysis_data,
+    }
+  }
+})
 
 
 
