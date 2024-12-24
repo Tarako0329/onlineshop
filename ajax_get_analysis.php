@@ -29,7 +29,7 @@
 							,sum(if(bot='first',1,0)) as 初訪問 
 							,sum(if(bot='repeater',1,0)) as 再訪問 
 						FROM access_log AL 
-						inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' group by date,ip ) as MIN_DATA 
+						inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' group by date,mark_id ) as MIN_DATA 
 						ON AL.SEQ = MIN_DATA.minseq 
 						group by AL.date 
 						) as jisseki
