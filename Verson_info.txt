@@ -107,6 +107,9 @@ ver1.33.3:軽微な修正-commited
 ver1.33.4:軽微な修正-commited
 ver1.33.5:acclog機能table-commited
 ver1.33.6:軽微な変更
+ver1.33.7:access_log改良
+  ALTER TABLE `access_log` CHANGE `bot` `bot` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'bot or user';
+  ALTER TABLE `access_log` ADD `mark_id` VARCHAR(100) NOT NULL COMMENT 'cookie_aclu' AFTER `date`, ADD `session_id` VARCHAR(100) NOT NULL AFTER `mark_id`;
 
 【Issues】
 ・商品管理から品名CDを廃止する

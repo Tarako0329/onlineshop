@@ -260,6 +260,9 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       if(od_jusho.value==''){
         msg = msg + ' 住所'
       }
+      if(od_tel.value==''){
+        msg = msg + ' TEL'
+      }
       if(od_mail.value==''){
         msg = msg + ' メールアドレス'
       }

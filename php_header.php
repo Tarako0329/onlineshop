@@ -75,14 +75,26 @@ if($get_z==="X"){
 }else{
   $get_z = "direct";
 }
+
 // クライアントのユーザエージェントを取得
 $ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
 $pattern_list_string = file_get_contents('bot_list.txt');
-// 作成したパターン文字列を使い正規表現によるマッチングを行う
+
+// 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
 if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
   $bot = "bot";
 }else{
-  $bot = "user";
+  //訪問者のマーキング
+  if(empty($_COOKIE["aclu"])){//アクセスログユーザの略
+    $aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".$_SERVER['REMOTE_ADDR']);
+    setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);
+    $bot = "first";
+  }else{
+    $aclu = $_COOKIE["aclu"];
+    setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);//延長
+    $bot = "repeater";
+  }
+  //$bot = "user";
 }
 $get = print_r($_GET,true);
 $get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
@@ -96,6 +108,7 @@ $log_param = [
   ,!empty($_GET['id'])?$_GET['id']:""
   ,$get
   ,$get_z
+  ,$aclu
 ];
 aclog_writer($log_param,$pdo_h);
 

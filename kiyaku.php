@@ -49,7 +49,7 @@
 							<h4>２ システム利用料金 </h4>
 							<p  class='ps-4'>毎月１日より月末日までの税抜の総受注額をもとに、以下テーブルにのっとりご利用料金を決定いたします。 </p>
 							<p  class='ps-4' style='color:red;'>※ご請求額は税抜の受注金額をもとに算出されます。キャンセル対応を行った場合、必ずお客様にキャンセル入力をして頂いてください。</p>
-							<div class='col-12 col-lg-5 ps-4'>
+							<div class='col-12 col-lg-5 ps-4 mb-4'>
 							<table class='table'>
 								<thead>
 									<tr>
@@ -121,15 +121,16 @@
 								</tbody>
 							</table>
 							</div>
-							<p  class='ps-4'>例外パターン１：月の受注額が10万円に満たない場合</p>
+							<h5 class='ps-4 '>例外パターン１：月の受注額が10万円に満たない場合</h5>
 							<p  class='ps-4'>受注実績額はそのまま翌月に繰越され、10万円を超えた時点で1%(1000円)のシステム利用料をご請求となります。繰越は一旦リセットされます。</p>
 							<p  class='ps-4'>繰越リセット後、同月の追加売上が10万円未満だった場合、再度翌月に繰り越されます。</p>
-							<div class='col-12 ps-4'>
-								<img src='img/kurikoshi-1.png' style="width:100%;">
+							<div class='col-12 ps-4 mb-4'>
+								<img src='img/kurikoshi-1.png' style="width:100%;max-width:600px;">
 							</div>
-							<p  class='ps-4'>繰越リセット後、同月の追加売上が10万円以上だった場合、上のテーブルに基づき、追加売上分の利用料金をご請求いたします。</p>
+							<h5  class='ps-4'>繰越リセット後、同月の追加売上が10万円以上だった場合</h5>
+							<p  class='ps-4'>上のテーブルに基づき、追加売上分の利用料金をご請求いたします。</p>
 							<div class='col-12 ps-4'>
-								<img src='img/kurikoshi-2.png' style="width:100%;">
+								<img src='img/kurikoshi-2.png' style="width:100%;max-width:600px;">
 							</div>
 						</div>
 						<div class='mb-3'>
@@ -143,10 +144,6 @@
 							<p  class='ps-4'>その他、返品交換などについては各事業者様のご判断にてお願いいたします。</p>
 							<p  class='ps-4'>また、サイト設定より必ずキャンセル規定を記載するようにしてください。 </p>
 							<p  class='ps-4'>特段記載なき場合は、法律により『商品の引渡し（特定権利の移転）が完了した日から数えて８日以内』まではキャンセルを受け付ける義務が生じます。 </p>
-						</div>
-						<div class='mb-3'>
-							<h4>５ その他 </h4>
-							<p  class='ps-4'>プライバシーポリシー、特定商取引法に基づく表記  を順守するようお願いします。</p>
 						</div>
 						<div class='mb-3'>
 						 【2024年3月1日制定】

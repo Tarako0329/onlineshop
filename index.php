@@ -226,8 +226,8 @@
       </div>
       <div class='row mb-3'><!--郵便番号-->
         <div class='col-md-6 col-12'>
-          <label for='od_yubin' class="form-label">郵便番号('-'不要)</label>
-          <input type='text' maxlength='7' v-model='od_yubin' class='form-control' id='od_yubin' placeholder='必須'>
+          <label for='od_yubin' class="form-label">郵便番号(ハイフン不要)</label>
+          <input type='text' maxlength='7' v-model='od_yubin' class='form-control' id='od_yubin' placeholder='必須(1234567)'>
         </div>
       </div>
       <div class='row mb-3'>
@@ -238,8 +238,8 @@
       </div>
       <div class='row mb-3'>
         <div class='col-md-6 col-12'><!--tel-->
-          <label for='od_tel' class="form-label">TEL('-'不要)</label>
-          <input type='tel' v-model='od_tel' class='form-control' id='od_tel'>
+          <label for='od_tel' class="form-label">TEL(ハイフン不要)</label>
+          <input type='tel' v-model='od_tel' class='form-control' id='od_tel' placeholder='必須(09012345678)'>>
         </div>
       </div>
       <div class='row mb-3'><!--mail-->
@@ -264,7 +264,7 @@
         <div class='row mb-3'>
           <div class='col-md-6 col-12'>
             <label for='st_yubin' class="form-label">お届け先：郵便番号</label>
-            <input type='number' v-model='st_yubin' class='form-control' id='st_yubin' placeholder='必須'>
+            <input type='number' v-model='st_yubin' class='form-control' id='st_yubin' placeholder='必須(09012345678)'>
           </div>
         </div>
         <div class='row mb-3'>
@@ -276,7 +276,7 @@
         <div class='row mb-3'>
           <div class='col-md-6 col-12'>
             <label for='st_tel' class="form-label">お届け先：TEL</label>
-            <input type='tel' v-model='st_tel' class='form-control' id='st_tel'>
+            <input type='tel' v-model='st_tel' class='form-control' id='st_tel' placeholder='必須(09012345678)'>
           </div>
         </div>
       </div>
