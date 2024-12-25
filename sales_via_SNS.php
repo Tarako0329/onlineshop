@@ -112,7 +112,7 @@
                 <h4>ご自身のアカウントに投稿(各SNSに移動します)</h4>
                 <p><small>FACEBOOK,instagram は、文章が自動反映されません。<button type='button' @click='copy_sns("post_sns")' class='btn btn-primary btn-sm p-0' style='height:20px;min-width:40px;'>copy</button>ボタンでコピペしてください</small></p>
                 <!--LINE-->
-                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL_line}}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1 p-2"></i></a>
+                <a :href='`https://line.me/R/share?text=${post_sns.text}${post_sns.URL_line}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1 p-2"></i></a>
                 <!--FACEBOOK-->
                 <a :href='`https://www.facebook.com/share.php?u=${post_sns.URL}fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-2"></i></a>
                 <!--instagram-->

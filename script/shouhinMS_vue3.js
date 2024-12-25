@@ -528,6 +528,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const set_sns = (p_midasi) =>{
 			let tag = ""
 			post_sns.value = p_midasi
+			post_sns.value.URL_line = encodeURIComponent(post_sns.value.URL+'ln')
 			post_sns.value.tags.forEach((item)=>{
 				tag += `${item},`
 			})
