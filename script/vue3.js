@@ -218,7 +218,6 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         console_log(response)
         shoplist.value = response.Users_online
       })
-      document.getElementById("menu_Shops").classList.add("active");
     })
 
     return {

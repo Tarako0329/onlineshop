@@ -22,8 +22,8 @@
 		<TITLE><?php echo TITLE;?></TITLE>
 </head>
 <BODY>
+	<?php include "header_tag_admin.php"  ?>
 	<div id='app' style='height: 100%'>
-	<?php include "header_tag.php"  ?>
 	<MAIN class='container common_main'>
 		<div class='row' style='min-height:240px;'>
 			<div class='col-xl-12' style='height:100%;display:flex;justify-content: center;'>
@@ -43,6 +43,7 @@
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		acc_analysis('acc_analysis.php','<?php echo $token; ?>').mount('#app');
+		admin_menu('acc_analysis.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>
 	<script>// Enterキーが押された時にSubmitされるのを抑制する
 			window.onload = function() {
