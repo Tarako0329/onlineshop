@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
-define("VERSION","ver1.33.7");
+define("VERSION","ver1.33.8");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
@@ -86,7 +86,8 @@ if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
 }else{
   //訪問者のマーキング
   if(empty($_COOKIE["aclu"])){//アクセスログユーザの略
-    $aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".$_SERVER['REMOTE_ADDR']);
+    //$aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".$_SERVER['REMOTE_ADDR']);
+    $aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".session_id());
     setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);
     $bot = "first";
   }else{

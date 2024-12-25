@@ -2,6 +2,8 @@
 	require "php_header.php";
 	$token = csrf_create();
 	$_SESSION["user_id"] = "%";
+	//同一時刻同一IP別セッションのbot疑惑ログをbot?に更新(とりあえず保留)
+	$sql = "UPDATE access_log AS AL INNER JOIN ( SELECT datetime,ip,count(*) FROM `access_log` where bot<>'bot' group by datetime,ip HAVING count(*) > 1 ) AS tmp ON AL.datetime = tmp.datetime AND AL.ip = tmp.ip SET bot = 'bot?'";
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
