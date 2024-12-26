@@ -33,7 +33,24 @@ function aclog_writer($param,$pdo){
         return 0;
     }
     //$log = print_r($msg,true);
-    $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id)";
+
+    $shouhinNM = "";
+    $uid = 0;
+    if($param[4]==="/product.php"){
+        $position = strpos($param[5], "-") + 1;
+        //log_writer2("mojira",$position,"lv3");
+        $uid = substr($param[5],0, $position-1);
+        $shouhinCD = substr($param[5], $position);
+        log_writer2("mojira",$uid."-".$shouhinCD,"lv3");
+        $stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = $uid and shouhinCD = $shouhinCD");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        log_writer2("/rows",$rows,"lv3");
+        $shouhinNM = $rows[0]["shouhinNM"];
+    }
+
+    //$sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id)";
+    $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id,uid,shouhinNM) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id,:uid,:shouhinNM)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
     $stmt->bindValue("bot", $param[1], PDO::PARAM_STR);
@@ -45,6 +62,8 @@ function aclog_writer($param,$pdo){
     $stmt->bindValue("koukoku_sns", $param[7], PDO::PARAM_STR);
     $stmt->bindValue("mark_id", rot13decrypt2($param[8]), PDO::PARAM_STR);
     $stmt->bindValue("session_id", session_id(), PDO::PARAM_STR);
+    $stmt->bindValue("uid", $uid, PDO::PARAM_INT);
+    $stmt->bindValue("shouhinNM", $shouhinNM, PDO::PARAM_STR);
     $stmt->execute();
     //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 }
