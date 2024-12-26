@@ -26,13 +26,13 @@
 			@media screen and (min-width:0px) {
 			    /*md以上*/
 			    #chart_area{
-			        height:750px;
+			        height: 750px;
 			    }
 			}
 			@media screen and (min-width:768px) {
 			    /*md以上*/
 			    #chart_area{
-			        height:100%;
+			        height:900px;
 			    }
 			}
 		</style>

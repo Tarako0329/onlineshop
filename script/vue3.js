@@ -192,6 +192,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
               ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
             }
           ]
+          //,barThickness:5
         }
         
         analysis_data.value.forEach((row)=>{
@@ -231,6 +232,12 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
           maintainAspectRatio: false, //データに合わせて表エリアを調整する
 					responsive: true,
           indexAxis: 'y',
+          elements: {
+            bar: {
+                barThickness: 20 // 棒の幅を20pxに設定
+            }
+          },
+
 					scales: {
 						x: {
 							stacked: true,
