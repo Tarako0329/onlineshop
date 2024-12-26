@@ -45,11 +45,11 @@
 		
 		if($an_type == 1){
 			$sql = "WITH RECURSIVE cal AS (
-								SELECT '".$from."' AS date 
+								SELECT :from1 AS date 
 								UNION ALL
 								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
 								FROM cal
-								WHERE cal.date < '".$to."'
+								WHERE cal.date < :to1
 						)
 						SELECT 
 						".$word3." as date
@@ -64,7 +64,7 @@
 							,sum(if(bot='first',1,0)) as 初訪問 
 							,sum(if(bot='repeater',1,0)) as 再訪問 
 						FROM access_log AL 
-						inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' group by date,mark_id ) as MIN_DATA 
+						inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
 						ON AL.SEQ = MIN_DATA.minseq 
 						group by 
 							".$word2."
@@ -73,41 +73,45 @@
 						ORDER BY ".$word3." DESC";
 		}else if($an_type == 2){
 			$sql = "WITH RECURSIVE cal AS (
-								SELECT '2024-12-01' AS date  -- 開始日
+								SELECT :from1 AS date 
 								UNION ALL
-								SELECT DATE_ADD(cal.date, INTERVAL 1 DAY)
+								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
 								FROM cal
-								WHERE cal.date < '2024-12-31'  -- 終了日
+								WHERE cal.date < :to1
 						)
 						SELECT 
-							cal.date
-								,IFNULL(jisseki.訪問者数,0) as 訪問者数
-								,IFNULL(jisseki.X ,0) as X
-								,IFNULL(jisseki.instagram,0) as instagram
-								,IFNULL(jisseki.facebook,0) as facebook
-								,IFNULL(jisseki.google,0) as google
-								,IFNULL(jisseki.訪問者数,0)-IFNULL(jisseki.X ,0)-IFNULL(jisseki.instagram,0)-IFNULL(jisseki.facebook,0)-IFNULL(jisseki.google,0) as その他
+							".$word3." as date
+							,IFNULL(jisseki.訪問者数,0) as 訪問者数
+							,IFNULL(jisseki.X ,0) as X
+							,IFNULL(jisseki.instagram,0) as instagram
+							,IFNULL(jisseki.facebook,0) as facebook
+							,IFNULL(jisseki.google,0) as google
+							,IFNULL(jisseki.訪問者数,0)-IFNULL(jisseki.X ,0)-IFNULL(jisseki.instagram,0)-IFNULL(jisseki.facebook,0)-IFNULL(jisseki.google,0) as その他
 						FROM cal
 						LEFT JOIN
 						(SELECT 
-							AL.date
+							".$word2." as date
 							,count(*) as 訪問者数 
 							,sum(if(ref like '%//t.co/%',1,0)) as X
 							,sum(if(ref like '%instagram.com%',1,0)) as instagram 
 							,sum(if(ref like '%facebook%',1,0)) as facebook 
 							,sum(if(ref like '%google%',1,0)) as google 
-						FROM access_log AL 
-						inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' group by date,mark_id ) as MIN_DATA 
-						ON AL.SEQ = MIN_DATA.minseq 
-						group by AL.date 
-						) as jisseki
-						ON cal.date = jisseki.date
-						ORDER BY cal.date DESC";
+							FROM access_log AL 
+							inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
+							ON AL.SEQ = MIN_DATA.minseq 
+							group by 
+								".$word2."
+							) as jisseki
+							ON ".$word3." = jisseki.date
+							ORDER BY ".$word3." DESC";
 		}
 		log_writer2("\$sql",$sql,"lv3");
 		$stmt = $pdo_h->prepare($sql);
-		//$stmt->bindValue("askNO", $askNO, PDO::PARAM_INT);
-		//$stmt->bindValue("askNO", 0, PDO::PARAM_INT);
+		$stmt->bindValue("from1", $from, PDO::PARAM_STR);
+		$stmt->bindValue("to1", $to, PDO::PARAM_STR);
+		$stmt->bindValue("from2", $from, PDO::PARAM_STR);
+		$stmt->bindValue("to2", $to, PDO::PARAM_STR);
+
 		$stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

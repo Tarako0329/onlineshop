@@ -23,6 +23,18 @@
 			.btn{
 				min-width: 30px;
 			}
+			@media screen and (min-width:0px) {
+			    /*md以上*/
+			    #chart_area{
+			        height:750px;
+			    }
+			}
+			@media screen and (min-width:768px) {
+			    /*md以上*/
+			    #chart_area{
+			        height:100%;
+			    }
+			}
 		</style>
 		<meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
 		<TITLE><?php echo TITLE;?></TITLE>
@@ -36,9 +48,9 @@
 			<div style='width:80px;'>
 					<label for='an_type'>集計タイプ</label>
 					<select class='form-select' id='an_type' v-model='an_type'>
-						<option value=1>新規／再訪</option>
-						<option value=2>訪問経路</option>
-						<option value=3>宣伝効果</option>
+						<option value='1'>新規／再訪</option>
+						<option value='2'>訪問経路</option>
+						<option value='3'>宣伝効果</option>
 					</select>
 				</div>
 				<div style='width: 80px;'>
@@ -69,9 +81,9 @@
 				</div>
 			</div>
 		</div>
-		<div class='row' style='min-height:240px;'>
-			<div class='col-xl-12' style='height:100%;display:flex;justify-content: center;'>
-				<div style="position:relative;max-width:900px;width:90%;height:100%;">
+		<div class='row' style=''>
+			<div class='col-xl-12' style=''>
+				<div id='chart_area' style="width: 95%;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>

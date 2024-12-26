@@ -122,7 +122,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
 const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
   setup() {
     const shoplist = ref([])
-    const an_type = ref(1)
+    const an_type = ref('2')
     const tani = ref('d')  //範囲の単位
     const tani2 = ref() //集計対象：人or表示回数
     const from = ref(GET_KONGETU())
@@ -138,32 +138,74 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       }
     })
 
+    watch([an_type,tani,from,to],()=>{
+      get_acc_analysis()
+    })
 
     //chartjs
-		let graph_obj
+		let graph_obj //chart object
 
     const get_graph_data = () => {
-			console_log("get_graph_data : daikoumoku")
-			let return_data = {
-        labels:[]
-        ,datasets:[
-          {
-            label : '初訪問'
-            ,data : []
-            ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
-          },{
-            label : 'リピーター'
-            ,data : []
-            ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
-          }
-        ]
+			console_log("get_graph_data : daikoumoku : " + an_type.value)
+      let return_data
+      if(an_type.value==='1'){
+        console_log("1 start")
+        return_data = {
+          labels:[]
+          ,datasets:[
+            {
+              label : '初訪問'
+              ,data : []
+              ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            },{
+              label : 'リピーター'
+              ,data : []
+              ,backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            }
+          ]
+        }
+        
+        analysis_data.value.forEach((row)=>{
+          return_data.labels.push(row.date)
+          return_data.datasets[0].data.push(row.初訪問)
+          return_data.datasets[1].data.push(row.再訪問)
+        })
+      }else if(an_type.value==='2'){
+        console_log("2 start")
+        return_data = {
+          labels:[]
+          ,datasets:[
+            {
+              label : 'X.com'
+              ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)',
+            },{
+              label : 'instagram'
+              ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            },{
+              label : 'facebook'
+              ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            },{
+              label : 'google'
+              ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            },{
+              label : 'その他'
+              ,data : [],backgroundColor: 'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'
+            }
+          ]
+        }
+        
+        analysis_data.value.forEach((row)=>{
+          return_data.labels.push(row.date)
+          return_data.datasets[0].data.push(row.X)
+          return_data.datasets[1].data.push(row.instagram)
+          return_data.datasets[2].data.push(row.facebook)
+          return_data.datasets[3].data.push(row.google)
+          return_data.datasets[4].data.push(row.その他)
+        })
+        
       }
-			//console_log(data)
-			analysis_data.value.forEach((row)=>{
-        return_data.labels.push(row.date)
-				return_data.datasets[0].data.push(row.初訪問)
-				return_data.datasets[1].data.push(row.再訪問)
-			})
+      console_log("get_graph_data end")
+      console_log(return_data)
 			return return_data
 		}
 
@@ -171,12 +213,6 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
 		const create_graph = (ctx) =>{
 			console_log("create_graph : graph_data")
-			/*
-			const graph_data = {
-				labels    : readdata_summary.value.label
-				,datasets : get_graph_data(open_fil.value)
-			}
-      */
 			if(graph_obj){
 				graph_obj.destroy()
 			}
@@ -192,13 +228,23 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 							text: "sample"
 						},
 					},
+          maintainAspectRatio: false, //データに合わせて表エリアを調整する
 					responsive: true,
+          indexAxis: 'y',
 					scales: {
 						x: {
 							stacked: true,
+              ticks: {
+                max:30,
+                suggestedMax: undefined  // suggestedMaxオプションを削除
+              },
 						},
 						y: {
-							stacked: true
+              stacked: true,
+              barPercentage: 0.9,
+              ticks: {
+                //max:30
+              },
 						}
 					}
 				}
@@ -217,9 +263,8 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
       axios.post("ajax_get_analysis.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response) => {
-        console_log(response)
+        console_log(response.data)
         analysis_data.value = response.data
-        //console_log(get_graph_data())
         create_graph(document.getElementById('myChart'))
         console_log('ajax_get_analysis succsess')
       })
