@@ -28,6 +28,13 @@ const COPY_TARGET2 = (id) =>{
 
 }
 
+function GET_KONGETU() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1し、2桁に揃える
+  return `${year}-${month}`;
+}
+
 //グローバル関数
 const GET_USER2 = ()=>{//サイト設定情報取得
 	return new Promise((resolve, reject) => {

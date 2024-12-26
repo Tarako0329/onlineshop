@@ -118,9 +118,25 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     }
   }
 })
+
 const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
   setup() {
     const shoplist = ref([])
+    const an_type = ref(1)
+    const tani = ref('d')  //範囲の単位
+    const tani2 = ref() //集計対象：人or表示回数
+    const from = ref(GET_KONGETU())
+    const to = ref(GET_KONGETU())
+    const ymlist = ref()
+    const ylist = ref()
+
+    const list = computed(()=>{
+      if(tani.value === 'y'){
+        return ylist.value
+      }else{
+        return ymlist.value
+      }
+    })
 
 
     //chartjs
@@ -194,6 +210,10 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     const get_acc_analysis = () => {
       const params = new FormData();
+      params.append('an_type',an_type.value)
+      params.append('from',from.value)
+      params.append('to',to.value)
+      params.append('tani',tani.value)
 
       axios.post("ajax_get_analysis.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response) => {
@@ -212,6 +232,21 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     }
 
     onMounted(()=>{
+      //ymlist作成
+      axios.post("ajax_get_ymlist.php")
+      .then((response) => {
+        console_log(response.data)
+        ymlist.value = response.data.ymlist
+        ylist.value = response.data.ylist
+        console_log('ajax_get_analysis succsess')
+      })
+      .catch((error)=>{
+        console_log('ajax_get_analysis.php ERROR')
+        console_log(error)
+      })
+      .finally(()=>{
+      })
+
       get_acc_analysis()
       GET_USER2()
       .then((response)=>{
@@ -223,6 +258,12 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     return {
       shoplist,
       analysis_data,
+      an_type,
+      tani,
+      tani2,
+      from,
+      to,
+      list,
     }
   }
 })
