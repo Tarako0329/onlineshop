@@ -29,10 +29,10 @@
 			        height: 750px;
 			    }
 			}
-			@media screen and (min-width:768px) {
-			    /*md以上*/
+			@media screen and (min-width:1000px) {
+			    /*md以上 768*/
 			    #chart_area{
-			        height:900px;
+			        height:600px;
 			    }
 			}
 		</style>
@@ -50,7 +50,7 @@
 					<select class='form-select' id='an_type' v-model='an_type'>
 						<option value='1'>新規／再訪</option>
 						<option value='2'>訪問経路</option>
-						<option value='3'>宣伝効果</option>
+						<!--<option value='3'>宣伝効果</option>-->
 					</select>
 				</div>
 				<div style='width: 80px;'>

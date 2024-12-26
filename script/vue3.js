@@ -144,12 +144,14 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     //chartjs
 		let graph_obj //chart object
+    let graph_name = ''
 
     const get_graph_data = () => {
 			console_log("get_graph_data : daikoumoku : " + an_type.value)
       let return_data
       if(an_type.value==='1'){
         console_log("1 start")
+        graph_name = '新規／再訪 （人数）'
         return_data = {
           labels:[]
           ,datasets:[
@@ -172,6 +174,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         })
       }else if(an_type.value==='2'){
         console_log("2 start")
+        graph_name = 'アクセス経路 （人数）'
         return_data = {
           labels:[]
           ,datasets:[
@@ -205,11 +208,40 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         })
         
       }
-      console_log("get_graph_data end")
-      console_log(return_data)
+      //console_log("get_graph_data end")
+      //console_log(return_data)
 			return return_data
 		}
 
+    // 画面サイズに合わせてフォントサイズを変更
+    let juge_indexAxis = (window.innerWidth < 1000)?"y":"x"
+    let juge_reverse = (window.innerWidth < 1000)?false:true
+    window.addEventListener('resize', function() {
+      const windowWidth = window.innerWidth;
+      let new_val
+      let new_val2
+      if (windowWidth < 1000) {
+          // スマホの場合
+          //document.body.style.fontSize = '14px';
+          console_log("スマホの場合")
+          new_val = 'y'
+          new_val2 = false
+      } else {
+          // PCの場合
+          //document.body.style.fontSize = '16px';
+          console_log("PCの場合")
+          new_val = 'x'
+          new_val2 = true
+      }
+
+      if(new_val !== juge_indexAxis){
+        console_log("グラフリライト")
+        juge_indexAxis = new_val
+        juge_reverse = new_val2
+        create_graph(document.getElementById('myChart'))
+      }
+
+    });
 
 
 		const create_graph = (ctx) =>{
@@ -226,31 +258,33 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 					plugins: {
 						title: {
 							display: true,
-							text: "sample"
+							text: graph_name
 						},
 					},
           maintainAspectRatio: false, //データに合わせて表エリアを調整する
 					responsive: true,
-          indexAxis: 'y',
+          //indexAxis: 'y',
+          indexAxis: juge_indexAxis,
           elements: {
             bar: {
-                barThickness: 20 // 棒の幅を20pxに設定
+              barThickness: 20 // 棒の幅を20pxに設定
             }
           },
-
+          
 					scales: {
-						x: {
-							stacked: true,
+            x: {
+              stacked: true,
               ticks: {
-                max:30,
-                suggestedMax: undefined  // suggestedMaxオプションを削除
+                
               },
+              reverse: juge_reverse // X 軸を逆順にする
+              //max:30
 						},
 						y: {
               stacked: true,
               barPercentage: 0.9,
               ticks: {
-                //max:30
+                
               },
 						}
 					}
