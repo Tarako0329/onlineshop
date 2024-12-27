@@ -43,14 +43,14 @@
 	<?php include "header_tag_admin.php"  ?>
 	<div id='app' style='height: 100%'>
 	<MAIN class='container common_main'>
-		<div class='row'>
+		<div class='row'><!--serch-->
 			<div class='col-12 d-flex'>
 			<div style='width:80px;'>
 					<label for='an_type'>集計タイプ</label>
 					<select class='form-select' id='an_type' v-model='an_type'>
 						<option value='1'>新規／再訪</option>
 						<option value='2'>訪問経路</option>
-						<!--<option value='3'>宣伝効果</option>-->
+						<option value='3'>ページ別訪問人数</option>
 					</select>
 				</div>
 				<div style='width: 80px;'>
@@ -81,11 +81,33 @@
 				</div>
 			</div>
 		</div>
-		<div class='row' style=''>
+		<div class='row' style=''><!--graph-->
 			<div class='col-xl-12' style=''>
 				<div id='chart_area' style="width: 95%;">
 					<canvas id="myChart"></canvas>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class='col-xl-12' style=''>
+				<table class='table'>
+					<thead>
+						<tr>
+							<th>日付</th>
+							<th>ページ</th>
+							<th>アクセス</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template v-for='(list,index) in analysis_data' :key='list.date+list.shouhinNM'>
+							<tr>
+								<td>{{list.date}}</td>
+								<td>{{list.shouhinNM}}</td>
+								<td>{{list.訪問者数}}</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</MAIN>

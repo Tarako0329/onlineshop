@@ -104,6 +104,32 @@
 							) as jisseki
 							ON ".$word3." = jisseki.date
 							ORDER BY ".$word3." DESC";
+		}else if($an_type == 3){
+			$sql = "WITH RECURSIVE cal AS (
+								SELECT :from1 AS date 
+								UNION ALL
+								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
+								FROM cal
+								WHERE cal.date < :to1
+						)
+						SELECT 
+							".$word3." as date
+							,IFNULL(jisseki.page ,'') as page
+							,IFNULL(jisseki.uid,0) as uid
+							,IFNULL(jisseki.shouhinNM,0) as shouhinNM
+							,IFNULL(jisseki.訪問者数,0) as 訪問者数
+						FROM cal
+						LEFT JOIN
+						(SELECT 
+							".$word2." as date
+							,page,uid,shouhinNM
+							,count(*) as 訪問者数 
+							FROM  ( SELECT DISTINCT date,page,uid,shouhinNM,mark_id,bot FROM `access_log` where bot <> 'bot' and date between :from2 and :to2 ) as AL 
+							group by 
+								".$word2.",page,uid,shouhinNM
+							) as jisseki
+							ON ".$word3." = jisseki.date
+							ORDER BY ".$word3." DESC";
 		}
 		log_writer2("\$sql",$sql,"lv3");
 		$stmt = $pdo_h->prepare($sql);
