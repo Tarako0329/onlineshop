@@ -356,9 +356,12 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
         log_writer2("send_mail - \$body",$body,"lv3");
         return "success";
     }
-
-    require_once('qdmail.php');
-    require_once('qdsmtp.php');
+    
+    $mypath = dirname(__FILE__);
+    require $mypath."/vendor/autoload.php";
+  
+    require_once($mypath.'/qdmail.php');
+    require_once($mypath.'/qdsmtp.php');
 
     try{
         $mail = new Qdmail();

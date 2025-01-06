@@ -13,7 +13,7 @@
 	//echo $date->format('Y-m-d');
 	//echo $date->format('Ym');
 	
-	echo $getudo."<br>".$yokugetu;
+	//echo $getudo."<br>".$yokugetu;
 	//$getudo="202403";
 	//$yokugetu="202403";
 
