@@ -558,17 +558,18 @@ function sqllogger($logsql,$e){//(sqlログ,Exception $e:$eセット時はメー
     $userid = (!empty($_SESSION['user_id'])?$_SESSION['user_id']:"-");
     $callphp = debug_backtrace();
     $phpname = substr($callphp[0]["file"], (strrpos($callphp[0]["file"],"\\") +1));
+    $mypath = dirname(__FILE__)."/";
 
     if(!empty($logsql)){
-        file_put_contents("sql_log/".date("Y-m-d").".log", $logsql,FILE_APPEND);
+        file_put_contents($mypath."sql_log/".date("Y-m-d").".log", $logsql,FILE_APPEND);
     }
     if(!empty($e)){//主にロールバック時
         $elog = print_r($e,true);
         $eMsg = date("Y-m-d H:i:s")."\t".$userid."\t".$phpname."\t"."/*".$e->getMessage()."*/\n";
-        file_put_contents("sql_log/".date("Y-m-d").".log", $eMsg, FILE_APPEND);
+        file_put_contents($mypath."sql_log/".date("Y-m-d").".log", $eMsg, FILE_APPEND);
 
-        file_put_contents("sql_log/".$logfilename,$logsql,FILE_APPEND);
-        file_put_contents("sql_log/".$logfilename,"/*".$elog."*/\n",FILE_APPEND);
+        file_put_contents($mypath."sql_log/".$logfilename,$logsql,FILE_APPEND);
+        file_put_contents($mypath."sql_log/".$logfilename,"/*".$elog."*/\n",FILE_APPEND);
         log_writer2($phpname." [Exception \$e] =>",$e,"lv0");
     }
     

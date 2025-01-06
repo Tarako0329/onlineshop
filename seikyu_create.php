@@ -1,6 +1,34 @@
 <?php
 	//毎月１日にcornジョブから実行する
-	require "php_header.php";
+	//require "php_header.php";
+	date_default_timezone_set('Asia/Tokyo'); 
+  $mypath = dirname(__FILE__);
+  require $mypath."/vendor/autoload.php";
+  require $mypath."/functions.php";
+
+  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+  $dotenv->load();
+  define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
+  define("EXEC_MODE",$_ENV["EXEC_MODE"]);
+  define("TITLE",$_ENV["TITLE"]);
+  define("ROOT_URL",$_ENV["HTTP"]);
+
+  // DBとの接続
+  define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
+  define("USER_NAME", $_ENV["DBUSER"]);
+  define("PASSWORD", $_ENV["PASS"]);
+  $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+
+  //メール送信関連
+  define("HOST", $_ENV["HOST"]);
+  define("PORT", $_ENV["PORT"]);
+  define("FROM", $_ENV["FROM"]);
+  define("PROTOCOL", $_ENV["PROTOCOL"]);
+  define("POP_HOST", $_ENV["POP_HOST"]);
+  define("POP_USER", $_ENV["POP_USER"]);
+  define("POP_PASS", $_ENV["POP_PASS"]);
+
+
 
 	
 	$date = new DateTime(date('Y-m-d'));
@@ -141,6 +169,7 @@
       $reseve_status=true;
 			echo $msg."<br>".$e;
   }
-
+  exit();
+  
 
 ?>
