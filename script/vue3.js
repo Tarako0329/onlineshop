@@ -139,6 +139,11 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     })
 
     watch([an_type,tani,from,to],()=>{
+      if(an_type.value==='3'){
+        if(tani.value==='d'){
+          tani.value = 'm'
+        }
+      }
       get_acc_analysis()
     })
 
@@ -207,11 +212,39 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
           return_data.datasets[4].data.push(row.その他)
         })
         
+      }else if(an_type.value==='3'){
+        console_log("3 start")
+        graph_name = 'ページ別 （人数）'
+        return_data = {
+          labels:[]
+          ,datasets:[]
+        }
+        
+        let shori_ym=''
+        let index = 0
+        let loop_cnt = -1
+        analysis_data.value.forEach((row)=>{
+          if(shori_ym!==row.date){
+            return_data.labels.push(row.date)
+            shori_ym = row.date
+            index = 0
+            loop_cnt = loop_cnt + 1
+          }
+          if(loop_cnt === 0){
+            return_data.datasets.push({'label':row.shouhinNM,'data':[row.訪問者数],'backgroundColor':'rgba('+(~~(256 * Math.random()))+','+(~~(256 * Math.random()))+','+ (~~(256 * Math.random()))+', 0.8)'})
+          }else{
+            console_log(index)
+            return_data.datasets[index].data.push(row.訪問者数)
+          }
+          index = index + 1
+        })
+        
       }
       //console_log("get_graph_data end")
-      //console_log(return_data)
+      console_log(return_data)
 			return return_data
 		}
+
 
     // 画面サイズに合わせてフォントサイズを変更
     let juge_indexAxis = (window.innerWidth < 1000)?"y":"x"
@@ -273,7 +306,8 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
           
 					scales: {
             x: {
-              stacked: true,
+              //stacked: true,
+              stacked: (an_type.value==='3')?false:true,
               ticks: {
                 
               },
@@ -281,7 +315,8 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
               //max:30
 						},
 						y: {
-              stacked: true,
+              //stacked: true,
+              stacked: (an_type.value==='3')?false:true,
               barPercentage: 0.9,
               ticks: {
                 

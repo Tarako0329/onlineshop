@@ -114,7 +114,8 @@ ver1.33.8:access_log改良-commited
 ver1.33.9:access_log改良-commited
 ver1.34.0:access_log改良-commited
   ALTER TABLE `access_log` ADD `uid` INT(11) NOT NULL DEFAULT '0' AFTER `get_param`, ADD `shouhinNM` VARCHAR(100) NULL AFTER `uid`;
-ver1.34.1:bugfix:請求処理
+ver1.34.1:bugfix:請求処理-commited
+ver1.34.2:access_log改良
 
 【Issues】
 ・商品管理から品名CDを廃止する
