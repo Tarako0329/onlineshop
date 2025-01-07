@@ -200,6 +200,7 @@
         <div class='col-md-8 col-12'>
           <button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
           <button type='button' class='btn btn-warning ms-3' @click='set_shouhinNM("")'>キャンセル</button>
+          <button v-if='mode==="upd"' type='button' class='btn btn-danger ms-3' style='min-width:90px;' @click='upd_status("del",shouhinCD)'>削除</button>
         </div>
       </div>
     </div>

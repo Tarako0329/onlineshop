@@ -405,6 +405,12 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		const upd_status = (p_status,p_shouhinCD) =>{
 			console_log(p_status)
+			if(p_status==='del'){
+				if(confirm('本当に削除しますか？')===false){
+					alert('処理を中止しました')
+					return 0
+				}
+			}
 			const form = new FormData();
 			form.append(`shouhinCD`, p_shouhinCD)
 			form.append(`status`, p_status)
@@ -421,6 +427,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					msg.value=`販売ステータス変更に失敗しました。${response.data.MSG}`
 				}
 				token = response.data.csrf_create
+				if(p_status==='del'){
+					alert('削除しました')
+					clear_ms()
+					disp.value = 'none'
+				}
 			})
 			.catch((error,response)=>{
 				console_log(error)

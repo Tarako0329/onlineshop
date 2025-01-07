@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
-define("VERSION","ver1.34.2");
+define("VERSION","ver1.35.0");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);

@@ -36,7 +36,7 @@
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
 			and pic.sort=1*/
-			where online.uid like :uid and online.shouhinNM like :hinmei 
+			where online.uid like :uid and online.shouhinNM like :hinmei and online.status <> 'del' 
 			order by 
 				online.uid
 				,case 
@@ -64,7 +64,7 @@
 			left join shouhinMS_online_pic pic 
 			on online.uid = pic.uid 
 			and online.shouhinCD = pic.shouhinCD
-			where online.uid like :uid and online.shouhinNM like :hinmei 
+			where online.uid like :uid and online.shouhinNM like :hinmei and online.status <> 'del'
 			order by online.uid,online.shouhinCD,pic.sort";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
