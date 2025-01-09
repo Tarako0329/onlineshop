@@ -82,19 +82,17 @@
 			</div>
 		</div>
 		<div class='row' style=''><!--graph-->
-			<div class='col-xl-12' style=''>
+			<div class='col-xl-7 col-12' style=''>
 				<div id='chart_area' style="width: 95%;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class='col-xl-12' style=''>
+			<div class='col-xl-5 col-12' style=''>
 				<table class='table'>
 					<thead>
 						<tr>
 							<th>日付</th>
-							<th>ページ</th>
+							<th v-if='an_type==3'>ページ</th>
 							<th>アクセス</th>
 						</tr>
 					</thead>
@@ -102,7 +100,7 @@
 						<template v-for='(list,index) in analysis_data' :key='list.date+list.shouhinNM'>
 							<tr>
 								<td>{{list.date}}</td>
-								<td>{{list.shouhinNM}}</td>
+								<td v-if='an_type==3'>{{list.shouhinNM}}</td>
 								<td>{{list.訪問者数}}</td>
 							</tr>
 						</template>
@@ -124,7 +122,7 @@
 		admin_menu('acc_analysis.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>
 	<script>// Enterキーが押された時にSubmitされるのを抑制する
-			window.onload = function() {
+			/*window.onload = function() {
 				document.getElementById("app").onkeypress = (e) => {
 					// form1に入力されたキーを取得
 					const key = e.keyCode || e.charCode || 0;
@@ -132,7 +130,7 @@
 						//e.preventDefault();// アクションを行わない
 					}
 				}    
-			};    
+			};    */
 	</script>
 </BODY>
 </html>

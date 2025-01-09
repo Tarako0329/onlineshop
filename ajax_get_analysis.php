@@ -77,7 +77,7 @@
 								".$word2."
 						) as jisseki
 						ON ".$word3." = jisseki.date
-						WHERE cal.date < :to3
+						WHERE cal.date < :to3 AND cal.date <= CURDATE()
 						ORDER BY ".$word3." DESC";
 		}else if($an_type == 2){
 			$sql = "WITH RECURSIVE cal AS (
@@ -112,7 +112,7 @@
 								".$word2."
 						) as jisseki
 						ON ".$word3." = jisseki.date
-						WHERE cal.date < :to3
+						WHERE cal.date < :to3 AND cal.date <= CURDATE()
 						ORDER BY ".$word3." DESC";
 		}else if($an_type == 3){//表示が煩雑になるので月集計・年集計のみ
 			$sql = "WITH RECURSIVE cal AS (

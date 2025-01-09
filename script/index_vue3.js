@@ -444,6 +444,35 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
     }
 
     const product_url = ref(`${HTTP}product.php?id=`)
+    const open_list = []
+
+    const shouhin_open_log = (p_uid,p_shouhinCD,p_index) =>{
+      console_log(`shouhin_open_log : start`)
+      console_log(`shouhin_open_log : ${open_list}`)
+      if(open_list.indexOf(`${p_uid}-${p_shouhinCD}`)!==-1){
+        console_log(`shouhin_open_log : open->close`)
+        open_list.splice(open_list.indexOf(`${p_uid}-${p_shouhinCD}`),1)
+        console_log(`shouhin_open_log : ${open_list}`)
+        return 0
+      }
+      
+      const form = new FormData();
+      form.append(`shouhinCD`, `${p_uid}-${p_shouhinCD}`)
+      form.append(`csrf_token`, token)
+      
+      axios.post("ajax_ins_access_log.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        open_list.push(`${p_uid}-${p_shouhinCD}`)
+      })
+      .catch((error,response)=>{
+        console_log(error)
+      })
+      .finally(()=>{
+        console_log(`shouhin_open_log : ${open_list}`)
+      })
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
 
@@ -498,6 +527,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       set_qa_index,
       send_email,
       product_url,
+      shouhin_open_log,
     }
   }
 });

@@ -96,7 +96,7 @@
                 <p>{{list.short_info}}</p>
               </div><!--見出-->
             </div>
-            <div class='row'>
+            <div class='row'><!--問合せ・シェアボタン-->
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問い合わせ<i class="bi bi-envelope-at-fill ms-2"></i></button>
               </div>
@@ -120,7 +120,7 @@
                 <div class="accordion" :id="`accordion_${index}`">
                   <div class="accordion-item">
                     <h2 class="accordion-header">
-                      <button class="accordion-button" style='font-size:15px;font-weight:400;' type="button" data-bs-toggle="collapse" :data-bs-target="`#collapseOne_${index}`" aria-expanded="true" aria-controls="collapseOne">
+                      <button @click='shouhin_open_log(list.uid,list.shouhinCD,index)' class="accordion-button" style='font-size:15px;font-weight:400;' type="button" data-bs-toggle="collapse" :data-bs-target="`#collapseOne_${index}`" aria-expanded="true" aria-controls="collapseOne">
                         商品詳細・ご注文はコチラ
                       </button>
                     </h2>

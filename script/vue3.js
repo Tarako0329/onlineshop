@@ -202,7 +202,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
           ]
           //,barThickness:5
         }
-        
+
         analysis_data.value.forEach((row)=>{
           return_data.labels.push(row.date)
           return_data.datasets[0].data.push(row.X)

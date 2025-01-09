@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Asia/Tokyo'); 
-define("VERSION","ver1.35.0");
+define("VERSION","ver1.36.0");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
@@ -100,7 +100,6 @@ if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
 $get = print_r($_GET,true);
 $get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
 $log_param = [
-  //!empty($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:""
   $_SERVER['REMOTE_ADDR']
   ,$bot
   ,$ua
@@ -111,6 +110,7 @@ $log_param = [
   ,$get_z
   ,$aclu
 ];
+$_SESSION["log_param"] = $log_param;
 aclog_writer($log_param,$pdo_h);
 
 
