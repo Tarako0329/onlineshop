@@ -129,6 +129,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     const to = ref(GET_KONGETU())
     const ymlist = ref()
     const ylist = ref()
+    const taishou_all = ref(false)
 
     const list = computed(()=>{
       if(tani.value === 'y'){
@@ -138,7 +139,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       }
     })
 
-    watch([an_type,tani,from,to],()=>{
+    watch([an_type,tani,from,to,taishou_all],()=>{
       if(an_type.value==='3'){
         if(tani.value==='d'){
           tani.value = 'm'
@@ -336,6 +337,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       params.append('from',from.value)
       params.append('to',to.value)
       params.append('tani',tani.value)
+      params.append('taishou_all',taishou_all.value)
 
       axios.post("ajax_get_analysis.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response) => {
@@ -385,6 +387,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       from,
       to,
       list,
+      taishou_all,
     }
   }
 })

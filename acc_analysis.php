@@ -45,7 +45,7 @@
 	<MAIN class='container common_main'>
 		<div class='row'><!--serch-->
 			<div class='col-12 d-flex'>
-			<div style='width:80px;'>
+				<div style='width:80px;'>
 					<label for='an_type'>集計タイプ</label>
 					<select class='form-select' id='an_type' v-model='an_type'>
 						<option value='1'>新規／再訪</option>
@@ -80,14 +80,22 @@
 					</div>
 				</div>
 			</div>
+			<div class='col-12'>
+				<div class="form-check">
+				  <input class="form-check-input" type="checkbox" v-model='taishou_all' id="flexCheckDefault">
+				  <label class="form-check-label" for="flexCheckDefault">
+				    販売中以外のページを除く
+				  </label>
+				</div>
+			</div>
 		</div>
-		<div class='row' style=''><!--graph-->
-			<div class='col-xl-7 col-12' style=''>
+		<div class='row' style=''><!--graph/table-->
+			<div class='col-xl-7 col-12' style=''><!--graph-->
 				<div id='chart_area' style="width: 95%;">
 					<canvas id="myChart"></canvas>
 				</div>
 			</div>
-			<div class='col-xl-5 col-12' style=''>
+			<div class='col-xl-5 col-12' style=''><!--table-->
 				<table class='table'>
 					<thead>
 						<tr>

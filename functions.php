@@ -28,8 +28,8 @@ function log_writer2($pgname,$msg,$kankyo){
 // オリジナルログ出力(access_log)
 // =========================================================
 function aclog_writer($param,$pdo){
-    log_writer2("\$param",$param,"lv3");
-    log_writer2("\$_SERVER[PHP_SELF]",$_SERVER["PHP_SELF"],"lv3");
+    //log_writer2("\$param",$param,"lv3");
+    //log_writer2("\$_SERVER[PHP_SELF]",$_SERVER["PHP_SELF"],"lv3");
     if(!($_SERVER["PHP_SELF"]==="/index.php" || $_SERVER["PHP_SELF"]==="/product.php" || $_SERVER["PHP_SELF"]==="/ajax_ins_access_log.php")){
         //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => 対象外:".$_SERVER["PHP_SELF"]."\n",FILE_APPEND);
         return 0;
@@ -50,7 +50,7 @@ function aclog_writer($param,$pdo){
         log_writer2("/rows",$rows,"lv3");
         $shouhinNM = $rows[0]["shouhinNM"];
     }
-    log_writer2("aclog_writer","finish1","lv3");
+    //log_writer2("aclog_writer","finish1","lv3");
     //$sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id)";
     $sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id,uid,shouhinNM) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id,:uid,:shouhinNM)";
     $stmt = $pdo->prepare($sql);
@@ -68,7 +68,7 @@ function aclog_writer($param,$pdo){
     $stmt->bindValue("shouhinNM", $shouhinNM, PDO::PARAM_STR);
     $stmt->execute();
     //file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
-    log_writer2("aclog_writer","finish","lv3");
+    //log_writer2("aclog_writer","finish","lv3");
 }
 
 // =========================================================
