@@ -41,7 +41,7 @@ if($rtn !== true){
 		$value = $_POST["value"];
 		$orderNO = $_POST["orderNO"];
 
-		$sqlstr_h = "update juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
+		$sqlstr_h = "UPDATE juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
 
 		$params["uid"] = $_SESSION["user_id"];
 		$params[$colum] = $_POST["value"];
@@ -65,17 +65,83 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
 			if($colum ==="postage" || $colum === "postage_zeikbn"){
-				$sqlstr_h = "update juchuu_head set postage_zei = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where orderNO = :orderNO and uid like :uid";
+				$sqlstr_h = "UPDATE juchuu_head set postage_zei = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where orderNO = :orderNO and uid like :uid";
 				$stmt = $pdo_h->prepare( $sqlstr_h );
 				//bind処理
 				$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
 				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
-	
+				
 				$sqllog .= rtn_sqllog($sqlstr_h,$params);
-	
+				
 				$status = $stmt->execute();
 				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			}
+			
+			//レジアプリユーザの売上連携
+			$sqlstr_h ="SELECT * from Users where uid = :uid";
+			$stmt = $pdo_h->prepare( $sqlstr_h );
+			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+			$stmt->execute();
+			$user_ms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if($user_ms[0]["webrez"]==="use" && $colum==="payment" && $value==1){
+				$sql = "SELECT m.orderNO,m.zeikbn,sum(m.goukeitanka) as urikin,sum(m.zei) as zei ,h.name
+							from juchuu_meisai m
+							inner join juchuu_head h
+							on m.orderNO = h.orderNO
+							where h.uid = :uid and m.orderNO = :orderNO group by h.uid,m.orderNO,zeikbn";
+				$stmt = $pdo_h->prepare( $sql );
+				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+				$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
+				$stmt->execute();
+				$Uriage = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				$sql = "SELECT MAX(UriageNO) as MAX_URINO from UriageData where uid = :uid";
+				$stmt = $pdo_h->prepare( $sql );
+				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+				$stmt->execute();
+				$UriageNO = $stmt->fetch(PDO::FETCH_ASSOC);
+				log_writer2("\$UriageNO",$UriageNO,"lv3");
+
+				$sql = "INSERT into UriageData(uid,UriageNO,UriDate,TokuisakiNM,ShouhinCD,ShouhinNM,su,tanka,UriageKin,zei,zeiKBN)";
+				$sql .= "	values(:uid,:UriageNO,CURDATE(),:TokuisakiNM,:ShouhinCD,:ShouhinNM,1,:tanka,:UriageKin,:zeigaku,:zeiKBN)";
+				foreach($Uriage as $row){
+					$NextUriNO = $UriageNO["MAX_URINO"] + 1;
+					//$params["uid"]="";
+					$params["UriageNO"]=$NextUriNO;
+					$params["TokuisakiNM"]=$row["name"]."様";
+					$params["ShouhinCD"]=99999;
+					$params["ShouhinNM"]="OnLine受注NO [".$row["orderNO"]."]";
+					$params["tanka"]=$row["urikin"];
+					$params["UriageKin"]=$row["urikin"];
+					$params["zeigaku"]=$row["zei"];
+					$params["zeiKBN"]=$row["zeikbn"];
+					$stmt = $pdo_h->prepare( $sql );
+					$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+					$stmt->bindValue("UriageNO", $params["UriageNO"], PDO::PARAM_INT);
+					$stmt->bindValue("TokuisakiNM", $params["TokuisakiNM"], PDO::PARAM_STR);
+					$stmt->bindValue("ShouhinCD", $params["ShouhinCD"], PDO::PARAM_INT);
+					$stmt->bindValue("ShouhinNM", $params["ShouhinNM"], PDO::PARAM_STR);
+					$stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
+					$stmt->bindValue("UriageKin", $params["UriageKin"], PDO::PARAM_INT);
+					$stmt->bindValue("zeigaku", $params["zeigaku"], PDO::PARAM_INT);
+					$stmt->bindValue("zeiKBN", $params["zeiKBN"], PDO::PARAM_INT);
+					
+					$sqllog .= rtn_sqllog($sql,$params);
+					$stmt->execute();
+					$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 				}
+			}else if($user_ms[0]["webrez"]==="use" && $colum==="payment" && $value==0){
+				$sql ="DELETE from UriageData where uid=:uid and ShouhinNM Like :ShouhinNM";
+				$stmt = $pdo_h->prepare($sql);
+				$params["ShouhinNM"]="OnLine受注NO [".$params["orderNO"]."]";
+				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+				$stmt->bindValue("ShouhinNM", $params["ShouhinNM"], PDO::PARAM_STR);
+				$sqllog .= rtn_sqllog($sql,$params);
+				$stmt->execute();
+				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+
+			}
 			
 			//$count = $stmt->rowCount();
 			$pdo_h->commit();

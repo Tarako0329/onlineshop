@@ -117,8 +117,9 @@ ver1.34.0:access_log改良-commited
 ver1.34.1:bugfix:請求処理-commited
 ver1.34.2:access_log改良-commited
 ver1.35.0:商品削除機能追加-commited
-ver1.36.0:access解析ページの表を最適化
-ver1.36.1:access解析ページの表を最適化
+ver1.36.0:access解析ページの表を最適化-commited
+ver1.36.1:access解析ページの表を最適化-commited
+ver1.36.2:売上ウェブレジ連携
 
 【Issues】
 ・商品管理から品名CDを廃止する
