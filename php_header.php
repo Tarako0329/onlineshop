@@ -73,7 +73,11 @@ if($get_z==="X"){
 }else if($get_z==="ln"){
   $get_z = "Line";
 }else{
-  $get_z = "direct";
+  if(strpos($_SERVER['HTTP_REFERER'], "instagram")!==false){
+    $get_z = "instagram";
+  }else{
+    $get_z = "direct";
+  }
 }
 
 // クライアントのユーザエージェントを取得
@@ -81,7 +85,8 @@ $ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
 $pattern_list_string = file_get_contents('bot_list.txt');
 
 // 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
-if(preg_match('/' . $pattern_list_string . '/', $ua) === 1){
+if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === ""){
+  //大半のユーザはユーザエージェントある。ないのは非ユーザが大半で、あとは小数のセキュリティ意識高すぎ人なので排除
   $bot = "bot";
 }else{
   //訪問者のマーキング
