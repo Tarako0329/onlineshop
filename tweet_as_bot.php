@@ -23,6 +23,7 @@ $online_shop_config = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if($online_shop_config[0]["next_post_time"] >= date('Y-m-d H:i:s')){
 	//実行時間前
+	echo "次回送信は ".$online_shop_config[0]["next_post_time"]."です。\n処理を終了します";
 	exit();
 }
 
