@@ -5,7 +5,7 @@ if (php_sapi_name() != 'cli') {
 }
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
-log_writer2("\$_POST",$_POST,"lv1");
+//log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;
@@ -23,28 +23,32 @@ if($row["next_post_time"] >= date('Y-m-d H:i:s')){
   //exit();
 }
 
-if(EXEC_MODE<>"Local"){
+if(EXEC_MODE==="Local"){
     $msg = "ツイートが送信されました！";
     $status = "success";
 }else{
   //ポスト内容取得
 
   //商品選定
-  $stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status=show and auto_sns_post not like '%X%' order by shouhinCD");
+  $stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
   $stmt->execute();
   $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
   $post_index = rand(0,(count($row)-1));
+  
+  echo "<p>対象商品:".$row[$post_index]["shouhinNM"]."</p>";
+  //log_writer2("\$post_index",$post_index,"lv1");
+  //log_writer2("\$row",$row[$post_index],"lv1");
 
   //つぶやき作成
-  $sns_type = !empty($_POST["sns_type"])?$_POST["sns_type"]:"SNS" ;
+  $sns_type = "X" ;
   $uid = $row[$post_index]["uid"];
   $shouhinCD = $row[$post_index]["shouhinCD"];
   $yagou = $row[$post_index]["yagou"];
   $hinmei = $row[$post_index]["shouhinNM"];
-  $sort_info = $row[$post_index]["sort_info"];
-  $information = $row[$post_index]["information"];
+  $sort_info = $row[$post_index]["short_info"];
+  $information = $row[$post_index]["infomation"];
   
-  $discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z= 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;
+  $discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z=".$sns_type." 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;
   
   
   $client = new Client(GEMINI);
@@ -53,10 +57,7 @@ if(EXEC_MODE<>"Local"){
       ->generativeModel(ModelName::GEMINI_1_5_FLASH)
       ->withSystemInstruction('凄腕インフルエンサーとして')
       ->generateContent(
-          //new TextPart('Xでバズるハッシュタグとハッシュタグを含めた日本語の投稿例を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、ハッシュタグはtags。投稿例はrei1,rei2,rei3で。'.$discription),
-          //new TextPart('Xでバズるハッシュタグを10個と,URL,ハッシュタグを含めた日本語の投稿例をXに投稿できる文字数内で３つをJSON形式{"posts":{"tags":[tag1,tag2], "texts":[紹介文1,紹介文2,紹介文3]}}で出力。'.$discription),
-          //new TextPart('Xでバズるハッシュタグを10個と,日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は110文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
-          new TextPart($sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
+          new TextPart($sns_type.'で購買意欲を掻き立てる日本語の投稿例を10個出力。'.$sns_type.'にそのまま投稿できるようにＵＲＬとハッシュタグも含めて作成。phpのjson_decodeで処理できるように[{"post":投稿例},{"post":投稿例}]で出力。JSONオブジェクトを、プレーンテキスト形式で出力してください'.$discription),
       );
       
   //print nl2br($response->text());
@@ -68,17 +69,19 @@ if(EXEC_MODE<>"Local"){
   $answer = str_replace('\r','',$answer);
   $answer = str_replace('\r\n','',$answer);
   $answer = substr($answer,1);
+  $answer = json_decode($answer,true);
+  //print_r($answer);
+  log_writer2("\$answer",$answer,"lv1");
   
-  echo $answer;
   
-  $text = $_POST["tweet"].$_POST["hash_tag"]." ".$_POST["URL"];
+  $text = $answer[rand(0,9)]["post"];
   
   
   define("API_KEY",$_ENV["X_API_KEY"]);
   define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
   define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
   define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
-  /*
+  
   try{
     $connection = new TwitterOAuth(
       API_KEY,
@@ -94,21 +97,22 @@ if(EXEC_MODE<>"Local"){
   
     $httpCode = $connection->getLastHttpCode();
     
+    echo $text."\n";
     if ($httpCode == 201) { // 201は作成成功を示すステータスコード
       //$this->info("ツイートが送信されました！");
-      $msg = "ツイートが送信されました！\n";
+      echo "ツイートが送信されました！\n";
       $status = "success";
     } else {
       $errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
       //$this->error("ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage");
-      $msg = "ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage ";
+      echo "ツイートの送信に失敗しました。HTTPコード: $httpCode, エラーメッセージ: $errorMessage ";
       log_writer2("\$msg",$msg,"lv1");
     }
   }catch(Exception $e){
     //print_r($e,true);
     echo "catch(Exception \$e)";
     log_writer2("\$e",$e,"lv0");
-  }*/
+  }
 }
 
 exit();
