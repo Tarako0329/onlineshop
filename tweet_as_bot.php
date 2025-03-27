@@ -1,7 +1,7 @@
 <?php
 //１日５０ツイートまでかつ月１５００ツイートまで
 if (php_sapi_name() != 'cli') {
-  exit('このスクリプトはCLIからのみ実行可能です。');
+  //exit('このスクリプトはCLIからのみ実行可能です。');
 }
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
@@ -20,10 +20,10 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if($row["next_post_time"] >= date('Y-m-d H:i:s')){
   //実行時間前
-  exit();
+  //exit();
 }
 
-if(EXEC_MODE<>"Product"){
+if(EXEC_MODE<>"Local"){
     $msg = "ツイートが送信されました！";
     $status = "success";
 }else{
@@ -68,7 +68,8 @@ if(EXEC_MODE<>"Product"){
   $answer = str_replace('\r','',$answer);
   $answer = str_replace('\r\n','',$answer);
   $answer = substr($answer,1);
-
+  
+  echo $answer;
   
   $text = $_POST["tweet"].$_POST["hash_tag"]." ".$_POST["URL"];
   
@@ -77,7 +78,7 @@ if(EXEC_MODE<>"Product"){
   define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
   define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
   define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
-  
+  /*
   try{
     $connection = new TwitterOAuth(
       API_KEY,
@@ -107,7 +108,7 @@ if(EXEC_MODE<>"Product"){
     //print_r($e,true);
     echo "catch(Exception \$e)";
     log_writer2("\$e",$e,"lv0");
-  }
+  }*/
 }
 
 exit();
