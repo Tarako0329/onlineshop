@@ -119,8 +119,10 @@ ver1.34.2:access_log改良-commited
 ver1.35.0:商品削除機能追加-commited
 ver1.36.0:access解析ページの表を最適化-commited
 ver1.36.1:access解析ページの表を最適化-commited
-ver1.36.2:売上ウェブレジ連携
-ver1.36.3:access_log精度向上
+ver1.36.2:売上ウェブレジ連携-commited
+ver1.36.3:access_log精度向上-commited
+ver1.36.3:SNS自動投稿機能
+  ALTER TABLE `shouhinMS_online` ADD `auto_post_sns` VARCHAR(10) NULL COMMENT '自動投稿CHK' AFTER `Category`;
 
 【Issues】
 ・商品管理から品名CDを廃止する
