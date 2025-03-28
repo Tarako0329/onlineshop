@@ -1,12 +1,62 @@
 <?php
 //１日５０ツイートまでかつ月１５００ツイートまで
+date_default_timezone_set('Asia/Tokyo'); 
 if (php_sapi_name() != 'cli') {
 	exit('このスクリプトはCLIからのみ実行可能です。');
 }
 chdir(__DIR__);
-echo "処理を開始します。\n";
 
-require "php_header.php";
+//require "php_header.php";
+
+define("VERSION","ver1.36.1");
+
+require "./vendor/autoload.php";
+require "functions.php";
+
+//.envの取得
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+//define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
+//define("ROOT_URL",$_ENV["HTTP"]);
+define("EXEC_MODE",$_ENV["EXEC_MODE"]);
+//define("TITLE",$_ENV["TITLE"]);
+//システム通知
+define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
+
+//$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
+session_start();
+//$_SESSION = [];
+
+//if(MAIN_DOMAIN==="localhost:81"){
+if(EXEC_MODE<>"Product"){
+  $time=date('Ymd-His');
+  $id="demo";
+  $pass="00000000";
+}else{
+  $time=VERSION;
+  $id="";
+  $pass="";
+}
+
+
+// DBとの接続
+define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
+define("USER_NAME", $_ENV["DBUSER"]);
+define("PASSWORD", $_ENV["PASS"]);
+
+//メール送信関連
+define("HOST", $_ENV["HOST"]);
+define("PORT", $_ENV["PORT"]);
+define("FROM", $_ENV["FROM"]);
+define("PROTOCOL", $_ENV["PROTOCOL"]);
+define("POP_HOST", $_ENV["POP_HOST"]);
+define("POP_USER", $_ENV["POP_USER"]);
+define("POP_PASS", $_ENV["POP_PASS"]);
+
+define("GEMINI",$_ENV["GOOGLE_API"]);
+
+$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 //log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -23,9 +73,11 @@ $online_shop_config = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if($online_shop_config[0]["next_post_time"] >= date('Y-m-d H:i:s')){
 	//実行時間前
-	echo "次回送信は ".$online_shop_config[0]["next_post_time"]."です。\n処理を終了します";
+	//echo "次回送信は ".$online_shop_config[0]["next_post_time"]."です。\n処理を終了します";
 	exit();
 }
+
+echo "処理を開始します。\n";
 
 if(EXEC_MODE==="Local"){
 		echo "ツイートが送信されました！";
@@ -95,7 +147,7 @@ if(EXEC_MODE==="Local"){
 	$answer = substr($answer,1);
 	$answer = json_decode($answer,true);
 	//print_r($answer);
-	log_writer2("\$answer",$answer,"lv1");
+	//log_writer2("\$answer",$answer,"lv1");
 	
 	
 	$text = $answer[rand(0,9)]["post"];
