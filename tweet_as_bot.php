@@ -16,18 +16,11 @@ require "functions.php";
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-//define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
 define("ROOT_URL",$_ENV["HTTP"]);
 define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-//define("TITLE",$_ENV["TITLE"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
-//$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
-session_start();
-//$_SESSION = [];
-
-//if(MAIN_DOMAIN==="localhost:81"){
 if(EXEC_MODE<>"Product"){
   $time=date('Ymd-His');
   $id="demo";
@@ -111,7 +104,7 @@ if(EXEC_MODE==="Local"){
 
 	$post_index = rand(0,(count($row)-1));
 	
-	echo "<p>対象商品:".$row[$post_index]["shouhinNM"]."</p>";
+	echo "対象商品:".$row[$post_index]["shouhinNM"]."\n";
 	//log_writer2("\$post_index",$post_index,"lv1");
 	//log_writer2("\$row",$row[$post_index],"lv1");
 
@@ -151,7 +144,7 @@ if(EXEC_MODE==="Local"){
 	
 	
 	$text = $answer[rand(0,9)]["post"];
-	echo $text."<br>\n";
+	echo $text."\n";
 	
 	define("API_KEY",$_ENV["X_API_KEY"]);
 	define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
@@ -176,14 +169,14 @@ if(EXEC_MODE==="Local"){
 		
 		if ($httpCode == 201) { // 201は作成成功を示すステータスコード
 			//$this->info("ツイートが送信されました！");
-			echo "ツイートが送信されました！<br>\n";
+			echo "ツイートが送信されました！\n";
 			$status = "success";
 			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns='X' where uid=".$uid." and shouhinCD=".$shouhinCD);
 			$stmt->execute();
 	
 		} else {
 			$errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
-			echo "ツイートの送信に失敗しました。<br>\n HTTPコード: $httpCode,<br>\n エラーメッセージ: $errorMessage ";
+			echo "ツイートの送信に失敗しました。\n HTTPコード: $httpCode,\n エラーメッセージ: $errorMessage ";
 			//log_writer2("\$msg",$msg,"lv1");
 		}
 	}catch(Exception $e){

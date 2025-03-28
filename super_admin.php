@@ -8,7 +8,7 @@
 require "php_header.php";
 
 $msg="";
-if(!empty($_POST["new_yagou"])){
+if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 	$stmt = $pdo_h->prepare("select uid from Users where uid = :uid FOR UPDATE");
 	while(true){
 		//乱数からユーザIDを発行し、重複してなければ使用する
@@ -41,9 +41,9 @@ if(!empty($_POST["sns_f"]) && !empty($_POST["sns_t"])){
 	//自動ツイート間隔幅設定
 	try{
 		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("delete from online_shop_config ");
+		//$stmt = $pdo_h->prepare("DELETE from online_shop_config ");
 		$stmt->execute();
-		$stmt = $pdo_h->prepare($sql="INSERT INTO online_shop_config(post_interval_F,post_interval_T) values(".$_POST["sns_f"].",".$_POST["sns_t"].") ");
+		$stmt = $pdo_h->prepare("UPDATE online_shop_config SET post_interval_F = ".$_POST["sns_f"]." ,post_interval_T = ".$_POST["sns_t"]);
 		$stmt->execute();
 		$pdo_h->commit();
 		$msg='自動ツイート間隔幅を設定しました。';
