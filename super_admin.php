@@ -85,13 +85,15 @@ foreach($data as $row){
 			<h3>システム管理画面</h3>
 		</header>
 		<main>
-			<div v-if='msg!==""' class='alert alert-success'>{{msg}}</div>
+			<div v-if='msg!==""' class='alert alert-success text-center'>{{msg}}</div>
 			<div class='row'>
 				<div class='col-md-6'>
 					<form method="post" action='super_admin.php'>
-						<label class='form-label'>X.com</label>
+						<p>X.com</p>
+						<label for='sns_f' class='form-label'>つぶやき最短(分)</label>
 						<input type='text' v-model='sns_f' name='sns_f' class='form-control mb-1' required placeholder="つぶやき最短分" id='sns_f'>
-						<input type='text' v-model='sns_t' name='sns_t' class='form-control mb-3' required placeholder="つぶやき最長分">
+						<label for='sns_t' class='form-label'>つぶやき最長(分)</label>
+						<input type='text' v-model='sns_t' name='sns_t' class='form-control mb-3' required placeholder="つぶやき最長分" id='sns_t'>
 						<button type='submit' class='btn btn-primary'>設定</button>
 					</form>
 					<hr>
@@ -128,6 +130,9 @@ foreach($data as $row){
 				
 		   onMounted(()=>{
 		     console_log(`onMounted`)
+				 setTimeout(function() {
+  				msg.value = ''
+				}, 3000);
 		   })
 			
 		   return{
