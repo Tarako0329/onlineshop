@@ -17,7 +17,7 @@ require "functions.php";
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 //define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
-//define("ROOT_URL",$_ENV["HTTP"]);
+define("ROOT_URL",$_ENV["HTTP"]);
 define("EXEC_MODE",$_ENV["EXEC_MODE"]);
 //define("TITLE",$_ENV["TITLE"]);
 //システム通知
