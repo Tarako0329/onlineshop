@@ -41,8 +41,6 @@ if(!empty($_POST["sns_f"]) && !empty($_POST["sns_t"])){
 	//自動ツイート間隔幅設定
 	try{
 		$pdo_h->beginTransaction();
-		//$stmt = $pdo_h->prepare("DELETE from online_shop_config ");
-		$stmt->execute();
 		$stmt = $pdo_h->prepare("UPDATE online_shop_config SET post_interval_F = ".$_POST["sns_f"]." ,post_interval_T = ".$_POST["sns_t"]);
 		$stmt->execute();
 		$pdo_h->commit();
