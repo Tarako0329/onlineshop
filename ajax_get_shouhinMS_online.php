@@ -15,6 +15,8 @@
 				,online.shouhinCD
 				,online.shouhinNM
 				,online.status
+				,online.limited_cd
+				,'' as limited_cd_nyuryoku
 				,online.short_info
 				,online.infomation
 				,online.haisou
@@ -41,8 +43,9 @@
 				online.uid
 				,case 
 					when online.status = 'show' then 1
-					when online.status = 'soldout' then 2
-					when online.status = 'stop' then 3
+					when online.status = 'limited' then 2
+					when online.status = 'soldout' then 3
+					when online.status = 'stop' then 4
 				end
 				,online.shouhinCD";
 

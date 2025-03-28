@@ -131,21 +131,27 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
     const shouhinMS_SALE = computed(()=>{
       if(search_word.value==''){
         return shouhinMS.value.filter((row)=>{
-          return (row.status==='show')
+          return (row.status==='show' || row.status==='limited')
         })
       }else{
         if(serch_type.value==="商品名"){
           return shouhinMS.value.filter((row)=>{
-            return row.shouhinNM.includes(search_word.value) && row.status==='show'
+            return row.shouhinNM.includes(search_word.value) && (row.status==='show' || row.status==='limited')
           })        
         }else if(serch_type.value==="商品名＋説明文"){
           return shouhinMS.value.filter((row)=>{
             let words = row.shouhinNM + row.short_info + row.infomation
-            return words.includes(search_word.value) && row.status==='show'
+            return words.includes(search_word.value) && (row.status==='show' || row.status==='limited')
           })        
         }
       }
-    })    
+    })
+
+    const remove_limit = (p_index) =>{
+      if(shouhinMS_SALE.value[p_index].limited_cd === shouhinMS_SALE.value[p_index].limited_cd_nyuryoku){
+        shouhinMS_SALE.value[p_index].status = "show"
+      }
+    }
  
     const order_kakaku = ref(0) //オーダー税込総額
     const order_shop_id = ref('')
@@ -509,6 +515,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       ordering,
       get_ordered,
       shouhinMS_SALE,
+      remove_limit,
       order_submit,
       orderNO,
       order_clear,

@@ -77,6 +77,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const shouhinCD = ref('')
 		const shouhinNM = ref('')
 		const status = ref('show')
+		const limited_cd = ref('')
 		const tanka = ref(0)
 		const zei = ref(1101)
 		const midasi = ref('')
@@ -276,6 +277,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(shouhinNM.value == ''){
 				msg = msg + ' 商品名'
 			}
+			if(status.value=='limited' && limited_cd.value == ''){
+				msg = msg + ' 特別コード'
+			}
 			if(tanka.value == ''){
 				msg = msg + ' 単価'
 			}
@@ -309,6 +313,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			form.append(`shouhinCD`, shouhinCD.value)
 			form.append(`shouhinNM`, shouhinNM.value)
 			form.append(`status`, status.value)
+			form.append(`limited_cd`, limited_cd.value)
 			form.append(`tanka`, tanka.value)
 			form.append(`zeikbn`, zei.value)
 			form.append(`shouhizei`, shouhizei.value)
@@ -604,6 +609,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			shouhinNM,
 			hash_tag,
 			yagou,
+			limited_cd,
 			status,
 			tanka,
 			zei,

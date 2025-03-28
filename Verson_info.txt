@@ -123,6 +123,8 @@ ver1.36.2:売上ウェブレジ連携-commited
 ver1.36.3:access_log精度向上-commited
 ver1.36.3:SNS自動投稿機能-commited
   ALTER TABLE `shouhinMS_online` ADD `auto_post_sns` VARCHAR(10) NULL COMMENT '自動投稿CHK' AFTER `Category`;
+ver1.37.0:限定販売機能作成
+  ALTER TABLE `shouhinMS_online` ADD `limited_cd` VARCHAR(40) NULL COMMENT '特別コード' AFTER `auto_post_sns`;
 
 【Issues】
 ・商品管理から品名CDを廃止する

@@ -88,7 +88,7 @@ if(EXEC_MODE==="Local"){
 			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns=''");
 			$stmt->execute();
 			$pdo_h->commit();
-			echo "投稿済みフラグをリセット";
+			echo "投稿済みフラグをリセット\n";
 
 			//商品再選定
 			$stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
@@ -97,7 +97,7 @@ if(EXEC_MODE==="Local"){
 		}catch(Exception $e){
 			$pdo_h->rollBack();
 			log_writer2("\$e",$e,"lv0");
-			echo "投稿済みフラグをリセットでエラー";
+			echo "投稿済みフラグをリセットでエラー\n";
 		}
 	
 	}

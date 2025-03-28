@@ -133,12 +133,18 @@
                           <p>【送料・配送・納期などについて】</p>
                           <p>{{list.haisou}}</p>
                         </div>
-                        <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
-                        <div class='pb-3'>
-                          <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show_${index}`'>
-				                  <label class='btn btn-primary ' :for='`show_${index}`' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
-				                  <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off'  :id='`stop_${index}`'>
-				                  <label class='btn btn-secondary ' :for='`stop_${index}`' style='border-radius:0;' @click='order_count(index,-1)'>－</label>
+                        <div v-show='list.status==="show"'>
+                          <div>ご注文数：<span class='order'>{{list.ordered}}</span></div>
+                          <div class='pb-3'>
+                            <input type='radio' class='btn-check' autocomplete='off'  :id='`show_${index}`'>
+				                    <label class='btn btn-primary' :for='`show_${index}`' style='border-radius:0;' @click='order_count(index,1)'>＋</label>
+				                    <input type='radio' class='btn-check' autocomplete='off'  :id='`stop_${index}`'>
+				                    <label class='btn btn-secondary' :for='`stop_${index}`' style='border-radius:0;' @click='order_count(index,-1)'>－</label>
+                          </div>
+                        </div>
+                        <div v-show='list.status==="limited"' class='mb-3 mt-3' style='color:lightcoral;'>
+                          <label for='limited_cd'>特別コード入力で注文用ボタン表示。</label>
+                          <input type='text' class='form-control' id='limited_cd' v-model='list.limited_cd_nyuryoku' @change='remove_limit(index)' placeholder="特別コード">
                         </div>
                         <div>
                           <label :for="`floating_${index}`">お客様備考記入欄</label>
@@ -196,9 +202,9 @@
                 <td>{{(Number(list.zeikomikakaku)).toLocaleString()}}</td>
                 <td>
                   <p>{{list.ordered}}</p>
-                  <input type='radio' class='btn-check' name='status' value='show' autocomplete='off'  :id='`show2_${index}`'>
+                  <input type='radio' class='btn-check' autocomplete='off'  :id='`show2_${index}`'>
 				          <label class='btn btn-primary ' :for='`show2_${index}`' style='border-radius:0;' @click='ordered_count(index,1)'>＋</label>
-				          <input type='radio' class='btn-check' name='status' value='stop' autocomplete='off'  :id='`stop2_${index}`'>
+				          <input type='radio' class='btn-check' autocomplete='off'  :id='`stop2_${index}`'>
 				          <label class='btn btn-secondary ' :for='`stop2_${index}`' style='border-radius:0;' @click='ordered_count(index,-1)'>－</label>
                 </td>
                 <td>{{((Number(list.tanka)+Number(list.shouhizei))*Number(list.ordered)).toLocaleString()}}</td>
