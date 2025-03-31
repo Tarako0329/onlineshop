@@ -103,7 +103,8 @@
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>
                     <!--LINE-->
-                    <a :href='`https://line.me/R/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&z=ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+                    <!--<a :href='`https://line.me/R/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&z=ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>-->
+                    <a :href='`https://line.me/R/share?text=私のおすすめ！\n${list.line_url}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
                     <!--FACEBOOK-->
                     <a :href='`https://www.facebook.com/share.php?u=${product_url}${list.uid}-${list.shouhinCD}&z=fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
                     <!--TWITTER-->

@@ -55,6 +55,13 @@
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		//rawurlencode
+		$i=0;
+		foreach($dataset as $row){
+			$dataset[$i]["line_url"] = rawurlencode(ROOT_URL."/product.php?id=".$row["uid"]."-".$row["shouhinCD"]."&z=ln");
+			$i++;
+		}
 		
 		
 		$sql = "select 
