@@ -1,10 +1,6 @@
-//const { createApp, ref, onMounted, onBeforeMount, computed,watch,unheadvue } = Vue;
-import { createApp, ref, onMounted, onBeforeMount,computed,watch } from 'vue';
-//import { createHead,useHead   } from 'unheadvue';
-//createHead()
+/*import { createApp, ref, onMounted, onBeforeMount,computed,watch } from 'vue';
 
-//export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_shop_id,p_site_name) => createApp({//販売画面
-export const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => createApp({//販売画面
+export*/ const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) => createApp({//販売画面
   setup() {
     
     let token = p_token

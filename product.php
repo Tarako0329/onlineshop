@@ -313,9 +313,14 @@
   </div>  
 
   </div>
+  <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/product_vue3.js?<?php echo $time; ?>"></script>
+  <script>
+      product_page('product','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo TITLE; ?>').mount('#app');
+  </script>
   <script type="module">
-    import {product_page} from "./script/product_vue3.js?<?php echo $time; ?>"
-    product_page('product','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo TITLE; ?>').mount('#app');
+    //import {product_page} from "./script/product_vue3.js?<?php //echo $time; ?>"
+    //product_page('product','<?php //echo $token; ?>','<?php //echo $shouhin_id; ?>','<?php //echo TITLE; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {
