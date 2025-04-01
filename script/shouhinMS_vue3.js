@@ -173,6 +173,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				yagou.value = shouhin[0].yagou
 				customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
 				midasi.value = shouhin[0].short_info
+				limited_cd.value = shouhin[0].limited_cd
 				pic_list.value=[]
 				shouhinMS_pic.value.forEach((row)=>{
 					if(row.shouhinCD===shouhin[0].shouhinCD){
