@@ -64,6 +64,11 @@ foreach($data as $row){
 	 $i++;
 }
 
+$stmt = $pdo_h->prepare("SELECT * from online_shop_config");
+$stmt->execute();
+
+$config = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -124,8 +129,8 @@ foreach($data as $row){
 		   const menu = ref(
 		     <?php echo json_encode($data, JSON_UNESCAPED_UNICODE); ?>
 		   )
-			 const sns_f = ref(30)
-			 const sns_t = ref(60)
+			 const sns_f = ref(<?php echo $config[0]["post_interval_F"]; ?>)
+			 const sns_t = ref(<?php echo $config[0]["post_interval_T"]; ?>)
 			 const msg = ref('<?php echo $msg;?>')
 				
 		   onMounted(()=>{
