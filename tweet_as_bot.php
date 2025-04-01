@@ -162,9 +162,9 @@ if(EXEC_MODE==="Local"){
 		$connection->setApiVersion('2');
 		
 		//URLが半角23文字扱い。ハッシュタグは含まない
-		//$result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
-		//$httpCode = $connection->getLastHttpCode();
-		$httpCode = 201;	//テスト運用・ツイートはしない
+		$result = $connection->post("tweets", ["text"=>$text], ['jsonPayload'=>true]);
+		$httpCode = $connection->getLastHttpCode();
+		//$httpCode = 201;	//テスト運用・ツイートはしない
 		
 		
 		if ($httpCode == 201) { // 201は作成成功を示すステータスコード
