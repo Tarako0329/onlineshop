@@ -276,22 +276,22 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const ins_shouhinMS = ()=>{
 			let msg = ''
 			if(shouhinNM.value == ''){
-				msg = msg + ' 商品名'
+				msg = msg + ' 商品名、'
 			}
-			if(status.value=='limited' && limited_cd.value == ''){
-				msg = msg + ' 特別コード'
+			if(status.value=='limited' && !limited_cd.value){
+				msg = msg + ' 限定販売特別コード、'
 			}
 			if(tanka.value == ''){
-				msg = msg + ' 単価'
+				msg = msg + ' 単価、'
 			}
 			if(midasi.value == ''|| midasi.value == null){
-				msg = msg + ' 商品説明（見出し）'
+				msg = msg + ' 商品説明（見出し）、'
 			}
 			if(info.value == '' || info.value == null){
-				msg = msg + ' 商品説明（詳細）'
+				msg = msg + ' 商品説明（詳細）、'
 			}
 			if(haisou.value == '' || haisou.value == null){
-				msg = msg + ' 送料・配送・納期'
+				msg = msg + ' 送料・配送・納期、'
 			}
 			if(pic_list.value.length === 0){
 				msg = msg + ' 写真'
