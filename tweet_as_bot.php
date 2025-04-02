@@ -173,11 +173,18 @@ if(EXEC_MODE==="Local"){
 			$status = "success";
 			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns='X' where uid=".$uid." and shouhinCD=".$shouhinCD);
 			$stmt->execute();
-	
-		} else {
+			
+		}else if($httpCode == 429){
+			echo "1日の送信可能数を超過しました。\n";
+			log_writer2("X-bot-ErrorHeader",$connection->getLastXHeaders(),"lv1");
+			$next = (24-17)*60;
+			$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL ".$next." MINUTE)");
+			$stmt->execute();
+			echo "次は ".$next." 分後です";
+		}else{
 			$errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
-			echo "ツイートの送信に失敗しました。\n HTTPコード: $httpCode,\n エラーメッセージ: $errorMessage ";
-			echo $connection->getLastXHeaders();
+			echo "ツイートの送信に失敗しました。\n HTTPコード: $httpCode,\n エラーメッセージ: $errorMessage \n";
+			log_writer2("X-bot-ErrorHeader",$connection->getLastXHeaders(),"lv1");
 			//log_writer2("\$msg",$msg,"lv1");
 		}
 	}catch(Exception $e){
