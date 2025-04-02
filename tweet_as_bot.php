@@ -177,6 +177,7 @@ if(EXEC_MODE==="Local"){
 		} else {
 			$errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
 			echo "ツイートの送信に失敗しました。\n HTTPコード: $httpCode,\n エラーメッセージ: $errorMessage ";
+			echo $connection->getLastXHeaders();
 			//log_writer2("\$msg",$msg,"lv1");
 		}
 	}catch(Exception $e){
