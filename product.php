@@ -1,7 +1,9 @@
 <?php
   require "php_header.php";
-  if(false === strpos($_SERVER['HTTP_REFERER'],ROOT_URL."shouhinMS.php")){
-    $token = csrf_create();
+  if(!empty($_SERVER['HTTP_REFERER'])){
+    if(false === strpos($_SERVER['HTTP_REFERER'],ROOT_URL."shouhinMS.php")){
+      $token = csrf_create();
+    }
   }else{
     $token = "";
   }

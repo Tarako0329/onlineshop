@@ -72,17 +72,20 @@ if($get_z==="X"){
   $get_z = "facebook";
 }else if($get_z==="ln"){
   $get_z = "Line";
-}else{
+}else if(!empty($_SERVER['HTTP_REFERER'])){
   if(strpos($_SERVER['HTTP_REFERER'], "instagram")!==false){
     $get_z = "instagram";
   }else{
     $get_z = "direct";
   }
+}else{
+  $get_z = "unknown";
 }
 
 // クライアントのユーザエージェントを取得
 $ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
 $pattern_list_string = file_get_contents('bot_list.txt');
+$aclu="";
 
 // 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
 if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === ""){
