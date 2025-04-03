@@ -75,9 +75,13 @@ if($get_z==="X"){
 }else if(!empty($_SERVER['HTTP_REFERER'])){
   if(strpos($_SERVER['HTTP_REFERER'], "instagram")!==false){
     $get_z = "instagram";
+  }else if(strpos($_SERVER['HTTP_REFERER'], "facebook")!==false){
+    $get_z = "facebook";
   }else{
     $get_z = "direct";
   }
+}else if(!empty($_GET["fbclid"])){
+  $get_z = "facebook";
 }else{
   $get_z = "unknown";
 }
@@ -88,8 +92,9 @@ $pattern_list_string = file_get_contents('bot_list.txt');
 $aclu="";
 
 // 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
-if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === ""){
-  //大半のユーザはユーザエージェントある。ないのは非ユーザが大半で、あとは小数のセキュリティ意識高すぎ人なので排除
+if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === "" || !empty($_GET["author"])){
+  //大半のユーザはユーザエージェントある。ないのは非ユーザが大半で、あとは小数のセキュリティ意識高すぎ人なのでbotとして排除
+  //$_GET["author"]はgooglebot
   $bot = "bot";
 }else{
   //訪問者のマーキング
