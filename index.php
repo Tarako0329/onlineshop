@@ -54,10 +54,15 @@
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
             <div class='row pb-1'>
-              <div class='col-6'><!--写真-->
+              <div class='col-6' style='position:relative;'><!--写真-->
+                <!--list.status==='soldout'の時、class[carousel slide]の上に「売り切れ」と表示-->
+                <div v-if='list.status==="soldout"' class='alert alert-warning text-center' style='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;'>
+                  <p class='mb-0'>品切れ中です</p>
+                  <p>再販希望等は[問合せ]より</p>
+                </div>
+                
                 <div :id="`carouselExample_${index}`" class="carousel slide">
                   <div class="carousel-inner">
-
                     <template v-for='(pic_list,index2) in shouhinMS_pic' :key='pic_list.uid+pic_list.shouhinCD+pic_list.filename'>
                       <div v-if='list.shouhinCD===pic_list.shouhinCD && list.uid===pic_list.uid'>
                         <div v-if='pic_list.sort===1' class="carousel-item active" style='text-align: center;'>
@@ -68,7 +73,6 @@
                         </div>
                       </div>
                     </template>
-
                   </div>
                   <button class="carousel-control-prev" type="button" :data-bs-target="`#carouselExample_${index}`" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -81,7 +85,6 @@
                 </div>
               </div><!--写真-->
               <div class='col-6'><!--見出-->
-                <!--<small><i class="bi bi-shop"></i>【 {{list.yagou}} 】</small>-->
                 <div class='row'>
                   <div class='col-12 d-flex align-items-end mb-3'>
                   <div style='width:30px;height:30px;padding:0;' class="me-3"><img class='img_icon' :src='list.logo'></div>
@@ -98,12 +101,13 @@
             </div>
             <div class='row'><!--問合せ・シェアボタン-->
               <div class='col-6 mt-2 mb-2 ps-3'>
-                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問い合わせ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+                <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+                <!--review.phpへジャンプ-->
+                <a :href="`review.php?key=${list.key}&key2=${list.key2}`" class="btn btn-secondary fs-5">レビュー<i class="bi bi-chat-left-text-fill ms-2"></i><span class='ms-2'>{{list.review_cnt}}</span></a>
               </div>
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>
                     <!--LINE-->
-                    <!--<a :href='`https://line.me/R/share?text=私のおすすめ！\n${product_url}${list.uid}-${list.shouhinCD}&z=ln`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>-->
                     <a :href='`https://line.me/R/share?text=私のおすすめ！\n${list.line_url}`' target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
                     <!--FACEBOOK-->
                     <a :href='`https://www.facebook.com/share.php?u=${product_url}${list.uid}-${list.shouhinCD}&z=fb`' target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>

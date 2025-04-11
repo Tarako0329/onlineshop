@@ -48,16 +48,22 @@
 			</div>
 		</div>
 		<div v-show='mode==="upd"' class='row' style=''>
+			<div class='col-12' style='color:red;font-size:10px;'>
+				<p>※注！：商品とお客様のレビューは商品CDで紐づいてます。</p>
+				<p>※修正は商品名の変更、少額の価格修正、PR文等の修正にご利用ください</p>
+				<p>※異なる商品への変更、極端な価格変更、内容量変更等は新規商品として登録してください。</p>
+				<p>※（例：ドーナツ⇒食パン×　ドーナツ1個⇒ドーナツ10個×　1000円⇒1500円×）</p>
+			</div>
 			<div class='col-md-8 col-12 overflow-y-scroll p-1 mb-1' :style='shouhin_table'>
 				<table class='table table-sm mb-1'>
 					<tbody>
 						<template v-for='(list,index) in shouhinMS' :key='list.shouhinCD+list.uid'>
 							<tr>
 								<!--<td>{{list.shouhinNM}}</td>-->
-								<td v-if='list.status==="show"' style='color:blue'>{{list.shouhinNM}}</td>
-								<td v-if='list.status==="limited"' style='color:green'>{{list.shouhinNM}}</td>
-								<td v-if='list.status==="soldout"' style='color:darkorange'>{{list.shouhinNM}}</td>
-								<td v-if='list.status==="stop"' style='color:gray'>{{list.shouhinNM}}</td>
+								<td v-if='list.status==="show"' style='color:blue'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
+								<td v-if='list.status==="limited"' style='color:green'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
+								<td v-if='list.status==="soldout"' style='color:darkorange'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
+								<td v-if='list.status==="stop"' style='color:gray'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
 
 								<td style='width: 30px' class='pt-2' role='button' @click='open_product_page(`${list.uid}-${list.shouhinCD}`,list.shouhinNM)'>
 									<i class="bi bi-window-plus"></i>
@@ -87,7 +93,7 @@
 			<hr>
 			<div class='row mb-3'>
 				<div class='col-md-8 col-12'>
-					<label for='hinmei' class="form-label">商品名</label>
+					<label for='hinmei' class="form-label">商品名（商品CD：{{shouhinCD}}）</label>
 					<input type='text' v-model='shouhinNM' class='form-control' id='hinmei'>
 				</div>
 			</div>
@@ -185,7 +191,7 @@
 				</div>
 			</div>
 			<hr>
-			<div class='row mb-3'>
+			<div class='row mb-3'><!--写真アップロード-->
 				<div class='col-md-8 col-12'>
 					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
 					<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">

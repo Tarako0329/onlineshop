@@ -55,7 +55,6 @@ if($rtn !== true){
         try{
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
-            //sqllogger("START TRANSACTION",[],basename(__FILE__),"ok");
 
             $stmt = $pdo_h->prepare( $DELsql );
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -96,8 +95,6 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog("--execute():正常終了",[]);
             
             foreach($_POST["user_file_name"] as $row){
-                //log_writer2("\$row[filename]",$row["filename"],"lv3");
-                
                 if (is_file($row["filename"])) {//fileの移動
                     if ( rename($row["filename"] , str_replace("temp/","",$row["filename"]))) {
                         $params["pic"] = str_replace("temp/","",$row["filename"] );
