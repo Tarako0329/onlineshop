@@ -17,6 +17,7 @@
     ,u.logo
     ,m.shouhinNM
     ,r.*
+    ,IF(r.NoName = 'true','匿名希望',r.Contributor) as 投稿者
     ,p.pic 
   FROM shouhinMS_online m
     left join review_online r
@@ -136,7 +137,7 @@
             <!-- 左の吹き出し -->
             <figure class="icon-img text-center pt-3" style=''>
               <img style='height:60px;' src="./img/hito.png" alt="代替えテキスト" >
-              <figcaption class="icon-name text-center pt-2">{{list.Contributor}} 様</figcaption>
+              <figcaption class="icon-name text-center pt-2">{{list.投稿者}} 様</figcaption>
             </figure>
             <div class="chatting p-4 pt-3">
               <small>[{{list.insdate}}]</small>

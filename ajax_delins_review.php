@@ -55,7 +55,7 @@ if($rtn !== true){
                 [
                     'parts' => [
                         //['text' => 'こんにちは、Gemini！']
-                        ['text' => '次のレビューが過度な誹謗中傷と判断された場合false。問題ない場合はtrueをJSON形式で出力。NGの場合は理由も出力。出力形式は[{"判定":結果,"理由":"理由"}]です。対象のレビュー「'.$params["review"].'」']
+                        ['text' => '次のレビューが過度な誹謗中傷にあたるかどうかを判断してください。判断結果はPHPで利用するため、JSON形式で出力。誹謗中傷と判断された場合"NG"。問題ない場合は"OK"を。NGの場合は理由も出力。出力形式は[{"判定":結果,"理由":"理由"}]です。対象のレビュー「'.$params["review"].'」']
                     ]
                 ]
             ]
@@ -74,10 +74,13 @@ if($rtn !== true){
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
         
+        log_writer2("\$response",$response,"lv3");
+        
         if ($response === false) {
             $msg =  '誹謗中傷checkのためのGemini呼び出しに失敗しました。時間をおいて、再度投稿してみてください';
             $check_ng = false;
         } else {
+            $result = json_decode($response, true);
             $result = $result['candidates'][0]['content']['parts'][0]['text'];
             
             $result = str_replace('```json','',$result);
@@ -87,10 +90,11 @@ if($rtn !== true){
             $result = str_replace('\r\n','',$result);
             $result = substr($result,1);
             $result = json_decode($result, true);
+            log_writer2("\$result",$result,"lv3"); 
         
             if (isset($result)) {
-                $check_ng = $result["判定"];
-                $msg = $result["理由"];
+                $check_ng = $result[0]["判定"];
+                $msg = $result[0]["理由"];
             } else {
                 //echo '応答からテキストを抽出できませんでした。';
                 $msg = 'Geminiから誹謗中傷checkの応答結果を抽出できませんでした。時間をおいて、再度投稿してみてください';
@@ -98,8 +102,8 @@ if($rtn !== true){
             }
         }
         //$check_ng = false;
-        if($check_ng===false){
-            //$msg = "誹謗中傷と判断されたため、登録できませんでした。";
+        if($check_ng==="NG"){
+            $msg = "AIに誹謗中傷と判断されたため、登録できませんでした。\n理由：".$msg;
             $alert_status = "alert-danger";
             $reseve_status=true;
             $token = csrf_create();
@@ -112,6 +116,8 @@ if($rtn !== true){
             header('Content-type: application/json');
             echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
             exit();
+        }else{
+            $msg="";
         }
         
 

@@ -22,8 +22,8 @@ const review_post = (p_buylist,p_token) => createApp({
       .then((response)=>{
         console_log(response.data)
         alert(response.data.MSG)
+        token.value=response.data.token
         if(response.data.status==="alert-success"){
-          token.value=response.data.token
           buylist.value[index].btn_name = '更新'
         }else{
           //alert('レビュー投稿に失敗しました')
