@@ -438,7 +438,9 @@ function send_line($to,$body){
         )
     );
 
-    return file_get_contents($url, false, stream_context_create($context));
+    $rtn = file_get_contents($url, false, stream_context_create($context));
+
+    return $rtn;
 }
 // =========================================================
 // GUID取得

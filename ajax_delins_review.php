@@ -159,10 +159,11 @@ if($rtn !== true){
             $reseve_status=true;
 
             if($lineID <> "none"){
-                send_line($_POST["lineid"],$params["Contributor"].$head."\r\n".$_POST["review"]);//出店者へお知らせLINE
+                $rtn = send_line($_POST["lineid"],$params["Contributor"].$head."\r\n".$_POST["review"]);//出店者へお知らせLINE
             }else{
                 $rtn = send_mail($mail,$params["Contributor"].$head,$_POST["review"],TITLE,"");//出店者へお知らせメール
             }
+            log_writer2("\$rtn",$rtn,"lv3");
 
         }catch(Exception $e){
             $pdo_h->rollBack();
