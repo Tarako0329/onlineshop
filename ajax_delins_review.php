@@ -159,7 +159,7 @@ if($rtn !== true){
             $reseve_status=true;
 
             if($lineID <> "none"){
-                $rtn = send_line($lineID,$params["Contributor"].$head."\r\n".$_POST["review"]);//出店者へお知らせLINE
+                $rtn = send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$_POST["review"]);//出店者へお知らせLINE
             }else{
                 $rtn = send_mail($mail,$params["Contributor"].$head,$_POST["review"],TITLE,"");//出店者へお知らせメール
             }

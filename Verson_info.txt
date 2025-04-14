@@ -128,6 +128,7 @@ ver1.37.0:限定販売機能作成-commited
 ver1.37.1:SNS自動投稿機能・調整-commited
 ver1.37.2:access_log精度向上-commited
 ver1.38.0:レビュー投稿機能追加
+  ALTER TABLE `juchuu_head` ADD `review_irai` VARCHAR(6) NOT NULL DEFAULT 'still' COMMENT 'レビュー依頼済FLG(still or done)' AFTER `postage_no`;
 
 【Issues】
 ・商品管理から品名CDを廃止する

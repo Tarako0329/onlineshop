@@ -8,12 +8,38 @@
 
 	//!empty($_POST)の時、reviewのreplyを更新する。keyはSEQ。reply_dateは今日
 	if(!empty($_POST)){
-		$sql = "update review_online set reply = :reply, reply_date = :reply_date where seq = :seq";
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("reply", $_POST["reply"], PDO::PARAM_STR);
-		$stmt->bindValue("reply_date", date('Y-m-d'), PDO::PARAM_STR);
-		$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
-		$stmt->execute();
+		try{
+			//トランザクションスタート
+			$pdo_h->beginTransaction();
+			//トランザクションログ
+			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			
+			$sql = "update review_online set reply = :reply, reply_date = :reply_date where seq = :seq";
+			$stmt = $pdo_h->prepare($sql);
+			$stmt->bindValue("reply", $_POST["reply"], PDO::PARAM_STR);
+			$stmt->bindValue("reply_date", date('Y-m-d'), PDO::PARAM_STR);
+			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
+			$stmt->execute();
+			//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
+			$sql = "select * from review_online r inner join juchuu_head h on r.orderNO = h.orderNO where r.seq = :seq";
+			$stmt = $pdo_h->prepare($sql);
+			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
+			$stmt->execute();
+			$mail_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$mail_data[0]["subject"] = "【".TITLE."】レビューへの返信がありました。";
+			$mail_data[0]["body"] = "レビューへの返信がありました。\r\n下記URLよりご確認ください。\r\n".ROOT_URL."review.php?key=".rot13encrypt2($mail_data[0]["shouhinCD"])."&key2=".rot13encrypt2($mail_data[0]["shop_id"]);
+			
+			//コミット
+			$pdo_h->commit();
+			//トランザクションログ
+			$sqllog .= rtn_sqllog("commit",[]);
+			sqllogger($sqllog,0);
+			
+			send_mail($mail,$params["Contributor"].$head,$_POST["review"],TITLE,"");
+		}catch(Exception $e){
+			
+		}
+
 	}
 		
 	
@@ -176,7 +202,7 @@
 	</div><!--app-->
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
 	<script>
-		admin_menu('seikyu_yotei.php','','<?php echo $user_hash;?>').mount('#admin_menu');
+		admin_menu('review_management.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>
 	<script>
 		createApp({
