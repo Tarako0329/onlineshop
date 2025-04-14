@@ -78,15 +78,15 @@ if($rtn !== true){
             $msg =  '誹謗中傷checkのためのGemini呼び出しに失敗しました。時間をおいて、再度投稿してみてください';
             $check_ng = false;
         } else {
-            $result = json_decode($response, true);
             $result = $result['candidates'][0]['content']['parts'][0]['text'];
-    
+            
             $result = str_replace('```json','',$result);
             $result = str_replace('```','',$result);
             $result = str_replace('\n','',$result);
             $result = str_replace('\r','',$result);
             $result = str_replace('\r\n','',$result);
             $result = substr($result,1);
+            $result = json_decode($result, true);
         
             if (isset($result)) {
                 $check_ng = $result["判定"];
