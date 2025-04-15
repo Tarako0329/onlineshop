@@ -3,8 +3,60 @@
 データ更新はトライキャッチでくくり、トランザクション処理とする
 依頼メールを送信したら、review_iraiにdoneをセットする
 */
-  require "php_header.php";
-	date_default_timezone_set('Asia/Tokyo'); 
+date_default_timezone_set('Asia/Tokyo'); 
+define("VERSION","ver1.37.0");
+
+require "./vendor/autoload.php";
+require "functions.php";
+
+//.envの取得
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
+define("ROOT_URL",$_ENV["HTTP"]);
+define("EXEC_MODE",$_ENV["EXEC_MODE"]);
+define("TITLE",$_ENV["TITLE"]);
+//システム通知
+define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
+
+if(EXEC_MODE<>"Product"){
+  $time=date('Ymd-His');
+  $id="demo";
+  $pass="00000000";
+}else{
+  $time=VERSION;
+  $id="";
+  $pass="";
+}
+
+
+// DBとの接続
+define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
+define("USER_NAME", $_ENV["DBUSER"]);
+define("PASSWORD", $_ENV["PASS"]);
+
+//メール送信関連
+define("HOST", $_ENV["HOST"]);
+define("PORT", $_ENV["PORT"]);
+define("FROM", $_ENV["FROM"]);
+define("PROTOCOL", $_ENV["PROTOCOL"]);
+define("POP_HOST", $_ENV["POP_HOST"]);
+define("POP_USER", $_ENV["POP_USER"]);
+define("POP_PASS", $_ENV["POP_PASS"]);
+
+//stripe
+define("S_KEY",$_ENV["SKey"]);
+define("P_KEY",$_ENV["PKey"]);
+define("OAuth",$_ENV["OAuth"]);
+
+define("GEMINI",$_ENV["GOOGLE_API"]);
+
+$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+
+
+
+
+
 	$sqllog="";
 	$sql = "select * from juchuu_head where sent = 1 and review_irai = 'still'";
 	$stmt = $pdo_h->prepare($sql);
