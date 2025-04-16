@@ -95,9 +95,10 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
 			$stmt2->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			
 			//5seconds wait
 			sleep(5);
-			
+			$cnt++;
 			
 		}
 		$pdo_h->commit();
