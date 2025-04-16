@@ -559,8 +559,9 @@ function redirect_to_login($message) {
 function sqllogger($logsql,$e){//(sqlログ,Exception $e:$eセット時はメール通知あり)
     //SQL文はトランザクション単位で共通ログファイルに書き込みを行う。
     //エラーをキャッチした場合、ユーザーID別のログファイルにも書き込みを行う。
-    $logfilename="esql_sid_".$_SESSION['user_id'].".log";
     $userid = (!empty($_SESSION['user_id'])?$_SESSION['user_id']:"-");
+    //$logfilename="esql_sid_".$_SESSION['user_id'].".log";
+    $logfilename="esql_sid_".$userid.".log";
     $callphp = debug_backtrace();
     $phpname = substr($callphp[0]["file"], (strrpos($callphp[0]["file"],"\\") +1));
     $mypath = dirname(__FILE__)."/";

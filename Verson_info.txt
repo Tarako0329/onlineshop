@@ -163,6 +163,7 @@ ver1.38.0:レビュー投稿機能追加
   ALTER TABLE `review_online`
     MODIFY `SEQ` int(11) NOT NULL AUTO_INCREMENT;
   ALTER TABLE `juchuu_head` ADD `review_irai` VARCHAR(6) NOT NULL DEFAULT 'still' COMMENT 'レビュー依頼済FLG(still or done)' AFTER `postage_no`;
+  ALTER TABLE `juchuu_head` ADD `sent_ymd` DATE NULL COMMENT '配送連絡日' AFTER `sent`;
 
 【Issues】
 ・商品管理から品名CDを廃止する

@@ -41,7 +41,14 @@ if($rtn !== true){
 		$value = $_POST["value"];
 		$orderNO = $_POST["orderNO"];
 
-		$sqlstr_h = "UPDATE juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
+		if($colum==="sent"){
+			$sent_ymd = ($value==1) ? "CURDATE()" : "''";
+			$sqlstr_h = "UPDATE juchuu_head set sent = :".$colum.",sent_ymd = $sent_ymd where orderNO = :orderNO and uid like :uid";
+
+		}else{
+			$sqlstr_h = "UPDATE juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
+		}
+
 
 		$params["uid"] = $_SESSION["user_id"];
 		$params[$colum] = $_POST["value"];

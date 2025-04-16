@@ -58,7 +58,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 
 	$sqllog="";
-	$sql = "select * from juchuu_head where sent = 1 and review_irai = 'still'";
+
+	$sql = "select * from juchuu_head where sent = 1 and review_irai = 'still' and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->execute();
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
