@@ -53,10 +53,6 @@ define("GEMINI",$_ENV["GOOGLE_API"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
-
-
-
-
 	$sqllog="";
 
 	$sql = "select * from juchuu_head where sent = 1 and review_irai = 'still' and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
@@ -66,6 +62,9 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 	try{
 		$pdo_h->beginTransaction();
 		$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+
+		$cnt = 0;
+		
 		foreach($data as $row){
 			$params["orderNO"] = $row["orderNO"];
 			$params["mail"] = $row["mail"];
@@ -75,14 +74,14 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$params["url"] = ROOT_URL."review_post.php?key=".$params["key"];
 			$params["body"] = <<<EOM
 			$params[name] 様
-
+			
 			この度は、商品をお買い上げいただき、ありがとうございました。
 			お届けした商品はいかがでしたでしょうか？
 			差し支えなければ、ご感想・レビューをお聞かせください。
-
+			
 			レビュー投稿はこちらから
 			$params[url]
-
+			
 			ご協力よろしくお願いいたします。
 			EOM;
 			$params["subject"] = "【".TITLE."】レビュー投稿のお願い";
@@ -96,11 +95,17 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
 			$stmt2->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			//5seconds wait
+			sleep(5);
+			
+			
 		}
 		$pdo_h->commit();
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
-
+		
+		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了($cnt件)";
+		echo $msg;
     /*
 		$to="green.green.midori@gmail.com";
 		$subject="【".EXEC_MODE."】ONLINESHOP_レビュー依頼メール送信完了";
@@ -114,11 +119,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
       $pdo_h->rollBack();
       $sqllog .= rtn_sqllog("rollBack",[]);
       sqllogger($sqllog,$e);
-      log_writer2("\$e",$e,"lv0");
-      $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
-      $alert_status = "alert-danger";
-      $reseve_status=true;
-			echo $msg."<br>".$e;
+  		echo "レビュー依頼処理でエラー".$e;
   }
   exit();
   
