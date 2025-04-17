@@ -14,12 +14,12 @@
 			//トランザクションログ
 			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 			
-			$sql = "update review_online set reply = :reply, reply_date = :reply_date where seq = :seq";
+			$sql = "update review_online set reply = :reply, reply_date = CURDATE() where seq = :seq";
 			$stmt = $pdo_h->prepare($sql);
 			$stmt->bindValue("reply", $_POST["reply"], PDO::PARAM_STR);
-			$stmt->bindValue("reply_date", date('Y-m-d'), PDO::PARAM_STR);
 			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
 			$stmt->execute();
+
 			//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
 			$sql = "select * from review_online r inner join juchuu_head h on r.orderNO = h.orderNO where r.seq = :seq";
 			$stmt = $pdo_h->prepare($sql);

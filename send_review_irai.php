@@ -55,7 +55,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 	$sqllog="";
 
-	$sql = "select * from juchuu_head where sent = 1 and review_irai = 'still' and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
+	$sql = "SELECT h.*,u.mail as shop_mail,u.yagou,u.line_id from juchuu_head h inner join Users_online u on h.uid = u.uid where sent = 1 and review_irai = 'still' and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK) order by uid";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->execute();
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,8 +64,21 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
 		$cnt = 0;
+		$taishou_list = "";
+		$shop_id = "";
 		
 		foreach($data as $row){
+			if($cnt <> 0 && $shop_id<>$row["uid"]){
+				//出店者にメール送信
+				$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list." へレビュー依頼を送信しました。",TITLE." onLineShop","");
+				$taishou_list = "";
+			}
+			$shop_id = $row["uid"];
+			$shop_mail = $row["shop_mail"];
+			$taishou_list .= $row["name"]." 様\r\n";
+			
+			
+
 			$params["orderNO"] = $row["orderNO"];
 			$params["mail"] = $row["mail"];
 			$params["name"] = $row["name"];
@@ -74,48 +87,50 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$params["url"] = ROOT_URL."review_post.php?key=".$params["key"];
 			/*
 			$params["body"] = <<<EOM
-			$params[name] 様
-			
-			この度は、商品をお買い上げいただき、ありがとうございました。
-			お届けした商品はいかがでしたでしょうか？
-			差し支えなければ、ご感想・レビューをお聞かせください。
-			
-			レビュー投稿はこちらから
-			$params[url]
-			
-			ご協力よろしくお願いいたします。
-			EOM;
+				$params[name] 様
+
+				この度は、商品をお買い上げいただき、ありがとうございました。
+				お届けした商品はいかがでしたでしょうか？
+				差し支えなければ、ご感想・レビューをお聞かせください。
+
+				レビュー投稿はこちらから
+				$params[url]
+
+				ご協力よろしくお願いいたします。
+				EOM;
 			*/
 			$params["body"] = <<<EOM
-			$params[name] 様
-			
-			以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
-			
+				$params[name] 様
 
-			この度、当サイトにレビュー投稿・閲覧機能が追加されました。
+				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
 
-			つきましては、お買い上げいただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
-			
-			レビュー投稿はこちらから
-			$params[url]
-			
-			ご協力よろしくお願いいたします。
 
-			Present Selection
-			https://cafe-present.greeen-sys.com/
+				この度、当サイトにレビュー投稿・閲覧機能が追加されました。
 
-			EOM;
+				つきましては、お買い上げいただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
+
+				レビュー投稿はこちらから
+				$params[url]
+
+				ご協力よろしくお願いいたします。
+
+				Present Selection
+				https://cafe-present.greeen-sys.com/
+
+				EOM;
 
 			$params["subject"] = "【".TITLE."】レビュー投稿のお願い";
-			$params["fromname"] = TITLE."@".EXEC_MODE;
+			$params["fromname"] = TITLE;
 			$params["bcc"] = "";
 			$rtn = send_mail($params["mail"],$params["subject"],$params["body"],$params["fromname"],$params["bcc"]);
-			log_writer2("\$rtn",$rtn,"lv3");
+			//log_writer2("\$rtn",$rtn,"lv3");
+
 			$sql_upd = "update juchuu_head set review_irai = 'done' where orderNO = :orderNO";
-			$sqllog .= rtn_sqllog($sql_upd,$params);
 			$stmt2 = $pdo_h->prepare($sql_upd);
 			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
 			$stmt2->execute();
+
+			$sqllog .= rtn_sqllog($sql_upd,$params);
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 			
 			//5seconds wait
@@ -129,20 +144,12 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		
 		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)";
 		echo $msg."\n";
-    /*
-		$to="green.green.midori@gmail.com";
-		$subject="【".EXEC_MODE."】ONLINESHOP_レビュー依頼メール送信完了";
-		$body="レビュー依頼メールを送信しました。";
-		$fromname=TITLE."@".EXEC_MODE;
-		$bcc="";
-		send_mail($to,$subject,$body,$fromname,$bcc);
-		exit();
-    */
+    
 	}catch(Exception $e){
       $pdo_h->rollBack();
       $sqllog .= rtn_sqllog("rollBack",[]);
       sqllogger($sqllog,$e);
-  		echo "レビュー依頼処理でエラー".$e;
+  		echo "レビュー依頼処理でエラー\n".$e;
   }
   exit();
   
