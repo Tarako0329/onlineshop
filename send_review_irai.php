@@ -76,11 +76,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$shop_id = $row["uid"];
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
-			
-			
 
-			$params["orderNO"] = $row["orderNO"];
-			$params["mail"] = $row["mail"];
 			$params["name"] = $row["name"];
 			$params["uid"] = $row["uid"];
 			$params["key"] = rot13encrypt2($row["orderNO"]);
@@ -88,18 +84,18 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			/*
 			$params["body"] = <<<EOM
 				$params[name] 様
-
+				
 				この度は、商品をお買い上げいただき、ありがとうございました。
 				お届けした商品はいかがでしたでしょうか？
 				差し支えなければ、ご感想・レビューをお聞かせください。
-
+				
 				レビュー投稿はこちらから
 				$params[url]
-
+				
 				ご協力よろしくお願いいたします。
 				EOM;
 			*/
-			$params["body"] = <<<EOM
+			$body = <<<EOM
 				$params[name] 様
 
 				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
@@ -118,11 +114,12 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				https://cafe-present.greeen-sys.com/
 
 				EOM;
-
-			$params["subject"] = "【".TITLE."】レビュー投稿のお願い";
-			$params["fromname"] = TITLE;
-			$params["bcc"] = "";
-			$rtn = send_mail($params["mail"],$params["subject"],$params["body"],$params["fromname"],$params["bcc"]);
+			
+			$mail = $row["mail"];
+			$subject = "【".TITLE."】レビュー投稿のお願い";
+			$fromname = TITLE;
+			
+			$rtn = send_mail($mail,$subject,$body,$fromname,"");
 			//log_writer2("\$rtn",$rtn,"lv3");
 
 			$sql_upd = "update juchuu_head set review_irai = 'done' where orderNO = :orderNO";
@@ -141,6 +138,11 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		$pdo_h->commit();
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
+
+		//出店者にメール送信
+		$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list." へレビュー依頼を送信しました。",TITLE." onLineShop","");
+		$taishou_list = "";
+		
 		
 		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)";
 		echo $msg."\n";
