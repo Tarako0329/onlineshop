@@ -127,8 +127,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
 		
-		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)"."\n";
-		echo $msg;
+		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)";
+		echo $msg."\n";
     /*
 		$to="green.green.midori@gmail.com";
 		$subject="【".EXEC_MODE."】ONLINESHOP_レビュー依頼メール送信完了";
