@@ -72,6 +72,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$params["uid"] = $row["uid"];
 			$params["key"] = rot13encrypt2($row["orderNO"]);
 			$params["url"] = ROOT_URL."review_post.php?key=".$params["key"];
+			/*
 			$params["body"] = <<<EOM
 			$params[name] 様
 			
@@ -84,6 +85,27 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			
 			ご協力よろしくお願いいたします。
 			EOM;
+			*/
+			$params["body"] = <<<EOM
+			$params[name] 様
+			
+			以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
+			
+
+			この度、当サイトにレビュー投稿・閲覧機能が追加されました。
+
+			つきましては、お買い上げいただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
+			
+			レビュー投稿はこちらから
+			$params[url]
+			
+			ご協力よろしくお願いいたします。
+
+			Present Selection
+			https://cafe-present.greeen-sys.com/
+
+			EOM;
+
 			$params["subject"] = "【".TITLE."】レビュー投稿のお願い";
 			$params["fromname"] = TITLE."@".EXEC_MODE;
 			$params["bcc"] = "";
@@ -105,7 +127,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		$sqllog .= rtn_sqllog("commit",[]);
 		sqllogger($sqllog,0);
 		
-		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了($cnt件)";
+		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)"."\n";
 		echo $msg;
     /*
 		$to="green.green.midori@gmail.com";
