@@ -96,7 +96,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$taishou_list .= $row["name"]." 様\r\n";
 
 			//juchuu_meisaiをorderNOで検索
-			$sql_meisai = "select * from juchuu_meisai where orderNO = :orderNO";
+			$sql_meisai = "SELECT * from juchuu_meisai where orderNO = :orderNO and su>0";
 			$stmt_meisai = $pdo_h->prepare($sql_meisai);
 			$stmt_meisai->bindValue("orderNO", $row["orderNO"], PDO::PARAM_STR);
 			$stmt_meisai->execute();
