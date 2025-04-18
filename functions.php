@@ -418,8 +418,9 @@ function send_mail($to,$subject,$body,$fromname,$bcc){
 }
 
 function send_line($to,$body){
+    log_writer2("send_line - \$to",$to,"lv3");
+    log_writer2("send_line - \$body",$body,"lv3");
     if(EXEC_MODE==="Local"){
-        log_writer2("send_line - \$body",$body,"lv3");
         return "success";
     }
 
