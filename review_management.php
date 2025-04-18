@@ -153,7 +153,8 @@
 	<script>
 		createApp({
 			setup(){
-				const reviews = ref(<?php echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
+				//const reviews = ref(<?php echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
+				const reviews = ref([])
 				const token = '<?php echo $token;?>'
 
 				const upd_reply = (index) =>{
@@ -189,6 +190,7 @@
 					.then((response)=>{
 						console_log(response.data)
 						token = response.data.csrf_create
+						reviews.value = response.data
 						if(response.data.status==="alert-success"){
 						}else{
 							alert('レビュー取得失敗')
