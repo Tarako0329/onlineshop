@@ -6,59 +6,6 @@
 	$user_hash = $_GET["key"] ;
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	//!empty($_POST)の時、reviewのreplyを更新する。keyはSEQ。reply_dateは今日
-	if(!empty($_POST)){
-		try{
-			//トランザクションスタート
-			$pdo_h->beginTransaction();
-			//トランザクションログ
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
-			
-			$params["reply"] = $_POST["reply"];
-			$params["seq"] = $_POST["seq"];
-			$sql = "update review_online set reply = :reply, reply_date = CURDATE() where seq = :seq";
-			$stmt = $pdo_h->prepare($sql);
-			$stmt->bindValue("reply", $params["reply"], PDO::PARAM_STR);
-			$stmt->bindValue("seq", $params["seq"], PDO::PARAM_STR);
-			$sqllog .= rtn_sqllog($sql_upd,$params);
-
-			$stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
-
-			//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
-			$sql = "SELECT 
-					h.mail 
-					,u.yagou
-				from review_online r 
-				inner join juchuu_head h 
-				on r.orderNO = h.orderNO 
-				inner join Users_online u
-				on h.uid = u.uid
-				where 
-					r.seq = :seq";
-			$stmt = $pdo_h->prepare($sql);
-			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
-			$stmt->execute();
-			$mail_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			$mail = $mail_data[0]["mail"];
-			$subject = "【".TITLE."】レビューへの返信がありました。";
-			$body = $mail_data[0]["yagou"]." よりレビューへの返信がありました。\r\n下記URLよりご確認ください。\r\n".ROOT_URL."review.php?key=".rot13encrypt2($mail_data[0]["shouhinCD"])."&key2=".rot13encrypt2($mail_data[0]["shop_id"]);
-			
-			//コミット
-			$pdo_h->commit();
-			//トランザクションログ
-			$sqllog .= rtn_sqllog("commit",[]);
-			sqllogger($sqllog,0);
-			
-			send_mail($mail,$subject,$body,TITLE,"");
-		}catch(Exception $e){
-			
-		}
-
-	}
-		
-	
 	//reviewを取得
 	$sql="SELECT 
     u.yagou
@@ -85,6 +32,7 @@
   $stmt->execute();
   $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	$token = csrf_create();
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -196,11 +144,12 @@
             	  <textarea class="form-control fs-2" style='width:300px' rows=5 v-model='list.reply'></textarea>
 								<!--返事ボタン-->
 								<div class='text-end mt-3'>
-									<form method="post" action="review_management.php?key=<?php echo $user_hash;?>">
+									<!--<form method="post" action="review_management.php?key=<?php echo $user_hash;?>">
 										<button type='submit' class='btn btn-primary'>{{list.btn_name}}</button>
 										<input type="hidden" name="reply" :value="list.reply">
 										<input type="hidden" name="seq" :value="list.SEQ">
-									</form>
+									</form>-->
+									<button type='button' class='btn btn-primary' @click='upd_reply(index)'>{{list.btn_name}}</button>
 								</div>
             	</div>
 						</div>
@@ -230,9 +179,36 @@
 		createApp({
 			setup(){
 				const reviews = ref(<?php echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
+				const token = '<?php echo $token;?>'
+
+				const upd_reply = (index) =>{
+					//axios postでajax_upd_review_reply.phpに送信
+					const form = new FormData();
+					form.append(`reply`, reviews.value[index].reply)
+					form.append(`seq`, reviews.value[index].SEQ)
+					axios.post("ajax_upd_review_reply.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+					.then((response)=>{
+						console_log(response.data)
+						token = response.data.csrf_create
+						if(response.data.status==="alert-success"){
+							alert('返信を登録しました')
+						}else{
+							alert('送信失敗')
+						}
+					})
+					.catch((error,response)=>{
+						console_log(error)
+						alert('送信失敗(catch error)')
+					})
+					.finally(()=>{
+						// 現在のページをリロードします（キャッシュを利用する場合があります）
+						location.reload();
+					})
+				}
 
 				return{
 					reviews,
+					upd_reply,
 				}
 			}
 		}).mount('#app');

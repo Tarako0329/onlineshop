@@ -176,7 +176,7 @@ git reset --hard origin/main
 php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
-/usr/local/bin/php /home/pcntfsrg/public_html/onlineshop/onlineshop/send_review_irai.php
+
 
 
 cd /home/pcntfsrg/public_html/onlineshop/Present
