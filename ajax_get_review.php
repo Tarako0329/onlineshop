@@ -37,6 +37,7 @@
 		  //log_writer('\$talk',$talk);
 	}
 
+	$token = csrf_create();
 	$return_sts = array(
     "MSG" => $msg
     ,"status" => $alert_status
