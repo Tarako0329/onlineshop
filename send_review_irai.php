@@ -5,6 +5,10 @@
 */
 date_default_timezone_set('Asia/Tokyo'); 
 define("VERSION","ver1.37.0");
+if (php_sapi_name() != 'cli') {
+	exit('このスクリプトはCLIからのみ実行可能です。');
+}
+chdir(__DIR__);
 
 require "./vendor/autoload.php";
 require "functions.php";
