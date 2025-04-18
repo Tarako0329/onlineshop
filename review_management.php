@@ -21,13 +21,24 @@
 			$stmt->execute();
 
 			//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
-			$sql = "select * from review_online r inner join juchuu_head h on r.orderNO = h.orderNO where r.seq = :seq";
+			$sql = "SELECT 
+					h.mail 
+					,u.yagou
+				from review_online r 
+				inner join juchuu_head h 
+				on r.orderNO = h.orderNO 
+				inner join Users_online u
+				on h.uid = u.uid
+				where 
+					r.seq = :seq";
 			$stmt = $pdo_h->prepare($sql);
 			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
 			$stmt->execute();
 			$mail_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$mail_data[0]["subject"] = "【".TITLE."】レビューへの返信がありました。";
-			$mail_data[0]["body"] = "レビューへの返信がありました。\r\n下記URLよりご確認ください。\r\n".ROOT_URL."review.php?key=".rot13encrypt2($mail_data[0]["shouhinCD"])."&key2=".rot13encrypt2($mail_data[0]["shop_id"]);
+
+			$mail = $mail_data[0]["mail"];
+			$subject = "【".TITLE."】レビューへの返信がありました。";
+			$body = $mail_data[0]["yagou"]." よりレビューへの返信がありました。\r\n下記URLよりご確認ください。\r\n".ROOT_URL."review.php?key=".rot13encrypt2($mail_data[0]["shouhinCD"])."&key2=".rot13encrypt2($mail_data[0]["shop_id"]);
 			
 			//コミット
 			$pdo_h->commit();
