@@ -63,7 +63,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			h.*
 			,u.mail as shop_mail
 			,u.yagou
-			,u.name
+			,u.shacho
 			,u.line_id 
 		from juchuu_head h 
 		inner join Users_online u 
@@ -88,6 +88,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			if($cnt <> 0 && $shop_id<>$row["uid"]){
 				//出店者にメール送信
 				$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list." へレビュー依頼を送信しました。",TITLE." onLineShop","");
+				sleep(2);
 				$taishou_list = "";
 			}
 			$shop_id = $row["uid"];
@@ -158,6 +159,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$fromname = TITLE;
 			
 			$rtn = send_mail($mail,$subject,$body,$fromname,"");
+			sleep(2);
 			//log_writer2("\$rtn",$rtn,"lv3");
 
 			$params["orderNO"] = $row["orderNO"];
@@ -169,8 +171,6 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$stmt2->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 			
-			//5seconds wait
-			sleep(5);
 			$cnt++;
 			
 		}
