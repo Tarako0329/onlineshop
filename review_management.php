@@ -155,7 +155,7 @@
 			setup(){
 				//const reviews = ref(<?php echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
 				const reviews = ref([])
-				const token = '<?php echo $token;?>'
+				let token = '<?php echo $token;?>'
 
 				const upd_reply = (index) =>{
 					//axios postでajax_upd_review_reply.phpに送信
