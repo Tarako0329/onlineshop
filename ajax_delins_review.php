@@ -159,13 +159,13 @@ if($rtn !== true){
 
             //出店者URL
             $url = ROOT_URL."review_management.php?key=".rot13encrypt2($params["shop_id"]);
-            $body = $_POST["shouhinNM"]."\r\n".$_POST["review"]."\r\n返信したい場合は、下記URLよりご確認ください。\r\n".$url;
+            $body = "商品名：".$_POST["shouhinNM"]."\r\nレビュー：".$_POST["review"]."\r\n返信したい場合は、下記URLよりご確認ください。\r\n".$url;
             
 
             if($lineID <> "none"){
-                $rtn = send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$_POST["review"]);//出店者へお知らせLINE
+                $rtn = send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
             }else{
-                $rtn = send_mail($mail,$params["Contributor"].$head,$_POST["review"],TITLE,"");//出店者へお知らせメール
+                $rtn = send_mail($mail,$params["Contributor"].$head,$body,TITLE,"");//出店者へお知らせメール
             }
             log_writer2("\$rtn",$rtn,"lv3");
 
