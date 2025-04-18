@@ -59,7 +59,20 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 	$sqllog="";
 
-	$sql = "SELECT h.*,u.mail as shop_mail,u.yagou,u.line_id from juchuu_head h inner join Users_online u on h.uid = u.uid where sent = 1 and review_irai = 'still' and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK) order by uid";
+	$sql = "SELECT 
+			h.*
+			,u.mail as shop_mail
+			,u.yagou
+			,u.name
+			,u.line_id 
+		from juchuu_head h 
+		inner join Users_online u 
+		on h.uid = u.uid 
+		where 
+			sent = 1 
+			and review_irai = 'still' 
+			and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK) 
+		order by uid";
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->execute();
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -81,22 +94,41 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
 
+			//juchuu_meisaiをorderNOで検索
+			$sql_meisai = "select * from juchuu_meisai where orderNO = :orderNO";
+			$stmt_meisai = $pdo_h->prepare($sql_meisai);
+			$stmt_meisai->bindValue("orderNO", $row["orderNO"], PDO::PARAM_STR);
+			$stmt_meisai->execute();
+			$meisai = $stmt_meisai->fetchAll(PDO::FETCH_ASSOC);
+			//log_writer2("\$meisai",$meisai,"lv3");
+			foreach($meisai as $row){
+				$shouhinList .= "　・".$row["shouhinNM"]."\r\n";
+			}
+			
+
 			//$params["name"] = $row["name"];
-			$params["uid"] = $row["uid"];
-			$params["orderNO"] = $row["orderNO"];
+			//$params["uid"] = $row["uid"];
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
 			/*
-			$params["body"] = <<<EOM
+			$body = <<<EOM
 				$params[name] 様
 				
-				この度は、商品をお買い上げいただき、ありがとうございました。
+				この度は、弊社商品をお買い上げいただき、ありがとうございました。
 				お届けした商品はいかがでしたでしょうか？
 				差し支えなければ、ご感想・レビューをお聞かせください。
 				
+				【ご購入商品】
+				$shouhinList
+
 				レビュー投稿はこちらから
 				$params[url]
 				
 				ご協力よろしくお願いいたします。
+
+				通販サイト『Present Selection』
+				販売元：$row["yagou"]
+				https://cafe-present.greeen-sys.com/
+
 				EOM;
 			*/
 			$body = <<<EOM
@@ -104,10 +136,12 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
 
-
 				この度、当サイトにレビュー投稿・閲覧機能が追加されました。
 
-				つきましては、お買い上げいただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
+				つきましては、ご購入いただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
+
+				【ご購入商品】
+				$shouhinList
 
 				レビュー投稿はこちらから
 				$url
@@ -126,6 +160,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$rtn = send_mail($mail,$subject,$body,$fromname,"");
 			//log_writer2("\$rtn",$rtn,"lv3");
 
+			$params["orderNO"] = $row["orderNO"];
 			$sql_upd = "update juchuu_head set review_irai = 'done' where orderNO = :orderNO";
 			$stmt2 = $pdo_h->prepare($sql_upd);
 			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
