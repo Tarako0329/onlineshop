@@ -14,11 +14,16 @@
 			//トランザクションログ
 			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 			
+			$params["reply"] = $_POST["reply"];
+			$params["seq"] = $_POST["seq"];
 			$sql = "update review_online set reply = :reply, reply_date = CURDATE() where seq = :seq";
 			$stmt = $pdo_h->prepare($sql);
-			$stmt->bindValue("reply", $_POST["reply"], PDO::PARAM_STR);
-			$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
+			$stmt->bindValue("reply", $params["reply"], PDO::PARAM_STR);
+			$stmt->bindValue("seq", $params["seq"], PDO::PARAM_STR);
+			$sqllog .= rtn_sqllog($sql_upd,$params);
+
 			$stmt->execute();
+			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
 			//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
 			$sql = "SELECT 
@@ -46,7 +51,7 @@
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
 			
-			send_mail($mail,$params["Contributor"].$head,$_POST["review"],TITLE,"");
+			send_mail($mail,$subject,$body,TITLE,"");
 		}catch(Exception $e){
 			
 		}
@@ -183,25 +188,31 @@
 							<p class="fs-2">{{list.review}}</p>
 						</div>
 					</div>
-					<div v-if='list.review!==null' class="balloon-chat right mb-3">
-            <!-- 右の吹き出し -->
-            <div class="chatting p-4 pt-1">
-              <small>{{list.reply_date}}</small>
-              <textarea class="form-control fs-2" style='width:300px' rows=5 v-model='list.reply'></textarea>
-							<!--返事ボタン-->
-							<div class='text-end mt-3'>
-								<form method="post" action="review_management.php?key=<?php echo $user_hash;?>">
-									<button type='submit' class='btn btn-primary'>{{list.btn_name}}</button>
-									<input type="hidden" name="reply" :value="list.reply">
-									<input type="hidden" name="seq" :value="list.SEQ">
-								</form>
-							</div>
-            </div>
-          </div>
+					<template v-if='list.review!==null' >
+						<div class="balloon-chat right mb-3">
+            	<!-- 右の吹き出し -->
+            	<div class="chatting p-4 pt-1">
+            	  <small>{{list.reply_date}}</small>
+            	  <textarea class="form-control fs-2" style='width:300px' rows=5 v-model='list.reply'></textarea>
+								<!--返事ボタン-->
+								<div class='text-end mt-3'>
+									<form method="post" action="review_management.php?key=<?php echo $user_hash;?>">
+										<button type='submit' class='btn btn-primary'>{{list.btn_name}}</button>
+										<input type="hidden" name="reply" :value="list.reply">
+										<input type="hidden" name="seq" :value="list.SEQ">
+									</form>
+								</div>
+            	</div>
+						</div>
+						<div>
+							以降、個別でのやり取りが必要な場合はコチラから
+						</div>
+          </template>
 
 					<div v-else class='fs-3 p-5'>
 						
 					</div>
+					<hr>
 				</template>
 			</div>
 			
