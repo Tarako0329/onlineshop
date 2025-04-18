@@ -88,7 +88,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			if($cnt <> 0 && $shop_id<>$row["uid"]){
 				//出店者にメール送信
 				if($lineID <> "none"){
-					$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n",$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+					$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 				}
@@ -115,9 +115,6 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				$shouhinList .= "　・".$row2["shouhinNM"]."\r\n";
 			}
 			
-
-			//$params["name"] = $row["name"];
-			//$params["uid"] = $row["uid"];
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
 			/*
 			$body = <<<EOM
