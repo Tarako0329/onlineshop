@@ -97,7 +97,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			}
 			$shop_id = $row["uid"];
 			//$lineID = $row["line_id"];
-			$lineID =(!empty($row["line_id"]))?$owner[0]["line_id"]:"none";
+			$lineID =(!empty($row["line_id"]))?$row["line_id"]:"none";
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
 
