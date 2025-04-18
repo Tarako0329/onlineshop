@@ -36,7 +36,15 @@
 	  $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		  //log_writer('\$talk',$talk);
 	}
+
+	$return_sts = array(
+    "MSG" => $msg
+    ,"status" => $alert_status
+    ,"csrf_create" => $token
+    ,"reviews" => $reviews
+  );
+
   header('Content-type: application/json');  
-  echo json_encode($reviews, JSON_UNESCAPED_UNICODE);
+  echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
   exit();
 ?>

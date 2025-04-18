@@ -190,7 +190,7 @@
 					.then((response)=>{
 						console_log(response.data)
 						token = response.data.csrf_create
-						reviews.value = response.data
+						reviews.value = response.data.reviews
 						if(response.data.status==="alert-success"){
 						}else{
 							alert('レビュー取得失敗')
