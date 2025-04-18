@@ -6,31 +6,6 @@
 	$user_hash = $_GET["key"] ;
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	//reviewを取得
-	$sql="SELECT 
-    u.yagou
-    ,u.logo
-    ,m.shouhinNM
-    ,r.*
-    ,p.pic 
-		,IF(r.reply IS NULL,'返事する','修正する') as btn_name
-  FROM shouhinMS_online m
-    left join review_online r
-    on r.shop_id = m.uid
-    and r.shouhinCD = m.shouhinCD
-    inner join Users_online u
-    on m.uid = u.uid
-    inner join shouhinMS_online_pic p
-    on m.shouhinCD = p.shouhinCD
-    and m.uid = p.uid
-    and p.sort=1
-    where m.uid = :uid
-  order by r.insdatetime desc";
-		
-	$stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-  $stmt->execute();
-  $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	$token = csrf_create();
 ?>
@@ -186,6 +161,7 @@
 					const form = new FormData();
 					form.append(`reply`, reviews.value[index].reply)
 					form.append(`seq`, reviews.value[index].SEQ)
+					form.append(`csrf_token`, token)
 					axios.post("ajax_upd_review_reply.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
 					.then((response)=>{
 						console_log(response.data)
@@ -202,9 +178,35 @@
 					})
 					.finally(()=>{
 						// 現在のページをリロードします（キャッシュを利用する場合があります）
-						location.reload();
 					})
 				}
+
+				const get_review = () =>{
+					//axios postでajax_upd_review_reply.phpに送信
+					const form = new FormData();
+					form.append(`csrf_token`, token)
+					axios.post("ajax_get_review.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+					.then((response)=>{
+						console_log(response.data)
+						token = response.data.csrf_create
+						if(response.data.status==="alert-success"){
+						}else{
+							alert('レビュー取得失敗')
+						}
+					})
+					.catch((error,response)=>{
+						console_log(error)
+						alert('レビュー取得失敗(catch error)')
+					})
+					.finally(()=>{
+						// 現在のページをリロードします（キャッシュを利用する場合があります）
+					})
+				}
+
+				onMounted(()=>{
+					console_log("onMounted")
+					get_review()
+				})
 
 				return{
 					reviews,

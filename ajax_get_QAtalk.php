@@ -16,7 +16,7 @@
 		where askNO = :askNO order by seq";
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("askNO", $askNO, PDO::PARAM_INT);
-		//$stmt->bindValue("askNO", 0, PDO::PARAM_INT);
+		
 		$stmt->execute();
 		$talk = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	  //log_writer('\$talk',$talk);
