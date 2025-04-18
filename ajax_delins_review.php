@@ -96,12 +96,11 @@ if($rtn !== true){
                 $check_ng = $result[0]["判定"];
                 $msg = $result[0]["理由"];
             } else {
-                //echo '応答からテキストを抽出できませんでした。';
                 $msg = 'Geminiから誹謗中傷checkの応答結果を抽出できませんでした。時間をおいて、再度投稿してみてください';
                 $check_ng = false;
             }
         }
-        //$check_ng = false;
+        
         if($check_ng==="NG"){
             $msg = "AIに誹謗中傷と判断されたため、登録できませんでした。\n理由：".$msg;
             $alert_status = "alert-danger";
@@ -157,6 +156,11 @@ if($rtn !== true){
             $msg .= "登録が完了しました。";
             $alert_status = "alert-success";
             $reseve_status=true;
+
+            //出店者URL
+            $url = ROOT_URL."review_management.php?key=".rot13encrypt2($params["shop_id"]);
+            $body = $_POST["shouhinNM"]."\r\n".$_POST["review"]."\r\n返信したい場合は、下記URLよりご確認ください。\r\n".$url;
+            
 
             if($lineID <> "none"){
                 $rtn = send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$_POST["review"]);//出店者へお知らせLINE

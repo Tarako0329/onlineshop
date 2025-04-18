@@ -11,6 +11,7 @@ const review_post = (p_buylist,p_token) => createApp({
       const form = new FormData();
       form.append(`shop_id`, buylist.value[index].uid)
       form.append(`shouhinCD`, buylist.value[index].shouhinCD)
+      form.append(`shouhinNM`, buylist.value[index].shouhinNM)
       form.append(`review`, buylist.value[index].review)
       form.append(`score`, buylist.value[index].score)
       form.append(`Contributor`, buylist.value[index].name)
