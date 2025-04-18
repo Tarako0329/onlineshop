@@ -81,10 +81,10 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
 
-			$params["name"] = $row["name"];
+			//$params["name"] = $row["name"];
 			$params["uid"] = $row["uid"];
-			$params["key"] = rot13encrypt2($row["orderNO"]);
-			$params["url"] = ROOT_URL."review_post.php?key=".$params["key"];
+			$params["orderNO"] = rot13encrypt2($row["orderNO"]);
+			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
 			/*
 			$params["body"] = <<<EOM
 				$params[name] 様
@@ -100,7 +100,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				EOM;
 			*/
 			$body = <<<EOM
-				$params[name] 様
+				$row[name] 様
 
 				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
 
@@ -110,7 +110,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				つきましては、お買い上げいただいた商品について、ご感想・レビューをお聞かせいただければ幸いです。
 
 				レビュー投稿はこちらから
-				$params[url]
+				$url
 
 				ご協力よろしくお願いいたします。
 
@@ -129,9 +129,9 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$sql_upd = "update juchuu_head set review_irai = 'done' where orderNO = :orderNO";
 			$stmt2 = $pdo_h->prepare($sql_upd);
 			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
-			$stmt2->execute();
-
 			$sqllog .= rtn_sqllog($sql_upd,$params);
+
+			$stmt2->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 			
 			//5seconds wait
