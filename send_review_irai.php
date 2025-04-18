@@ -83,7 +83,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 			//$params["name"] = $row["name"];
 			$params["uid"] = $row["uid"];
-			$params["orderNO"] = rot13encrypt2($row["orderNO"]);
+			$params["orderNO"] = $row["orderNO"];
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
 			/*
 			$params["body"] = <<<EOM
