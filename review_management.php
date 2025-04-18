@@ -167,10 +167,11 @@
 					.then((response)=>{
 						console_log(response.data)
 						token = response.data.csrf_create
-						if(response.data.status==="alert-success"){
+						if(response.data.status==="alert_success"){
 							alert('返信を登録しました')
 						}else{
 							alert('送信失敗')
+							console_log(response.data.MSG)
 						}
 					})
 					.catch((error,response)=>{
@@ -191,9 +192,10 @@
 						console_log(response.data)
 						token = response.data.csrf_create
 						reviews.value = response.data.reviews
-						if(response.data.status==="alert-success"){
+						if(response.data.status==="alert_success"){
 						}else{
 							alert('レビュー取得失敗')
+							console_log(response.data.MSG)
 						}
 					})
 					.catch((error,response)=>{
