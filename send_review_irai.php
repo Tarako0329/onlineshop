@@ -149,7 +149,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 				ご協力よろしくお願いいたします。
 
-				Present Selection
+				通販サイト『Present Selection』
+				販売元： $row[yagou]
 				https://cafe-present.greeen-sys.com/
 
 				EOM;
