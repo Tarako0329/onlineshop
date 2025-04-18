@@ -1,7 +1,5 @@
 <?php
-//log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header.php";
-//register_shutdown_function('shutdown');
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
@@ -16,7 +14,7 @@ if(empty($_POST["hash"])){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-//log_writer2("\$_SESSION",$_SESSION,"lv3");
+//log_writer2("\$_POST",$_POST,"lv3");
 
 $rtn = csrf_checker(["configration.php"],["P","C","S"]);
 if($rtn !== true){
@@ -56,7 +54,7 @@ if($rtn !== true){
         $params["site_name"] = $_POST["yagou"]; //とりあえず今は屋号を転記
         $params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
         $params["cc_mail"] = $_POST["cc_mail"];
-        $params["line_id"] = $_POST["line_id"];
+        $params["line_id"] = !empty($_POST["line_id"])?$_POST["line_id"]:NULL;
         $params["fb_id"] = $_POST["fb_id"];
         $params["x_id"] = $_POST["x_id"];
         $params["site_pr"] = $_POST["site_pr"];
