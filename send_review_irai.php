@@ -102,8 +102,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$stmt_meisai->execute();
 			$meisai = $stmt_meisai->fetchAll(PDO::FETCH_ASSOC);
 			//log_writer2("\$meisai",$meisai,"lv3");
-			foreach($meisai as $row){
-				$shouhinList .= "　・".$row["shouhinNM"]."\r\n";
+			foreach($meisai as $row2){
+				$shouhinList .= "　・".$row2["shouhinNM"]."\r\n";
 			}
 			
 
