@@ -181,21 +181,22 @@
                         </div>
                         <hr>
                         <div class='row mb-3'>
-                          <div v-if='list.cancel===null && cancel_lock[index].cancel==="unlock"' class='col-md-6 col-12'>
-                            <button type='button' class='btn btn-danger ms-3' @click='set_order_sts(list.orderNO,"cancel",1,index)'>ご注文キャンセル</button>
+                          <div class='col-md-6 col-12'>
+                          <div v-if='list.cancel===null && cancel_lock[index].cancel==="unlock"' >
+                            <button type='button' class='btn btn-danger' @click='set_order_sts(list.orderNO,"cancel",1,index)'>ご注文キャンセル</button>
                           </div>
-                          <div v-else-if='list.cancel!==null' class='col-md-6 col-12'>
-                            <!--<button type='button' class='btn btn-danger ms-3' @click='set_order_sts(list.orderNO,"cancel",1,index)' disabled>キャンセル済です</button>-->
-                            <button type='button' class='btn btn-danger ms-3' disabled>キャンセル済です</button>
+                          <div v-else-if='list.cancel!==null'>
+                            <button type='button' class='btn btn-danger' disabled>キャンセル済です</button>
                           </div>
-                          <div v-else-if='cancel_lock[index].cancel==="lock"'class='col-md-6 col-12'>
-                            ご注文の対応中のためキャンセルできません。<br>
-                            直接ショップへお問い合わせください。<br>
-                            <br>
-                            【お問い合わせ先】<br>
-                            {{list.yagou}}<br>
-                            <a :href="`tel:${list.shop_tel}`">tel:{{list.shop_tel}}</a><br>
-                            mail:{{list.shop_mail}}<br>
+                          <div v-else-if='cancel_lock[index].cancel==="lock"'>
+                            <p>ご注文の対応中のためキャンセルできません。</p>
+                            <p>下記より直接お問い合わせ下さい。</p>
+                            <!--mail:{{list.shop_mail}}<br>-->
+                          </div>
+                          <p class='mt-3'>【ご注文に関する問合せ】</p>
+                          <p>{{list.yagou}}</p>
+                          <p><a :href="`tel:${list.shop_tel}`">tel:{{list.shop_tel}}</a></p>
+                          <button type='button' class='btn btn-success' data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa(index)'>問合せ画面表示</button>
                           </div>
                         </div>
                       </div>
@@ -215,6 +216,34 @@
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">お問い合わせ</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label for='umail' class="form-label">お名前</label>
+          <input v-model='qa_name' type='mail' class='form-control mb-3' id='umail' placeholder="ご注文時の名前">
+          <label for='umail' class="form-label">回答送付先メールアドレス</label>
+          <input v-model='qa_mail' type='mail' class='form-control mb-3' id='umail'>
+          <div class="form-check">
+            <input :value ='qa_head' name='qa_head' type='radio' class='form-check-input' id='qa_shouhinNM'>
+            <label for='qa_shouhinNM' class="form-check-label">{{qa_head}}</label>
+          </div>
+          <label for='send_mailbody' class="form-label">お問い合わせ内容</label>
+          <textarea v-model='qa_text' type='memo' class='form-control' rows="20" id='send_mailbody' placeholder="なんでもお気軽にお問い合わせください。"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close'>Close</button>
+          <button type='button' class='btn btn-primary' @click='send_email_toShop()' id='mail_send_btn'>送信</button>
+        </div>
+      </div>
+    </div>
+  </div>  
+
   <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
 	</div>

@@ -412,8 +412,8 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
 
       const form = new FormData();
       form.append(`mailto`, qa_mail.value)
-      form.append(`mailtoBCC`, shouhinMS_SALE.value[qa_index.value].mail)
-      form.append(`lineid`, shouhinMS_SALE.value[qa_index.value].line_id)
+      //form.append(`mailtoBCC`, shouhinMS_SALE.value[qa_index.value].mail)
+      //form.append(`lineid`, shouhinMS_SALE.value[qa_index.value].line_id)
       form.append(`shop_id`, shouhinMS_SALE.value[qa_index.value].uid)
       form.append(`qa_head`, qa_head.value)
       form.append(`qa_name`, qa_name.value)

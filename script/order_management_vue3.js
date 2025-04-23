@@ -305,6 +305,73 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       })
     })
 
+
+    const qa_name = ref('')
+    const qa_mail = ref('') //reply address
+    const qa_shopid = ref('') //bccを出店者に address
+    const qa_head = ref('') //subject
+    const qa_yagou = ref('')
+    const qa_text = ref('')
+
+    const set_qa = (index) =>{
+      qa_name.value = order_hd_serch.value[index].name
+      qa_mail.value = order_hd_serch.value[index].mail
+      qa_shopid.value = order_hd_serch.value[index].uid
+      qa_head.value = `【受付No${order_hd_serch.value[index].orderNO}】についての問合せ`
+      qa_yagou.value = order_hd_serch.value[index].yagou
+      
+    }
+    
+    const send_email_toShop = () =>{
+      if(confirm('お問い合わせ内容に変更はないですか？')){
+      }else{
+        return
+      }
+      
+      loader.value = true
+      
+      document.getElementById('mail_send_btn').disabled = true
+
+      const form = new FormData();
+      form.append(`mailto`, qa_mail.value)
+      //form.append(`mailtoBCC`, "")
+      //form.append(`lineid`, shouhinMS_SALE.value[qa_index.value].line_id)
+      form.append(`shop_id`, qa_shopid.value)
+      form.append(`qa_head`, qa_head.value)
+      form.append(`qa_name`, qa_name.value)
+      form.append(`subject`, `【${qa_yagou.value}】ご質問を受付ました「${qa_head.value}」`)
+      form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\nお問い合わせ内容\n\n${qa_text.value}`)
+      form.append(`qa_text`, qa_text.value)
+      form.append(`sts`, "Q")
+      form.append(`csrf_token`, token)
+      //form.append(`hash`, hash)
+
+      axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        loader.value = false
+        token = response.data.csrf_create
+        if(response.data.status==="alert-success"){
+          qa_text.value=""
+          alert('メールを送信しました')
+          document.getElementById('mail_modal_close').click()
+        }else{
+          alert('送信失敗')
+        }
+        
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+        loader.value = false
+      })
+      .finally(()=>{
+        loader.value = false
+        document.getElementById('mail_send_btn').disabled = false
+      })
+
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="order_rireki.php"){
@@ -364,6 +431,15 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       copy_target,
       site_name,
       mode,
+      send_email_toShop,
+      qa_name,
+      qa_mail,
+      qa_head,
+      qa_text,
+      qa_yagou,
+      
+      set_qa,
+      
     }
   }
 })

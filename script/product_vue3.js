@@ -205,8 +205,8 @@ export*/ const product_page = (Where_to_use,p_token,p_shouhin_cd,p_site_name) =>
 
       const form = new FormData();
       form.append(`mailto`, qa_mail.value)
-      form.append(`mailtoBCC`, shouhinMS.value[qa_index.value].mail)
-      form.append(`lineid`, shouhinMS.value[qa_index.value].line_id)
+      //form.append(`mailtoBCC`, shouhinMS.value[qa_index.value].mail)
+      //form.append(`lineid`, shouhinMS.value[qa_index.value].line_id)
       form.append(`shop_id`, shouhinMS.value[qa_index.value].uid)
       form.append(`qa_head`, qa_head.value)
       form.append(`qa_name`, qa_name.value)

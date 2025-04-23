@@ -170,8 +170,8 @@
           loader.value=true
           const form = new FormData();
           form.append(`mailto`, talk.value[0].customer)
-          form.append(`mailtoBCC`, talk.value[0].mail)
-          form.append(`lineid`, talk.value[0].line_id)
+          //form.append(`mailtoBCC`, talk.value[0].mail)
+          //form.append(`lineid`, talk.value[0].line_id)
           form.append(`shop_id`, talk.value[0].shop_id)
           form.append(`qa_head`, talk.value[0].shouhinNM)
           form.append(`qa_name`, talk.value[0].name)
