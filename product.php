@@ -175,6 +175,8 @@
             <div class='row'>
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <button type="button" class="btn btn-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" @click='set_qa_index(index)'>お問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+                <!--review.phpへジャンプ-->
+                <a :href="`review.php?key=${list.key}&key2=${list.key2}`" class="btn btn-secondary fs-5">レビュー<i class="bi bi-chat-left-text-fill ms-2"></i><span class='ms-2'>{{list.review_cnt}}</span></a>
               </div>
               <div class='col-6 mt-2 mb-2 ps-3'>
                 <div class=''>

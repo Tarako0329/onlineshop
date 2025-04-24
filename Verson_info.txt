@@ -164,7 +164,8 @@ ver1.38.0:レビュー投稿機能追加-commited
     MODIFY `SEQ` int(11) NOT NULL AUTO_INCREMENT;
   ALTER TABLE `juchuu_head` ADD `review_irai` VARCHAR(6) NOT NULL DEFAULT 'still' COMMENT 'レビュー依頼済FLG(still or done)' AFTER `postage_no`;
   ALTER TABLE `juchuu_head` ADD `sent_ymd` DATE NULL COMMENT '配送連絡日' AFTER `sent`;
-ver1.39.0:お客さん用注文履歴からのお問い合わせ
+ver1.39.0:お客さん用注文履歴からのお問い合わせ-commited
+ver1.40.0:商品単体ページにレビュー追加・他
 
 【Issues】
 ・juchuu_headのcancel誤更新の調査

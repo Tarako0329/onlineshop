@@ -250,7 +250,7 @@
       <div class='row mb-3'>
         <div class='col-md-6 col-12'><!--tel-->
           <label for='od_tel' class="form-label">TEL(ハイフン不要)</label>
-          <input type='tel' v-model='od_tel' class='form-control' id='od_tel' placeholder='必須(09012345678)'>>
+          <input type='tel' v-model='od_tel' class='form-control' id='od_tel' placeholder='必須(09012345678)'>
         </div>
       </div>
       <div class='row mb-3'><!--mail-->
