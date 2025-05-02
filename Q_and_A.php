@@ -107,7 +107,7 @@
         <template v-for='(list,index) in talk' :key='list.seq'>
           <div v-if='list.sts==="Q" || list.sts==="CA"' class="balloon-chat left">
             <!-- 左の吹き出し -->
-            <figure class="icon-img"><img style='height:100%' src="./img/hito.png" alt="代替えテキスト" >
+            <figure class="icon-img"><img style='height:100%' src="./img/hito.png" class='img-fluid d-block mx-auto' alt="代替えテキスト" >
               <figcaption class="icon-name">{{list.name}} 様</figcaption>
             </figure>
             <div class="chatting p-4 pt-1">
@@ -117,7 +117,7 @@
           </div>
           <div v-if='list.sts==="A" || list.sts==="BQ"' class="balloon-chat right">
             <!-- 右の吹き出し -->
-            <figure class="icon-img"><img style='height:100%' :src="list.logo" alt="代替えテキスト" >
+            <figure class="icon-img"><img style='height:100%' :src="list.logo" class='img-fluid d-block mx-auto' alt="代替えテキスト" >
               <figcaption class="icon-name">{{list.yagou}}</figcaption>
             </figure>
             <div class="chatting p-4 pt-1">
