@@ -52,7 +52,7 @@
         background: #ccffcc; /*吹き出しのカラーはここで変更*/
         text-align: left; /*テキストの位置はここで変更*/
         border-radius: 12px; /*吹き出しの丸み具合を変更*/
-        max-width: calc(100% - 70px);
+        max-width: calc(100% - 100px);
       }
         /* 吹き出しの三角部分の作成 */
       .chatting::after {
@@ -97,13 +97,13 @@
   <MAIN class='container common_main' style='height: 100%;padding-top:60px;padding-bottom:220px;'>
     
     <div class='row pb-3 pt-1 p-5'>
-      <div class='col-12 col-md-8'>
+      <div class='col-12 col-md-10'>
         <h3>受付番号：{{talk[0].askNO}}</h3>
         <h3>件名：{{talk[0].shouhinNM}}</h3>
       </div>
     </div>
     <div class='row pb-3 pt-3'>
-      <div class='col-12 col-md-8'>
+      <div class='col-12 col-md-10'>
         <template v-for='(list,index) in talk' :key='list.seq'>
           <div v-if='list.sts==="Q" || list.sts==="CA"' class="balloon-chat left">
             <!-- 左の吹き出し -->
@@ -132,7 +132,7 @@
   </MAIN>
   <FOOTER class='container common_footer position-fixed bottom-0 start-50 translate-middle-x pt-3'style='height:180px;'>
     <div class='row' >
-      <div class='col-12 col-md-8'>
+      <div class='col-12 col-md-10'>
         <div class='row'>
         <div class='col-10'>
           <textarea type='memo' class='form-control' rows='8' v-model='message'></textarea>
