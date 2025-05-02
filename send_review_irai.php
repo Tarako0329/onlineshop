@@ -96,7 +96,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				$taishou_list = "";
 			}
 			$shop_id = $row["uid"];
-			//$lineID = $row["line_id"];
+			
 			$lineID =(!empty($row["line_id"]))?$row["line_id"]:"none";
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
@@ -116,28 +116,28 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			}
 			
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
-			/*
+			$site = TITLE;
 			$body = <<<EOM
 				$params[name] 様
 				
-				この度は、弊社商品をお買い上げいただき、ありがとうございました。
+				この度は、$site より商品をお買い上げいただき、ありがとうございました。
 				お届けした商品はいかがでしたでしょうか？
-				差し支えなければ、ご感想・レビューをお聞かせください。
+				差し支えなければ、ご感想・レビューをお聞かせください♪
 				
 				【ご購入商品】
 				$shouhinList
 
 				レビュー投稿はこちらから
-				$params[url]
+				$url
 				
 				ご協力よろしくお願いいたします。
 
-				通販サイト『Present Selection』
-				販売元：$row["yagou"]
+				通販サイト『$site 』
+				販売元：$row[yagou]
 				https://cafe-present.greeen-sys.com/
 
 				EOM;
-			*/
+			
 			$body = <<<EOM
 				$row[name] 様
 
