@@ -78,6 +78,7 @@
       .icon-img {
         width: 60px;
         height: 60px;
+        overflow: hidden;
       }
         /* アイコンの名前の設定 */
       .icon-name {
