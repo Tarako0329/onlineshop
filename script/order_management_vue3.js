@@ -72,8 +72,6 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         }else{
           document.getElementById(`postage${index}`).style.backgroundColor="#fff"
           document.getElementById(`post_corp${index}`).style.backgroundColor="#fff"
-          //send_mailbody.value=get_mail_sample(mail_body.value,index)
-          //document.getElementById("modalon").click()
         }
       }
 
@@ -98,9 +96,6 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         }
         document.getElementById(`postage_url_${index}`).style.backgroundColor="#fff"
         document.getElementById(`postage_no_${index}`).style.backgroundColor="#fff"
-
-        //send_mailbody.value=get_mail_sample(mail_body_sent.value,index)
-        //document.getElementById("modalon").click()
       }
 
 
@@ -242,7 +237,8 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         return
       }
 
-      loader.value = true
+      //loader.value = true
+      document.getElementById('mail_send_btn_osirase').disabled = true
       send_mail_btn.value='送信中'
 
       const form = new FormData();
@@ -260,7 +256,7 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         token = response.data.csrf_create
         if(response.data.status==="alert-success"){
           alert('メールを送信しました')
-          document.getElementById('mail_modal_close').click()
+          document.getElementById('mail_modal_close_osirase').click()
         }else{
           alert('送信失敗')
         }
@@ -271,10 +267,10 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
         token = response.data.csrf_create
       })
       .finally(()=>{
-        loader.value = false
+        //loader.value = false
+        document.getElementById('mail_send_btn_osirase').disabled = false
         send_mail_btn.value='送 信'
       })
-
     }
 
     const cancel_lock = computed(()=>{
@@ -372,6 +368,70 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
 
     }
 
+    const set_qa_fmB = (index) =>{//受注ステータス変更以外の通常連絡
+      qa_name.value = orderlist_hd.value[index].name
+      qa_mail.value = orderlist_hd.value[index].mail
+      qa_shopid.value = orderlist_hd.value[index].uid
+      qa_yagou.value = orderlist_hd.value[index].yagou
+      qa_head.value = `【${qa_yagou.value} より】受付No${orderlist_hd.value[index].orderNO}　について`
+      send_mailbody.value = `${qa_name.value} 様\r\rいつもお世話になっております。\r${qa_yagou.value}　注文受付担当です。\rこの度はオンラインショップよりご注文いただき、ありがとうございます。\r`
+      document.getElementById("modalon2").click()
+    }
+    
+    const send_email_toCustomer = () =>{
+      if(confirm('お問い合わせ内容に変更はないですか？')){
+      }else{
+        return
+      }
+      
+      //loader.value = true
+      send_mail_btn.value='送信中'
+      document.getElementById('mail_send_btn_QA').disabled = true
+
+      const form = new FormData();
+      //お客様情報
+      form.append(`mailto`, qa_mail.value)
+      //form.append(`mailtoCC`, cc_mail.value)
+      form.append(`subject`, qa_head.value)
+      form.append(`qa_text`, send_mailbody.value)
+      form.append(`mailbody`, `${send_mailbody.value}\n\n※このメールは送信専用です。返信はメール上部のURLよりお願いします。※\n`)
+      form.append(`shop_id`, qa_shopid.value)
+      form.append(`csrf_token`, token)
+
+      //出店者CC情報
+      form.append(`qa_head`, qa_head.value)
+      form.append(`qa_name`, qa_name.value)
+      form.append(`sts`, "BQ")
+      form.append(`csrf_token`, token)
+      //form.append(`hash`, hash)
+
+      axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        loader.value = false
+        token = response.data.csrf_create
+        if(response.data.status==="alert-success"){
+          qa_text.value=""
+          alert('メールを送信しました')
+          document.getElementById('mail_modal_close_QA').click()
+        }else{
+          alert('送信失敗')
+        }
+        
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        token = response.data.csrf_create
+        loader.value = false
+      })
+      .finally(()=>{
+        //loader.value = false
+        send_mail_btn.value='送信'
+        document.getElementById('mail_send_btn_QA').disabled = false
+      })
+
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="order_rireki.php"){
@@ -432,12 +492,13 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       site_name,
       mode,
       send_email_toShop,
+      send_email_toCustomer,
       qa_name,
       qa_mail,
       qa_head,
       qa_text,
       qa_yagou,
-      
+      set_qa_fmB,
       set_qa,
       
     }

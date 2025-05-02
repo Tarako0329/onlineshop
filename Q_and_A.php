@@ -3,21 +3,21 @@
   $token = csrf_create();
   //$_SESSION["user_id"] = "%";
   if(empty($_GET)){
-    echo "見せないよ！";
+    echo "見せないよ！er1";
     exit();
   }
   $_SESSION["askNO"] = $_GET["askNO"];  //暗号
   $_SESSION["sts"] = $_GET["QA"];        //暗号
   $sts = rot13decrypt2($_SESSION["sts"]);
 
-  if($sts==="Q"){
+  if($sts==="Q" || $sts==="CA"){
     $subject="返信が届きました";
     $body="返信内容";
-  }else if($sts==="A"){
+  }else if($sts==="A" || $sts==="BQ"){
     $subject="回答が届きました";
     $body="回答内容";
   }else{
-    echo "見せないよ！";
+    echo "見せないよ！er2:".$sts;
     exit();
   }
 ?>
@@ -97,13 +97,13 @@
     <div class='row pb-3 pt-1 p-5'>
       <div class='col-12 col-md-8'>
         <h3>受付番号：{{talk[0].askNO}}</h3>
-        <h3>{{talk[0].shouhinNM}}　についてのお問い合わせ</h3>
+        <h3>件名：{{talk[0].shouhinNM}}</h3>
       </div>
     </div>
     <div class='row pb-3 pt-3'>
       <div class='col-12 col-md-8'>
         <template v-for='(list,index) in talk' :key='list.seq'>
-          <div v-if='list.sts==="Q"' class="balloon-chat left">
+          <div v-if='list.sts==="Q" || list.sts==="CA"' class="balloon-chat left">
             <!-- 左の吹き出し -->
             <figure class="icon-img"><img style='height:100%' src="./img/hito.png" alt="代替えテキスト" >
               <figcaption class="icon-name">{{list.name}} 様</figcaption>
@@ -113,7 +113,7 @@
               <p class="chat-text">{{list.body}}</p>
             </div>
           </div>
-          <div v-if='list.sts==="A"' class="balloon-chat right">
+          <div v-if='list.sts==="A" || list.sts==="BQ"' class="balloon-chat right">
             <!-- 右の吹き出し -->
             <figure class="icon-img"><img style='height:100%' :src="list.logo" alt="代替えテキスト" >
               <figcaption class="icon-name">{{list.yagou}}</figcaption>
@@ -133,7 +133,7 @@
       <div class='col-12 col-md-8'>
         <div class='row'>
         <div class='col-10'>
-          <textarea type='memo' class='form-control' rows='10' v-model='message'></textarea>
+          <textarea type='memo' class='form-control' rows='8' v-model='message'></textarea>
         </div>
         <div class='col-2 p-0 position-relative'>
           <button type='button' @click='send_msg()' class='btn btn-primary position-absolute top-50 translate-middle-y' style='width:100%;height:60px;'>送信</button>

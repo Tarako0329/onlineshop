@@ -22,6 +22,7 @@ if($rtn !== true){
         $timeout=true;
     }else{
 
+        $CusMailAdd = $_POST["mailto"];
         try{
             //uidからusers_onlineの情報を取得
             $sql = "select * from Users_online where uid = :uid";
@@ -30,25 +31,13 @@ if($rtn !== true){
             $stmt->execute();
             $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
             //$_POST["mailtoBCC"] = $user[0]["mail"];
-            $bcc = $user[0]["mail"];
+            $ShopMailAdd = $user[0]["mail"];
+            $yagou = $user[0]["yagou"];
             //$_POST["lineid"] = (!empty($user[0]["line_id"])?$user[0]["line_id"]:"none");
             $lineID = (!empty($user[0]["line_id"])?$user[0]["line_id"]:"none");
             
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
-
-            /*if(empty($_SESSION["askNO"])){
-                $stmt = $pdo_h->prepare("select max(askNO) + 1 as nextNO from online_q_and_a");
-                $stmt->execute();
-                if($stmt->rowCount() == 0){
-                    $askNO = 1;
-                }else{
-                    $tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $askNO = $tmp[0]["nextNO"];
-                }
-            }else{
-                //$askNO = rot13decrypt2($_SESSION["askNO"]);
-            }*/
 
             //QA管理画面から来た場合はSESSIONに値を持つ
             $firstQ = false;    //初回質問フラグ
@@ -60,7 +49,7 @@ if($rtn !== true){
                 //問合せNoの取得（同一ユーザが同じ対象に問合せした場合に同じNoを利用する.shopID,返信先メアド,Subjectで判断）
                 $stmt = $pdo_h->prepare("select IFNULL(askNO,'') as askNO from online_q_and_a where shop_id = :shop_id and customer = :customer and shouhinNM = :shouhinNM");
                 $stmt->bindValue("shop_id", $_POST["shop_id"], PDO::PARAM_STR);
-                $stmt->bindValue("customer", $_POST["mailto"], PDO::PARAM_STR);
+                $stmt->bindValue("customer", $CusMailAdd, PDO::PARAM_STR);
                 $stmt->bindValue("shouhinNM", $_POST["qa_head"], PDO::PARAM_STR);
                 $stmt->execute();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -86,7 +75,7 @@ if($rtn !== true){
 
                 $params["shop_id"] = $_POST["shop_id"];
                 $params["askNO"] = $askNO;
-                $params["customer"] = $_POST["mailto"];
+                $params["customer"] = $CusMailAdd;
                 $params["name"] = $_POST["qa_name"];
                 $params["shouhinNM"] = $_POST["qa_head"];
                 $params["sts"] = $sts;
@@ -106,50 +95,114 @@ if($rtn !== true){
                 $sqllog .= rtn_sqllog("--execute():正常終了",[]);
             }
 
+            //CtoBで始まるやり取り
             $Q_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("Q");
             $A_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("A");
+            //BtoCで始まるやり取り
+            $BQ_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("BQ");
+            $CA_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("CA");
             $rtn="success";
-            //$lineID =(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null")?$_POST["lineid"]:"none";
 
-            if($sts==="Q"){
-                //if(empty($_SESSION["askNO"])){//新規問い合わせ
+            /*
+            if($sts==="Q"){//通販画面QAのQuestion
                 if($firstQ){//新規問い合わせ
                     //新規問い合わせは受付メールを客にも送る
                     $head = "お客様よりお問い合わせがありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\nお客様ヘ以下の内容で受付メールを自動返信しました。\r\n\r\n";
-                    //if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
                     if($lineID <> "none"){
-                        $bcc = "";
-                        send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+                        $ShopMailAdd = "";
+                        send_line($lineID,$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
-                        //$bcc = $_POST["mailtoBCC"];
-                        $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+                        $rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
                     }
-                    log_writer2("to出店者 - send_mail() \$rtn","[".$bcc."] send ".$rtn,"lv3");
+                    log_writer2("to出店者 - send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
+
                     if($rtn==="success"){
-                        $rtn = send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
+                        $rtn = send_mail($CusMailAdd,$_POST["subject"],$_POST["mailbody"],TITLE,"");//客向け受付メール
                         $_SESSION["subject"] = $_POST["subject"];
-                        log_writer2("toお客さん - send_mail() \$rtn","[".$bcc."] send ".$rtn,"lv3");
+                        log_writer2("toお客さん - send_mail() \$rtn","[".$CusMailAdd."] send ".$rtn,"lv3");
                     }else{
                         //出店者への通知メールが失敗した場合は受付メールを送らない(rollback)
                     }
                 }else{//継続問合せ
                     //その後のやり取りはトーク風画面なので回答通知を出店者のみに送る
                     $head = "お客様より返信がありました。\r\n".$A_URL."\r\nより回答をお願いします\r\n\r\n";
-                    //if(!empty($_POST["lineid"]) && $_POST["lineid"] <> "null"){
                     if($lineID <> "none"){
-                        $bcc = "";
-                        send_line($_POST["lineid"],$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+                        $ShopMailAdd = "";
+                        send_line($lineID,$head.$_POST["subject"]."\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
                     }else{
-                        $bcc = $_POST["mailtoBCC"];
-                        $rtn = send_mail($bcc,$_POST["subject"],$head.$_POST["mailbody"],TITLE,$bcc);//出店者へお知らせメール
+                        $rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
                     }
                 }
-            }else if($sts==="A"){
+            }else if($sts==="A"){//通販画面QAのanswer
                 $head = "出店者より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
-                $rtn = send_mail($_POST["mailto"],$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+                $rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+            }else if($sts==="BQ"){//受注管理画面のお客様向け質問
+                //出店者からお客様へ
+                $rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+                
+            }else if($sts==="CA"){//受注管理画面のお客様からの返信
             }else{
                 exit();//想定外
             }
+            */
+            $cc_address = "";//メールの送信者へのCC
+            if($sts==="Q"){//通販画面QAのQuestion（客⇒店）
+                $head = (($firstQ)
+                        ?"お客様よりお問い合わせがありました。\r\n"
+                        :"お客様より返信がありました。\r\n")
+                        ."".$A_URL."\r\nより回答をお願いします\r\n\r\n====以下、お客様より====\r\n\r\n";
+
+                if($lineID <> "none"){
+                    $ShopMailAdd = "LINE";
+                    send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+                }else{
+                    $rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+                }
+                log_writer2("to出店者 - send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
+                $cc_address = $CusMailAdd;
+            }else if($sts==="A"){//通販画面QAのanswer（店⇒客）
+                $head = $yagou." より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
+                $rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+                $cc_address = "shop";
+
+
+            }else if($sts==="BQ"){//受注管理画面のお客様向け質問（店⇒客）
+                $head = (($firstQ)
+                        ?$yagou." よりお問い合わせがありました。\r\n"
+                        :$yagou." より返信がありました。\r\n")
+                        ."ご回答いただく場合は\r\n".$CA_URL."\r\nよりお願いします\r\n\r\n====以下、".$yagou." より====\r\n\r\n";
+                $rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+                $cc_address = "shop";
+            }else if($sts==="CA"){//受注管理画面のお客様からの返信（客⇒店）
+                $head = $_POST["qa_name"]." より回答がありました。追加でご確認したいことがございましたら\r\n".$BQ_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
+                if($lineID <> "none"){
+                    $ShopMailAdd = "LINE";
+                    send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+                }else{
+                    $rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+                }
+                log_writer2("to出店者 - send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
+                $cc_address = $CusMailAdd;
+            }else{
+                exit();//想定外
+            }
+
+            //送信者へのCC
+            $head = "下記内容にてメールを送信しました。\r\n========\r\n";
+            if($cc_address==="shop"){
+                if($lineID <> "none"){
+                    $ShopMailAdd = "LINE";
+                    send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+                }else{
+                    $rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+                }
+
+            }else{
+                $rtn = send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+
+            }
+
+
 
             if($rtn==="success"){
                 $msg = "送信完了";
