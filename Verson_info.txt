@@ -166,7 +166,7 @@ ver1.38.0:レビュー投稿機能追加-commited
   ALTER TABLE `juchuu_head` ADD `sent_ymd` DATE NULL COMMENT '配送連絡日' AFTER `sent`;
 ver1.39.0:お客さん用注文履歴からのお問い合わせ-commited
 ver1.40.0:商品単体ページにレビュー追加・他-commited
-ver1.40.1:受注管理から顧客にメッセージ送信
+ver1.40.1:受注管理から顧客にメッセージ送信-commited
   ALTER TABLE `online_q_and_a` CHANGE `sts` `sts` CHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'QorAorBQorCA';
 
   

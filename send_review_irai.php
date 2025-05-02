@@ -138,7 +138,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 				EOM;
 			
-			$body = <<<EOM
+			/*$body = <<<EOM
 				$row[name] 様
 
 				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
@@ -159,7 +159,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				販売元： $row[yagou]
 				https://cafe-present.greeen-sys.com/
 
-				EOM;
+				EOM;*/
 			
 			$mail = $row["mail"];
 			$subject = "【".TITLE."】レビュー投稿のお願い";
@@ -187,7 +187,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 		//出店者にメール送信
 		if($lineID <> "none"){
-			$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n",$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+			$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 		}else{
 			$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 		}
