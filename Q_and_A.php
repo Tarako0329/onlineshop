@@ -52,7 +52,7 @@
         background: #ccffcc; /*吹き出しのカラーはここで変更*/
         text-align: left; /*テキストの位置はここで変更*/
         border-radius: 12px; /*吹き出しの丸み具合を変更*/
-
+        max-width: calc(100% - 70px);
       }
         /* 吹き出しの三角部分の作成 */
       .chatting::after {
