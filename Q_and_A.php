@@ -73,6 +73,7 @@
         border-radius: 50%; /*丸の設定*/
         border: 2px solid #333300; /*アイコンの枠のカラーと太さはここで変更*/
         margin: 0;
+        object-fit: cover;
       }
         /* アイコンの大きさ */
       .icon-img {
