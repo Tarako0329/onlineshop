@@ -53,7 +53,6 @@ define("S_KEY",$_ENV["SKey"]);
 define("P_KEY",$_ENV["PKey"]);
 define("OAuth",$_ENV["OAuth"]);
 
-define("GEMINI",$_ENV["GOOGLE_API"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
@@ -137,29 +136,6 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				https://cafe-present.greeen-sys.com/
 
 				EOM;
-			
-			/*$body = <<<EOM
-				$row[name] 様
-
-				以前、Present Selectionより商品をお買い上げ頂いた方にお送りしております。
-
-				この度、当サイトにレビュー機能が追加されました。
-
-				つきましては、ご購入いただいた商品について、ご感想をお聞かせいただければ幸いです♪
-
-				【ご購入商品】
-				$shouhinList
-
-				レビュー投稿はこちらから
-				$url
-
-				ご協力よろしくお願いいたします。
-
-				通販サイト『Present Selection』
-				販売元： $row[yagou]
-				https://cafe-present.greeen-sys.com/
-
-				EOM;*/
 			
 			$mail = $row["mail"];
 			$subject = "【".TITLE."】レビュー投稿のお願い";

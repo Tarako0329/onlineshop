@@ -47,6 +47,7 @@ define("POP_USER", $_ENV["POP_USER"]);
 define("POP_PASS", $_ENV["POP_PASS"]);
 
 define("GEMINI",$_ENV["GOOGLE_API"]);
+define("GEMINI_URL",$_ENV["GEMINI_URL"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 

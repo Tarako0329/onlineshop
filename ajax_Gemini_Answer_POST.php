@@ -16,6 +16,7 @@ $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 $discription = "URL：".ROOT_URL."product.php?id=".$_SESSION["user_id"]."-".$_POST["hinCD"]."&z= 販売元:".$_POST["yagou"]." 商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$_POST["information"];
 
+/*
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;
 use GeminiAPI\Resources\Parts\TextPart;
@@ -26,13 +27,10 @@ $response = $client->withV1BetaVersion()
     ->generativeModel(ModelName::GEMINI_1_5_FLASH)
     ->withSystemInstruction('凄腕インフルエンサーとして')
     ->generateContent(
-        //new TextPart('Xでバズるハッシュタグとハッシュタグを含めた日本語の投稿例を３つ、javascriptでそのまま使えるJSON形式で簡潔に提案してください。JSONの形式について、ハッシュタグはtags。投稿例はrei1,rei2,rei3で。'.$discription),
-        //new TextPart('Xでバズるハッシュタグを10個と,URL,ハッシュタグを含めた日本語の投稿例をXに投稿できる文字数内で３つをJSON形式{"posts":{"tags":[tag1,tag2], "texts":[紹介文1,紹介文2,紹介文3]}}で出力。'.$discription),
-        //new TextPart('Xでバズるハッシュタグを10個と,日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は110文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
         new TextPart($sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
     );
+    //print nl2br($response->text());
 
-//print nl2br($response->text());
 
 $answer = $response->text();
 $answer = str_replace('```json','',$answer);
@@ -41,6 +39,51 @@ $answer = str_replace('\n','',$answer);
 $answer = str_replace('\r','',$answer);
 $answer = str_replace('\r\n','',$answer);
 $answer = substr($answer,1);
+*/
+
+$url = GEMINI_URL.GEMINI;
+$data = [
+    'contents' => [
+        [
+            'parts' => [
+                //['text' => 'こんにちは、Gemini！']
+                ['text' => '凄腕インフルエンサーとして'.$sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription]
+            ]
+        ]
+    ]
+];
+
+$options = [
+    'http' => [
+        'method' => 'POST',
+        'header' => [
+            'Content-Type: application/json',
+        ],
+        'content' => json_encode($data),
+    ],
+];
+
+$context = stream_context_create($options);
+$response = file_get_contents($url, false, $context);
+
+log_writer2("\$response",$response,"lv3");
+
+if ($response === false) {
+    $answer =  'Gemini呼び出しに失敗しました。時間をおいて、再度実行してください';
+} else {
+    $result = json_decode($response, true);
+    $result = $result['candidates'][0]['content']['parts'][0]['text'];
+    
+    $result = str_replace('```json','',$result);
+    $result = str_replace('```','',$result);
+    $result = str_replace('\n','',$result);
+    $result = str_replace('\r','',$result);
+    $result = str_replace('\r\n','',$result);
+    $answer = substr($result,1);
+    //$result = json_decode($result, true);
+    //log_writer2("\$result",$result,"lv3"); 
+}
+
 //log_writer2("response",$response->text(),"lv3");
 //log_writer2("\$answer",$answer,"lv3");
 
