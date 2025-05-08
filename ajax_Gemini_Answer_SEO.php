@@ -14,7 +14,7 @@ $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 $discription = "商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$_POST["information"];
-
+/*
 use GeminiAPI\Client;
 use GeminiAPI\Resources\ModelName;
 use GeminiAPI\Resources\Parts\TextPart;
@@ -37,15 +37,50 @@ $answer = str_replace('\n','',$answer);
 $answer = str_replace('\r','',$answer);
 $answer = str_replace('\r\n','',$answer);
 $answer = substr($answer,1);
-//log_writer2("response",$response->text(),"lv3");
-//log_writer2("\$answer",$answer,"lv3");
+*/
+$url = GEMINI_URL.GEMINI;
+$data = [
+    'contents' => [
+        [
+            'parts' => [
+                //['text' => 'こんにちは、Gemini！']
+                ['text' => '商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(80文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。'.$discription]
+            ]
+        ]
+    ]
+];
 
+$options = [
+    'http' => [
+        'method' => 'POST',
+        'header' => [
+            'Content-Type: application/json',
+        ],
+        'content' => json_encode($data),
+    ],
+];
 
-//echo json_encode($answer, JSON_UNESCAPED_UNICODE);
-//echo $response->text();
-//echo $answer;
+$context = stream_context_create($options);
+$response = file_get_contents($url, false, $context);
+
+log_writer2("\$response",$response,"lv3");
+
+if ($response === false) {
+    $answer =  'Gemini呼び出しに失敗しました。時間をおいて、再度実行してください';
+} else {
+    $result = json_decode($response, true);
+    $result = $result['candidates'][0]['content']['parts'][0]['text'];
+    
+    $result = str_replace('```json','',$result);
+    $result = str_replace('```','',$result);
+    $result = str_replace('\n','',$result);
+    $result = str_replace('\r','',$result);
+    $result = str_replace('\r\n','',$result);
+    $answer = substr($result,1);
+    //log_writer2("\$result",$result,"lv3"); 
+}
+
 header('Content-type: application/json');
-//echo json_encode($answer, JSON_UNESCAPED_UNICODE);
 echo $answer;
 exit();
 ?>

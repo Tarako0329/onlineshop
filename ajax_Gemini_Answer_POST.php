@@ -80,19 +80,9 @@ if ($response === false) {
     $result = str_replace('\r','',$result);
     $result = str_replace('\r\n','',$result);
     $answer = substr($result,1);
-    //$result = json_decode($result, true);
     //log_writer2("\$result",$result,"lv3"); 
 }
-
-//log_writer2("response",$response->text(),"lv3");
-//log_writer2("\$answer",$answer,"lv3");
-
-
-//echo json_encode($answer, JSON_UNESCAPED_UNICODE);
-//echo $response->text();
-//echo $answer;
 header('Content-type: application/json');
-//echo json_encode($answer, JSON_UNESCAPED_UNICODE);
 echo $answer;
 exit();
 ?>
