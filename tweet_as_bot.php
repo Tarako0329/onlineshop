@@ -120,7 +120,7 @@ if(EXEC_MODE==="Local"){
 	
 	$discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z=".$sns_type." 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;
 	
-	
+	/*
 	$client = new Client(GEMINI);
 	
 	$response = $client->withV1BetaVersion()
@@ -142,8 +142,53 @@ if(EXEC_MODE==="Local"){
 	$answer = json_decode($answer,true);
 	//print_r($answer);
 	//log_writer2("\$answer",$answer,"lv1");
+	*/
+	$url = GEMINI_URL.GEMINI;
+	$data = [
+	  'contents' => [
+	    [
+	      'parts' => [
+	        ['text' => '凄腕インフルエンサーとして'.$sns_type.'で購買意欲を掻き立てる日本語の投稿例を10個出力。'.$sns_type.'にそのまま投稿できるようにＵＲＬとハッシュタグも含めて作成。phpのjson_decodeで処理できるように[{"post":投稿例},{"post":投稿例}]で出力。URLとハッシュタグを除いた文字数は100文字以下。JSONオブジェクトを、プレーンテキスト形式で出力してください'.$discription]
+	      ]
+	    ]
+	  ]
+	];
+
+	$options = [
+	  'http' => [
+	    'method' => 'POST',
+	    'header' => [
+	      'Content-Type: application/json',
+	    ],
+	    'content' => json_encode($data),
+	  ],
+	];
+
+	$context = stream_context_create($options);
+	$response = file_get_contents($url, false, $context);
+
+	log_writer2("\$response",$response,"lv3");
+
+	if ($response === false) {
+	  //$answer =  'Gemini呼び出しに失敗しました。時間をおいて、再度実行してください';
+		log_writer2("\$response",'Gemini呼び出しに失敗しました',"lv1");
+		log_writer2("\$response",$response,"lv1");
+		exit();
+	} else {
+    $result = json_decode($response, true);
+    $result = $result['candidates'][0]['content']['parts'][0]['text'];
 	
-	
+    $result = str_replace('```json','',$result);
+   	$result = str_replace('```','',$result);
+    $result = str_replace('\n','',$result);
+    $result = str_replace('\r','',$result);
+    $result = str_replace('\r\n','',$result);
+    $answer = substr($result,1);
+		$answer = json_decode($answer,true);
+    //log_writer2("\$result",$result,"lv3"); 
+	}
+
+
 	$text = $answer[rand(0,9)]["post"];
 	echo $text."\n";
 	
