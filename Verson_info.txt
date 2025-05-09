@@ -168,7 +168,8 @@ ver1.39.0:お客さん用注文履歴からのお問い合わせ-commited
 ver1.40.0:商品単体ページにレビュー追加・他-commited
 ver1.40.1:受注管理から顧客にメッセージ送信-commited
   ALTER TABLE `online_q_and_a` CHANGE `sts` `sts` CHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'QorAorBQorCA';
-ver1.41.0:Geminiの利用API変更
+ver1.41.0:Geminiの利用API変更-commited
+ver1.42.0:Geminiの文章check機能追加
 
   
 【Issues】
@@ -176,9 +177,10 @@ ver1.41.0:Geminiの利用API変更
 ・管理画面からの問合せ確認
 ・sendmail・sendlineのログ
 ・レビュー管理からの個別連絡
-・受注管理からの個別連絡
 ・商品管理から品名CDを廃止する
 ・個人情報の処理を極力バックグラウンドに移行する
+
+・受注管理からの個別連絡　済
 
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/onlineshop/onlineshop

@@ -183,6 +183,22 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     const security_lock = ref(false)
 
+    const chk_bunshou = (p_bunshou) =>{
+      //ajax_chk_gemini.phpにpost接続。パラメータ"Article"にp_bunshouをセット
+      const form = new FormData();
+      form.append(`Article`, p_bunshou)
+      axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+      })
+      .catch((error,response)=>{
+        console_log(error)
+        alert('チェックerror')
+      })
+      .finally(()=>{
+      })
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -273,6 +289,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       uploadfile,
       mail_temp_ins,
       security_lock,
+      chk_bunshou,
     }
   }
 })
