@@ -14,13 +14,13 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    //Geminiで誹謗中傷check
     $url = GEMINI_URL.GEMINI;
     $data = [
         'contents' => [
             [
                 'parts' => [
-                    ['text' => '次の文章について誤字脱字等のチェックをお願いします。対象の文章「'.$_POST["Article"].'」']
+                    //['text' => '次の文章について誤字脱字等のチェックをお願いします。対象の文章「'.$_POST["Article"].'」']
+                    ['text' => $_POST["Article"]]
                 ]
             ]
         ]

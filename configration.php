@@ -44,8 +44,8 @@
 				<label for='site_pr' class="form-label">ショップＰＲ</label><small>（htmlタグが使用できます）</small>
 				<textarea type='memo' class='form-control' id='site_pr' rows="10" v-model='site_pr'></textarea>
 				<small style='color:red;'>{{site_pr_chk}}</small>
+				<button type='button' class='btn btn-warning m-2' @click='chk_bunshou(site_pr)'>チェック</button>
 			</div>
-			<button type='button' class='btn btn-warning m-2' @click='chk_bunshou(site_pr)'>チェック</button>
 		</div>
 		<div class='row mb-1 pt-3'>
 			<div class='col-md-6 col-12'>
