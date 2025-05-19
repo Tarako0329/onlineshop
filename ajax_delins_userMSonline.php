@@ -61,24 +61,38 @@ if($rtn !== true){
         $params["lock_sts"] = $_POST["lock_sts"];
         $params["cancel_rule"] = $_POST["cancel_rule"];
         $params["invoice"] = $_POST["invoice"];
-        $ask_json = <<<"EOM"
+        $ask_json = <<<EOM
             mailbodys:{
-                mail_body:$params[mail_body],
-                mail_body_auto:$params[mail_body_auto],
-                mail_body_paid:$params[mail_body_paid],
-                mail_body_sent:$params[mail_body_sent],
-                mail_body_cancel:$params[mail_body_cancel],
+                自動返信:"$params[mail_body]",
+                受付確認:"$params[mail_body_auto]",
+                支払確認:"$params[mail_body_paid]",
+                発送連絡:"$params[mail_body_sent]",
+                キャンセル受付:"$params[mail_body_cancel]",
             }
-            各値の文章に誤字脱字等がないか、確認してください。
-            確認結果はJSONで返してください。
-            JSONの形式はmailbodysと同じ。
-        "
+            各値の文章に誤字脱字、タイプミス、正しくない日本語がないか、確認してください。
+            確認結果はシンプルな文章にして、JSONで返してください。
+            JSONの形式は
+            '''JSON
+            check_results:{
+                自動返信:"",
+                受付確認:"",
+                支払確認:"",
+                発送連絡:"",
+                キャンセル受付:"",
+            }
+            '''
+            とします。
         EOM;
 
-        $rtn = gemini_api($ask_json,"json");
-        log_writer2("\$ask_json",$ask_json,"lv3");
-        log_writer2("\$rtn",$rtn,"lv3");
+        $value_check = gemini_api($ask_json,"json");
         
+        //log_writer2("\$value_check",$value_check["result"],"lv3");
+        
+        $value_check["result"] = str_replace("\n","",$value_check["result"]);
+        $value_check["result"] = str_replace("\r","",$value_check["result"]);
+        $value_check["result"] = str_replace(" ","",$value_check["result"]);
+        
+        //log_writer2("\$value_check",$value_check["result"],"lv3");
 
         try{
             if (is_file($params["logo"])) {//fileの移動
@@ -161,6 +175,7 @@ $return_sts = array(
     ,"status" => $alert_status
     ,"csrf_create" => $token
     ,"timeout" => $timeout
+    ,"value_check" => json_decode($value_check["result"],true)
 );
 header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
