@@ -22,7 +22,6 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    //$rtn=check_session_userid_for_ajax($pdo_h);
     if($rtn===false){
         $reseve_status = true;
         $msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
@@ -33,8 +32,6 @@ if($rtn !== true){
 
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        //$INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
-        //$INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
         $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
         $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
 
@@ -64,6 +61,24 @@ if($rtn !== true){
         $params["lock_sts"] = $_POST["lock_sts"];
         $params["cancel_rule"] = $_POST["cancel_rule"];
         $params["invoice"] = $_POST["invoice"];
+        $ask_json = <<<"EOM"
+            mailbodys:{
+                mail_body:$params[mail_body],
+                mail_body_auto:$params[mail_body_auto],
+                mail_body_paid:$params[mail_body_paid],
+                mail_body_sent:$params[mail_body_sent],
+                mail_body_cancel:$params[mail_body_cancel],
+            }
+            各値の文章に誤字脱字等がないか、確認してください。
+            確認結果はJSONで返してください。
+            JSONの形式はmailbodysと同じ。
+        "
+        EOM;
+
+        $rtn = gemini_api($ask_json,"json");
+        log_writer2("\$ask_json",$ask_json,"lv3");
+        log_writer2("\$rtn",$rtn,"lv3");
+        
 
         try{
             if (is_file($params["logo"])) {//fileの移動
@@ -78,7 +93,6 @@ if($rtn !== true){
 
             $pdo_h->beginTransaction();
             $sqllog .= rtn_sqllog("START TRANSACTION",[]);
-            //sqllogger("START TRANSACTION",[],basename(__FILE__),"ok");
 
             $stmt = $pdo_h->prepare( $DELsql );
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
