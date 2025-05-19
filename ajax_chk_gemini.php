@@ -13,8 +13,9 @@ if($rtn !== true){
 	$reseve_status = true;
 }else{
 	$user_input = $_POST["Article"] ?? '';
-	$type = $_POST["type"] ?? '';   //連続会話(kaiwa) or 一問一答(one)
-
+	$type = $_POST["type"] ?? 'kaiwa';   //連続会話(kaiwa) or 一問一答(one)
+    //$type = "one";
+    
 	if($type==="kaiwa"){
 		$msg = gemini_api_kaiwa($user_input,"plain","test");
 	}else if($type==="one"){

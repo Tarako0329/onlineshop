@@ -186,7 +186,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     const chk_bunshou = (p_bunshou,p_type) =>{
       //ajax_chk_gemini.phpにpost接続。パラメータ"Article"にp_bunshouをセット
       const form = new FormData();
-      form.append(`Article`, p_bunshou)
+      form.append(`Article`, `次の文章の誤字脱字チェックをしてください。誤字脱字があった場合は箇条書きで修正案は不要。誤字脱字がない場合は[check OK!]と返す。チェック対象文章は『${p_bunshou}』です。`)
       form.append(`type`, p_type)
       axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
