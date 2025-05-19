@@ -45,7 +45,10 @@
 				<textarea type='memo' class='form-control' id='site_pr' rows="7" v-model='site_pr'></textarea>
 				<small style='color:red;'>{{site_pr_chk}}</small>
 				<button type='button' class='btn btn-warning m-2' @click='chk_bunshou(`
-					『${site_pr}』鍵括弧でくくられた部分はWEBショップ出店者のPR文章です。校閲者として、次の観点でこの文章をチェックしてください。１．誤字脱字,正しくない日本語\n２．より魅力的にするには\n\nチェック結果のみをシンプルに教えてください。`,"one","AI_answer1")'>
+					『${site_pr}』鍵括弧でくくられた部分はWEBショップ出店者のPR文章です。校閲者として、次の観点でこの文章をチェックしてください。
+					１．誤字脱字,正しくない日本語\n
+					２．より魅力的にするには\n\n
+					pタグを使い、チェック結果のみをシンプルに教えてください。`,"one","AI_answer1")'>
 					AIでチェック
 				</button>
 				<small id='AI_answer1'></small>

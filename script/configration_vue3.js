@@ -191,7 +191,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
-        document.getElementById(p_output_id).innerHTML = response.data.msg
+        document.getElementById(p_output_id).innerHTML = response.data.result
       })
       .catch((error,response)=>{
         console_log(error)
