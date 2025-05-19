@@ -183,7 +183,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     const security_lock = ref(false)
 
-    const chk_bunshou = (p_bunshou,p_type) =>{
+    const chk_bunshou = (p_bunshou,p_type,p_output_id) =>{
       //ajax_chk_gemini.phpにpost接続。パラメータ"Article"にp_bunshouをセット
       const form = new FormData();
       form.append(`Article`, p_bunshou)
@@ -191,6 +191,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
+        document.getElementById(p_output_id).innerHTML = response.data.msg
       })
       .catch((error,response)=>{
         console_log(error)

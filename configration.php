@@ -42,13 +42,15 @@
 		<div class='row mb-3'>
 			<div class='col-md-6 col-12'>
 				<label for='site_pr' class="form-label">ショップＰＲ</label><small>（htmlタグが使用できます）</small>
-				<textarea type='memo' class='form-control' id='site_pr' rows="10" v-model='site_pr'></textarea>
+				<textarea type='memo' class='form-control' id='site_pr' rows="7" v-model='site_pr'></textarea>
 				<small style='color:red;'>{{site_pr_chk}}</small>
 				<button type='button' class='btn btn-warning m-2' @click='chk_bunshou(`
-					『${site_pr}』鍵括弧でくくられた部分はWEBショップ出店者のPR文章です。校閲者として、次の観点でこの文章をチェックしてください。１．誤字脱字,正しくない日本語\n２．より魅力的にするには\n\nチェック結果のみをシンプルに教えてください。`,"one")'>
-					チェック
+					『${site_pr}』鍵括弧でくくられた部分はWEBショップ出店者のPR文章です。校閲者として、次の観点でこの文章をチェックしてください。１．誤字脱字,正しくない日本語\n２．より魅力的にするには\n\nチェック結果のみをシンプルに教えてください。`,"one","AI_answer1")'>
+					AIでチェック
 				</button>
+				<small id='AI_answer1'></small>
 			</div>
+
 		</div>
 		<div class='row mb-1 pt-3'>
 			<div class='col-md-6 col-12'>
