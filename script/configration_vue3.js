@@ -183,21 +183,34 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
     const security_lock = ref(false)
 
-    const chk_bunshou = (p_bunshou,p_type,p_output_id) =>{
+    const chk_bunshou = (p_bunshou,p_type,p_output_id,p_btEl) =>{
       //ajax_chk_gemini.phpにpost接続。パラメータ"Article"にp_bunshouをセット
+      console_log(p_btEl.currentTarget)
+      
+      const btEl = p_btEl.currentTarget// = true
+      btEl.disabled = true
+      const btSp = p_btEl.currentTarget.querySelector('.spinner-border')// = 'inline-block'
+      btSp.style.display = 'inline-block'
       const form = new FormData();
       form.append(`Article`, p_bunshou)
       form.append(`type`, p_type)
       axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
-        document.getElementById(p_output_id).innerHTML = response.data.result.replace("```html","").replace("```","")
+        if(response.data.emsg){
+          alert(response.data.emsg)
+        }else{
+          document.getElementById(p_output_id).innerHTML = response.data.result.replace("```html","").replace("```","")
+        }
       })
       .catch((error,response)=>{
         console_log(error)
         alert('チェックerror')
       })
       .finally(()=>{
+        console_log('run finally')
+        btSp.style.display = 'none'
+        btEl.disabled = false
       })
     }
 

@@ -48,8 +48,8 @@
 					『${site_pr}』鍵括弧でくくられた部分はWEBショップ出店者のPR文章です。校閲者として、次の観点でこの文章をチェックしてください。
 					１．誤字脱字,正しくない日本語\n
 					２．より魅力的にするには\n\n
-					pタグを使い、チェック結果のみをシンプルに教えてください。`,"one","AI_answer1")'>
-					AIでチェック
+					pタグを使い、チェック結果のみをシンプルに教えてください。`,"one","AI_answer1",$event)'>
+					<span style='display:none;' class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>AIでチェック
 				</button>
 				<small id='AI_answer1'></small>
 			</div>

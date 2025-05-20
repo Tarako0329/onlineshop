@@ -120,29 +120,7 @@ if(EXEC_MODE==="Local"){
 	
 	$discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z=".$sns_type." 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;
 	
-	/*
-	$client = new Client(GEMINI);
 	
-	$response = $client->withV1BetaVersion()
-			->generativeModel(ModelName::GEMINI_1_5_FLASH)
-			->withSystemInstruction('凄腕インフルエンサーとして')
-			->generateContent(
-					new TextPart($sns_type.'で購買意欲を掻き立てる日本語の投稿例を10個出力。'.$sns_type.'にそのまま投稿できるようにＵＲＬとハッシュタグも含めて作成。phpのjson_decodeで処理できるように[{"post":投稿例},{"post":投稿例}]で出力。URLとハッシュタグを除いた文字数は100文字以下。JSONオブジェクトを、プレーンテキスト形式で出力してください'.$discription),
-			);
-			
-	//print nl2br($response->text());
-			
-	$answer = $response->text();
-	$answer = str_replace('```json','',$answer);
-	$answer = str_replace('```','',$answer);
-	$answer = str_replace('\n','',$answer);
-	$answer = str_replace('\r','',$answer);
-	$answer = str_replace('\r\n','',$answer);
-	$answer = substr($answer,1);
-	$answer = json_decode($answer,true);
-	//print_r($answer);
-	//log_writer2("\$answer",$answer,"lv1");
-	*/
 	$url = GEMINI_URL.GEMINI;
 	$data = [
 	  'contents' => [
