@@ -63,14 +63,15 @@ if($rtn !== true){
         $params["invoice"] = $_POST["invoice"];
         $ask_json = <<<EOM
             mailbodys:{
-                自動返信:"$params[mail_body]",
-                受付確認:"$params[mail_body_auto]",
+                自動返信:"$params[mail_body_auto]",
+                受付確認:"$params[mail_body]",
                 支払確認:"$params[mail_body_paid]",
                 発送連絡:"$params[mail_body_sent]",
                 キャンセル受付:"$params[mail_body_cancel]",
             }
             各値の文章に誤字脱字、タイプミス、正しくない日本語がないか、確認してください。
             確認結果はシンプルな文章にして、JSONで返してください。
+            問題ない項目は"OK"を返してください。
             JSONの形式は
             '''JSON
             check_results:{
