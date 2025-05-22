@@ -472,10 +472,17 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			loader2.value = true
 			AI_answer.value = {'posts':[{'tags':'def','texts':'def'}]}
 			document.getElementById('gemini_btn').disabled = true
-			if(Where_to_use==='shouhinMS.php')document.getElementById('gemini_seo_btn').disabled = true
+			if(Where_to_use==='shouhinMS.php'){document.getElementById('gemini_seo_btn').disabled = true}
 			console_log('get_AI_post start')
 
-			GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
+			const params = new FormData();
+			const Article = `商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(日本語100文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。JSON以外は不要です。
+			 商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]`
+			params.append(`Article`, Article);
+			params.append(`type`, 'one');
+	
+			//GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
+			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				console_log('get_AI_post succsess')
 				console_log(response)
@@ -539,7 +546,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 
 		const post_sns = ref({'text':''})
-		const timing = ref('')
+		//const timing = ref('')
 		const sns_type = ref('')
 		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
@@ -650,7 +657,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			posting,
 			tag_param,
 			text_len,
-			timing,
+			//timing,
 		}
 	}
 });

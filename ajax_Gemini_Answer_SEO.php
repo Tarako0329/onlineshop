@@ -13,7 +13,7 @@ if(EXEC_MODE==="Local"){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-$discription = '商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(全角160文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。'.
+$discription = '商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(日本語100文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。JSON以外は不要です。'.
 "商品名：[".$_POST["hinmei"]."],アピールポイント：[".$_POST["sort_info"]."], 商品の詳細・仕様・成分など：[".$_POST["information"]."]";
 
 $msg = gemini_api($discription,"json");
