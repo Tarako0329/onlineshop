@@ -23,10 +23,15 @@
 					<div class='p-5'>
 						<div class='mb-3'>
 							<h4>１ サイト運営元・基本ポリシー</h4>
-							<p  class='ps-4'>Midori System </p>
+							<p  class='ps-4'>当サイトは[ Midori System ]が運営してます。</p>
+
+							<!--div内にimgタグを配置。imgのソースはhttps://site.greeen-sys.com/wp-content/uploads/2024/04/msystem_logo.png-->
+							<div class='ms-4' style='width:100px;height:100px;'><img src='img/msystem_logo.png' class='img-fluid'></div>
 							<p  class='ps-4'><a href='https://site.greeen-sys.com/'>https://site.greeen-sys.com/</a></p>
-							<p  class='ps-4'>商品サービス販売における商品・金銭の授受に関しては項２以降に基づき、当事者間で責任をもって実施するものとする。</p>
-							<p  class='ps-4'>なお、商品未発送、未支払いについては法にのっとり対処するものとする。</p>
+
+							<p  class='ps-4'>当サイトのシステム的な不備・不具合については当社。販売される商品については、当サイトを通じて販売する出店者(以降、出店者と呼ぶ)が責任をもって管理するものとする。</p>
+							<p  class='ps-4'>商品サービス販売における商品・金銭の授受に関しては項２以降に基づき、出店者とお客様の間で責任をもって実施するものとする。</p>
+							<p  class='ps-4'>なお、商品未発送、未支払いについては法にのっとり当社が対処するものとする。</p>
 						</div>
 						<div class='mb-3'>
 							<h4>２  返品について  </h4>
@@ -49,10 +54,11 @@
 						</div>
 						
 						<div class='mb-3'>
-							※当社とは当サイト運営者、及び当サイトを通じて商品を販売する業者を含みます。
+							※当社＝当サイト運営者。出店者＝当サイトを通じて商品を販売する業者。
 						</div>
 						<div class='mb-3'>
-						 【2024年11月22日制定】
+							【2025年05月22日改定】
+							【2024年11月22日制定】
 						</div>
 					</div>
 				</div>

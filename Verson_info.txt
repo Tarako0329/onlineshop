@@ -169,7 +169,8 @@ ver1.40.0:商品単体ページにレビュー追加・他-commited
 ver1.40.1:受注管理から顧客にメッセージ送信-commited
   ALTER TABLE `online_q_and_a` CHANGE `sts` `sts` CHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'QorAorBQorCA';
 ver1.41.0:Geminiの利用API変更-commited
-ver1.42.0:Geminiの文章check機能追加
+ver1.42.0:Geminiの文章check機能追加-commited
+ver1.42.1:規定関連の変更
 
   
 【Issues】
