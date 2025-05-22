@@ -724,7 +724,7 @@ function gemini_api($p_ask,$p_type){
 		$result = $result['candidates'][0]['content']['parts'][0]['text'];
 	}
 
-	if($p_type==="json" && $response <> false){
+	if($p_type==="json"){
 		$result = str_replace('```json','',$result);
 		$result = str_replace('```','',$result);
 		$result = str_replace('\n','',$result);
