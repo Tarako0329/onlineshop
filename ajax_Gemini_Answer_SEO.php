@@ -1,6 +1,6 @@
 <?php
 //テスト用
-require "php_header.php";
+/*require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 log_writer2("\$_POST",$_POST,"lv3");
 if(EXEC_MODE==="Local"){
@@ -23,5 +23,5 @@ $answer = $msg["result"];
 
 header('Content-type: application/json');
 echo $answer;
-exit();
+exit();*/
 ?>
