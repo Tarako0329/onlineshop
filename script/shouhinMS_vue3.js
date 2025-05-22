@@ -525,7 +525,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.then((response) => {
 				console_log('get_AI_seo succsess')
 				console_log(response.data.result)
-				AI_answer_seo.value = response
+				AI_answer_seo.value = response.data.result
 				document.getElementById('modalon_seo').click()
 			})
 			.catch((error)=>{
