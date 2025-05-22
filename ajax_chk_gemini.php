@@ -14,12 +14,13 @@ if($rtn !== true){
 }else{
 	$user_input = $_POST["Article"] ?? '';
 	$type = $_POST["type"] ?? 'kaiwa';   //連続会話(kaiwa) or 一問一答(one)
+	$answer_type = $_POST["$answer_type"] ?? 'plain';   //json or plain(そのまま)
     //$type = "one";
     
 	if($type==="kaiwa"){
-		$msg = gemini_api_kaiwa($user_input,"plain","test");
+		$msg = gemini_api_kaiwa($user_input,$answer_type,"test");
 	}else if($type==="one"){
-		$msg = gemini_api($user_input,"plain");
+		$msg = gemini_api($user_input,$answer_type);
 	}
 
 }

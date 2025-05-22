@@ -209,6 +209,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       const form = new FormData();
       form.append(`Article`, p_bunshou)
       form.append(`type`, p_type)
+      form.append(`answer_type`, 'plain')
       axios.post("ajax_chk_gemini.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)

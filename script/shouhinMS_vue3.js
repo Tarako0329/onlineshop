@@ -518,12 +518,13 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			 商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]`
 			params.append(`Article`, Article);
 			params.append(`type`, 'one');
+			form.append(`answer_type`, 'json')
 	
 			//GET_AI_SEO(shouhinNM.value,midasi.value,info.value)
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				console_log('get_AI_seo succsess')
-				console_log(response)
+				console_log(response.data.result)
 				AI_answer_seo.value = response
 				document.getElementById('modalon_seo').click()
 			})
