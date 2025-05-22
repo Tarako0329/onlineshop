@@ -14,7 +14,7 @@ if($rtn !== true){
 }else{
 	$user_input = $_POST["Article"] ?? '';
 	$type = $_POST["type"] ?? 'kaiwa';   //連続会話(kaiwa) or 一問一答(one)
-	$answer_type = $_POST["$answer_type"] ?? 'plain';   //json or plain(そのまま)
+	$answer_type = $_POST["answer_type"] ?? 'plain';   //json or plain(そのまま)
     //$type = "one";
     
 	if($type==="kaiwa"){
