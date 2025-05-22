@@ -136,9 +136,11 @@
 			<div class='row mb-5'>
 				<div class='col-md-8 col-12'>
 					<label for='midasi' class="form-label">商品説明(見出し)</label>
+					<p><small>AIを使う場合は箇条書きも可。&#10;AIは商品名、商品説明(詳細)も加味してます。</small></p>
 					<div class='row'>
 						<div class='col-9'>
-							<textarea @focus='set_elm_hi("midasi","20vh")' @blur='set_elm_hi("midasi","110px")' style='height:110px' type='memo' class='form-control' id='midasi'  v-model='midasi' placeholder="商品のアピールポイントを記入。AIを使う場合は必要最低限のアピール文を記入。（AIは商品名、商品説明詳細も加味してPR文を作成します。）"></textarea>
+							<textarea @focus='set_elm_hi("midasi","20vh")' @blur='set_elm_hi("midasi","110px")' style='height:110px' type='memo' class='form-control' id='midasi'  v-model='midasi' 
+							placeholder='商品のアピールポイントを記入。'></textarea>
 							<p class='m-0'><small>Googleの検索結果や商品一覧画面に表示。</small></p>
 							<p class='m-0'><small>商品のPR文になります。(推奨80～100文字)</small></p>
 						</div>
