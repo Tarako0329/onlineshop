@@ -1,6 +1,6 @@
 <?php
 //テスト用
-require "php_header.php";
+/*require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 log_writer2("\$_POST",$_POST,"lv3");
 if(EXEC_MODE==="Local"){
@@ -16,30 +16,6 @@ $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 $discription = "URL：".ROOT_URL."product.php?id=".$_SESSION["user_id"]."-".$_POST["hinCD"]."&z= 販売元:".$_POST["yagou"]." 商品名：".$_POST["hinmei"]."。説明：".$_POST["sort_info"]." ".$_POST["information"];
 
-/*
-use GeminiAPI\Client;
-use GeminiAPI\Resources\ModelName;
-use GeminiAPI\Resources\Parts\TextPart;
-
-$client = new Client(GEMINI);
-
-$response = $client->withV1BetaVersion()
-    ->generativeModel(ModelName::GEMINI_1_5_FLASH)
-    ->withSystemInstruction('凄腕インフルエンサーとして')
-    ->generateContent(
-        new TextPart($sns_type.'でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。投稿例は'.$sns_type.'文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。'.$discription),
-    );
-    //print nl2br($response->text());
-
-
-$answer = $response->text();
-$answer = str_replace('```json','',$answer);
-$answer = str_replace('```','',$answer);
-$answer = str_replace('\n','',$answer);
-$answer = str_replace('\r','',$answer);
-$answer = str_replace('\r\n','',$answer);
-$answer = substr($answer,1);
-*/
 
 $url = GEMINI_URL.GEMINI;
 $data = [
@@ -85,4 +61,5 @@ if ($response === false) {
 header('Content-type: application/json');
 echo $answer;
 exit();
+*/
 ?>

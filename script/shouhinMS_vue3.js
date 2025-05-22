@@ -475,12 +475,22 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			if(Where_to_use==='shouhinMS.php'){document.getElementById('gemini_seo_btn').disabled = true}
 			console_log('get_AI_post start')
 
-			GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
-			//axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
+			const params = new FormData();
+			const Article = `
+			凄腕インフルエンサーとしてSNSでバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。
+			投稿例は日本語で９０文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
+			商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]
+			`
+			params.append(`Article`, Article);
+			params.append(`type`, 'one');
+			params.append(`answer_type`, 'json')
+
+			//GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
+			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				console_log('get_AI_post succsess')
-				console_log(response)
-				AI_answer.value = response
+				console_log(response.data)
+				AI_answer.value = response.data.result
 				document.getElementById('modalon').click()
 			})
 			.catch((error)=>{
@@ -524,7 +534,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				console_log('get_AI_seo succsess')
-				console_log(response.data.result)
+				console_log(response)
 				AI_answer_seo.value = response.data.result
 				document.getElementById('modalon_seo').click()
 			})
@@ -550,7 +560,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		const post_sns = ref({'text':''})
 		//const timing = ref('')
-		const sns_type = ref('')
+		//const sns_type = ref('')
 		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
 			let tag = ""
@@ -654,7 +664,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			set_elm_hi,
 			set_midasi,
 			post_sns,
-			sns_type,
+			//sns_type,
 			set_sns,
 			product_url,
 			posting,

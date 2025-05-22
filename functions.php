@@ -724,17 +724,19 @@ function gemini_api($p_ask,$p_type){
 		$result = $result['candidates'][0]['content']['parts'][0]['text'];
 	}
 
+    
 	if($p_type==="json"){
 		$result = str_replace('```json','',$result);
 		$result = str_replace('```','',$result);
-		$result = str_replace('\n','',$result);
-		$result = str_replace('\r','',$result);
-		$result = str_replace('\r\n','',$result);
-		$result = substr($result,1);
+		$result = str_replace("\r\n","",$result);
+		$result = str_replace("\n","",$result);
+		$result = str_replace("\r","",$result);
+		$result = str_replace(" ","",$result);
+		
+		$result = json_decode($result, true);
 	}else{
 		//$result = $response;
 	}
-
 	$rtn = array(
 		'emsg' => $emsg,
 		'result' => $result
@@ -760,7 +762,6 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 		'contents' => $_SESSION[$p_subject]
 		// 必要に応じて safety_settings や generation_config もここに追加
 	];
-	
 	
 	$options = [
 		'http' => [
@@ -792,14 +793,15 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 		]
 	];
 
-
-	if($p_type==="json" && $response <> false){
+	if($p_type==="json"){
 		$result = str_replace('```json','',$result);
 		$result = str_replace('```','',$result);
-		$result = str_replace('\n','',$result);
-		$result = str_replace('\r','',$result);
-		$result = str_replace('\r\n','',$result);
-		$result = substr($result,1);
+		$result = str_replace("\r\n","",$result);
+		$result = str_replace("\n","",$result);
+		$result = str_replace("\r","",$result);
+		$result = str_replace(" ","",$result);
+		
+		$result = json_decode($result, true);
 	}else{
 		//$result = $response;
 	}
@@ -808,8 +810,14 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 		'emsg' => $emsg,
 		'result' => $result
 	);
-	log_writer2(" [gemini_api_kaiwa \$rtn] =>",$rtn,"lv3");
+	//log_writer2(" [gemini_api_kaiwa \$rtn] =>",$rtn,"lv3");
 	return $rtn;
 }
+
+
+
+
+
+
 
 ?>

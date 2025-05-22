@@ -114,7 +114,7 @@ const LINE_PUSH = (ID,MSG) =>{
   })
 }
 
-const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou,p_sns_type) =>{
+/*const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou,p_sns_type) =>{
   return new Promise((resolve, reject) => {
     let obj
     const params = new FormData();
@@ -144,9 +144,9 @@ const GET_AI_POST = (p_hinmei,p_sort_info,p_information,p_hinCD,p_hash,p_yagou,p
       
     })
   })
-}
+}*/
 
-const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
+/*const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
   return new Promise((resolve, reject) => {
     let obj
     const params = new FormData();
@@ -172,7 +172,7 @@ const GET_AI_SEO = (p_hinmei,p_sort_info,p_information) =>{
       
     })
   })
-}
+}*/
 
 const SET_ELEM_HEIGHT = (p_id,p_px) =>{
   console_log(`start SET_ELEM_HEIGHT`)

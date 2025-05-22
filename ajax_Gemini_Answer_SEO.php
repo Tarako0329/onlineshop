@@ -23,5 +23,5 @@ $answer = $msg["result"];
 
 header('Content-type: application/json');
 echo $answer;
-exit();*/
+exit();*/   
 ?>
