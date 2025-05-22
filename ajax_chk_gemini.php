@@ -28,7 +28,8 @@ if($rtn !== true){
 //$token = csrf_create();
 
 header('Content-type: application/json');
-echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+//echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+echo $msg;
 
 exit();
 
