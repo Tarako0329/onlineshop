@@ -32,7 +32,7 @@
 				,IFNULL(r.cnt,0) as review_cnt
 				,IFNULL(r.score,0) as review_score
 			from shouhinMS_online online 
-			inner join (select uid,yagou,name,shacho,logo from Users_online ) ums_inline
+			inner join (select uid,yagou,name,shacho,logo,cancel_rule from Users_online ) ums_inline
 			on online.uid = ums_inline.uid
 			left join (select shop_id,shouhinCD,count(*) as cnt,avg(score) as score from review_online group by shop_id,shouhinCD) as r
 			on online.uid = r.shop_id

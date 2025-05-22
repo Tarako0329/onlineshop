@@ -195,7 +195,7 @@
 				<div class='col-md-8 col-12'>
 					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
 					<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
-					<p><small>写真は正方形がおすすめです。</small></p>
+					<p><small>正方形推奨。</small></p>
 				</div>
 			</div>
 			<div class='row mb-3'>
