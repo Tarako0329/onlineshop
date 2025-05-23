@@ -106,7 +106,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
       axios.post("ajax_delins_userMSonline.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
-        console_log(response.data.value_check.check_results)
+        console_log(response)
         if(response.data.status==="alert-success"){
           loader.value = false
           alert('更新しました')
