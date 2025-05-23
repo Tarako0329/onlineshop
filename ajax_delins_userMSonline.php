@@ -89,9 +89,9 @@ if($rtn !== true){
         
         //log_writer2("\$value_check",$value_check["result"],"lv3");
         
-        $value_check["result"] = str_replace("\n","",$value_check["result"]);
-        $value_check["result"] = str_replace("\r","",$value_check["result"]);
-        $value_check["result"] = str_replace(" ","",$value_check["result"]);
+        //$value_check["result"] = str_replace("\n","",$value_check["result"]);
+        //$value_check["result"] = str_replace("\r","",$value_check["result"]);
+        //$value_check["result"] = str_replace(" ","",$value_check["result"]);
         
         //log_writer2("\$value_check",$value_check["result"],"lv3");
 
@@ -176,7 +176,7 @@ $return_sts = array(
     ,"status" => $alert_status
     ,"csrf_create" => $token
     ,"timeout" => $timeout
-    ,"value_check" => json_decode($value_check["result"],true)
+    ,"value_check" => $value_check["result"]
 );
 header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
