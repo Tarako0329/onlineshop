@@ -195,26 +195,26 @@
 			<hr>
 			<div class='row mb-3'><!--写真アップロード-->
 				<div class='col-md-8 col-12'>
-					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
+					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード<p><small>縦横比４：３推奨</small></p></button>
 					<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
-					<p><small>正方形推奨。</small></p>
+					<p><small>４：３にリサイズして表示（下表示イメージ）</small></p>
 				</div>
 			</div>
 			<div class='row mb-3'>
 				<div class='col-md-8 col-12'>
-					<small>写真の『削除』は『登録』ボタンに関係なく、即反映されます。</small>
-					<small>ファイル名は半角英数。日本語と"＆"マークは厳禁です。</small>
+					<!--<small>ファイル名は"＆"マーク厳禁です。</small>-->
 					<div class='row'>
 					<template v-for='(list,index) in pic_list' :key='list.filename'>
 						<div class='col-md-4 col-6' style='padding:10px;'>
-							<div style='width:100%;'><button type='button' class='btn btn-info mb-1' @click='resort(index)' style='min-width: 50px;'>表示順：{{list.sort}}</button></div>
-							<div class='img-div' style='position:relative;'>
+							<div style='width:100%;'><button type='button' class='btn btn-info mb-1' @click='resort(index)' style='min-width: 50px;'>スライド順：{{list.sort}}</button></div>
+							<div class='img-div' style='position:relative;width:150px;height:100px;overflow: hidden;'>
 								<button type="button" class='btn btn-danger' style='position:absolute;top:0;right:0;min-width: 40px;' @click='pic_delete(list.filename)'>削除</button>
-								<img :src="list.filename" class="d-block img-item-sm">
+								<img :src="list.filename" class="d-block img-item-sm" style='height: 100%;'>
 							</div>
 						</div>
 					</template>
 					</div>
+					<p style = "color:red">{{pic_sort_chk}}</p>
 				</div>
 			</div>
 

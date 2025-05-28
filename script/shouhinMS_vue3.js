@@ -207,6 +207,21 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			sort = Number(sort) + 1
 		}
 
+		const pic_sort_chk = computed(()=>{
+			//pic_list.value[].sortの値が重複していたらメッセージを返す
+			let msg = ''
+			let sort_list = []
+			pic_list.value.forEach((row)=>{
+				if(sort_list.indexOf(row.sort)!==-1){
+					msg = '表示順が重複してます。「表示順」ボタンで写真のスライド順を調整してください。'
+				}else{
+					sort_list.push(row.sort)
+				}
+			})
+			return msg
+			
+		})
+
 		const input_file_btn = (id) =>{//アップロードボタン
 			document.getElementById(id).click()
 		}
@@ -242,6 +257,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			//アップされたファイルを削除
 			//マスタに登録されたレコードを削除
 			//pic_list[]からレコード削除
+			if(confirm("削除は即反映されます。本当に削除しますか？")===false){
+				return 0
+			}
 			const form = new FormData();
 			form.append(`pic`, filepass)
 			form.append(`csrf_token`, token)
@@ -671,6 +689,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			tag_param,
 			text_len,
 			//timing,
+			pic_sort_chk
 		}
 	}
 });
