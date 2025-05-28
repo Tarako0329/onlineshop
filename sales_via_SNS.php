@@ -84,8 +84,8 @@
               <!--<label for='sns_type' class='form-label'>AI に SNS を伝える</label>-->
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='timing' >
                 <option value="">通常広告として</option>
-                <option value="【新商品】">新商品として</option>
-                <option value="【リニューアル】">リニューアル商品として</option>
+                <option value="新商品発売です！">新商品として</option>
+                <option value="リニューアルしました！">リニューアル商品として</option>
               </select>
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='sns_type' >
                 <option value="SNS">SNS選択</option>
