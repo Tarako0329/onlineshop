@@ -110,7 +110,7 @@ if(EXEC_MODE==="Local"){
 	//log_writer2("\$row",$row[$post_index],"lv1");
 
 	//つぶやき作成
-	$sns_type = "X" ;
+	$sns_type = "X.com" ;
 	$uid = $row[$post_index]["uid"];
 	$shouhinCD = $row[$post_index]["shouhinCD"];
 	$yagou = $row[$post_index]["yagou"];

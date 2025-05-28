@@ -486,6 +486,23 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
     }
 
 		const AI_answer = ref({'posts':[{'tags':'def'}]})
+		const sns_char_cnt = computed(()=>{
+			//sns_typeに応じて使用できる文字数を返す
+			let cnt = 0
+			if(sns_type.value==='X(twitter)'){
+				cnt = 90
+			}else if(sns_type.value==='公式Line'){
+				cnt = 500
+			}else if(sns_type.value==='FACEBOOK'){
+				cnt = 500
+			}else if(sns_type.value==='instagram'){
+				cnt = 500
+			}else{
+				cnt = 140
+			}
+			return cnt
+			
+		})
 		const get_AI_post = () =>{
 			loader2.value = true
 			AI_answer.value = {'posts':[{'tags':'def','texts':'def'}]}
@@ -495,9 +512,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 			const params = new FormData();
 			const Article = `
-			凄腕インフルエンサーとしてSNSでバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。
-			投稿例は日本語で９０文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
-			商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]
+			凄腕インフルエンサーとして${sns_type.value}でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。
+			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
+			商品名：[${timing.value}${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]
 			`
 			params.append(`Article`, Article);
 			params.append(`type`, 'one');
@@ -577,8 +594,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 
 		const post_sns = ref({'text':''})
-		//const timing = ref('')
-		//const sns_type = ref('')
+		const timing = ref('')
+		const sns_type = ref('SNS')
 		const tag_param = computed(()=>{return String(post_sns.value.tag_disp).replaceAll("#", "")})
 		const set_sns = (p_midasi) =>{
 			let tag = ""
@@ -682,13 +699,13 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			set_elm_hi,
 			set_midasi,
 			post_sns,
-			//sns_type,
+			sns_type,
 			set_sns,
 			product_url,
 			posting,
 			tag_param,
 			text_len,
-			//timing,
+			timing,
 			pic_sort_chk
 		}
 	}

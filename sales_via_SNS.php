@@ -88,11 +88,11 @@
                 <option value="【リニューアル】">リニューアル商品として</option>
               </select>
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='sns_type' >
-                <option value="">SNS選択</option>
-                <option value="90">X(twitter) 向けに</option>
-                <option value="125">FACEBOOK 向けに</option>
-                <option value="125">instagram 向けに</option>
-                <option value="200">公式Line 向けに</option>
+                <option value="SNS">SNS選択</option>
+                <option value="X(twitter)">X(twitter) 向けに</option>
+                <option value="FACEBOOK">FACEBOOK 向けに</option>
+                <option value="instagram">instagram 向けに</option>
+                <option value="公式Line">公式Line 向けに</option>
               </select>
               <button class='btn btn-sm btn-info ' style='min-width:110px;height:30px;' @click='get_AI_post()' id='gemini_btn'>
                 <template v-if='loader2===false'><p>Google AIが提案</p></template>
