@@ -163,7 +163,7 @@
 		<div class='row mb-3'>
 			<div class='col-md-6 col-12'>
 				<p>各種メールのテンプレート作成</p>
-				<p style='background-color:#fff;border-color:red;'><small v-html='AI_MAIL_CHK'></small></p>
+				<p style='background-color:#fff;border: 1px solid red;'><small v-html='AI_MAIL_CHK'></small></p>
 				<nav>
 					<div class="nav nav-tabs" id="nav-tab" role="tablist" style='width:100%;'>
 						<button class="nav-link active" id="nav-mail_body_auto	-tab" data-bs-toggle="tab" data-bs-target="#nav-mail_body_auto	" type="button" role="tab" aria-controls="nav-mail_body_auto" aria-selected="true">自動返信</button>
