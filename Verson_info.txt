@@ -172,7 +172,7 @@ ver1.41.0:Geminiの利用API変更-commited
 ver1.42.0:Geminiの文章check機能追加-commited
 ver1.42.1:規定関連の変更-commited
 ver1.42.2:bugfix:注文時のキャンセル規定が表示されてない-commited
-ver1.42.3:細かな修正
+ver1.42.3:細かな修正-commited
   
 【Issues】
 ・管理画面からの問合せ確認
