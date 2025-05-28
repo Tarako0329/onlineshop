@@ -120,7 +120,7 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
               }
           })
           if(AI_MAIL_CHK.value){
-              AI_MAIL_CHK.value = '<p class="pt-3" style="background-color:#fff;border: 1px solid red; animation: blink-red-border-animation 0.5s linear 3;">【AIでチェックしたよ】<p><ul class="mb-2">' + AI_MAIL_CHK.value + '</ul><small>※AIは間違えます。修正は自己判断で！</small>'
+              AI_MAIL_CHK.value = '<div  style="background-color:#fff;border: 1px solid red; animation: blink-red-border-animation 0.5s linear 3;"><p class="pt-3">【AIでチェックしたよ】<p><ul class="mb-2">' + AI_MAIL_CHK.value + '</ul><small>※AIは間違えます。修正は自己判断で！</small></div>'
               alert('自動返信メールの設定に修正推奨箇所があります。')
               document.getElementById('AI_MAIL_CHK').scrollIntoView({ behavior: 'smooth' })
           }
