@@ -14,6 +14,7 @@
 		$sql = "select 
 				um.*
 				,ifnull(sm.sel_cnt,0) as sel_cnt
+				,'' as key2
 			from Users_online um
 			left join (SELECT uid,count(*) as sel_cnt FROM `shouhinMS_online` where status <> 'stop' group by uid) as sm
 			on um.uid = sm.uid
@@ -29,6 +30,13 @@
 			$alert_status = "alert-danger";
 			$msg="User_Not_Found";
 		}
+
+		$i=0;
+		foreach($data as $row){
+			$data[$i]["key2"] = rot13encrypt2($row["uid"]);
+			$i++;
+		}
+		
 
 		$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 

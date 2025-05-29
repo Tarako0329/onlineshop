@@ -8,6 +8,7 @@
     $_SESSION["user_id"]='%';
   }
   $_SESSION["askNO"]="";
+  
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -431,7 +432,7 @@
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script src="script/index_vue3.js?<?php echo $time; ?>"></script>
   <script>
-    sales('index','<?php echo $token; ?>').mount('#app');
+    sales('index','<?php echo $token; ?>','<?php echo $_SESSION["user_id"];?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

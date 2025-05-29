@@ -47,7 +47,7 @@
       </div>
     </transition>
     <div class='row' style=''>
-      <p>拡散したい商品を選択してください</p>
+      <p>SNSに投稿する商品を選択してください（投稿用の画面が開きます）</p>
       <div class='col-md-8 col-12 overflow-y-scroll p-1 mb-1' :style='shouhin_table'>
         <table class='table table-sm mb-1'>
           <tbody>
@@ -59,7 +59,7 @@
                   <span v-if='list.status==="show"' style='color:blue'>販売中</span>
                   <span v-if='list.status==="soldout"' style='color:darkorange'>受付停止</span>
                   <span v-if='list.status==="stop"' style='color:red'>販売停止</span>
-                <td style='width: 60px'><button type='button' style='min-width: 50px' class='btn btn-primary' @click='set_shouhinNM(list.shouhinNM)'>拡散！</button></td>
+                <td style='width: 60px'><button type='button' style='min-width: 50px' class='btn btn-primary' @click='set_shouhinNM(list.shouhinNM)'>選択</button></td>
               </tr>
             </template>
           </tbody>

@@ -33,11 +33,14 @@
 								<div class='ms-3 pt-3'>
 									<h3 class="card-title mb-3">{{list.yagou}}</h3>
 									<p class='m-0'>代表：{{list.shacho}}</p>
-									<p class='m-0'>mail：{{list.mail}}</p>
+									<!--<p class='m-0'>mail：{{list.mail}}</p>-->
 								</div>
 							</div><!--詳細-->
 							<div class='col-12 p-3'>
 								<div style='white-space: pre-wrap;' v-html='list.site_pr'></div>
+							</div>
+							<div class='col-12 p-3'>
+								<a :href='`index.php?key=${list.key2}`'>{{list.yagou}} 販売中の商品はコチラ＞＞</a>
 							</div>
 						</div>
 						

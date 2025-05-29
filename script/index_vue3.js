@@ -1,4 +1,4 @@
-const sales = (Where_to_use,p_token) => createApp({//販売画面
+const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
   setup() {
     let token = p_token
     const msg=ref('')
@@ -9,9 +9,12 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
     
     const mode = ref('new')
 
-    const get_shouhinMS_online = (serch) => {//商品マスタ取得
+    const get_shouhinMS_online = (p_serch) => {//商品マスタ取得
+      //index.php実行時にGET[key]がセットされてると$SESSIONにUIDがセットされ、
+      //自動でUID分の商品のみが返ってくる
+      //p_serch は 商品名
       axios
-      .get(`ajax_get_shouhinMS_online.php?f=${serch}`)
+      .get(`ajax_get_shouhinMS_online.php?f=${p_serch}`)
       .then((response) => {
         if(response.data.alert==="success"){
           shouhinMS.value = [...response.data.dataset]
@@ -483,7 +486,7 @@ const sales = (Where_to_use,p_token) => createApp({//販売画面
       console_log(`onMounted : ${Where_to_use}`)
 
       if(Where_to_use==="index"){
-        get_shouhinMS_online()
+        get_shouhinMS_online("%")
         mode.value='shopping'
         document.getElementById("menu_home").classList.add("active");
       }
