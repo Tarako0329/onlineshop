@@ -32,8 +32,8 @@ if($rtn !== true){
 
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice)";
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -60,6 +60,9 @@ if($rtn !== true){
         $params["chk_paid"] = $_POST["chk_paid"];
         $params["lock_sts"] = $_POST["lock_sts"];
         $params["cancel_rule"] = $_POST["cancel_rule"];
+        $params["headcolor"] = $_POST["headcolor"];
+        $params["bodycolor"] = $_POST["bodycolor"];
+        $params["h_font_color"] = $_POST["h_font_color"];
         $params["invoice"] = $_POST["invoice"];
         $ask_json = <<<EOM
             mailbodys:{
@@ -86,7 +89,9 @@ if($rtn !== true){
             とします。
         EOM;
 
-        $value_check = gemini_api($ask_json,"json");
+        if(EXEC_MODE<>"Local"){
+            $value_check = gemini_api($ask_json,"json");
+        }
         
         //log_writer2("\$value_check",$value_check["result"],"lv3");
         
@@ -143,6 +148,9 @@ if($rtn !== true){
             $stmt->bindValue("chk_paid", $params["chk_paid"], PDO::PARAM_INT);
             $stmt->bindValue("lock_sts", $params["lock_sts"], PDO::PARAM_STR);
             $stmt->bindValue("cancel_rule", $params["cancel_rule"], PDO::PARAM_STR);
+            $stmt->bindValue("headcolor", $params["headcolor"], PDO::PARAM_STR);
+            $stmt->bindValue("bodycolor", $params["bodycolor"], PDO::PARAM_STR);
+            $stmt->bindValue("h_font_color", $params["h_font_color"], PDO::PARAM_STR);
             $stmt->bindValue("invoice", $params["invoice"], PDO::PARAM_STR);
             
             $sqllog .= rtn_sqllog($INSsql,$params);

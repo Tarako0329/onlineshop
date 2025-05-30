@@ -4,7 +4,7 @@
     <nav class="navbar navbar-expand-xl bg-body-tertiary fixed-top" style='padding:0;'>
       <div class="container common_header">
         <img src="img/icon-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">
-        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php echo $user_hash;?>"><h1 style='color:brown;'>管理メニュー</h1></a>
+        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php echo $user_hash;?>"><h1>管理メニュー</h1></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

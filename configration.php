@@ -27,7 +27,7 @@
 <BODY>
 	<?php include "header_tag_admin.php"  ?>
 	<div id='app'>
-	<MAIN class='container common_main' data-bs-spy="scroll">
+	<MAIN class='container common_main' data-bs-spy="scroll" >
 		<div class='row mb-3 pt-3'>
 			<div class='col-md-6 col-12'>
 				<label for='yagou' class="form-label">屋号・ショップ名</label>
@@ -38,12 +38,6 @@
 			<div class='col-md-6 col-12'>
 				<label for='invoice' class="form-label">インボイス登録番号</label>
 				<input type='text' class='form-control' id='invoice' v-model='invoice'>
-			</div>
-		</div>
-		<div class='row mb-3' style='display: none;'>
-			<div class='col-md-6 col-12'>
-				<label for='site_name' class="form-label">サイト名</label>
-				<input type='text' class='form-control' id='site_name' v-model='site_name'>
 			</div>
 		</div>
 		<div class='row mb-3'>
@@ -69,7 +63,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='row mb-5 pt-1'>
+		<div class='row mb-3 pt-1'>
 			<div class='col-md-6 col-12'>
 				<label for='logo' class="form-label">ショップロゴ</label>
 				<div class="input-group mb-3">
@@ -78,6 +72,154 @@
 				<small>(50 x 50)px で表示されます</small>
 			</div>
 		</div>
+		<div class='row mb-1 pt-1'>
+			<!--shop URLを表示し、その横にコピーボタンを配置-->
+			<div class='col-md-6 col-12'>
+				<label for='shop_url' class="form-label">あなたの商品のみが表示される”専用ショップURL”</label>
+				<div class="input-group mb-3">
+					<input type="text" class="form-control" id='shop_url' value='<?php echo ROOT_URL."index.php?key=".$user_hash;?>' readonly>
+					<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click='copy_url("shop_url")'>Copy</button>
+				</div>
+			</div>
+		</div>
+		<div class='row mb-3' style=''>
+			<div class='col-md-6 col-12'>
+				<label for='site_name' class="form-label">ショップ名</label>
+				<input type='text' class='form-control' id='site_name' v-model='site_name'>
+			</div>
+		</div>
+		<div class='row mb-3 pt-1'>
+			<p>専用ショップURLのカラー設定</p>
+			<div class='col-md-2 col-6'>
+				<label for='logo' class="form-label">メニューバーの色</label>
+				<div class="input-group mb-1">
+					<input type="color" name='headcolor' class="form-control" v-model='headcolor'>
+				</div>
+				<small></small>
+			</div>
+			<div class='col-md-2 col-6'>
+				<label for='logo' class="form-label">メニューバーの文字色</label>
+				<div class="input-group mb-1">
+					<input type="color" name='headcolor' class="form-control" v-model='h_font_color'>
+				</div>
+				<small></small>
+			</div>
+			<div class='col-md-2 col-6'>
+				<label for='logo' class="form-label">商品販売部分の色</label>
+				<div class="input-group mb-1">
+					<input type="color" name='bodycolor' class="form-control" v-model='bodycolor'>
+				</div>
+				<small></small>
+			</div>
+		</div>
+		
+		<div class='row mb-3 p-5 pt-3 pb-3' style='background-color:#fff;'>
+			<p>配色イメージ</p>
+			<div class='row'>
+				<div class='col-md-6 col-12 p-3' :style='`background-color:${headcolor};`'>
+					<h3 class='alice-regular' :style='`color:${h_font_color};`'>Present Selection - {{site_name}} -</h3>
+				</div>
+			</div>
+			<div class='row'>
+				<div class='col-md-6 col-12 p-5 ps-3' :style='`background-color:${bodycolor};`'>
+					
+					<div class="col-xl-8 col-md-8 col-12"><!--外枠-->
+						<div class="container-fluid">
+							<div class="row pb-1">
+								<div class="col-6" style="position: relative;"><!--写真-->
+									<div id="carouselExample_2" class="carousel slide">
+											<div class="carousel-inner">
+											<div>
+												<div class="carousel-item active" style="text-align: center;">
+													<img src="img/sample_apple_cake.jpg" class="d-block img-item">
+												</div>
+											</div>
+										</div>
+									</div>
+									<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample_2" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button" data-bs-target="#carouselExample_2" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+									</button>
+								</div>
+								<div class="col-6"><!--見出-->
+									<div class="row">
+										<div class="col-12 d-flex align-items-end mb-3">
+											<div class="me-3" style="width: 30px; height: 30px; padding: 0px;">
+												<img class="img_icon" :src="logo" >
+											</div>
+											<div>
+												<small>{{yagou}}</small>
+											</div>
+										</div>
+									</div>
+									<h3>『りんごのパウンドケーキ』(サンプル)</h3>
+									<div class="pb-3"><p>税込価格：<span class="kakaku">3,024 円</span></p><p>内税：<span class="zei">224</span></p></div>
+									<p>甘酸っぱいリンゴがゴロゴロ。甘みと酸味が絶妙なパウンドケーキです</p>
+								</div><!--見出-->
+							</div><!--写真-->
+
+							<div class="row"><!--問合せ・シェアボタン-->
+								<div class="col-6 mt-2 mb-2 ps-3">
+									<button type="button" class="btn btn-primary fs-5">問合せ<i class="bi bi-envelope-at-fill ms-2"></i></button>
+									<!--review.phpへジャンプ-->
+									<a href="#" class="btn btn-secondary fs-5">レビュー<i class="bi bi-chat-left-text-fill ms-2"></i><span class="ms-2">0</span></a>
+								</div>
+								<div class="col-6 mt-2 mb-2 ps-3">
+									<div class="">
+										<!--LINE--><a href="#" target="_blank" rel="noopener noreferrer"><i class="bi bi-line line-green fs-1"></i></a>
+										<!--FACEBOOK--><a href="#" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook facebook-blue fs-1 p-3"></i></a>
+										<!--TWITTER--><a href="#" rel="nofollow noopener noreferrer" target="_blank"><i class="bi bi-twitter-x twitter-black fs-1"></i></a> 紹介する 
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12"><!--詳細-->
+									<div class="accordion" id="accordion_2">
+										<div class="accordion-item">
+											<h2 class="accordion-header">
+												<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_2" aria-expanded="true" aria-controls="collapseOne" style="font-size: 15px; font-weight: 400;"> 
+													商品詳細・ご注文はコチラ
+												</button>
+											</h2>
+											<div id="collapseOne_2" class="accordion-collapse collapse" data-bs-parent="#accordion_2">
+												<div class="accordion-body">
+													<div class="pb-1">
+														<p>【商品詳細】</p>
+														<p>【原材料】無農薬リンゴ、米粉、</p>
+													</div>
+													<div class="pb-1">
+														<p>【送料・配送・納期などについて】</p>
+														<p>入金確認後、３営業日以内の発送。</p>
+														<p>ヤマトクール便で発送。基本は１０８０円。</p>
+													</div>
+													<div style="">
+														<div>ご注文数：<span class="order">3</span></div>
+														<div class="pb-3">
+												<input type="radio" class="btn-check" autocomplete="off" id="show_2"><label class="btn btn-primary" for="show_2" style="border-radius: 0px;">＋</label>
+												<input type="radio" class="btn-check" autocomplete="off" id="stop_2"><label class="btn btn-secondary" for="stop_2" style="border-radius: 0px;">－</label>
+														</div>
+													</div>
+													<div>
+														<label for="floating_2">お客様備考記入欄</label>
+														<textarea class="form-control" placeholder="Leave a comment here" id="floating_2" style="height: 100px;"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div><!--詳細-->
+							</div>
+						</div>
+						<hr>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
 		<div class='row mb-3 pt-3'>
 			<div class='col-md-6 col-12'>
 				<label for='shacho' class="form-label">代表者</label>
@@ -326,7 +468,7 @@
 
 		<div class='row mb-3' style='position:fixed;bottom:0;'>
 			<div class='col-md-6 col-12'>
-				<button v-if='security_lock!==true' type='button' class='btn btn-primary m-2 btn-lg' @click='set_user' style='width:80px;'>登録</button>
+				<button v-if='security_lock!==true' type='button' class='btn btn-primary m-2 btn-lg fs-1 ps-5 pe-5' @click='set_user' style='width:150px;'>登録</button>
 			</div>
 		</div>
 	</MAIN>

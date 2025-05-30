@@ -28,6 +28,9 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     const chk_paid = ref('')
     const lock_sts = ref('')
     const cancel_rule = ref('例\n受注生産品について：ご注文受付のメール送信後はキャンセル不可となっております。\n汎用製品について：入金確認後、７日以内でしたらキャンセルを受け付けます。\n返品時の送料についてはご負担願います。')
+    const headcolor = ref('')
+    const bodycolor = ref('')
+    const h_font_color = ref('')
 
     const site_pr_chk = computed(()=>{
       let msg = ''
@@ -101,6 +104,9 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       form.append(`chk_paid`, chk_paid.value===true?1:0)
       form.append(`lock_sts`, lock_sts.value)
       form.append(`cancel_rule`, cancel_rule.value)
+      form.append(`headcolor`, headcolor.value)
+      form.append(`bodycolor`, bodycolor.value)
+      form.append(`h_font_color`, h_font_color.value)
       form.append(`csrf_token`, token)
       form.append(`hash`, hash)
 
@@ -230,6 +236,18 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       })
     }
 
+    const copy_url = (p_url_id) => {
+      //ID p_url_id の値をクリップボードにコピー
+      const copyText = document.getElementById(p_url_id).value;
+      navigator.clipboard.writeText(copyText).then(() => {
+        alert('URLをコピーしました');
+      }).catch(err => {
+        console.error('コピーに失敗しました: ', err);
+        alert('URLのコピーに失敗しました');
+      });
+      
+    }
+
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="shouhinMS"){
@@ -260,6 +278,9 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         chk_sent.value = response.Users_online[0].chk_sent===1?true:false
         chk_paid.value = response.Users_online[0].chk_paid===1?true:false
         lock_sts.value = response.Users_online[0].lock_sts
+        headcolor.value = response.Users_online[0].headcolor
+        bodycolor.value = response.Users_online[0].bodycolor
+        h_font_color.value = response.Users_online[0].h_font_color
         if(response.Users_online[0].mail_body!=="''"){
           mail_body.value = response.Users_online[0].mail_body
         }
@@ -322,6 +343,10 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       security_lock,
       chk_bunshou,
       AI_MAIL_CHK,
+      headcolor,
+      bodycolor,
+      h_font_color,
+      copy_url,
     }
   }
 })

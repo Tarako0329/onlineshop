@@ -3,9 +3,22 @@
   $token = csrf_create();
   if(!empty($_GET["key"])){
     $user_hash = $_GET["key"] ;
+    $_SESSION["user_hash"] = $_GET["key"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
+    $stmt = $pdo_h->prepare("select * from Users_online where uid = :uid");
+    $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+    $stmt->execute();
+    $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $_SESSION["h_color"] = "style='background-color:".$owner[0]["headcolor"].";color:".$owner[0]["h_font_color"].";'";
+    $_SESSION["b_color"] = "style='background-color:".$owner[0]["bodycolor"].";'";
+    $_SESSION["hf_color"] = "style='color:".$owner[0]["h_font_color"].";'";
+    $_SESSION["yagou"] = " - ".$owner[0]["yagou"]." - ";
   }else{
     $_SESSION["user_id"]='%';
+    $_SESSION["h_color"]="";
+    $_SESSION["b_color"]="";
+    $_SESSION["hf_color"]="";
+    $_SESSION["yagou"]="";
   }
   $_SESSION["askNO"]="";
   
@@ -48,9 +61,9 @@
       </div>
     </div>
   </div>
-  <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy">
+  <MAIN class='container common_main' data-bs-spy="scroll" data-bs-target="#scrollspy" <?php echo $_SESSION["b_color"];?>>
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
-    <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'>
+    <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'><!--ショッピングエリア-->
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD+list.uid'>
         <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
           <div class='container-fluid'>
@@ -168,7 +181,7 @@
         </div><!--外枠-->
         
       </template>
-    </div>
+    </div><!--ショッピングエリア-->
 
     <div v-show='mode==="ordering"'>
       <div class='row mb-1' id="scrollspyHeading1">

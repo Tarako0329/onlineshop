@@ -86,7 +86,7 @@ $config = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <BODY >
 	<div id='app' class='container'>
-		<header class='common_header alice-regular p-3 mb-3' style='color:brown;'>
+		<header class='common_header alice-regular p-3 mb-3'>
 			<h3>システム管理画面</h3>
 		</header>
 		<main>
