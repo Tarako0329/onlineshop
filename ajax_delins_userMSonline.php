@@ -135,10 +135,10 @@ if($rtn !== true){
                 if ( rename($params["logo"] , str_replace("temp/","",$params["logo"]))) {
                     $params["logo"] = str_replace("temp/","",$params["logo"] );
                 } else {
-                    $msg = "ファイル移動失敗";
+                    $msg .= "ファイル移動失敗";
                 }
             } else {
-                $msg = "ファイル保存失敗 or ファイル未設定・NOFILE";
+                $msg .= "ファイル保存失敗 or ファイル未設定・NOFILE";
             }
 
             $pdo_h->beginTransaction();
