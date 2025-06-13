@@ -115,15 +115,17 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         console_log(response.data)
         token = response.data.csrf_create
 
+        alert(response.data.MSG)
+        
         if(response.data.status==="alert-success"){
           loader.value = false
-          alert('更新しました')
+          //alert('更新しました')
           if(response.data.value_check){
             const ck_result = response.data.value_check.check_results
             AI_MAIL_CHK.value = ''
             Object.keys(ck_result).forEach((list,index)=>{
                 console_log(list)
-                
+
                 if(ck_result[list]!=='OK'){
                     AI_MAIL_CHK.value = AI_MAIL_CHK.value + `<li style="color:red;">${list}：${ck_result[list]}</li>`
                 }
@@ -138,11 +140,11 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
           alert('更新失敗')
         }
       })
-      .catch((error,response)=>{
+      .catch((error)=>{
         console_log(error)
         //console_log(response.data)
-        token = response.data.csrf_create
-        alert('更新error')
+        //token = response.data.csrf_create
+        alert('更新エラー　：　'+error)
       })
       .finally(()=>{
         loader.value = false
