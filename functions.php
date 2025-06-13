@@ -689,10 +689,30 @@ function shutdown_ajax($filename){
 // =========================================================
 // GeminiAPI
 // =========================================================
-function gemini_api($p_ask,$p_type){
-	//$p_type:json or plain
+function gemini_api($p_ask,$p_type, $response_schema = null){
+	//$p_type: 'json' (decode response to PHP array) or 'plain' (raw text response)
+	//$response_schema: An object describing the expected JSON schema for the model's response.
+	/*$response_schemaサンプル
+	  $response_schema = [
+        'type' => 'object',
+        'properties' => [
+            'check_results' => [
+                'type' => 'object',
+                'properties' => [
+                    '自動返信' => ['type' => 'string', 'description' => '自動返信メールのチェック結果'],
+                    '受付確認' => ['type' => 'string', 'description' => '受付確認メールのチェック結果'],
+                    '支払確認' => ['type' => 'string', 'description' => '支払確認メールのチェック結果'],
+                    '発送連絡' => ['type' => 'string', 'description' => '発送連絡メールのチェック結果'],
+                    'キャンセル受付' => ['type' => 'string', 'description' => 'キャンセル受付メールのチェック結果'],
+                ],
+                'required' => ['自動返信', '受付確認', '支払確認', '発送連絡', 'キャンセル受付']	//必須項目
+            ]
+        ],
+        'required' => ['check_results']	//必須項目
+    ];
+	*/
 	$url = GEMINI_URL.GEMINI;
-	$data =  [
+	$request_payload =  [
 		'contents' => [
 			[
 				'parts' => [
@@ -701,14 +721,22 @@ function gemini_api($p_ask,$p_type){
 			]
 		]
 	];
-	
+	if ($response_schema !== null) {
+		// Ensure generationConfig exists
+		if (!isset($request_payload['generationConfig'])) {
+			$request_payload['generationConfig'] = [];
+		}
+		$request_payload['generationConfig']['responseMimeType'] = 'application/json';
+		$request_payload['generationConfig']['responseSchema'] = $response_schema;
+	}
+		
 	$options = [
 		'http' => [
 			'method' => 'POST',
 			'header' => [
 				'Content-Type: application/json',
 			],
-			'content' => json_encode($data),
+			'content' => json_encode($request_payload),
 		],
 	];
 	
@@ -721,7 +749,15 @@ function gemini_api($p_ask,$p_type){
 		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。';
 	}else{
 		$result = json_decode($response, true);
-		$result = $result['candidates'][0]['content']['parts'][0]['text'];
+		if (isset($result_decoded['candidates'][0]['content']['parts'][0]['text'])) {
+			$result = $result_decoded['candidates'][0]['content']['parts'][0]['text'];
+		} elseif (isset($result_decoded['error'])) {
+			$emsg = "Gemini API Error: " . $result_decoded['error']['message'];
+			$result = json_encode($result_decoded['error']); // Store error details as JSON string
+		} else {
+			$emsg = 'Geminiからの予期しない応答形式です。';
+			$result = $response; // Store raw response
+		}
 	}
 
     
@@ -733,9 +769,14 @@ function gemini_api($p_ask,$p_type){
 		$result = str_replace("\r","",$result);
 		$result = str_replace(" ","",$result);
 		
-		$result = json_decode($result, true);
-	}else{
-		//$result = $response;
+		// Only decode if there's no pre-existing error message from the API call itself
+		if (empty($emsg)) {
+			$decoded_json = json_decode($result, true);
+			if (json_last_error() !== JSON_ERROR_NONE) {
+				$emsg = 'Geminiが返したテキストのJSONデコードに失敗しました: ' . json_last_error_msg() . ". Raw text: " . $result;
+			}
+			$result = $decoded_json;
+		}	
 	}
 	$rtn = array(
 		'emsg' => $emsg,

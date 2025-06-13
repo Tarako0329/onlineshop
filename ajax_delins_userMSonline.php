@@ -76,22 +76,50 @@ if($rtn !== true){
             各値の文章に誤字脱字、タイプミス、正しくない日本語がないか、確認してください。
             確認結果はシンプルな文章にして、JSONで返してください。
             問題ない項目は"OK"を返してください。
-            JSONの形式は
-            '''JSON
-            check_results:{
-                自動返信:"",
-                受付確認:"",
-                支払確認:"",
-                発送連絡:"",
-                キャンセル受付:"",
-            }
-            '''
-            とします。
+            下記のJSONスキーマに厳密に従ってJSONを出力してください。
         EOM;
 
+        $mail_check_schema = [
+            'type' => 'object',
+            'properties' => [
+                'check_results' => [
+                    'type' => 'object',
+                    'properties' => [
+                        '自動返信' => ['type' => 'string', 'description' => '自動返信メールのチェック結果'],
+                        '受付確認' => ['type' => 'string', 'description' => '受付確認メールのチェック結果'],
+                        '支払確認' => ['type' => 'string', 'description' => '支払確認メールのチェック結果'],
+                        '発送連絡' => ['type' => 'string', 'description' => '発送連絡メールのチェック結果'],
+                        'キャンセル受付' => ['type' => 'string', 'description' => 'キャンセル受付メールのチェック結果'],
+                    ],
+                    'required' => ['自動返信', '受付確認', '支払確認', '発送連絡', 'キャンセル受付']
+                ]
+            ],
+            'required' => ['check_results']
+        ];
+
+        $value_check_result = null; // Initialize        
         if(EXEC_MODE<>"Local"){
-            $value_check = gemini_api($ask_json,"json");
-        }
+            //$value_check = gemini_api($ask_json,"json");
+            $value_check_response = gemini_api($ask_json, "json", $mail_check_schema);
+            if (!empty($value_check_response['emsg'])) {
+                // Handle error, e.g., log it, display a message to user or set a default
+                log_writer2("Gemini API error or JSON decode error in ajax_delins_userMSonline: ", $value_check_response['emsg'], "lv1");
+                $msg .= "メール本文のAIチェック中にエラーが発生しました: " . $value_check_response['emsg'];
+                // $value_check_result will remain null or you can set a default error structure
+            } else {
+                $value_check_result = $value_check_response["result"];
+            }
+        } else {
+            // Local mode, set a dummy response if needed for testing
+            $value_check_result = [
+                "check_results" => [
+                    "自動返信" => "OK (Local)",
+                    "受付確認" => "OK (Local)",
+                    "支払確認" => "OK (Local)",
+                    "発送連絡" => "OK (Local)",
+                    "キャンセル受付" => "OK (Local)",
+                ]
+            ];        }
         
         //log_writer2("\$value_check",$value_check["result"],"lv3");
         
@@ -185,7 +213,8 @@ $return_sts = array(
     ,"status" => $alert_status
     ,"csrf_create" => $token
     ,"timeout" => $timeout
-    ,"value_check" => $value_check["result"]
+    //,"value_check" => $value_check["result"]
+    ,"value_check" => $value_check_result
 );
 header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
