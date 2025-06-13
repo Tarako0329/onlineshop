@@ -748,7 +748,7 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	if ($response === false) {
 		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。';
 	}else{
-		$result = json_decode($response, true);
+		$result_decoded = json_decode($response, true);
 		if (isset($result_decoded['candidates'][0]['content']['parts'][0]['text'])) {
 			$result = $result_decoded['candidates'][0]['content']['parts'][0]['text'];
 		} elseif (isset($result_decoded['error'])) {
