@@ -101,6 +101,7 @@ if($rtn !== true){
         if(EXEC_MODE<>"Local"){
             //$value_check = gemini_api($ask_json,"json");
             $value_check_response = gemini_api($ask_json, "json", $mail_check_schema);
+            log_writer2("\$value_check_response: ", $value_check_response, "lv1");
             if (!empty($value_check_response['emsg'])) {
                 // Handle error, e.g., log it, display a message to user or set a default
                 log_writer2("Gemini API error or JSON decode error in ajax_delins_userMSonline: ", $value_check_response['emsg'], "lv1");
