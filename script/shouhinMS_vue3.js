@@ -520,24 +520,53 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			凄腕インフルエンサーとして${sns_type.value}でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つ作成してください。
 			下記のJSONスキーマに厳密に従ってJSONを出力してください。
 			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。
-			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}], URL:${post_sns.value.URL}』
+			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}], 商品url:${post_sns.value.URL}』
 			`
 			const response_schema = {
-        'type' : 'object',
-        'properties' : {
-            'posts' : {
-                'type' : 'object',
-                'properties' : {
-                    'tags' : [{'tag':{'type' : 'string', 'description' : 'ハッシュタグ'}}],
-                    'texts' : [{'text':{'type' : 'string', 'description' : 'SNS投稿例'}
-											,'tags':[{'tag':{'type' : 'string', 'description' : 'ハッシュタグ'}}]
-										}]
-										,'URL':{'type' : 'string', 'description' : 'URL'}
+        'type': 'object',
+        'properties': {
+            'posts': {
+                'type': 'object',
+                'properties': {
+                    'tags': { // For the 10 general hashtags
+                        'type': 'array',
+                        'items': {
+                            'type': 'string',
+                            'description': 'バズるハッシュタグ (例: "便利グッズ")'
+                        },
+                        'description': 'SNSでバズるためのハッシュタグのリスト (10個)'
+                    },
+                    'texts': { // For the 3 post examples
+                        'type': 'array',
+                        'items': {
+                            'type': 'object',
+                            'properties': {
+                                'text': {
+                                    'type': 'string',
+                                    'description': 'SNS投稿文例 (このテキスト内にハッシュタグは含めないでください)'
+                                },
+                                'tags': { // Hashtags for this specific post example
+                                    'type': 'array',
+                                    'items': {
+                                        'type': 'string',
+                                        'description': 'この投稿例に関連するハッシュタグ (例: "新商品紹介")'
+                                    },
+                                    'description': 'この投稿例に推奨されるハッシュタグのリスト'
+                                },
+                                'URL': {
+                                    'type': 'string',
+                                    'description': '商品ページの完全なURL'
+                                }
+                            },
+                            'required': ['text', 'tags', 'URL'] // Each post example must have these
+                        },
+                        'description': '購買意欲を掻き立てる日本語のSNS投稿例 (3つ)'
+                    }
                 },
-                'required' : ['tags', 'texts','URL']	//必須項目
+                'required': ['tags', 'texts']
             }
         },
-        'required' : ['posts']	//必須項目
+        'required': ['posts']
     	}
 
 			params.append(`Article`, Article);
