@@ -17,7 +17,49 @@ if($rtn !== true){
 	$answer_type = $_POST["answer_type"] ?? 'plain';   //json or plain(そのまま)
 	$subject = $_POST["subject"] ?? ''; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
 	//$type = "one";
-	$response_schema = json_decode($_POST["response_schema"],true) ?? NULL; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
+	//$response_schema = json_decode($_POST["response_schema"],true) ?? NULL; 
+
+	/*$response_schemaサンプル
+	  $response_schema = [
+        'type' => 'object',
+        'properties' => [
+            'check_results' => [
+                'type' => 'object',
+                'properties' => [
+                    '自動返信' => ['type' => 'string', 'description' => '自動返信メールのチェック結果'],
+                    '受付確認' => ['type' => 'string', 'description' => '受付確認メールのチェック結果'],
+                    '支払確認' => ['type' => 'string', 'description' => '支払確認メールのチェック結果'],
+                    '発送連絡' => ['type' => 'string', 'description' => '発送連絡メールのチェック結果'],
+                    'キャンセル受付' => ['type' => 'string', 'description' => 'キャンセル受付メールのチェック結果'],
+                ],
+                'required' => ['自動返信', '受付確認', '支払確認', '発送連絡', 'キャンセル受付']	//必須項目
+            ]
+        ],
+        'required' => ['check_results']	//必須項目
+    ];
+	*/
+
+
+	$response_schema = [
+		'type' => 'object',
+		'properties' => [
+				'posts' => [
+						'type' => 'object',
+						'properties' => [
+								'tags' => [
+									['tag'=>['type' => 'string', 'description' => 'ハッシュタグ']]
+								],
+								'texts' => [
+									['text'=>['type' => 'string', 'description' => 'SNS投稿例']
+									,'tags'=>['tag'=>['type' => 'string', 'description' => 'ハッシュタグ']]
+								]]
+								,'URL'=>['type' => 'string', 'description' => 'URL']
+						],
+						'required' => ['tags', 'texts','URL']	//必須項目
+				]
+		],
+		'required' => ['posts']	//必須項目
+	];
     
 	if($type==="kaiwa"){
 		$msg = gemini_api_kaiwa($user_input,$answer_type,$subject);
