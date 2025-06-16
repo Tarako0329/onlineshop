@@ -46,15 +46,32 @@ if($rtn !== true){
 				'posts' => [
 						'type' => 'object',
 						'properties' => [
-								'tags' => [
-									['tag'=>['type' => 'string', 'description' => 'ハッシュタグ']]
+							'tags' => [
+								'type' => 'array',
+								'items' => [ // 配列の各要素の型を定義
+										'type' => 'string',
+										'description' => 'ハッシュタグ',
 								],
-								'texts' => [
-									['text'=>['type' => 'string', 'description' => 'SNS投稿例']
-									,'tags'=>['tag'=>['type' => 'string', 'description' => 'ハッシュタグ']]
-								]]
-								,'URL'=>['type' => 'string', 'description' => 'URL']
-						],
+								'description' => '投稿に紐づくハッシュタグの配列',
+							],
+							'texts' => [
+								'type' => 'array',
+								'items' => [ // 配列の各要素（投稿例オブジェクト）の型を定義
+										'type' => 'object',
+										'properties' => [
+												'text' => ['type' => 'string', 'description' => 'SNS投稿例のテキスト'],
+												'tags' => [ // 各投稿例に紐づくタグも配列にする
+														'type' => 'array',
+														'items' => [
+																'type' => 'string',
+																'description' => 'SNS投稿例に紐づくハッシュタグ',
+														],
+												],
+										],
+										'required' => ['text', 'tags'], // 各投稿例の必須項目
+								],
+								'description' => 'SNS投稿例の配列',
+							],
 						'required' => ['tags', 'texts','URL']	//必須項目
 				]
 		],
