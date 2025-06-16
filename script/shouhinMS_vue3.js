@@ -516,9 +516,26 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
 			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]』
 			`
+			const response_schema = {
+        'type' : 'object',
+        'properties' : {
+            'posts' : {
+                'type' : 'object',
+                'properties' : {
+                    'tags' : [{'type' : 'string', 'tag1' : 'タグ1つ目'}],
+                    'texts' : [{'text':{'type' : 'string', 'description' : 'SNS投稿例'}
+											,'tags':[{'tag':{'type' : 'string', 'description' : 'タグ１つ目'}}]
+										}],
+                },
+                'required' : ['tags', 'texts']	//必須項目
+            }
+        },
+        'required' : ['posts']	//必須項目
+    }
 			params.append(`Article`, Article);
 			params.append(`type`, 'one');
 			params.append(`answer_type`, 'json')
+			params.append(`response_schema`, 'response_schema')
 
 			//GET_AI_POST(shouhinNM.value,`${timing.value}${midasi.value}`,info.value,shouhinCD.value,hash,yagou.value,sns_type.value)
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})

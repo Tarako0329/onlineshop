@@ -16,12 +16,13 @@ if($rtn !== true){
 	$type = $_POST["type"] ?? 'kaiwa';   //連続会話(kaiwa) or 一問一答(one)
 	$answer_type = $_POST["answer_type"] ?? 'plain';   //json or plain(そのまま)
 	$subject = $_POST["subject"] ?? ''; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
+	$response_schema = $_POST["response_schema"] ?? NULL; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
     //$type = "one";
     
 	if($type==="kaiwa"){
 		$msg = gemini_api_kaiwa($user_input,$answer_type,$subject);
 	}else if($type==="one"){
-		$msg = gemini_api($user_input,$answer_type);
+		$msg = gemini_api($user_input,$answer_type,$response_schema);
 	}
 
 }
