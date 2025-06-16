@@ -135,10 +135,10 @@ if($rtn !== true){
                 if ( rename($params["logo"] , str_replace("temp/","",$params["logo"]))) {
                     $params["logo"] = str_replace("temp/","",$params["logo"] );
                 } else {
-                    $msg .= "ファイル移動失敗";
+                    $msg .= "ロゴ画像ファイル移動失敗";
                 }
             } else {
-                $msg .= "ファイル保存失敗 or ファイル未設定・NOFILE";
+                $msg .= "ロゴ画像ファイル保存失敗 or ロゴ画像ファイル未設定・NOFILE";
             }
 
             $pdo_h->beginTransaction();
@@ -191,7 +191,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
 	
-			$msg .= "登録が完了しました。";
+			//$msg .= "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
