@@ -43,39 +43,40 @@ if($rtn !== true){
 	$response_schema = [
 		'type' => 'object',
 		'properties' => [
-				'posts' => [
-						'type' => 'object',
-						'properties' => [
-							'tags' => [
-								'type' => 'array',
-								'items' => [ // 配列の各要素の型を定義
-										'type' => 'string',
-										'description' => 'ハッシュタグ',
-								],
-								'description' => '投稿に紐づくハッシュタグの配列',
+			'posts' => [
+					'type' => 'object',
+					'properties' => [
+						'tags' => [
+							'type' => 'array',
+							'items' => [ // 配列の各要素の型を定義
+									'type' => 'string',
+									'description' => 'ハッシュタグ',
 							],
-							'texts' => [
-								'type' => 'array',
-								'items' => [ // 配列の各要素（投稿例オブジェクト）の型を定義
-										'type' => 'object',
-										'properties' => [
-												'text' => ['type' => 'string', 'description' => 'SNS投稿例のテキスト'],
-												'tags' => [ // 各投稿例に紐づくタグも配列にする
-														'type' => 'array',
-														'items' => [
-																'type' => 'string',
-																'description' => 'SNS投稿例に紐づくハッシュタグ',
-														],
-												],
+							'description' => '投稿に紐づくハッシュタグの配列',
+						],
+						'texts' => [
+							'type' => 'array',
+							'items' => [ // 配列の各要素（投稿例オブジェクト）の型を定義
+								'type' => 'object',
+								'properties' => [
+									'text' => ['type' => 'string', 'description' => 'SNS投稿例のテキスト'],
+									'tags' => [ // 各投稿例に紐づくタグも配列にする
+										'type' => 'array',
+										'items' => [
+											'type' => 'string',
+											'description' => 'SNS投稿例に紐づくハッシュタグ',
 										],
-										'required' => ['text', 'tags'], // 各投稿例の必須項目
+									],
 								],
-								'description' => 'SNS投稿例の配列',
+								'required' => ['text', 'tags'], // 各投稿例の必須項目
 							],
-						'required' => ['tags', 'texts','URL']	//必須項目
+							'description' => 'SNS投稿例の配列',
+						],
+						'url' =>['type' => 'string', 'description' => '商品url']
+						,'required' => ['tags', 'texts','URL']	//必須項目
 				]
-		],
-		'required' => ['posts']	//必須項目
+			],
+			'required' => ['posts']	//必須項目
 		]
 	];
     
