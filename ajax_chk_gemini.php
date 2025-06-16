@@ -73,8 +73,8 @@ if($rtn !== true){
 							'description' => 'SNS投稿例の配列',
 						],
 						'url' =>['type' => 'string', 'description' => '商品url']
-						,'required' => ['tags', 'texts','URL']	//必須項目
-				]
+					]
+					,'required' => ['tags', 'texts','url']	//必須項目
 			],
 			'required' => ['posts']	//必須項目
 		]
