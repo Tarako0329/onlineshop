@@ -18,7 +18,6 @@ if($rtn !== true){
 	$subject = $_POST["subject"] ?? ''; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
 	//$type = "one";
 	$response_schema = json_decode($_POST["response_schema"],true) ?? NULL; //会話のテーマ($_SESSION[$subject]に会話履歴を保存)
-	
     
 	if($type==="kaiwa"){
 		$msg = gemini_api_kaiwa($user_input,$answer_type,$subject);
