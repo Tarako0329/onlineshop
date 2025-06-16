@@ -520,8 +520,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			凄腕インフルエンサーとして${sns_type.value}でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つ作成してください。
 			下記のJSONスキーマに厳密に従ってJSONを出力してください。
 			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。
-			投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
-			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]』
+			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}], URL:${post_sns.value.URL}』
 			`
 			const response_schema = {
         'type' : 'object',
