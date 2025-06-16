@@ -529,9 +529,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
             'posts' : {
                 'type' : 'object',
                 'properties' : {
-                    'tags' : [{'type' : 'string', 'tag1' : 'タグ1つ目'}],
+                    'tags' : [{'tag':{'type' : 'string', 'description' : 'ハッシュタグ'}}],
                     'texts' : [{'text':{'type' : 'string', 'description' : 'SNS投稿例'}
-											,'tags':[{'tag':{'type' : 'string', 'description' : 'タグ１つ目'}}]
+											,'tags':[{'tag':{'type' : 'string', 'description' : 'ハッシュタグ'}}]
 										}]
 										,'URL':{'type' : 'string', 'description' : 'URL'}
                 },
