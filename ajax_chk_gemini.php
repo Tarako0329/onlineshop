@@ -76,6 +76,7 @@ if($rtn !== true){
 				]
 		],
 		'required' => ['posts']	//必須項目
+		]
 	];
     
 	if($type==="kaiwa"){
