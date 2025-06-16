@@ -511,9 +511,16 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			console_log('get_AI_post start')
 
 			const params = new FormData();
-			const Article = `
+			/*const Article = `
 			凄腕インフルエンサーとして${sns_type.value}でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つJSON形式{"posts":{"tags":[tag1,tag2], "texts":[{text:"",tags:[...],URL:""}]}}で出力。
 			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
+			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]』
+			`*/
+			const Article = `
+			凄腕インフルエンサーとして${sns_type.value}でバズるハッシュタグを10個と,購買意欲を掻き立てる日本語の投稿例を３つ作成してください。
+			下記のJSONスキーマに厳密に従ってJSONを出力してください。
+			投稿例は日本語で${sns_char_cnt.value}文字程度でハッシュタグ不要。
+			投稿例はtexts.textに格納。URLはtexts.URLに格納。ハッシュタグはtexts.tagsに格納。
 			${timing.value}『商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]』
 			`
 			const response_schema = {
@@ -525,9 +532,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
                     'tags' : [{'type' : 'string', 'tag1' : 'タグ1つ目'}],
                     'texts' : [{'text':{'type' : 'string', 'description' : 'SNS投稿例'}
 											,'tags':[{'tag':{'type' : 'string', 'description' : 'タグ１つ目'}}]
-										}],
+										}]
+										,'URL':{'type' : 'string', 'description' : 'URL'}
                 },
-                'required' : ['tags', 'texts']	//必須項目
+                'required' : ['tags', 'texts','URL']	//必須項目
             }
         },
         'required' : ['posts']	//必須項目
