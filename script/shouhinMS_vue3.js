@@ -644,7 +644,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			params.append(`Article`, Article);
 			params.append(`type`, 'one');
 			params.append(`answer_type`, 'json')
-			params.append(`response_schema`, response_schema)
+			params.append(`response_schema`, JSON.stringify(response_schema))
 	
 			//GET_AI_SEO(shouhinNM.value,midasi.value,info.value)
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
