@@ -19,27 +19,6 @@ if($rtn !== true){
 	//$type = "one";
 	$response_schema = json_decode($_POST["response_schema"],true) ?? NULL; 
 
-	/*$response_schemaサンプル
-	  $response_schema = [
-        'type' => 'object',
-        'properties' => [
-            'check_results' => [
-                'type' => 'object',
-                'properties' => [
-                    '自動返信' => ['type' => 'string', 'description' => '自動返信メールのチェック結果'],
-                    '受付確認' => ['type' => 'string', 'description' => '受付確認メールのチェック結果'],
-                    '支払確認' => ['type' => 'string', 'description' => '支払確認メールのチェック結果'],
-                    '発送連絡' => ['type' => 'string', 'description' => '発送連絡メールのチェック結果'],
-                    'キャンセル受付' => ['type' => 'string', 'description' => 'キャンセル受付メールのチェック結果'],
-                ],
-                'required' => ['自動返信', '受付確認', '支払確認', '発送連絡', 'キャンセル受付']	//必須項目
-            ]
-        ],
-        'required' => ['check_results']	//必須項目
-    ];
-	*/
-
-
 	/*$response_schema = [
 		'type' => 'object',
 		'properties' => [
