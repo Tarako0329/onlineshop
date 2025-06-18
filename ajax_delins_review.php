@@ -49,7 +49,6 @@ if($rtn !== true){
         $params["score"] = $_POST["score"];
 
         //Geminiで誹謗中傷check
-        //$url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' .GEMINI;
         $url = GEMINI_URL.GEMINI;
         $data = [
             'contents' => [

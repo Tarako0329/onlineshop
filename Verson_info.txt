@@ -177,7 +177,7 @@ ver1.43.0:出店者専用販売ページ-commited
 ver1.43.1:出店者専用販売ページ-commited
   ALTER TABLE `Users_online` ADD `headcolor` VARCHAR(100) NOT NULL DEFAULT '#f9d0d8' AFTER `credit`, ADD `bodycolor` VARCHAR(100) NOT NULL DEFAULT '#fceeee' AFTER `headcolor`;
   ALTER TABLE `Users_online` ADD `h_font_color` VARCHAR(100) NOT NULL DEFAULT '#a52a2a' AFTER `bodycolor`;
-ver1.43.2:GeminiAPIのresponseSchema設定(JSONを強制で返す)
+ver1.43.2:GeminiAPIのresponseSchema設定(JSONを強制で返す)-commited
   
   
 【Issues】
