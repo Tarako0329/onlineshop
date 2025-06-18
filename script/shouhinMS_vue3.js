@@ -613,11 +613,38 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			console_log('get_AI_post start')
 
 			const params = new FormData();
-			const Article = `商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(日本語100文字程度)を5つ、javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。JSON以外は不要です。
-			 商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]`
+			/*const Article = `商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(日本語100文字程度)を5つ、
+			javascriptでそのまま使えるJSON形式{introductions:[{rei:紹介文},{rei:紹介文},{rei:紹介文}]}で提案してください。JSON以外は不要です。
+			下記のJSONスキーマに厳密に従ってJSONを出力してください。
+			商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]`*/
+			const Article = `商品販売SEO対策のプロとして、GOOGLE検索でクリックしたくなる魅力的な紹介文(日本語100文字程度)を5つ、
+			下記のJSONスキーマに厳密に従ってJSONを出力してください。
+			商品名：[${shouhinNM.value}],アピールポイント：[${midasi.value}], 商品の詳細・仕様・成分など：[${info.value}]`
+			const response_schema = {
+        'type': 'object',
+        'properties': {
+            'introductions': {
+                'type': 'array',
+                'items': {
+                    'type': 'object',
+                    'properties': {
+                        'rei': {
+                            'type': 'string',
+                            'description': '魅力的な紹介文 (日本語100文字程度)'
+                        }
+                    },
+                    'required': ['rei']
+                },
+                'description': 'GOOGLE検索でクリックしたくなる魅力的な紹介文のリスト (5つ)'
+            }
+        },
+        'required': ['introductions']
+    	}
+    	
 			params.append(`Article`, Article);
 			params.append(`type`, 'one');
 			params.append(`answer_type`, 'json')
+			params.append(`response_schema`, response_schema)
 	
 			//GET_AI_SEO(shouhinNM.value,midasi.value,info.value)
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
