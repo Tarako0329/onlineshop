@@ -54,9 +54,9 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 //log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;
-use GeminiAPI\Client;
-use GeminiAPI\Resources\ModelName;
-use GeminiAPI\Resources\Parts\TextPart;
+//use GeminiAPI\Client;
+//use GeminiAPI\Resources\ModelName;
+//use GeminiAPI\Resources\Parts\TextPart;
 
 $status="false";
 
@@ -120,7 +120,33 @@ if(EXEC_MODE==="Local"){
 	
 	$discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z=".$sns_type." 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;
 	
+	$ask = '凄腕インフルエンサーとして'.$sns_type.'で購買意欲を掻き立てる日本語の投稿例を10個出力。'
+		.$sns_type.'にそのまま投稿できるようにＵＲＬとハッシュタグも含めて作成。phpのjson_decodeで処理できるように下記のJSONスキーマに厳密に従ってJSONを出力してください。
+		URLとハッシュタグを除いた文字数は100文字以下。JSONオブジェクトを、プレーンテキスト形式で出力してください。商品情報『'.$discription.'』';
+
+	$response_schema = [
+            'type' => 'array',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'post' => ['type' => 'string', 'description' => '投稿例']
+                ],
+                'required' => ['post']
+            ]
+        ];
+        
+	$chk_result = gemini_api($ask, "json", $response_schema);
+	log_writer2("\$chk_result",$chk_result,"lv3");
 	
+	if(!empty($chk_result[0]["emsg"])){
+		//$msg =  'Gemini呼び出しに失敗しました。再度投稿してみてください';
+		log_writer2("\$chk_result",$chk_result,"lv3");
+		exit();
+	}else{
+		$answer = $chk_result["result"];
+	}
+
+/*
 	$url = GEMINI_URL.GEMINI;
 	$data = [
 	  'contents' => [
@@ -165,10 +191,15 @@ if(EXEC_MODE==="Local"){
 		$answer = json_decode($answer,true);
     //log_writer2("\$result",$result,"lv3"); 
 	}
-
+*/
 
 	$text = $answer[rand(0,9)]["post"];
 	echo $text."\n";
+
+	if(EXEC_MODE<>"Product"){
+		echo "本番環境以外ではツイートしないで終了";
+		exit();
+	}
 	
 	define("API_KEY",$_ENV["X_API_KEY"]);
 	define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
