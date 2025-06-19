@@ -75,6 +75,7 @@ if($rtn !== true){
             log_writer2("\$chk_result",$chk_result,"lv3");
         }else{
             $check_ng = $chk_result["result"][0]["判定"];
+            $msg = $chk_result["result"][0]["理由"];
         }
 
         if($check_ng==="NG"){
