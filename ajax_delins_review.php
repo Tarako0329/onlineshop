@@ -66,6 +66,7 @@ if($rtn !== true){
         ];
         
         $chk_result = gemini_api($ask, "json", $response_schema);
+        log_writer2("\$chk_result",$chk_result,"lv3");
         
         if(!empty($chk_result[0]["emsg"])){
             $msg =  '誹謗中傷checkのためのGemini呼び出しに失敗しました。再度投稿してみてください';
