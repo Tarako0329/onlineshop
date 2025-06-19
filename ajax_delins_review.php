@@ -49,6 +49,51 @@ if($rtn !== true){
         $params["score"] = $_POST["score"];
 
         //Geminiで誹謗中傷check
+        $ask = '次のレビューが過度な誹謗中傷にあたるかどうかを判断してください。判断結果はPHPで利用するため、下記のJSONスキーマに厳密に従ってJSONを出力してください。
+            誹謗中傷と判断された場合"NG"。問題ない場合は"OK"を。NGの場合は理由も出力。出力形式は[{"判定":結果,"理由":"理由"}]です。
+            対象のレビュー「'.$params["review"].'」';
+        
+        $response_schema = [
+            'type' => 'array',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    '判定' => ['type' => 'string', 'description' => '誹謗中傷判定結果 ("OK" or "NG")'],
+                    '理由' => ['type' => 'string', 'description' => 'NGの場合の理由']
+                ],
+                'required' => ['判定', '理由']
+            ]
+        ];
+        
+        $chk_result = gemini_api($ask, "json", $response_schema);
+        
+        if(!empty($chk_result[0]["emsg"])){
+            $msg =  '誹謗中傷checkのためのGemini呼び出しに失敗しました。再度投稿してみてください';
+            $check_ng = "NG";
+            $alert_status = "alert-danger";
+            log_writer2("\$chk_result",$chk_result,"lv3");
+        }else{
+            $check_ng = $chk_result["result"][0]["判定"];
+        }
+
+        if($check_ng==="NG"){
+            $msg = "AIに誹謗中傷と判断されたため、登録できませんでした。\n理由：".$msg;
+            $alert_status = "alert-danger";
+            $reseve_status=true;
+            $token = csrf_create();
+            $return_sts = array(
+                "MSG" => $msg
+                ,"status" => $alert_status
+                ,"token" => $token
+                ,"timeout" => $timeout
+            );
+            header('Content-type: application/json');
+            echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
+            exit();
+        }else{
+            $msg="";
+        }
+        /*
         $url = GEMINI_URL.GEMINI;
         $data = [
             'contents' => [
@@ -118,7 +163,7 @@ if($rtn !== true){
         }else{
             $msg="";
         }
-        
+        */
 
         try{
             $pdo_h->beginTransaction();
