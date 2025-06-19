@@ -197,7 +197,7 @@ if(EXEC_MODE==="Local"){
 	echo $text."\n";
 
 	if(EXEC_MODE<>"Product"){
-		echo "本番環境以外ではツイートしないで終了";
+		echo "本番環境以外ではツイートしないで終了\n";
 		exit();
 	}
 	
