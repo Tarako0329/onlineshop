@@ -74,7 +74,7 @@
 				const loader = ref(false)
 
 				const get_talk = () =>{
-					axios.get('ajax_get_QAtalk_list.php')
+					axios.get('ajax_get_QAtalk_List.php')
 					.then((response)=>{
 						console_log(response.data)
 						talk.value = response.data
