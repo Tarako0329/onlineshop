@@ -80,7 +80,7 @@ if(EXEC_MODE==="Local"){
 	//ポスト内容取得
 
 	//商品選定
-	$stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
+	$stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status in ('show','soon') and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
 	$stmt->execute();
 	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	if(count($row)===0){//全件投稿完了・フラグリセット
@@ -115,7 +115,7 @@ if(EXEC_MODE==="Local"){
 	$shouhinCD = $row[$post_index]["shouhinCD"];
 	$yagou = $row[$post_index]["yagou"];
 	$hinmei = $row[$post_index]["shouhinNM"];
-	$sort_info = $row[$post_index]["short_info"];
+	$sort_info =  (($row[$post_index]["status"]==="soon")?"近日公開！！　":"").$row[$post_index]["short_info"];
 	$information = $row[$post_index]["infomation"];
 	
 	$discription = "URL：".ROOT_URL."product.php?id=".$uid."-".$shouhinCD."&z=".$sns_type." 販売元:".$yagou." 商品名：".$hinmei."。説明：".$sort_info." ".$information;

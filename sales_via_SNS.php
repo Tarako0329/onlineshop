@@ -57,6 +57,8 @@
                 <td :id="`${list.uid}-${list.shouhinCD}`" style='display:none;'>{{RTURL}}product.php?id={{list.uid}}-{{list.shouhinCD}}</td>
                 <td style='width: 80px'>
                   <span v-if='list.status==="show"' style='color:blue'>販売中</span>
+                  <span v-if='list.status==="soon"' style='color:skyblue'>近日公開</span>
+                  <span v-if='list.status==="limited"' style='color:green'>限定販売</span>
                   <span v-if='list.status==="soldout"' style='color:darkorange'>受付停止</span>
                   <span v-if='list.status==="stop"' style='color:red'>販売停止</span>
                 <td style='width: 60px'><button type='button' style='min-width: 50px' class='btn btn-primary' @click='set_shouhinNM(list.shouhinNM)'>選択</button></td>
@@ -86,6 +88,8 @@
                 <option value="">通常広告として</option>
                 <option value="新商品発売です！">新商品として</option>
                 <option value="リニューアルしました！">リニューアル商品として</option>
+                <option value="Ｃｏｍｉｎｇ　Ｓｏｏｎ！">近日公開</option>
+                <option value="限定販売です！">限定販売商品として</option>
               </select>
               <select class='form-select' id='sns_type' style='width:110px;height:30px;' v-model='sns_type' >
                 <option value="SNS">SNS選択</option>

@@ -34,6 +34,9 @@
       .btn{
         min-width: 50px;
       }
+      .alert{
+        opacity: 0.8; 
+      }
     </style>
     <link rel='canonical' href='https://cafe-present.greeen-sys.com'>
     <meta name="description" content="アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー,アレルギー対応（小麦・卵・乳 不使用）">
@@ -73,6 +76,9 @@
                 <div v-if='list.status==="soldout"' class='alert alert-warning text-center' style='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;'>
                   <p class='mb-0'>品切れ中です</p>
                   <p>再販希望等は[問合せ]より</p>
+                </div>
+                <div v-else-if='list.status==="soon"' class='alert alert-info text-center' style='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;width:90%;'>
+                  <p class='mb-0'>Ｃｏｍｉｎｇ　Ｓｏｏｎ！！</p>
                 </div>
                 
                 <div :id="`carouselExample_${index}`" class="carousel slide">

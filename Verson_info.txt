@@ -179,6 +179,10 @@ ver1.43.1:出店者専用販売ページ-commited
   ALTER TABLE `Users_online` ADD `h_font_color` VARCHAR(100) NOT NULL DEFAULT '#a52a2a' AFTER `bodycolor`;
 ver1.43.2:GeminiAPIのresponseSchema設定(JSONを強制で返す)-commited
 ver1.43.3:GeminiAPIのresponseSchema設定(JSONを強制で返す)-commited
+ver1.44.0:商品ステータスに近日公開を追加-commited
+  ALTER TABLE `shouhinMS_online` ADD `upd_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `limited_cd`;
+
+
   
   
 【Issues】

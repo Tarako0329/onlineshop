@@ -136,6 +136,7 @@
         <div v-if='list.uid + "-" + list.shouhinCD ==="<?php echo $shouhin_id; ?>"' class='col-12'><!--外枠-->
           <div class='container-fluid'>
             <div v-if='list.status==="soldout"' class='row'><div class='alert alert-warning'>品切れ中です</div></div>
+            <div v-else-if='list.status==="soon"' class='row'><div class='alert alert-info'>Ｃｏｍｉｎｇ　Ｓｏｏｎ！！</div></div>
             <div class='row pb-1'>
               <div class='col-md-6 mb-3'><!--写真-->
                 <div :id="`carouselExample_${index}`" class="carousel slide">

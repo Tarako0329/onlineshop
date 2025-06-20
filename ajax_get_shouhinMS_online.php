@@ -44,6 +44,7 @@
 			order by 
 				online.uid
 				,case 
+					when online.status = 'soon' then 0
 					when online.status = 'show' then 1
 					when online.status = 'limited' then 2
 					when online.status = 'soldout' then 3

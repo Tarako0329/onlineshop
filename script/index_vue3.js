@@ -134,17 +134,17 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
     const shouhinMS_SALE = computed(()=>{
       if(search_word.value==''){
         return shouhinMS.value.filter((row)=>{
-          return (row.status==='show' || row.status==='limited' || row.status==='soldout')
+          return (row.status==='show' || row.status==='limited' || row.status==='soldout' || row.status==='soon')
         })
       }else{
         if(serch_type.value==="商品名"){
           return shouhinMS.value.filter((row)=>{
-            return row.shouhinNM.includes(search_word.value) && (row.status==='show' || row.status==='limited' || row.status==='soldout')
+            return row.shouhinNM.includes(search_word.value) && (row.status==='show' || row.status==='limited' || row.status==='soldout' || row.status==='soon')
           })        
         }else if(serch_type.value==="商品名＋説明文"){
           return shouhinMS.value.filter((row)=>{
             let words = row.shouhinNM + row.short_info + row.infomation
-            return words.includes(search_word.value) && (row.status==='show' || row.status==='limited' || row.status==='soldout')
+            return words.includes(search_word.value) && (row.status==='show' || row.status==='limited' || row.status==='soldout' || row.status==='soon')
           })        
         }
       }

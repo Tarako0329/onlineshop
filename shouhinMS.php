@@ -61,6 +61,7 @@
 							<tr>
 								<!--<td>{{list.shouhinNM}}</td>-->
 								<td v-if='list.status==="show"' style='color:blue'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
+								<td v-if='list.status==="soon"' style='color:skyblue'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
 								<td v-if='list.status==="limited"' style='color:green'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
 								<td v-if='list.status==="soldout"' style='color:darkorange'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
 								<td v-if='list.status==="stop"' style='color:gray'>商品CD：{{list.shouhinCD}}「{{list.shouhinNM}}」</td>
@@ -75,6 +76,7 @@
 								<td style='width: 80px'>
 									<select style='width: 80px;' class='form-select' v-model='list.status' @change='upd_status(list.status,list.shouhinCD)'>
 										<option value='show'>販売中</option>
+										<option value='soon'>Coming soon!</option>
 										<option value='limited' disabled>限定販売</option>
 										<option value='soldout'>受付停止</option>
 										<option value='stop'>販売停止</option>
@@ -99,14 +101,16 @@
 			</div>
 			<div class='row mb-1'>
 				<div class='col-md-8 col-12'>
-					<input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
-					<label class='btn btn-outline-primary ' for='show' style='border-radius:0;min-width: 90px;'>販売中</label>
+				<input type='radio' class='btn-check' name='status' value='show' autocomplete='off' v-model='status' id='show'>
+					<label class='btn btn-outline-primary ' for='show' style='border-radius:0;min-width: 80px;'>販売中</label>
+					<input type='radio' class='btn-check' name='status' value='soon' autocomplete='off' v-model='status' id='soon'>
+					<label class='btn btn-outline-info ' for='soon' style='border-radius:0;min-width: 80px;'>近日公開</label>
 					<input type='radio' class='btn-check' name='status' value='limited' autocomplete='off' v-model='status' id='limited'>
-					<label class='btn btn-outline-success ' for='limited' style='border-radius:0;min-width: 90px;'>限定販売</label>
+					<label class='btn btn-outline-success ' for='limited' style='border-radius:0;min-width: 70px;'>限定販売</label>
 					<input type='radio' class='btn-check' name='status' value='soldout' autocomplete='off' v-model='status' id='soldout'>
-					<label class='btn btn-outline-warning ' for='soldout' style='border-radius:0;min-width: 90px;'>受付停止</label>
+					<label class='btn btn-outline-warning ' for='soldout' style='border-radius:0;min-width: 70px;'>受付停止</label>
 					<input type='radio' class='btn-check' name='status' value='stop' autocomplete='off' v-model='status' id='stop'>
-					<label class='btn btn-outline-danger ' for='stop' style='border-radius:0;min-width: 90px;'>販売停止</label>
+					<label class='btn btn-outline-danger ' for='stop' style='border-radius:0;min-width: 70px;'>販売停止</label>
 				</div>
 			</div>
 			<div class='row mb-3'>
