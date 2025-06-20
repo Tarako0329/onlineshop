@@ -11,6 +11,7 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
       {name:'広告宣伝',url : `sales_via_SNS.php?key=${user_hash}`},
       {name:'アクセス解析',url : `acc_analysis.php?key=${user_hash}`},
       {name:'レビュー管理',url : `review_management.php?key=${user_hash}`},
+      {name:'問合せ管理',url : `Q_and_A_mgr.php?key=${user_hash}`},
       {name:'ご利用明細',url : `seikyu_yotei.php?key=${user_hash}`},
       {name:'利用規約',url : `kiyaku.php?key=${user_hash}`},
     ])
@@ -33,10 +34,12 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
         document.getElementById("menu_06").classList.add("active");
       }else if(Where_to_use==="review_management.php"){
         document.getElementById("menu_07").classList.add("active");
-      }else if(Where_to_use==="seikyu_yotei.php"){
+      }else if(Where_to_use==="Q_and_A_mgr.php"){
         document.getElementById("menu_08").classList.add("active");
-      }else if(Where_to_use==="kiyaku.php"){
+      }else if(Where_to_use==="seikyu_yotei.php"){
         document.getElementById("menu_09").classList.add("active");
+      }else if(Where_to_use==="kiyaku.php"){
+        document.getElementById("menu_10").classList.add("active");
       }else{
       }
     })

@@ -181,14 +181,14 @@ ver1.43.2:GeminiAPIのresponseSchema設定(JSONを強制で返す)-commited
 ver1.43.3:GeminiAPIのresponseSchema設定(JSONを強制で返す)-commited
 ver1.44.0:商品ステータスに近日公開を追加-commited
   ALTER TABLE `shouhinMS_online` ADD `upd_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `limited_cd`;
-ver1.45.0:購入時アンケート追加
+ver1.45.0:購入時アンケート追加-commited
   ALTER TABLE `juchuu_head` ADD `buy_trigger` VARCHAR(40) NULL COMMENT 'きっかけ' AFTER `review_irai`;
   ALTER TABLE `juchuu_head` ADD `mark_id` VARCHAR(100) NULL COMMENT '端末に仕込んだクッキーID' AFTER `buy_trigger`;
+ver1.46.0:管理画面からの問合せ確認
+  
+  
 
-  
-  
 【Issues】
-・管理画面からの問合せ確認
 ・sendmail・sendlineのログ
 ・レビュー管理からの個別連絡
 ・juchuu_headのcancel誤更新の調査

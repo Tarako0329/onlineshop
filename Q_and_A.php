@@ -9,17 +9,22 @@
   $_SESSION["askNO"] = $_GET["askNO"];  //暗号
   $_SESSION["sts"] = $_GET["QA"];        //暗号
   $sts = rot13decrypt2($_SESSION["sts"]);
+  log_writer2("\$sts",$sts,"lv3");
 
-  if($sts==="Q" || $sts==="CA"){
+  if($sts==="Q" || $sts==="CA"){//お客さんが質問する。もしくは回答する
     $subject="返信が届きました";
     $body="返信内容";
-  }else if($sts==="A" || $sts==="BQ"){
+  }else if($sts==="A" || $sts==="BQ"){//お客さんに答える。もしくは問い返す
     $subject="回答が届きました";
     $body="回答内容";
+    $user_hash = $_GET["key"] ;
+    $_SESSION["user_id"] = rot13decrypt2($user_hash);
+
   }else{
     echo "見せないよ！er2:".$sts;
     exit();
   }
+
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
@@ -93,7 +98,14 @@
 </head>
 <BODY>
   <div id='app' style='height: 100%'>
-  <?php include "header_tag.php"  ?>
+  <?php 
+    if($body==="回答内容"){
+      include "header_tag_admin.php";
+    }else if($body==="返信内容"){
+      include "header_tag.php";
+    }
+    
+  ?>
   <MAIN class='container common_main' style='height: 100%;padding-top:60px;padding-bottom:220px;'>
     
     <div class='row pb-3 pt-1 p-5'>
@@ -151,6 +163,7 @@
 
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script>
+    admin_menu('Q_and_A.php','','<?php echo $user_hash;?>').mount('#admin_menu');
     createApp({//販売画面
       setup() {
         const talk = ref([{askNO:0,shouhinNM:""}])
