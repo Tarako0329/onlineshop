@@ -318,6 +318,50 @@
         </div>
       </div>
       <hr>
+      <!--商品・サイトを知るきっかけをradioでアンケート。選択肢は'instagram','facebook','X.com(twitter)','tiktok','その他SNS','google等で検索','知人から'-->
+      <div class='row mb-3'>
+        <div class='col-md-6 col-12'>
+          <label class="form-label">商品・サイトを知るきっかけ</label>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='instagram' class='form-check-input' id='trigger_instagram'>
+            <label for='trigger_instagram' class="form-check-label">instagram</label>
+          </div>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='facebook' class='form-check-input' id='trigger_facebook'>
+            <label for='trigger_facebook' class="form-check-label">facebook</label>
+          </div>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='X.com(twitter)' class='form-check-input' id='trigger_twitter'>
+            <label for='trigger_twitter' class="form-check-label">X.com(twitter)</label>
+          </div>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='tiktok' class='form-check-input' id='trigger_tiktok'>
+            <label for='trigger_tiktok' class="form-check-label">tiktok</label>
+          </div>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='その他SNS' class='form-check-input' id='trigger_other_sns'>
+            <label for='trigger_other_sns' class="form-check-label">その他SNS</label>
+          </div>
+          <div class="form-check">
+            <input v-model='trigger' name='trigger' type='radio' value='google等で検索' class='form-check-input' id='trigger_search'>
+            <label for='trigger_search' class="form-check-label">google等で検索</label>
+          </div>
+          <div class="form-check">
+            <input value="知人から" v-model='trigger' name='trigger' type='radio' value='知人から' class='form-check-input' id='trigger_friend'>
+            <label for='trigger_friend' class="form-check-label">知人から</label>
+          </div>
+          <div class="form-check">
+            <input value="イベント・店舗" v-model='trigger' name='trigger' type='radio' value='イベント・店舗' class='form-check-input' id='trigger_friend'>
+            <label for='trigger_friend' class="form-check-label">イベント・店舗</label>
+          </div>
+          <div class="form-check">
+            <input value="チラシ" v-model='trigger' name='trigger' type='radio' value='チラシ' class='form-check-input' id='trigger_friend'>
+            <label for='trigger_friend' class="form-check-label">チラシ</label>
+          </div>
+        </div>
+      </div>
+      
+      <hr>
       <div class='row mb-3'>
         <div class='col-md-6 col-12'>
           <label >【キャンセル規定】</label>

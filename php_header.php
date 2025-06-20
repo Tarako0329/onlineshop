@@ -111,6 +111,8 @@ if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === "" || !emp
   }
   //$bot = "user";
 }
+$_SESSION["mark_id"] = $_SESSION["mark_id"] ?? $aclu;
+
 $get = print_r($_GET,true);
 $get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
 $log_param = [
