@@ -70,6 +70,7 @@
                               キャンセル済み
                             </template>
                           </div>
+                          <div style="width: 100%;">購入のきっかけ：{{list.buy_trigger}}</div>
                         </div>
                         
                       </button>
