@@ -51,6 +51,7 @@
 						<option value='1'>新規／再訪</option>
 						<option value='2'>訪問経路</option>
 						<option value='3'>ページ別訪問人数</option>
+						<option value='4'>ご購入者の訪問履歴</option>
 					</select>
 				</div>
 				<div style='width: 80px;'>
@@ -89,7 +90,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='row' style=''><!--graph/table-->
+		<div v-if='an_type != 4' class='row' style=''><!--graph/table-->
 			<div class='col-xl-7 col-12' style=''><!--graph-->
 				<div id='chart_area' style="width: 95%;">
 					<canvas id="myChart"></canvas>
@@ -115,6 +116,28 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div v-else class='row' style=''><!--table-->
+			<table class='table'>
+				<thead>
+					<tr>
+						<th>日時</th>
+						<th>名前</th>
+						<th>訪問先</th>
+						<th>どこから</th>
+					</tr>
+				</thead>
+				<tbody>
+					<template v-for='(list,index) in analysis_data' :key='list.SEQ'>
+						<tr>
+							<td>{{list.datetime}}</td>
+							<td>{{list.name}}</td>
+							<td>{{list.PAGE_NAME}}</td>
+							<td>{{list.koukoku_sns}}</td>
+						</tr>
+					</template>
+				</tbody>
+			</table>
 		</div>
 	</MAIN>
 	<FOOTER class='container-fluid common_footer'>

@@ -185,7 +185,8 @@ ver1.45.0:購入時アンケート追加-commited
   ALTER TABLE `juchuu_head` ADD `buy_trigger` VARCHAR(40) NULL COMMENT 'きっかけ' AFTER `review_irai`;
   ALTER TABLE `juchuu_head` ADD `mark_id` VARCHAR(100) NULL COMMENT '端末に仕込んだクッキーID' AFTER `buy_trigger`;
 ver1.46.0:管理画面からの問合せ確認-commited
-ver1.47.0:購入のきっかけ表示
+ver1.47.0:購入のきっかけ表示-commited
+ver1.47.1:購入者の足跡-commited
 
   
 

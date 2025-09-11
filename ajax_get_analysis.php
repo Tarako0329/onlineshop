@@ -162,15 +162,18 @@
 						AND IFNULL(tmp.shouhinNM,'') <> ''
 						GROUP BY date,uid,shouhinNM
 						ORDER BY tmp.date DESC,tmp.shouhinNM";
+		}else if($an_type == 4){
+			$sql = "SELECT *,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY name,SEQ DESC";
 		}
 		//log_writer2("\$sql",$sql,"lv3");
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("from1", $from, PDO::PARAM_STR);
 		$stmt->bindValue("to1", $to, PDO::PARAM_STR);
-		$stmt->bindValue("from2", $from, PDO::PARAM_STR);
-		$stmt->bindValue("to2", $to, PDO::PARAM_STR);
-		$stmt->bindValue("to3", $to, PDO::PARAM_STR);
-
+		if($an_type != 4){
+			$stmt->bindValue("from2", $from, PDO::PARAM_STR);
+			$stmt->bindValue("to2", $to, PDO::PARAM_STR);
+			$stmt->bindValue("to3", $to, PDO::PARAM_STR);
+		}
 		$stmt->execute();
 		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
