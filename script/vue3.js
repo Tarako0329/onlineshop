@@ -347,7 +347,7 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
 
       axios.post("ajax_get_analysis.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response) => {
-        console_log(response.data)
+        console_log(response.data,'all')
         analysis_data.value = response.data
         create_graph(document.getElementById('myChart'))
         console_log('ajax_get_analysis succsess')

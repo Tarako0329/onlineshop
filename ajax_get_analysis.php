@@ -163,7 +163,7 @@
 						GROUP BY date,uid,shouhinNM
 						ORDER BY tmp.date DESC,tmp.shouhinNM";
 		}else if($an_type == 4){
-			$sql = "SELECT *,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY name,SEQ DESC";
+			$sql = "SELECT *,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY SEQ DESC";
 		}
 		//log_writer2("\$sql",$sql,"lv3");
 		$stmt = $pdo_h->prepare($sql);
