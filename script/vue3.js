@@ -349,7 +349,9 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
       .then((response) => {
         console_log(response.data,'all')
         analysis_data.value = response.data
-        create_graph(document.getElementById('myChart'))
+        if(an_type.value!=='4'){
+          create_graph(document.getElementById('myChart'))
+        }
         console_log('ajax_get_analysis succsess')
       })
       .catch((error)=>{
