@@ -187,6 +187,10 @@ ver1.45.0:購入時アンケート追加-commited
 ver1.46.0:管理画面からの問合せ確認-commited
 ver1.47.0:購入のきっかけ表示-commited
 ver1.47.1:購入者の足跡-commited
+ver1.48.0:管理者側でのカスタムオーダー
+  ALTER TABLE `juchuu_meisai` DROP PRIMARY KEY;
+  ALTER TABLE `juchuu_meisai` ADD `SEQ` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`SEQ`);
+  ALTER TABLE `juchuu_meisai` ADD `upd_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `bikou`;
 
   
 

@@ -72,7 +72,6 @@
                           </div>
                           <div style="width: 100%;">購入のきっかけ：{{list.buy_trigger}}</div>
                         </div>
-                        
                       </button>
                     </h2>
                     <div :id="`collapseOne_${index}`" class="accordion-collapse collapse" :data-bs-parent="`#accordion_${index}`">
@@ -114,34 +113,41 @@
                           <thead>
                             <tr>
                               <th>商品名</th>
-                              <th>価格</th>
-                              <th>注文数</th>
-                              <th>総額</th>
+                              <th class='text-center'>単価</th>
+                              <th class='text-center'>注文数</th>
+                              <th class='text-center'>総額</th>
                             </tr>
                           </thead>
-                          <tbody v-for='(list2,index2) in orderlist_bd' :key='list2.orderNO+list2.shouhinCD'>
-                            <template v-if='list.orderNO===list2.orderNO' >
-                              <tr class="align-bottom">
-                                <td>
-                                  {{list2.shouhinNM}}
-                                </td>
-                                <td>{{(Number(list2.tanka)).toLocaleString()}}</td>
-                                <td>
-                                  <p>{{list2.su}}</p>
-                                </td>
-                                <td>{{(Number(list2.goukeitanka)+Number(list2.zei)).toLocaleString()}}</td>
-                              </tr>
-                              <tr v-if='list2.zei==="0.00"'>
-                                <!--<td colspan="4">備考:{{list.customer_bikou}}</td>-->
-                                <td colspan="4">備考:{{list2.bikou}}</td>
-                              </tr>
+                          <!--<tbody v-for='(list2,index2) in orderlist_bd' :key='list2.orderNO+list2.shouhinCD'>-->
+                          <tbody>
+                            <template v-for='(list2,index2) in orderlist_bd' :key='list2.SEQ'>
+                              <template v-if='list.orderNO===list2.orderNO' >
+                                <tr class="align-bottom">
+                                  <td>
+                                    {{list2.shouhinNM}}
+                                  </td>
+                                  <td class='text-end pe-2'>{{(Number(list2.tanka)).toLocaleString()}}</td>
+                                  <td class='text-center'>
+                                    {{list2.su}}
+                                  </td>
+                                  <td class='text-end pe-2'>{{(Number(list2.goukeitanka)+Number(list2.zei)).toLocaleString()}}</td>
+                                </tr>
+                                <tr v-if='list2.zei==="0.00"'>
+                                  <td colspan="4">備考:{{list2.bikou}}</td>
+                                </tr>
+                              </template>
                             </template>
+                            <tr>
+                              <td colspan="4" class='p-2 text-center'>
+                                <button type='button' class='btn btn-primary' @click='set_select_orderNO(list.orderNO)' data-bs-toggle="modal" data-bs-target="#exampleModal3" >商品追加</button>
+                              </td>
+                            </tr>
                           </tbody>
                           <tfoot>
                             <tr>
                               <td></td>
                               <td colspan="2">税込合計金額</td>
-                              <td>{{Number(list.税込総額).toLocaleString()}}</td>
+                              <td class='text-end pe-2'>{{Number(list.税込総額).toLocaleString()}}</td>
                             </tr>
                           </tfoot>
                         </table>
@@ -344,6 +350,60 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='mail_modal_close_QA'>Close</button>
           <button type='button' class='btn btn-primary' id='mail_send_btn_QA' @click='send_email_toCustomer()'>{{send_mail_btn}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">商品追加</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <div class='mb-3'>
+            <label for='shouhinCD' class="form-label">商品名</label>
+            <select class='form-select' id='shouhinCD' v-model='shouhin_Add_index'>
+              <template v-for='(S_list,index2) in shouhinMS' :key='S_list.shouhinCD'>
+                <option :value='index2'>{{S_list.shouhinNM}}</option>
+              </template>
+            </select>
+          </div>
+          <div class='mb-3'>
+            <label for='short_info' class="form-label">【商品見出し】</label>
+            <!--Pタグ枠あり。-->
+            <p id='short_info' style='height:50px; overflow-y:scroll; border:1px solid lightgray;'>{{shouhin_Add.short_info}}</p>
+          </div>
+          <div class='mb-3'>
+            <label for='zei' class="form-label">税区分</label>
+					  <select class='form-select' id='zei' v-model='shouhin_Add.zeikbn'>
+					  	<option value="0">非課税</option>
+					  	<option value="1001">8%</option>
+					  	<option value="1101">10%</option>
+					  </select>
+          </div>
+          <div class='mb-3'>
+            <label for='tanka' class="form-label">単価</label>
+            <input type='number' class='form-control' id='tanka' v-model='shouhin_Add.tanka'>
+          </div>
+          <div class='mb-3'>
+            <label for='su' class="form-label">受注数</label>
+            <input type='number' class='form-control' id='su' v-model='shouhin_Add.su'>
+          </div>
+          <div class='mb-3'>
+            <p id='kakaku' class='fs-3'>総額 ￥　{{(Number(shouhin_Add.tanka) * Number(shouhin_Add.su)).toLocaleString()}} -</p>
+          </div>
+          <div class='mb-3'>
+            <label for='bikou' class="form-label">備考</label>
+            <textarea type='memo' class='form-control' rows="5" v-model='shouhin_Add.bikou' placeholder="例：追加注文のご連絡対応分　等"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id='add_shouhin_modal_close'>キャンセル</button>
+          <button type='button' class='btn btn-primary' id='mail_send_btn_QA' @click='add_shouhin()'>登録</button>
         </div>
       </div>
     </div>

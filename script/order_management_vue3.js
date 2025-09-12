@@ -432,13 +432,105 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
 
     }
 
+    const select_orderNO = ref('')
+    const shouhinMS = ref([])
+    const shouhin_Add_index = ref(-1) //追加する商品マスタのインデックス
+    const shouhin_Add = ref({
+      orderNO:""
+      ,shouhinCD:0
+      ,shouhinNM:""
+      ,sort_info:""
+      ,su:1
+      ,tanka:0
+      //,goukeitanka:0
+      ,zei:0
+      ,zeikbn:0
+      ,bikou:""
+      ,SEQ:null
+    })
+    const set_select_orderNO = (p_orderNO) =>{
+      console_log(`set_select_orderNO:${p_orderNO}`)
+      select_orderNO.value = p_orderNO
+    }
+		const get_shouhinMS_online = (p_serch) => {//商品マスタ取得
+			//p_serch は 商品名
+			axios
+			.get(`ajax_get_shouhinMS_online.php?f=${p_serch}`)
+			.then((response) => {
+				if(response.data.alert==="success"){
+					shouhinMS.value = [...response.data.dataset]
+          //shouhin_Add.value = shouhinMS.value[0].shouhinCD
+					console_log('get_shouhinMS_online succsess')
+				}else{
+					console_log('get_shouhinMS_online succsess:NoData')
+				}
+			})
+			.catch((error)=>{
+				console_log('get_shouhinMS_online.php ERROR')
+				console_log(error)
+			})
+			.finally(()=>{
+			})
+		}
+    watch([shouhin_Add_index],()=>{
+      shouhin_Add.value.orderNO = select_orderNO.value
+      shouhin_Add.value.shouhinCD = shouhinMS.value[shouhin_Add_index.value].shouhinCD
+      shouhin_Add.value.shouhinNM = shouhinMS.value[shouhin_Add_index.value].shouhinNM
+      shouhin_Add.value.short_info = shouhinMS.value[shouhin_Add_index.value].short_info
+      shouhin_Add.value.su = 1
+      shouhin_Add.value.tanka = shouhinMS.value[shouhin_Add_index.value].tanka
+      //shouhin_Add.value.goukeitanka = shouhinMS.value[shouhin_Add_index.value].shouhinNM
+      //shouhin_Add.value.zei = shouhinMS.value[shouhin_Add_index.value].shouhinNM
+      shouhin_Add.value.zeikbn = shouhinMS.value[shouhin_Add_index.value].zeikbn
+      shouhin_Add.value.bikou = ""
+    })
+    const add_shouhin = () =>{
+      //shouhin_Add.valueの内容をajax_delins_order_custum.phpにPOST
+      loader.value = true
+      const form = new FormData();
+      form.append(`orderNO`, shouhin_Add.value.orderNO)
+      form.append(`shouhinCD`, shouhin_Add.value.shouhinCD)
+      form.append(`shouhinNM`, shouhin_Add.value.shouhinNM)
+      form.append(`short_info`, shouhin_Add.value.short_info)
+      form.append(`su`, shouhin_Add.value.su)
+      form.append(`tanka`, shouhin_Add.value.tanka)
+      //form.append(`goukeitanka`, shouhin_Add.value.goukeitanka)
+      form.append(`zei`, shouhin_Add.value.zei)
+      form.append(`zeikbn`, shouhin_Add.value.zeikbn)
+      form.append(`bikou`, shouhin_Add.value.bikou)
+      form.append(`csrf_token`, token)
+      form.append(`hash`, hash)
+
+      axios.post("ajax_delins_order_custum.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then((response)=>{
+        console_log(response.data)
+        token = response.data.csrf_create
+        if(response.data.status==="alert-success"){
+          alert('商品を追加しました。')
+          get_orderlist()
+          document.getElementById('add_shouhin_modal_close').click()
+        }else{
+          alert('追加失敗')
+        }
+      })
+      .catch((error)=>{
+        console_log(error)
+        alert('追加エラー')
+      })
+      .finally(()=>{
+        loader.value = false
+      })
+    }
+    
     onMounted(()=>{
       console_log(`onMounted : ${Where_to_use}`)
       if(Where_to_use==="order_rireki.php"){
         document.getElementById("menu_rireki").classList.add("active");
       }else if(Where_to_use==="order_management.php"){
+        console_log(shouhinMS.value[0])
       }
       get_orderlist()
+      get_shouhinMS_online()
       GET_USER2()
       .then((response)=>{
         console_log(response)
@@ -500,7 +592,12 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       qa_yagou,
       set_qa_fmB,
       set_qa,
-      
+      set_select_orderNO,
+      shouhinMS,
+      shouhin_Add_index,
+      shouhin_Add,
+      select_orderNO,
+      add_shouhin
     }
   }
 })
