@@ -191,6 +191,7 @@ ver1.48.0:管理者側でのカスタムオーダー-commited
   ALTER TABLE `juchuu_meisai` DROP PRIMARY KEY;
   ALTER TABLE `juchuu_meisai` ADD `SEQ` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`SEQ`);
   ALTER TABLE `juchuu_meisai` ADD `upd_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `bikou`;
+ver1.49.0:管理画面の改良
 
   
 
