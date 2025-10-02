@@ -336,12 +336,25 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 					document.getElementById('spy2').click()
 					document.getElementById('header').style.pointerEvents = 'none'
 					document.getElementById('navbarNav').style.opacity = 0
+					//カートのクリア
 					shouhinMS.value.forEach((row)=>{
 						if(row.uid === order_shop_id.value){
 							IDD_Delete(tableNM,row.uid + '-' + row.shouhinCD)
 						}
 					})
-							
+					//グーグルマーチャントのアンケート
+					if (window.renderOptIn) {
+						//const one_week_after に １週間後の日付をyyyy-mm-dd形式でセット
+						const today = new Date();
+						const one_week_after = new Date(today.setDate(today.getDate() + 7)).toISOString().slice(0, 10);
+						
+						const orderData = {
+							id:orderNO.value
+							,email:od_mail.value
+							,estimated_delivery_date:one_week_after
+						}
+						window.renderOptIn(orderData);
+					}
 				}else{
 					alert('注文送信失敗')
 				}

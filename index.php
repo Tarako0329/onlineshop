@@ -516,6 +516,28 @@ EOD
   </div>  
 
   </div>
+  <!-- BEGIN GCR Opt-in Module Code -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script>
+    window.renderOptIn = function(orderData) {
+      window.gapi.load('surveyoptin', function() {
+        window.gapi.surveyoptin.render(
+        {
+          // REQUIRED
+          "merchant_id": "<?php echo $MERCHANT_ID;?>",
+          "order_id": orderData.id,
+          "email": orderData.email,
+          "delivery_country": "JP",
+          "estimated_delivery_date": orderData.estimated_delivery_date
+          // OPTIONAL
+          //"products":[{"gtin":"GTIN1"}, {"gtin":"GTIN2">}],
+          //"opt_in_style": "OPT_IN_STYLE"
+        });
+      });
+    }
+  </script>
+  <!-- END GCR Opt-in Module Code -->
+
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script src="script/index_vue3.js?<?php echo $time; ?>"></script>
   <script>
@@ -532,6 +554,6 @@ EOD
         }    
       };    
   </script>
-  <?php echo $GOOGLE_REVIEW;?>
+  <?php //echo $GOOGLE_REVIEW;?>
 </BODY>
 </html>
