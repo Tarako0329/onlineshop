@@ -82,6 +82,12 @@
 				//stripe登録なし
 			}
 	
+			$sql = "SELECT * FROM juchuu_head where orderNO = :orderNO";
+			$stmt = $pdo_h->prepare( $sql );
+			$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
+			$status = $stmt->execute();
+			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
 		}
 
 	}catch(Exception $e){
@@ -106,7 +112,10 @@
 	<div id='app'>
 	<MAIN class='container common_main' data-bs-spy="scroll">
 		<div class='row mb-5'>
+			<div class='text-center m-1'><h3><?php echo (!empty($data2[0]["name"]))?$data2[0]["name"]:"斉藤　巧（仮）";?> 様</h3></div>
+			<div class='text-center m-1'><h3>ご注文受付番号：<?php echo $orderNO;?> </h3></div>
 			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
+			<div class='text-center m-3'>下記いずれかの決済方法からお支払いをお願いいたします。</div>
 			<hr>
 			<div v-if='credit==="use"' class='p-3'>
 				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary btn-lg" style='width:100%;'>クレジットで決済する⇒</a>
