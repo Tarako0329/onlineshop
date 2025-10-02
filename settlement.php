@@ -83,7 +83,7 @@
 				<select class='form-select' id='zei' v-model='new_type.types'>
 					<option value="bank">銀行振込</option>
 					<option value="QR">QR決済</option>
-					<option value="link">決済URK</option>
+					<option value="link">決済URL</option>
 					<option value="other">その他</option>
 				</select>
 			</div>
