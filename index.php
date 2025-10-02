@@ -21,30 +21,6 @@
     $_SESSION["yagou"]="";
   }
   $_SESSION["askNO"]="";
-  
-  $GOOGLE_REVIEW=<<<EOD
-<!-- BEGIN GCR Opt-in Module Code -->
-<script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer></script>
-<script>
-  window.renderOptIn = function() {
-    window.gapi.load('surveyoptin', function() {
-      window.gapi.surveyoptin.render(
-      {
-        // REQUIRED
-        "merchant_id": {$MERCHANT_ID},
-        "order_id": "999999",
-        "email": "green.green.midori@greeen-sys.com",
-        "delivery_country": "JP",
-        "estimated_delivery_date": "2025-11-01"
-        // OPTIONAL
-        //"products":[{"gtin":"GTIN1"}, {"gtin":"GTIN2">}],
-        //"opt_in_style": "OPT_IN_STYLE"
-      });
-    });
-  }
-</script>
-<!-- END GCR Opt-in Module Code -->
-EOD
 
 ?>
 <!DOCTYPE html>
@@ -554,6 +530,5 @@ EOD
         }    
       };    
   </script>
-  <?php //echo $GOOGLE_REVIEW;?>
 </BODY>
 </html>
