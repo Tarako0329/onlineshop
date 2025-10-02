@@ -35,7 +35,7 @@
         "order_id": "999999",
         "email": "green.green.midori@greeen-sys.com",
         "delivery_country": "JP",
-        "estimated_delivery_date": "2025-11-01",
+        "estimated_delivery_date": "2025-11-01"
         // OPTIONAL
         //"products":[{"gtin":"GTIN1"}, {"gtin":"GTIN2">}],
         //"opt_in_style": "OPT_IN_STYLE"
