@@ -2,7 +2,8 @@
   require "php_header.php";
 	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
-
+	log_writer2("ajax_create_stripe_return_url.php start","","lv3");
+	
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $alert_status = "warning";

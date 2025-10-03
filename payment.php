@@ -27,9 +27,6 @@
 		
 		if($data[0]["cnt"]<>0){//支払ずみ
 			$siharai = "done";//済
-			//header("HTTP/1.1 301 Moved Permanently");
-			//header("Location: ".ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token);
-			//exit();	
 		}else{
 			$sql = "select * from Users_online where uid = :uid";
 			$stmt = $pdo_h->prepare( $sql );
@@ -37,6 +34,7 @@
 			$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
 			$status = $stmt->execute();
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 			if($data[0]["stripe_id"]<>"none"){
 				$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 	
@@ -72,7 +70,8 @@
 					//'payment_intent_data' => ['application_fee_amount' => 100],
 					'mode' => 'payment',
 					// ご自身のサイトURLを入力
-					'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
+					//'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
+					'success_url' => ROOT_URL."pay_success.php?paytype=stripe&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
 					'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
 					]
 					,['stripe_account' => $_SESSION["stripe_connect_id"]]
@@ -148,7 +147,8 @@
 	</script>
 	<script>
 		if("<?php echo $siharai;?>"==="done"){
-			window.location.assign('<?php echo ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
+			//window.location.assign('<?php echo ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
+			window.location.assign('<?php echo ROOT_URL."pay_success.php?paytype=done&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
 		}else{
 			//console_log("なんで？")
 		}

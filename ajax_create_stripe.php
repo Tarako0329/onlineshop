@@ -2,6 +2,7 @@
   require "php_header.php";
 	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
+	log_writer2("ajax_create_stripe.php start","","lv3");
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
@@ -30,8 +31,8 @@
 
 			$link = $stripe->accountLinks->create([
 				'account' => $id,
-				'return_url' => ROOT_URL.'ajax_create_stripe_return_url.php?hash='.$_GET["hash"]."&id=".$id,	//うまくいった？
-				'refresh_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable",		//うまくいかなかった
+				'return_url' => ROOT_URL.'ajax_create_stripe_return_url.php?hash='.$_GET["hash"]."&id=".$id,	//設定は終わりor戻るボタンが押された：Stripeのオンボーディング/設定フローが完了した後、ユーザーをリダイレクトするURLです。
+				'refresh_url' => ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable",		//うまくいかなかった:リンクの有効期限が切れたり、エラーが発生した場合にユーザーをリダイレクトするURLです。
 				'type' => 'account_onboarding',
 			]);
 			log_writer2("\$link",$link,"lv3");

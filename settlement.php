@@ -18,6 +18,7 @@
 
 	}
 	$_SESSION["stripe_setting"]="";
+	log_writer2("settlement.php start","","lv3");
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
