@@ -1,7 +1,7 @@
 <?php
 	//StripeConnectの登録が終わった場合、もしくは戻るで戻った場合に処理されるPG
   require "php_header.php";
-	log_writer2("ajax_create_success.php start","","lv3");
+	log_writer2("ajax_create_stripe_success.php start","","lv3");
 
 	//require 'vendor/autoload.php'; // Composerのオートローダー
 	
