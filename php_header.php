@@ -51,6 +51,7 @@ define("POP_PASS", $_ENV["POP_PASS"]);
 define("S_KEY",$_ENV["SKey"]);
 define("P_KEY",$_ENV["PKey"]);
 define("OAuth",$_ENV["OAuth"]);
+define("WEBHOOK_SKEY",$_ENV["WEBHOOK_SKEY"]);
 
 define("GEMINI",$_ENV["GOOGLE_API"]);
 define("GEMINI_URL",$_ENV["GEMINI_URL"]);

@@ -1,9 +1,10 @@
 <?php
+	//StripeConnectの登録が終わった場合、もしくは戻るで戻った場合に処理されるPG
   require "php_header.php";
 	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 	log_writer2("ajax_create_stripe_return_url.php start","","lv3");
-	
+
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	if($rtn !== true){
 	  $alert_status = "warning";
@@ -17,24 +18,22 @@
 			log_writer2("\$account",$account,"lv3");
 
 			if(empty($account->settings->payments->statement_descriptor)){
-				//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
-				//exit();
-				$_SESSION["stripe_setting"]="unable";
+				//$_SESSION["stripe_setting"]="unable";
+				$stripe_setting = "Registering";	//登録中
 			}else{
-				//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=able");
-				//exit();
-				$_SESSION["stripe_setting"]="able";
+				//$_SESSION["stripe_setting"]="able";
+				$stripe_setting = "Registered";	//登録済み
 			}
-			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
-			exit();
 
-			/*
-			$sql = "update Users_online set stripe_id = '".$id."' where uid = ".$_SESSION["user_id"];
+			$sql = "update Users_online set Stripe_Approval_Status = '".$stripe_setting."' where uid = ".$_SESSION["user_id"];
 			$stmt = $pdo_h->prepare( $sql );
 			$sqllog .= rtn_sqllog($sql,[]);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
-			*/
+
+			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
+			exit();
+
 
 			$alert_status = "success";
 		}catch(Exception $e){

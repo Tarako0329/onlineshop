@@ -37,8 +37,10 @@
 			]);
 			log_writer2("\$link",$link,"lv3");
 
+			//このPGが呼び出された時点でStripeIDはテーブルに登録される。
 			$sql = "update Users_online set stripe_id = '".$id."' where uid = ".$_SESSION["user_id"];
 			$stmt = $pdo_h->prepare( $sql );
+			$sqllog = "";
 			$sqllog .= rtn_sqllog($sql,[]);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);

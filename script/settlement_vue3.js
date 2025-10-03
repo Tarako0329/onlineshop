@@ -12,6 +12,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     const stripe_dashboard_link = ref('https://dashboard.stripe.com/account/status')
     const stripe_url = ref('https://stripe.com/jp')
     const credit = ref('')
+    const Stripe_Approval_Status = ref('')
 
     
     let stripe_mail = ''
@@ -176,12 +177,15 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         stripe_mail = response.Users_online[0].mail
         stripe_id.value = response.Users_online[0].stripe_id
         credit.value = response.Users_online[0].credit
+        Stripe_Approval_Status.value = response.Users_online[0].Stripe_Approval_Status
         if(stripe_id.value==="none"){
           btn_name.value="Stripeアカウントの登録を始める"
-        }else if(credit.value==="unable"){
+        //}else if(credit.value==="unable"){
+        }else if(Stripe_Approval_Status.value==="Registering"){  //登録中
           btn_name.value="Stripeアカウントの登録を再開する"
         }
-        if(credit.value!=="unable"){
+        //if(credit.value!=="unable"){
+        if(Stripe_Approval_Status.value==="Registered"){  //登録済み（Stripeの承認はまだ）
           stripe_dashboard.value=true
         }
       })
@@ -204,6 +208,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
       stripe_url,
       stripe_dashboard_link,
       credit,
+      Stripe_Approval_Status,
       fileupload,
       submit_payinfo,
       upd_flg,
