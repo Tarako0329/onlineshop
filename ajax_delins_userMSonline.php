@@ -30,10 +30,23 @@ if($rtn !== true){
     }else{
         $logfilename="sid_".$_SESSION['user_id'].".log";
 
+        //select * from Users_online where uid = :uid を実行し、取得した値を$params[]に初期値として格納。件数が０件の場合はスキップ
+        $sql = "select * from Users_online where uid = :uid";
+        $stmt = $pdo_h->prepare( $sql );
+        $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
+        $status = $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(count($data)===0){
+        }else{
+            $params = $data[0];
+        }
+
+
+
         $DELsql = "delete from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color)";
+        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color,credit,stripe_id,Stripe_Approval_Status)";
+        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color,:credit,:stripe_id,:Stripe_Approval_Status)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -181,6 +194,9 @@ if($rtn !== true){
             $stmt->bindValue("bodycolor", $params["bodycolor"], PDO::PARAM_STR);
             $stmt->bindValue("h_font_color", $params["h_font_color"], PDO::PARAM_STR);
             $stmt->bindValue("invoice", $params["invoice"], PDO::PARAM_STR);
+            $stmt->bindValue("credit", $params["credit"], PDO::PARAM_STR);
+            $stmt->bindValue("stripe_id", $params["stripe_id"], PDO::PARAM_STR);
+            $stmt->bindValue("Stripe_Approval_Status", $params["Stripe_Approval_Status"], PDO::PARAM_STR);
             
             $sqllog .= rtn_sqllog($INSsql,$params);
 

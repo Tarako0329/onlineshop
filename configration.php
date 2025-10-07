@@ -485,8 +485,7 @@
 
 
 
-		<!--<div class='row mb-3' style='position:fixed;bottom:0;'>-->
-		<div class='row mb-3' style=''>
+		<div class='row mb-3' style='position:fixed;bottom:0;'>
 			<div class='col-md-6 col-12'>
 				<button v-if='security_lock!==true' type='button' class='btn btn-primary m-2 btn-lg fs-1 ps-5 pe-5' @click='set_user' style='width:150px;'>登録</button>
 			</div>
