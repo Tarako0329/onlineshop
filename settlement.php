@@ -8,17 +8,7 @@
 	$user_hash = $_GET["key"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 	$sqllog="";
-	/*
-	if($_SESSION["stripe_setting"]==="able"){
-		$sql = "update Users_online set credit = 'able' where uid = ".$_SESSION["user_id"];
-		$stmt = $pdo_h->prepare( $sql );
-		$sqllog .= rtn_sqllog($sql,[]);
-		$status = $stmt->execute();
-		$sqllog .= rtn_sqllog("--execute():正常終了",[]);
-	}else if($_SESSION["stripe_setting"]==="unable"){
 
-	}
-	*/
 	$_SESSION["stripe_setting"]="";
 	log_writer2("settlement.php start","","lv3");
 ?>
@@ -52,10 +42,10 @@
 					<p><small>管理画面を開き、追加の入力を求められてないか必ずご確認ください。</small></p>
 					<a :href="stripe_dashboard_link" class='btn btn-primary btn-lg mt-3 ps-5 pe-5' target="_blank" rel="noopener noreferrer">管理画面を開く</a>
 				</div>
-				<div v-if='stripe_dashboard==="Available"' class='pt-3'>
+				<div v-if='Stripe_Approval_Status==="Available"' class='pt-3'>
 					<label for='credit_switch'>クレジット決済の利用可否</label>
 					<select class='form-select' id='credit_switch' v-model='credit' @change='upd_credit()'>
-						<option value='able'>利用しない</option>
+						<option value='no_use'>利用しない</option>
 						<option value='use'>利用する</option>
 					</select>
 					</select>

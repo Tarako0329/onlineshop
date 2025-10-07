@@ -69,7 +69,7 @@
 					$accountId = $account->id;
 					// update_user_status_in_db($accountId, 'active');
 
-					$sql = "update Users_online set Stripe_Approval_Status = 'Available',credit='able' where stripe_id = '$accountId'";
+					$sql = "update Users_online set Stripe_Approval_Status = 'Available',credit='no_use' where stripe_id = '$accountId'";
 					$stmt = $pdo_h->prepare( $sql );
 					$sqllog = rtn_sqllog($sql,[]);
 					$status = $stmt->execute();

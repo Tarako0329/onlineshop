@@ -185,7 +185,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
           btn_name.value="Stripeアカウントの登録を再開する"
         }
         //if(credit.value!=="unable"){
-        if(Stripe_Approval_Status.value==="Registered"){  //登録済み（Stripeの承認はまだ）
+        if(Stripe_Approval_Status.value==="Registered" || Stripe_Approval_Status.value==="Available"){  //登録済み以降
           stripe_dashboard.value=true
         }
       })

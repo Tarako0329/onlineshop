@@ -35,7 +35,8 @@
 			$status = $stmt->execute();
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if($data[0]["stripe_id"]<>"none"){
+			//if($data[0]["stripe_id"]<>"none"){
+			if($data[0]["credit"]==="use"){
 				$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 	
 				$stripe = new \Stripe\StripeClient(S_KEY);
@@ -71,8 +72,8 @@
 					'mode' => 'payment',
 					// ご自身のサイトURLを入力
 					//'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
-					'success_url' => ROOT_URL."pay_success.php?paytype=stripe&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
-					'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,
+					'success_url' => ROOT_URL."pay_success.php?paytype=stripe&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//成功：支払ありがとうページ
+					'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,//支払キャンセル
 					]
 					,['stripe_account' => $_SESSION["stripe_connect_id"]]
 				);

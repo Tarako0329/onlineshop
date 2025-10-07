@@ -24,7 +24,7 @@
 		
 		$params["uid"] = $_SESSION["user_id"];
 		$params["orderNO"] = $_GET["orderNO"];
-		$params["paytype"] = $_GET["paytype"];	//Stripe or done(済)
+		$params["paytype"] = $_GET["paytype"];	//Stripe　の場合Stripe決済完了時のみ or done(済)：Stripe支払含め、支払が完了している場合
 
 		if($params["paytype"]==="Stripe"){
 			//$sqlstr_h = "update juchuu_head set payment = 1 where orderNO = :orderNO and uid like :uid";
@@ -104,7 +104,7 @@
 			$rtn = send_mail($owner[0]["mail"],"お支払い完了通知[No:".$juchuu_head[0]["orderNO"]."]",$body2,TITLE." onLineShop",$juchuu_head[0]["mail"]);
 			*/
 			$display_msg="<h1>ありがとうございます。</h1><h1>お支払いを受付いたしました。</h1>";
-		}else{
+		}else{//支払済みの状態で請求画面を開いた場合
 			$display_msg="<h1>ありがとうございます。</h1><h1>ご注文のお支払いは完了しております。</h1>";
 		}
 
