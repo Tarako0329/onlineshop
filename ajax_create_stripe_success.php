@@ -60,6 +60,10 @@
 			// Standardアカウントの場合、最低限これらが active になる必要があります。
 			$isPaymentsActive = $account->capabilities->card_payments->status === 'active';
 			$isTransfersActive = $account->capabilities->transfers->status === 'active';
+
+			log_writer2("stripe_webhook sent \$isSubmitted",$isSubmitted,"lv3");
+			log_writer2("stripe_webhook sent \$isPaymentsActive",$account->capabilities->card_payments->status,"lv3");
+			log_writer2("stripe_webhook sent \$isTransfersActive",$account->capabilities->transfers->status,"lv3");
 			
 			// 完全に利用可能かどうかの判断
 			if ($isSubmitted && $isPaymentsActive && $isTransfersActive) {
