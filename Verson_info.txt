@@ -217,6 +217,7 @@ git reset --hard origin/main
 php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
+date
 
 
 
@@ -226,6 +227,8 @@ git reset --hard origin/main
 php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
+date
+
 
 git fetch --all
 git reset --hard origin/main

@@ -59,8 +59,10 @@
 	
 			// ② 主要な機能（ケイパビリティ）が active になっているか確認
 			// Standardアカウントの場合、最低限これらが active になる必要があります。
-			$isPaymentsActive = $account->capabilities->card_payments->status === 'active';
-			$isTransfersActive = $account->capabilities->transfers->status === 'active';
+			//$isPaymentsActive = $account->capabilities->card_payments->status === 'active';
+			//$isTransfersActive = $account->capabilities->transfers->status === 'active';
+			$isPaymentsActive = $account->capabilities->card_payments === 'active';
+			$isTransfersActive = $account->capabilities->transfers === 'active';
 
 			// 完全に利用可能かどうかの判断
 			if ($isSubmitted && $isPaymentsActive && $isTransfersActive) {
