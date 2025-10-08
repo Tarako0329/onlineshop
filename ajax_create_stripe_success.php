@@ -59,8 +59,6 @@
 	
 			// ② 主要な機能（ケイパビリティ）が active になっているか確認
 			// Standardアカウントの場合、最低限これらが active になる必要があります。
-			//$isPaymentsActive = $account->capabilities->card_payments->status === 'active';
-			//$isTransfersActive = $account->capabilities->transfers->status === 'active';
 			$isPaymentsActive = $account->capabilities->card_payments === 'active';
 			$isTransfersActive = $account->capabilities->transfers === 'active';
 
@@ -72,11 +70,13 @@
 					$accountId = $account->id;
 					// update_user_status_in_db($accountId, 'active');
 
-					$sql = "update Users_online set Stripe_Approval_Status = 'Available',credit='no_use' where stripe_id = '$accountId'";
+					$sql = "update Users_online set Stripe_Approval_Status = 'Available',credit=IF(credit = 'use', 'use', 'no_use') where stripe_id = '$accountId'";
 					$stmt = $pdo_h->prepare( $sql );
 					$sqllog = rtn_sqllog($sql,[]);
 					$status = $stmt->execute();
 					$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+
+					sqllogger($sqllog,0);
 		
 					
 					// ログ記録など
