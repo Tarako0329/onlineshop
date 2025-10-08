@@ -3,14 +3,11 @@
   require "php_header.php";
 	log_writer2("ajax_create_stripe_success.php start","","lv3");
 
-	//require 'vendor/autoload.php'; // Composerのオートローダー
 	
 	// 1. Stripeシークレットキーを安全に読み込む (環境変数などから)
 	$stripe = new \Stripe\StripeClient([
-			//'api_key' => getenv('STRIPE_SECRET_KEY'),
 			'api_key' => S_KEY,
 	]);
-	//$webhookSecret = getenv('STRIPE_WEBHOOK_SECRET'); // whsec_xxx...
 	$webhookSecret = WEBHOOK_SKEY; // whsec_xxx...
 	
 	// 2. リクエストボディとヘッダーを取得
@@ -81,6 +78,21 @@
 					
 					// ログ記録など
 					log_writer2("Stripe Account ID: {$account->id} の登録が完了しました。","","lv3");
+					
+					//users_onlineテーブルからメアドを取得し、クレジットが利用可能となった旨のメールを送信する
+					$sql = "select mail from Users_online where stripe_id = '$accountId'";
+					$stmt = $pdo_h->prepare( $sql );
+					$stmt->execute();
+					$mail_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+					if ($mail_data && $mail_data['mail']) {
+						$mail = $mail_data['mail'];
+						$subject = "【".TITLE."】Stripeクレジット決済が利用可能になりました";
+						$body = "いつもご利用ありがとうございます。\r\n\r\nStripeクレジット決済の登録が完了し、現在ご利用可能となっております。\r\n\r\n今後ともよろしくお願いいたします。\r\n\r\n".TITLE;
+						send_mail($mail, $subject, $body, TITLE, "");
+						log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv3");
+					}
+					
 			} else {
 					// 登録情報の提出はされたが、まだStripeの審査が完了していない、などの状態
 					log_writer2("Stripe Account ID: {$account->id} は更新されましたが、まだアクティブではありません。","","lv3");

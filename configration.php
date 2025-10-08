@@ -108,6 +108,7 @@
 			<div class='col-md-6 col-12'>
 				<label for='mail' class="form-label">問い合せ窓口（MAIL）</label>
 				<input type='mail' class='form-control' id='mail' v-model='mail'>
+				<small>システムからの通知MAILも送信されます。</small>
 			</div>
 		</div>
 		<div class='row mb-3 pt-3'>

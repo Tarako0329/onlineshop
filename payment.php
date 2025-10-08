@@ -36,7 +36,7 @@
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			//if($data[0]["stripe_id"]<>"none"){
-			if($data[0]["credit"]==="use"){
+			if($data[0]["credit"]==="use" && $data[0]["Stripe_Approval_Status"]==="Available"){
 				$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
 	
 				$stripe = new \Stripe\StripeClient(S_KEY);
@@ -117,7 +117,7 @@
 			<div class='text-center m-3'><h1>御請求額：<?php echo number_format($kingaku);?> - 円</h1></div>
 			<div class='text-center m-3'>下記いずれかの決済方法からお支払いをお願いいたします。</div>
 			<hr>
-			<div v-if='credit==="use"' class='p-3'>
+			<div v-if='credit==="use" && Stripe_Approval_Status==="Available"' class='p-3'>
 				<a href="<?php echo $session->url;?>" type="button" class="btn btn-primary btn-lg" style='width:100%;'>クレジットで決済する⇒</a>
 				<hr>
 			</div>

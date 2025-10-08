@@ -38,18 +38,28 @@
 				<p>クレジット決済の管理（Stripe社が提供する画面を利用します）</p>
 				<div class='box8'>
 					<p><small>Stripeアカウントは作成済みです。</small></p>
-					<p><small>クレジット決済は可能となってますが、入金を受けるために追加で身分証の提供が必要な場合があります。</small></p>
-					<p><small>管理画面を開き、追加の入力を求められてないか必ずご確認ください。</small></p>
+					<div v-if='Stripe_Approval_Status!=="Available"' class='pt-3 text-danger'>
+						<p>クレジット決済を利用するために必要な情報が不足しているか、Stripeの認証待ちです。</p>
+						<p><small>管理画面を開き、追加の入力を求められてないか必ずご確認ください。</small></p>
+						<p><small>認証が下り、クレジット決済が利用可能となったらメールでお知らせいたします。</small></p>
+					</div>
+					<div v-else-if='Stripe_Approval_Status==="Available"' class='pt-3'>
+						<p><small>クレジット決済は利用可能です。</small></p>
+						<p><small>クレジット決済の確認は管理画面でご確認ください。</small></p>
+					</div>
+				</div>
+				<div class='mb-3'>
 					<a :href="stripe_dashboard_link" class='btn btn-primary btn-lg mt-3 ps-5 pe-5' target="_blank" rel="noopener noreferrer">管理画面を開く</a>
 				</div>
-				<div v-if='Stripe_Approval_Status==="Available"' class='pt-3'>
-					<label for='credit_switch'>クレジット決済の利用可否</label>
-					<select class='form-select' id='credit_switch' v-model='credit' @change='upd_credit()'>
-						<option value='no_use'>利用しない</option>
-						<option value='use'>利用する</option>
-					</select>
-					</select>
-					<p><small>ご利用手数料は決済額の3.6%になります。</small></p>
+
+				<label for='credit_switch'>クレジット決済の利用可否</label>
+				<select class='form-select' id='credit_switch' v-model='credit' @change='upd_credit()'>
+					<option value='no_use'>利用しない</option>
+					<option value='use'>利用する</option>
+				</select>
+				<p class='mb-1'><small class='text-danger'>※ご利用手数料は決済額の3.6%になります。</small></p>
+				<div v-if='Stripe_Approval_Status!=="Available" && credit==="use"' class='text-danger'>
+					<p><small>※Stripeの認証が下りた段階で自動的に「クレジット決済」のボタンが表示されます。</small></p>
 				</div>
 			</div>
 			<div v-else class='col-md-8 col-12 '>
@@ -57,6 +67,7 @@
 				<div class='box8'>
 					<p><small>クレジット決済は<a :href="stripe_url" target="_blank" rel="noopener noreferrer">Stripe社</a>のシステムを利用します。</small></p>
 					<p><small>ご利用にはStripeへのアカウント登録作業が必要です。</small></p>
+					<p><small>登録には運転免許証などのご自身を証明するための証明書が必要です。(写真アップロードで完了します)</small></p>
 					<p><small>ご利用手数料は決済額の3.6%になります。</small></p>
 					<button v-if="stripe_dashboard===false" type="button" class='btn btn-primary btn-lg mt-3 ps-5 pe-5' @click='create_stripe()'>{{btn_name}}</button>
 				</div>
