@@ -26,7 +26,7 @@
 		$params["orderNO"] = $_GET["orderNO"];
 		$params["paytype"] = $_GET["paytype"];	//Stripe　の場合Stripe決済完了時のみ or done(済)：Stripe支払含め、支払が完了している場合
 
-		if($params["paytype"]==="Stripe"){
+		if($params["paytype"]==="stripe"){
 			//$sqlstr_h = "update juchuu_head set payment = 1 where orderNO = :orderNO and uid like :uid";
 			$sqlstr_h = "update juchuu_head set payment = 2 where orderNO = :orderNO and uid like :uid";
 			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
