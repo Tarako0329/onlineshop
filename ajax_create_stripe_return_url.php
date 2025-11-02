@@ -25,9 +25,13 @@
 				$stripe_setting = "Registered";	//登録済み
 			}
 
-			$sql = "update Users_online set Stripe_Approval_Status = '".$stripe_setting."' where uid = ".$_SESSION["user_id"];
+			$sql = "UPDATE Users_online set Stripe_Approval_Status = :stripe_setting WHERE uid = :uid";
 			$stmt = $pdo_h->prepare( $sql );
-			$sqllog .= rtn_sqllog($sql,[]);
+			$params["stripe_setting"] = $stripe_setting;
+			$params["uid"] = $_SESSION["user_id"];
+			$stmt->bindValue("stripe_setting", $params["stripe_setting"], PDO::PARAM_STR);
+			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
+			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 

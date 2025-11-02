@@ -67,8 +67,10 @@
 					$accountId = $account->id;
 					
 					//Users_online から Stripe_Approval_Statusとmail　を取得
-					$sql = "select Stripe_Approval_Status,mail from Users_online where stripe_id = '$accountId'";
+					$sql = "SELECT Stripe_Approval_Status,mail from Users_online where stripe_id = :accountId";
 					$stmt = $pdo_h->prepare( $sql );
+					$stmt->bindValue("accountId", $accountId, PDO::PARAM_STR);
+
 					$stmt->execute();
 					$user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -79,9 +81,11 @@
 					}
 					
 
-					$sql = "update Users_online set Stripe_Approval_Status = 'Available',credit=IF(credit = 'use', 'use', 'no_use') where stripe_id = '$accountId'";
+					$sql = "UPDATE Users_online set Stripe_Approval_Status = 'Available',credit=IF(credit = 'use', 'use', 'no_use') where stripe_id = :accountId";
 					$stmt = $pdo_h->prepare( $sql );
-					$sqllog = rtn_sqllog($sql,[]);
+					$params["accountId"] = $accountId;
+					$stmt->bindValue("accountId", $params["accountId"], PDO::PARAM_STR);
+					$sqllog = rtn_sqllog($sql,$params);
 					$status = $stmt->execute();
 					$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 

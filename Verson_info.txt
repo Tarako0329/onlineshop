@@ -197,7 +197,7 @@ ver1.51.0:支払画面の修正-commited
   ALTER TABLE `juchuu_head` CHANGE `payment` `payment` INT(1) NOT NULL DEFAULT '0' COMMENT '0:未払,1:支払済み,2:Stripe決済';
   ALTER TABLE `Users_online` ADD `Stripe_Approval_Status` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Stripe登録後の利用可否' AFTER `stripe_id`;
   ALTER TABLE `Users_online` CHANGE `credit` `credit` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unable' COMMENT 'Stripe:no_use/use=使う';
-
+ver1.52.0:セキュリティパッチ
   
 
 【Issues】

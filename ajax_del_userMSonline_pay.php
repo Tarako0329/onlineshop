@@ -32,7 +32,7 @@ if($rtn !== true){
         $timeout=true;
     }else{
         //更新モード(実行)
-        $sqlstr_h = "delete from Users_online_payinfo where payname = :payname and uid like :uid";
+        $sqlstr_h = "DELETE from Users_online_payinfo where payname = :payname and uid like :uid";
 
         $params["payname"] = $_POST["payname"];
         $params["uid"] = $_SESSION["user_id"];

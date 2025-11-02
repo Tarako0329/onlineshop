@@ -44,7 +44,10 @@ function aclog_writer($param,$pdo){
 		$uid = substr($param[5],0, $position-1);
 		$shouhinCD = substr($param[5], $position);
 		log_writer2("mojira",$uid."-".$shouhinCD,"lv3");
-		$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = $uid and shouhinCD = $shouhinCD");
+		//$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = $uid and shouhinCD = $shouhinCD");
+		$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD");
+		$stmt->bindValue("uid", $uid, PDO::PARAM_STR);
+		$stmt->bindValue("shouhinCD", $shouhinCD, PDO::PARAM_STR);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		log_writer2("/rows",$rows,"lv3");

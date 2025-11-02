@@ -34,10 +34,16 @@
 			log_writer2("\$link",$link,"lv3");
 
 			//このPGが呼び出された時点でStripeIDはテーブルに登録される。
-			$sql = "update Users_online set stripe_id = '".$id."' where uid = ".$_SESSION["user_id"];
+			$sql = "UPDATE Users_online set stripe_id = :stripe_id where uid = :uid";
 			$stmt = $pdo_h->prepare( $sql );
+			$params["stripe_id"] = $id;
+			$params["uid"] = $_SESSION["user_id"];
+
+			$stmt->bindValue("stripe_id", $params["stripe_id"], PDO::PARAM_STR);
+			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
+
 			$sqllog = "";
-			$sqllog .= rtn_sqllog($sql,[]);
+			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 
