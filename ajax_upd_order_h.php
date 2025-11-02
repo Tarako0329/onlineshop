@@ -41,6 +41,44 @@ if($rtn !== true){
 		$value = $_POST["value"];
 		$orderNO = $_POST["orderNO"];
 
+		//利用カラムのチェックリスト
+		$allowed_columns = [
+    	'first_answer', // 商品名
+    	'payment',        // 価格
+    	'sent',   // 在庫数
+    	'post_corp',   // 在庫数
+    	'postage',   // 在庫数
+    	'postage_zeikbn',   // 在庫数
+    	'postage_url',   // 在庫数
+    	'postage_no',   // 在庫数
+    	'name',   // 在庫数
+    	'yubin',   // 在庫数
+    	'tel',   // 在庫数
+    	'mail',   // 在庫数
+    	'sent_flg',   // 在庫数
+    	'st_name',   // 在庫数
+    	'st_yubin',   // 在庫数
+    	'st_jusho',   // 在庫数
+    	'st_tel',   // 在庫数
+    	'cancel',   // 在庫数
+		];
+		// 入力されたカラム名がホワイトリストに含まれているかチェック
+		if (!in_array($colum, $allowed_columns, true)) {
+    	// 許可されていないカラム名の場合は処理を中断し、エラーを出力
+			$token = csrf_create();
+
+			$return_sts = array(
+				"MSG" => "エラー: 不正なカラム名が指定されました。"
+				,"status" => "alert-danger"
+				,"csrf_create" => $token
+				,"timeout" => $timeout
+			);
+			header('Content-type: application/json');
+			echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
+			exit();	
+    	//die("エラー: 不正なカラム名が指定されました。");
+		}
+
 		if($colum==="sent"){
 			$sent_ymd = ($value==1) ? "CURDATE()" : "''";
 			$sqlstr_h = "UPDATE juchuu_head set sent = :".$colum.",sent_ymd = $sent_ymd where orderNO = :orderNO and uid like :uid";
