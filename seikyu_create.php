@@ -45,7 +45,7 @@
 	//$getudo="202403";
 	//$yokugetu="202403";
 
-	$sql = "select 
+	$sql = "SELECT 
 		jisseki.uid
 		,jisseki.getudo as 月度
 		,ifnull(seikyu.zenkuri,0) as 前月繰越

@@ -24,9 +24,12 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 	//新規出店者登録SQL
 	try{
 		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("INSERT INTO Users_online(uid,logo,yagou) values('$new_id','upload/logo_sample.png','".$_POST["new_yagou"]."') ");
+		$stmt = $pdo_h->prepare("INSERT INTO Users_online(uid,logo,yagou) values(:uid,'upload/logo_sample.png',:yagou)");
+		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
+		$stmt->bindValue(":yagou", $_POST["new_yagou"], PDO::PARAM_STR);
 		$stmt->execute();
-		$stmt = $pdo_h->prepare($sql="INSERT INTO Users(uid,mail,password,question,answer) values('$new_id','-','-','-','-') ");
+		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,password,question,answer) values(:uid,'-','-','-','-')");
+		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
 		$stmt->execute();
 		$pdo_h->commit();
 		$msg='出店アカウントを作成しました。';
@@ -41,7 +44,9 @@ if(!empty($_POST["sns_f"]) && !empty($_POST["sns_t"])){
 	//自動ツイート間隔幅設定
 	try{
 		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("UPDATE online_shop_config SET post_interval_F = ".$_POST["sns_f"]." ,post_interval_T = ".$_POST["sns_t"]);
+		$stmt = $pdo_h->prepare("UPDATE online_shop_config SET post_interval_F = :sns_f ,post_interval_T = :sns_t");
+		$stmt->bindValue(":sns_f", $_POST["sns_f"], PDO::PARAM_INT);
+		$stmt->bindValue(":sns_t", $_POST["sns_t"], PDO::PARAM_INT);
 		$stmt->execute();
 		$pdo_h->commit();
 		$msg='自動ツイート間隔幅を設定しました。';

@@ -22,19 +22,7 @@
   
   $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
   
-  /*$sql = "select 
-  online.*
-  ,pic.pic as filename
-  ,ums_inline.yagou
-  from shouhinMS_online online 
-  left join shouhinMS_online_pic pic 
-  on online.uid = pic.uid 
-  and online.shouhinCD = pic.shouhinCD 
-  and pic.sort=1
-  inner join Users_online ums_inline
-  on online.uid = ums_inline.uid
-  where status<>'stop'" ;*/
-  $sql = "select 
+ $sql = "select 
   online.*
   ,pic.pic as filename
   ,ums_inline.yagou

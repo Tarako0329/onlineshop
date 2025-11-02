@@ -43,24 +43,25 @@ if($rtn !== true){
 
 		//利用カラムのチェックリスト
 		$allowed_columns = [
-    	'first_answer', // 商品名
-    	'payment',        // 価格
-    	'sent',   // 在庫数
-    	'post_corp',   // 在庫数
-    	'postage',   // 在庫数
-    	'postage_zeikbn',   // 在庫数
-    	'postage_url',   // 在庫数
-    	'postage_no',   // 在庫数
-    	'name',   // 在庫数
-    	'yubin',   // 在庫数
-    	'tel',   // 在庫数
-    	'mail',   // 在庫数
-    	'sent_flg',   // 在庫数
-    	'st_name',   // 在庫数
-    	'st_yubin',   // 在庫数
-    	'st_jusho',   // 在庫数
-    	'st_tel',   // 在庫数
-    	'cancel',   // 在庫数
+    	'first_answer', // 受付連絡有無
+    	'payment',        // 支払い有無
+    	'sent',   // 発送有無
+    	'post_corp',   // 配送会社
+    	'postage',   // 送料
+    	'postage_zeikbn',   // 送料税区分
+    	'postage_url',   // 配送確認URL
+    	'postage_no',   // 配送NO
+    	'name',   // 注文者
+    	'yubin',   // 郵便
+    	'jusho',   // 住所
+    	'tel',   // 
+    	'mail',   // 
+    	'sent_flg',   // 送付先指定
+    	'st_name',   // 送付先めい
+    	'st_yubin',   // 送付先郵便
+    	'st_jusho',   // 送付先住所
+    	'st_tel',   // 送付先TEL
+    	'cancel',   // キャンセルフラグ
 		];
 		// 入力されたカラム名がホワイトリストに含まれているかチェック
 		if (!in_array($colum, $allowed_columns, true)) {
@@ -79,12 +80,13 @@ if($rtn !== true){
     	//die("エラー: 不正なカラム名が指定されました。");
 		}
 
+		//$columと$sent_ymdはインジェクション対策済み
 		if($colum==="sent"){
 			$sent_ymd = ($value==1) ? "CURDATE()" : "''";
-			$sqlstr_h = "UPDATE juchuu_head set sent = :".$colum.",sent_ymd = $sent_ymd where orderNO = :orderNO and uid like :uid";
+			$sqlstr_h = "UPDATE juchuu_head set `sent` = :$colum,sent_ymd = $sent_ymd where orderNO = :orderNO and uid like :uid";
 
 		}else{
-			$sqlstr_h = "UPDATE juchuu_head set ".$colum." = :".$colum." where orderNO = :orderNO and uid like :uid";
+			$sqlstr_h = "UPDATE juchuu_head set `$colum` = :$colum where orderNO = :orderNO and uid like :uid";
 		}
 
 

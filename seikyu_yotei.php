@@ -21,7 +21,7 @@
 
 
 
-	$sql = "select 
+	$sql = "SELECT 
 		jisseki.uid
 		,jisseki.getudo as 月度
 		,ifnull(seikyu.zenkuri,0) as 前月繰越
@@ -75,7 +75,7 @@
   $stmt->execute();
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql = "select 
+	$sql = "SELECT 
 		*
 		,if(zenkuri>0 
 			,if(zenkuri+jisseki<200000

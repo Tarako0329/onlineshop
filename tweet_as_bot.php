@@ -226,14 +226,17 @@ if(EXEC_MODE==="Local"){
 			//$this->info("ツイートが送信されました！");
 			echo "ツイートが送信されました！\n";
 			$status = "success";
-			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns='X' where uid=".$uid." and shouhinCD=".$shouhinCD);
+			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns='X' where uid=:uid and shouhinCD=:shouhinCD");
+			$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
+			$stmt->bindValue(":shouhinCD", $shouhinCD, PDO::PARAM_STR);
 			$stmt->execute();
 			
 		}else if($httpCode == 429){
 			echo "1日の送信可能数を超過しました。\n";
 			log_writer2("X-bot-ErrorHeader",$connection->getLastXHeaders(),"lv1");
 			$next = (24-17)*60;
-			$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL ".$next." MINUTE)");
+			$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)");
+			$stmt->bindValue(":next", $next, PDO::PARAM_INT);
 			$stmt->execute();
 			echo "次は ".$next." 分後です";
 		}else{
@@ -254,7 +257,8 @@ if($status==="success"){//次回の実行時間をセット
 	try{
 		$pdo_h->beginTransaction();
 		$next = rand($online_shop_config[0]["post_interval_F"],$online_shop_config[0]["post_interval_T"]);
-		$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL ".$next." MINUTE)");
+		$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)");
+		$stmt->bindValue(":next", $next, PDO::PARAM_INT);
 		$stmt->execute();
 		$pdo_h->commit();
 		echo "次は ".$next." 分後です";
