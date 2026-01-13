@@ -1,7 +1,7 @@
 <?php
 	//StripeConnectの登録が終わった場合、もしくは戻るで戻った場合に処理されるPG
   require "php_header.php";
-	log_writer2("ajax_create_stripe_success.php start","","lv3");
+	log_writer2("ajax_create_stripe_success.php start","","lv1");
 
 	
 	// 1. Stripeシークレットキーを安全に読み込む (環境変数などから)
@@ -21,10 +21,12 @@
 			);
 	} catch (\UnexpectedValueException $e) {
 			// 無効なペイロード
+			log_writer2("無効なペイロード","","lv1");
 			http_response_code(400);
 			exit();
 	} catch (\Stripe\Exception\SignatureVerificationException $e) {
 			// 無効な署名（不正なリクエスト）
+			log_writer2("無効な署名（不正なリクエスト）","","lv1");
 			http_response_code(400);
 			exit();
 	}
@@ -33,7 +35,7 @@
 	switch ($event->type) {
 			case 'account.updated':
 					$account = $event->data->object; // 更新されたアカウントオブジェクト
-					log_writer2("stripe_webhook sent \$account",$account,"lv3");
+					log_writer2("stripe_webhook sent \$account",$account,"lv1");
 					handleAccountUpdated($account,$pdo_h);
 					break;
 					
@@ -76,7 +78,7 @@
 
 					if ($user_data['Stripe_Approval_Status'] === 'Available') {
 						// 既にAvailableの場合は何もしない
-						log_writer2("Stripe Account ID: {$account->id} は既にAvailableです。","","lv3");
+						log_writer2("Stripe Account ID: {$account->id} は既にAvailableです。","","lv1");
 						return;
 					}
 					
@@ -93,7 +95,7 @@
 		
 					
 					// ログ記録など
-					log_writer2("Stripe Account ID: {$account->id} の登録が完了しました。","","lv3");
+					log_writer2("Stripe Account ID: {$account->id} の登録が完了しました。","","lv1");
 					
 					//users_onlineテーブルからメアドを取得し、クレジットが利用可能となった旨のメールを送信する
 					if ($user_data && $user_data['mail']) {
@@ -101,7 +103,7 @@
 						$subject = "【".TITLE."】Stripeクレジット決済が利用可能になりました";
 						$body = "いつもご利用ありがとうございます。\r\n\r\nStripeクレジット決済の登録が完了し、現在ご利用可能となっております。\r\n\r\n今後ともよろしくお願いいたします。\r\n\r\n".TITLE;
 						send_mail($mail, $subject, $body, TITLE, "");
-						log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv3");
+						log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv1");
 					}
 					
 			} else {
@@ -114,7 +116,7 @@
 				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
 				
 				sqllogger($sqllog,0);
-				log_writer2("Stripe Account ID: {$account->id} は更新されましたが、まだアクティブではありません。","","lv3");
+				log_writer2("Stripe Account ID: {$account->id} は更新されましたが、まだアクティブではありません。","","lv1");
 			}
 	}	
 	

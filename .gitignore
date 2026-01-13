@@ -17,6 +17,7 @@ upload/*.html
 upload/*.png
 upload/*.jpeg
 upload/*.jpg
+upload/*
 upload/temp/*.html
 upload/temp/*.png
 upload/temp/*.jpeg

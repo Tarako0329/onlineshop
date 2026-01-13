@@ -34,8 +34,17 @@ if($rtn !== true){
         $DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
         $DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
-        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,haisou,customer_bikou,tanka,zeikbn,shouhizei,hash_tag,limited_cd) ";
-        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:haisou,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag,:limited_cd)";
+        $add_sql_cul = "";
+        $add_sql_val = "";
+        if(!empty($_POST["ins_datetime"])){
+            //更新処理の場合,デリインではINSDatetimeを維持できないので追加
+            $ins_datetime = $_POST["ins_datetime"];
+            $add_sql_cul = ",ins_datetime,upd_datetime";
+            $add_sql_val = ",'$ins_datetime',NOW()";
+        }
+
+        $INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,haisou,customer_bikou,tanka,zeikbn,shouhizei,hash_tag,limited_cd $add_sql_cul) ";
+        $INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:haisou,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag,:limited_cd $add_sql_val)";
         $INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
 
         $params["uid"] = $_SESSION["user_id"];

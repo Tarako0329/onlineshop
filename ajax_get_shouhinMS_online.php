@@ -1,4 +1,11 @@
 <?php
+/*
+商品表示順のルール。
+１．登録１か月以内の商品は更新日時で降順
+２．登録１ヵ月後・情報更新１週間以内は更新日時で降順
+３．１・２以外はランダム
+４．販売していない商品
+*/
   require "php_header.php";
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
 	//log_writer2("",$hinmei,"lv3");
@@ -31,6 +38,25 @@
 				,ums_inline.*
 				,IFNULL(r.cnt,0) as review_cnt
 				,IFNULL(r.score,0) as review_score
+				,
+    		-- 連番/優先順位を決定するためのスコアを計算
+    		CASE 
+    		    -- 優先度 1: ins_datetimeが1か月以内 (1番目に優先)
+    		    WHEN ins_datetime >= DATE_SUB(NOW(), INTERVAL 1 MONTH) and NOT(online.status = 'soldout' or online.status = 'stop')
+    		    THEN 1 
+
+    		    -- 優先度 2: upd_datetimeが1週間以内 (2番目に優先)
+    		    WHEN upd_datetime >= DATE_SUB(NOW(), INTERVAL 1 WEEK) and NOT(online.status = 'soldout' or online.status = 'stop')
+    		    THEN 2 
+
+    		    WHEN NOT(online.status = 'soldout' or online.status = 'stop')
+    		    THEN 3 
+
+    		    -- 優先度 3: それ以外 (最も優先度が低い)
+    		    ELSE 4 
+    		END AS sort_priority
+				,ins_datetime
+				,upd_datetime
 			from shouhinMS_online online 
 			inner join (select uid,yagou,name,shacho,logo,cancel_rule from Users_online ) ums_inline
 			on online.uid = ums_inline.uid
@@ -42,7 +68,7 @@
 				and online.shouhinNM like :hinmei 
 				and online.status <> 'del' 
 			order by 
-				online.uid
+				/*online.uid
 				,case 
 					when online.status = 'soon' then 0
 					when online.status = 'show' then 1
@@ -50,7 +76,13 @@
 					when online.status = 'soldout' then 3
 					when online.status = 'stop' then 4
 				end
-				,online.shouhinCD";
+				,online.shouhinCD*/
+				sort_priority , -- 1(高), 2(中), 3(低) の順にソート
+    		CASE sort_priority
+    		    WHEN 1 THEN ins_datetime 	-- 優先度1の場合はins_datetimeの降順
+    		    WHEN 2 THEN upd_datetime 	-- 優先度2の場合はupd_datetimeの降順
+						WHEN 3 THEN RAND()				-- 優先度3の場合はランダム
+    		END DESC -- 日時順（新しいものが先）を適用;";
 
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);

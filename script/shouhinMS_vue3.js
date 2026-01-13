@@ -85,10 +85,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const haisou = ref('')
 		const hash_tag = ref('')
 		const yagou = ref('')
+		const ins_datetime = ref('')
 		const customer_bikou = ref('ご要望等ございましたらご記入ください。')
 		const pic_list = ref([])
-		const rez_shouhinCD = ref('')
-		const rez_shouhinNM = ref('')
+		//const rez_shouhinCD = ref('')
+		//const rez_shouhinNM = ref('')
 		const get_shouhinMS_online = (serch) => {
 			axios
 			.get(`ajax_get_shouhinMS_online.php?f=${serch}`)
@@ -174,6 +175,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				customer_bikou.value = mode.value==="new"?customer_bikou.value:shouhin[0].customer_bikou
 				midasi.value = shouhin[0].short_info
 				limited_cd.value = shouhin[0].limited_cd
+				ins_datetime.value = shouhin[0].ins_datetime
 				pic_list.value=[]
 				shouhinMS_pic.value.forEach((row)=>{
 					if(row.shouhinCD===shouhin[0].shouhinCD){
@@ -341,6 +343,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			form.append(`hash_tag`, hash_tag.value)
 			form.append(`customer_bikou`, customer_bikou.value)
 			form.append(`short_info`, midasi.value)
+			form.append(`ins_datetime`, ins_datetime.value)
 			form.append(`csrf_token`, token)
 			form.append(`hash`, hash)
 			let i = 0
@@ -755,8 +758,9 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			haisou,
 			customer_bikou,
 			pic_list,
-			rez_shouhinCD,
-			rez_shouhinNM,
+			//rez_shouhinCD,
+			//rez_shouhinNM,
+			ins_datetime,
 			get_shouhinMS_online,
 			input_file_btn,
 			uploadfile,

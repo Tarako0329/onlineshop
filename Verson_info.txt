@@ -198,7 +198,10 @@ ver1.51.0:支払画面の修正-commited
   ALTER TABLE `Users_online` ADD `Stripe_Approval_Status` VARCHAR(20) NULL DEFAULT NULL COMMENT 'Stripe登録後の利用可否' AFTER `stripe_id`;
   ALTER TABLE `Users_online` CHANGE `credit` `credit` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unable' COMMENT 'Stripe:no_use/use=使う';
 ver1.52.0:セキュリティパッチ-commited
-  
+ver1.53.0:商品ソートロジックの変更&bugfix
+  ALTER TABLE `shouhinMS_online` CHANGE `upd_datetime` `ins_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+  ALTER TABLE `shouhinMS_online` ADD `upd_datetime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時' AFTER `ins_datetime`;
+
 
 【Issues】
 ・受注後のカスタムオーダー（削除と数量調整）

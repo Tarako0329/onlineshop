@@ -68,7 +68,11 @@
     <div id='scrollspyHeading' style='margin-top:-50px;height:50px;'></div>
     <div v-if='mode==="shopping"' class='row pb-3 pt-3' style='min-height: 100%'><!--ショッピングエリア-->
       <template v-for='(list,index) in shouhinMS_SALE' :key='list.shouhinCD+list.uid'>
-        <div class='col-xl-4 col-md-6 col-12'><!--外枠-->
+        <!--<div class='col-xl-4 col-md-6 col-12' id='items'>外枠-->
+        <div class='col-xl-4 col-md-6 col-12' id='items' style="position: relative;"><!--外枠-->
+        <span v-if="list.sort_priority == 1" class="badge bg-danger rounded-pill" style="position: absolute; top: 10px; right: 20px; z-index: 10;">新発売!!</span>
+        <span v-if="list.sort_priority == 2" class="badge bg-danger rounded-pill" style="position: absolute; top: 10px; right: 20px; z-index: 10;">UPDATE!!</span>
+
           <div class='container-fluid'>
             <div class='row pb-1'>
               <div class='col-6' style='position:relative;'><!--写真-->
