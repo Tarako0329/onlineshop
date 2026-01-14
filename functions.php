@@ -745,12 +745,13 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	
 	$context = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
-	log_writer2(" [gemini_api \$response] =>",$response,"lv1");
+	//log_writer2(" [gemini_api \$response] =>",$response,"lv1");
 
 	$emsg = "";
 	$result = "";
 	if ($response === false) {
 		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。';
+		log_writer2("【Gemini呼び出しに失敗】 [gemini_api \$http_response_header] =>",$http_response_header,"lv0");
 	}else{
 		$result_decoded = json_decode($response, true);
 		log_writer2(" [gemini_api \$result_decoded] =>",$result_decoded,"lv3");
