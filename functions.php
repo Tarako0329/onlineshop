@@ -745,7 +745,8 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	
 	$context = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
-	
+	log_writer2(" [gemini_api \$response] =>",$response,"lv1");
+
 	$emsg = "";
 	$result = "";
 	if ($response === false) {

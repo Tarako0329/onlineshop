@@ -6,6 +6,9 @@ if (php_sapi_name() != 'cli') {
 }
 chdir(__DIR__);
 
+exit();	//サービス一時停止
+
+
 //require "php_header.php";
 
 define("VERSION","ver1.36.1");
