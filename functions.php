@@ -751,7 +751,7 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	$result = "";
 	if ($response === false) {
 		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。';
-		log_writer2("【Gemini呼び出しに失敗】 [gemini_api \$http_response_header] =>",$http_response_header,"lv0");
+		log_writer2("【Gemini呼び出しに失敗】 [gemini_api \$http_response_header] =>","【Gemini呼び出しに失敗】 \$http_response_header","lv0");
 	}else{
 		$result_decoded = json_decode($response, true);
 		log_writer2(" [gemini_api \$result_decoded] =>",$result_decoded,"lv3");
