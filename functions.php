@@ -740,12 +740,13 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 				'Content-Type: application/json',
 			],
 			'content' => json_encode($request_payload),
+			'ignore_errors' => true
 		],
 	];
 	
 	$context = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
-	//log_writer2(" [gemini_api \$response] =>",$response,"lv1");
+	log_writer2(" [gemini_api \$response] =>",$response,"lv1");
 
 	$emsg = "";
 	$result = "";
