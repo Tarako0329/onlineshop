@@ -746,49 +746,67 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	
 	$context = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
-	log_writer2(" [gemini_api \$response] =>",$response,"lv1");
+	$result_decoded = json_decode($response, true);
+	
+	//log_writer2(" [gemini_api \$response] =>",$response,"lv1");
 
-	$emsg = "";
+	$emsg = "Geminiエラー。管理者にプログラム確認の通知を送信します。しばらくお待ちください。";     //ユーザ向け(正常時は空白に変更する)
+	$emsg_sys = ""; //管理者向け
 	$result = "";
-	if ($response === false) {
-		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。';
-		log_writer2("【Gemini呼び出しに失敗】 [gemini_api \$http_response_header] =>","【Gemini呼び出しに失敗】 \$http_response_header","lv0");
+	//if ($response === false) {
+	if(!empty($result_decoded["error"])){//*1
+	    if($result_decoded["error"]["code"] == 429){
+    		$emsg = 'Gemini呼び出しに失敗しました。時間をおいて、再度実行してみてください。(code:429)';
+	    }else{
+	        //$emsg = '';
+	    }
+		$emsg_sys = "【Geminiエラー】 ".json_encode($result_decoded, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		
+		
 	}else{
-		$result_decoded = json_decode($response, true);
+		//$result_decoded = json_decode($response, true);
 		log_writer2(" [gemini_api \$result_decoded] =>",$result_decoded,"lv3");
-		if (isset($result_decoded['candidates'][0]['content']['parts'][0]['text'])) {
+		if (isset($result_decoded['candidates'][0]['content']['parts'][0]['text'])) {   //正常終了
 			$result = $result_decoded['candidates'][0]['content']['parts'][0]['text'];
-		} elseif (isset($result_decoded['error'])) {
-			$emsg = "Gemini API Error: " . $result_decoded['error']['message'];
+			$emsg = "";
+			
+	        if($p_type==="json"){
+	        	$result = str_replace('```json','',$result);
+	        	$result = str_replace('```','',$result);
+	        	$result = str_replace("\r\n","",$result);
+	        	$result = str_replace("\n","",$result);
+	        	$result = str_replace("\r","",$result);
+	        	$result = str_replace(" ","",$result);
+	        	
+	        	$decoded_json = json_decode($result, true);
+	        	if (json_last_error() !== JSON_ERROR_NONE) {
+	        		$emsg = 'Geminiが返したテキストのJSONデコードに失敗しました: ';
+	        		$emsg_sys = 'Geminiが返したテキストのJSONデコードに失敗しました: ' . json_last_error_msg() . ". Raw text: " . $result;
+	        	}else{
+	        	    $result = $decoded_json;
+	        	}
+	        }
+			
+		} /*elseif (isset($result_decoded['error'])) {  //*1と重複するので削除
+			$emsg = "Gemini API Error: " ;
 			$result = json_encode($result_decoded['error']); // Store error details as JSON string
-		} else {
-			$emsg = 'Geminiからの予期しない応答形式です。';
-			$result = $response; // Store raw response
+		} */else {
+			//$emsg = 'Geminiからの予期しない応答形式です。';
+			//$result = $response; // Store raw response
+			$emsg_sys = "Geminiからの予期しない応答形式(JSON)です。".json_encode($result_decoded, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 		}
 	}
 
-    
-	if($p_type==="json"){
-		$result = str_replace('```json','',$result);
-		$result = str_replace('```','',$result);
-		$result = str_replace("\r\n","",$result);
-		$result = str_replace("\n","",$result);
-		$result = str_replace("\r","",$result);
-		$result = str_replace(" ","",$result);
-		
-		// Only decode if there's no pre-existing error message from the API call itself
-		if (empty($emsg)) {
-			$decoded_json = json_decode($result, true);
-			if (json_last_error() !== JSON_ERROR_NONE) {
-				$emsg = 'Geminiが返したテキストのJSONデコードに失敗しました: ' . json_last_error_msg() . ". Raw text: " . $result;
-			}
-			$result = $decoded_json;
-		}	
-	}
+    if(!empty($emsg_sys)){
+        log_writer2("【Geminiエラー】 [gemini_api \$http_response_header] =>",$emsg_sys,"lv0");
+    }
+	
 	$rtn = array(
 		'emsg' => $emsg,
 		'result' => $result
 	);
+	
+	log_writer2(" [gemini_api \$rtn] =>",$rtn,"lv1");
 	
 	return $rtn;
 }
