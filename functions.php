@@ -765,7 +765,7 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 		
 	}else{
 		//$result_decoded = json_decode($response, true);
-		log_writer2(" [gemini_api \$result_decoded] =>",$result_decoded,"lv3");
+		//log_writer2(" [gemini_api \$result_decoded] =>",$result_decoded,"lv3");
 		if (isset($result_decoded['candidates'][0]['content']['parts'][0]['text'])) {   //正常終了
 			$result = $result_decoded['candidates'][0]['content']['parts'][0]['text'];
 			$emsg = "";
@@ -798,7 +798,8 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 	}
 
     if(!empty($emsg_sys)){
-        log_writer2("【Geminiエラー】 [gemini_api \$http_response_header] =>",$emsg_sys,"lv0");
+        log_writer2("【Geminiエラー】 [gemini_api \$emsg_sys] =>",$emsg_sys,"lv0");
+				log_writer2("【Geminiエラー】 [gemini_api \$response] =>",$response,"lv0");
     }
 	
 	$rtn = array(
@@ -806,10 +807,12 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
 		'result' => $result
 	);
 	
-	log_writer2(" [gemini_api \$rtn] =>",$rtn,"lv1");
+	log_writer2(" [gemini_api \$rtn] =>",$rtn,"lv3");
 	
 	return $rtn;
 }
+
+
 function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 	//$p_type:json or plain
 	//$_SESSION[$p_subject][] に会話履歴を格納
