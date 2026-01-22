@@ -884,9 +884,89 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 }
 
 
+/**
+ * 画像のバックアップを作成し、元のファイルをリサイズして上書きする
+ * @param string $filePath 画像ファイルのフルパス
+ * @return bool 成功すればtrue
+ */
+function backupAndOptimizeImage($filePath) {
+    // 1. ファイルの存在確認
+    if (!file_exists($filePath)) {
+        return false;
+    }
 
+    // 2. バックアップファイル名の作成
+    // 例: "photo.jpg" -> "photo_BK.jpg"
+    $pathParts = pathinfo($filePath);
+    $backupPath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '_BK.' . $pathParts['extension'];
 
+    // 3. バックアップ（コピー）の実行
+    if (!copy($filePath, $backupPath)) {
+        return false; // コピー失敗時は処理を中断
+    }
 
+    // 4. 画像情報の取得
+    $imageInfo = getimagesize($filePath);
+    if (!$imageInfo) return false;
 
+    $width = $imageInfo[0];
+    $height = $imageInfo[1];
+    $type = $imageInfo[2];
 
+    // 5. リサイズ設定（最大幅 1200px）
+    $maxWidth = 800;
+    if ($width > $maxWidth) {
+        $newWidth = $maxWidth;
+        $newHeight = floor($height * ($maxWidth / $width));
+    } else {
+        // すでに小さい場合は、解像度は変えずにそのままのサイズで処理
+        $newWidth = $width;
+        $newHeight = $height;
+    }
+
+    // 6. 画像の読み込み
+    switch ($type) {
+        case IMAGETYPE_JPEG: $source = imagecreatefromjpeg($filePath); break;
+        case IMAGETYPE_PNG:  $source = imagecreatefrompng($filePath); break;
+        case IMAGETYPE_GIF:  $source = imagecreatefromgif($filePath); break;
+        default: return false;
+    }
+
+    // 7. 新しいキャンバスの作成とリサンプリング
+    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+    
+    // 透明度の保持（PNG/GIF用）
+    if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
+        imagealphablending($newImage, false);
+        imagesavealpha($newImage, true);
+    }
+
+    imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+    // 8. 元のファイル名で上書き保存
+    $success = false;
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $success = imagejpeg($newImage, $filePath, 80); // 画質80%
+            break;
+        case IMAGETYPE_PNG:
+            $success = imagepng($newImage, $filePath, 6);   // 圧縮レベル6
+            break;
+        case IMAGETYPE_GIF:
+            $success = imagegif($newImage, $filePath);
+            break;
+    }
+
+    // 9. メモリ解放
+    imagedestroy($source);
+    imagedestroy($newImage);
+
+    return $success;
+}
+
+// --- 使用例 ---
+// backupAndOptimizeImage('images/profile.jpg');
 ?>
+
+
+
