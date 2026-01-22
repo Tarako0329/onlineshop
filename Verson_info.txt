@@ -203,9 +203,12 @@ ver1.53.0:商品ソートロジックの変更&bugfix-commited
   ALTER TABLE `shouhinMS_online` ADD `upd_datetime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新日時' AFTER `ins_datetime`;
   update shouhinMS_online set `upd_datetime` = `ins_datetime`;
 ver1.53.0:GeminiAPIの不具合調査・解消に向けて(自動tweet停止)-commited
-ver1.53.1:GeminiAPIの不具合調査・解消に向けて(エラーレスポンス通知)
+ver1.53.1:GeminiAPIの不具合調査・解消に向けて(エラーレスポンス通知)-commited
+ver1.54.0:特定商取引法に基づく表記の修正
 
 【Issues】
+・特定取引なんとかのSTRIPE対応
+・ログイン機能
 ・受注後のカスタムオーダー（削除と数量調整）
 ・請求メールの送信
 ・sendmail・sendlineのログ

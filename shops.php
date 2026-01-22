@@ -28,12 +28,14 @@
 				<div v-if='list.sel_cnt!==0' class='col-xl-6 col-md-6 col-12'><!--外枠-->
 					<div class='container-fluid'>
 						<div class='row'>
-							<div class='col-12 d-flex original-gradient' style='height:80px;'><!--詳細-->
-								<div style='height:80px;padding:2px;border:solid 2px #fff;'><img style='height:100%' :src="list.logo" ></div>
-								<div class='ms-3 pt-3'>
-									<h3 class="card-title mb-3">{{list.yagou}}</h3>
+							<div class='col-12 d-flex original-gradient' style='height:110px;'><!--詳細-->
+								<div style='height:110px;padding:2px;border:solid 2px #fff;'><img style='height:100%' :src="list.logo" ></div>
+								<div class='ms-3 pt-2'>
+									<h3 class="card-title mb-1">{{list.yagou}}</h3>
 									<p class='m-0'>代表：{{list.shacho}}</p>
-									<!--<p class='m-0'>mail：{{list.mail}}</p>-->
+									<p class='m-0'>所在地：{{list.jusho}}</p>
+									<p class='m-0'>TEL：{{list.tel}}</p>
+									<p class='m-0'>MAIL：<a :href="`mailto:${list.mail}`">{{list.mail}}</a></p>
 								</div>
 							</div><!--詳細-->
 							<div class='col-12 p-3'>
