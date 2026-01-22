@@ -14,7 +14,7 @@ while($i < count($_FILES)){
         if ( move_uploaded_file($tempfile , $filename )) {
             $msg = $filename . "をアップロードしました。";
             $filelist[] = array("sort" => $i+1,"filename" => $filename);
-            //backupAndOptimizeImage($filename);
+            backupAndOptimizeImage($filename);
             $stats = "success";
         } else {
             $msg = "ファイルをアップロードできません。";
