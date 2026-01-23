@@ -207,6 +207,8 @@ ver1.53.1:GeminiAPIの不具合調査・解消に向けて(エラーレスポン
 ver1.54.0:特定商取引法に基づく表記の修正-commited
 ver1.55.0:画像ファイル圧縮機能追加・特定商取引法に基づく表記の修正
   UPDATE shouhinMS_online_pic SET pic = REGEXP_REPLACE(pic, '\\.(jpg|jpeg|png|gif)$', '.webp', 1, 0, 'i');
+  ALTER TABLE `shouhinMS_online_pic` DROP PRIMARY KEY;
+  ALTER TABLE `shouhinMS_online_pic` ADD `SEQ` INT NOT NULL AUTO_INCREMENT AFTER `pic`, ADD `updDatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `SEQ`, ADD PRIMARY KEY (`SEQ`);
 
 
 【Issues】

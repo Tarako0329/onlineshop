@@ -899,7 +899,7 @@ function backupAndOptimizeImage($filePath) {
     $extension = strtolower($pathParts['extension']);
 
     // すでにAVIFの場合、またはバックアップファイルの場合は処理をスキップ
-    if ($extension === 'avif' || strpos($pathParts['filename'], '_BK') !== false) {
+    if ($extension === 'avif' || strpos($pathParts['filename'], '_BK') !== false || EXEC_MODE === 'Local') {
         return $filePath; 
     }
 
