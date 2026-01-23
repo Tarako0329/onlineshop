@@ -885,9 +885,9 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 
 
 /**
- * 画像のバックアップを作成し、元のファイルをリサイズして上書きする
- * @param string $filePath 画像ファイルのフルパス
- * @return bool 成功すればtrue
+ * 画像をWebPに変換・最適化し、新しいファイルパスを返す
+ * @param string $filePath 元の画像パス
+ * @return string|false 成功時は新しいファイルパス、失敗時はfalse
  */
 function backupAndOptimizeImage($filePath) {
     // 1. ファイルの存在確認
@@ -895,14 +895,22 @@ function backupAndOptimizeImage($filePath) {
         return false;
     }
 
-    // 2. バックアップファイル名の作成
-    // 例: "photo.jpg" -> "photo_BK.jpg"
     $pathParts = pathinfo($filePath);
+    $extension = strtolower($pathParts['extension']);
+
+    // すでにAVIFの場合、またはバックアップファイルの場合は処理をスキップ
+    if ($extension === 'avif' || strpos($pathParts['filename'], '_BK') !== false) {
+        return $filePath; 
+    }
+
+    // 2. バックアップファイル名の作成
     $backupPath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '_BK.' . $pathParts['extension'];
 
-    // 3. バックアップ（コピー）の実行
-    if (!copy($filePath, $backupPath)) {
-        return false; // コピー失敗時は処理を中断
+    // 3. バックアップの実行（未作成の場合のみ）
+    if (!file_exists($backupPath)) {
+        if (!copy($filePath, $backupPath)) {
+            return false;
+        }
     }
 
     // 4. 画像情報の取得
@@ -913,13 +921,12 @@ function backupAndOptimizeImage($filePath) {
     $height = $imageInfo[1];
     $type = $imageInfo[2];
 
-    // 5. リサイズ設定（最大幅 1200px）
+    // 5. リサイズ設定
     $maxWidth = 800;
     if ($width > $maxWidth) {
         $newWidth = $maxWidth;
         $newHeight = floor($height * ($maxWidth / $width));
     } else {
-        // すでに小さい場合は、解像度は変えずにそのままのサイズで処理
         $newWidth = $width;
         $newHeight = $height;
     }
@@ -929,39 +936,39 @@ function backupAndOptimizeImage($filePath) {
         case IMAGETYPE_JPEG: $source = imagecreatefromjpeg($filePath); break;
         case IMAGETYPE_PNG:  $source = imagecreatefrompng($filePath); break;
         case IMAGETYPE_GIF:  $source = imagecreatefromgif($filePath); break;
+        case IMAGETYPE_WEBP: $source = imagecreatefromwebp($filePath); break;
         default: return false;
     }
 
-    // 7. 新しいキャンバスの作成とリサンプリング
+    // 7. キャンバス作成とリサンプリング
     $newImage = imagecreatetruecolor($newWidth, $newHeight);
     
-    // 透明度の保持（PNG/GIF用）
-    if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_GIF) {
-        imagealphablending($newImage, false);
-        imagesavealpha($newImage, true);
-    }
+    // 透明度の保持設定
+    imagealphablending($newImage, false);
+    imagesavealpha($newImage, true);
 
     imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-    // 8. 元のファイル名で上書き保存
-    $success = false;
-    switch ($type) {
-        case IMAGETYPE_JPEG:
-            $success = imagejpeg($newImage, $filePath, 80); // 画質80%
-            break;
-        case IMAGETYPE_PNG:
-            $success = imagepng($newImage, $filePath, 6);   // 圧縮レベル6
-            break;
-        case IMAGETYPE_GIF:
-            $success = imagegif($newImage, $filePath);
-            break;
-    }
+    // 8. WebPとして保存
+    $newFilePath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '.webp';
+    
+    // imagewebpを使用して保存
+    $success = imagewebp($newImage, $newFilePath, 80);
 
     // 9. メモリ解放
     imagedestroy($source);
     imagedestroy($newImage);
 
-    return $success;
+    // 10. 後処理とリターン
+    if ($success) {
+        // 元のファイルが .webp でない場合は、古いファイルを削除
+        if ($extension !== 'webp') {
+            unlink($filePath);
+        }
+        return $newFilePath; // 新しいパスを返す
+    }
+
+    return false;
 }
 
 // --- 使用例 ---

@@ -13,8 +13,14 @@ while($i < count($_FILES)){
     if (is_uploaded_file($tempfile)) {
         if ( move_uploaded_file($tempfile , $filename )) {
             $msg = $filename . "をアップロードしました。";
+            
+            $filename = backupAndOptimizeImage($filename);  //画像圧縮(avif以外をwebpに変換)
+            
+            if($filename===false){
+                $msg = "アップロードに失敗しました。(ファイルの変換に失敗)";
+                break;
+            }
             $filelist[] = array("sort" => $i+1,"filename" => $filename);
-            backupAndOptimizeImage($filename);
             $stats = "success";
         } else {
             $msg = "ファイルをアップロードできません。";
