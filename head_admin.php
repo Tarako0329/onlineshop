@@ -31,6 +31,8 @@
 	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>QRコードライブラリ-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/9.0.0/decimal.min.js"></script><!--小数演算ライブラリ-->
 
+    <script src="https://accounts.google.com/gsi/client" ></script><!--google login api-->
+    
     <script>
         var KANKYO = <?php echo "'".EXEC_MODE."'" ;?>;
         var ZEIHASU = <?php echo empty($ZeiHasu)?0:$ZeiHasu ;?>;
