@@ -1,5 +1,5 @@
 <?php
-	require "php_header.php";
+	require "php_header_admin.php";
 	if(empty($_GET["key"])){
 		exit();
 	}
@@ -185,7 +185,7 @@
 	<FOOTER class='container-fluid common_footer'>
 	</FOOTER>
 	</div><!--app-->
-	<script src="script/vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/admin_menu.js?<?php echo $time; ?>"></script>
 	<script>
 		admin_menu('seikyu_yotei.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>

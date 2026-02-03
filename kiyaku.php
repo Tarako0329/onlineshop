@@ -1,5 +1,5 @@
 <?php
-	require "php_header.php";
+	require "php_header_admin.php";
 	$user_hash = $_GET["key"] ;
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
@@ -157,7 +157,7 @@
 	<FOOTER class='container-fluid common_footer'>
 	</FOOTER>
 	</div><!--app-->
-	<script src="script/vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/admin_menu.js?<?php echo $time; ?>"></script>
 	<script defer>
 		admin_menu('kiyaku.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 	</script>

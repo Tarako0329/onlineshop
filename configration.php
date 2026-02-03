@@ -1,5 +1,5 @@
 <?php
-	require "php_header.php";
+	require "php_header_admin.php";
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
@@ -499,7 +499,7 @@
 	</div>
 
 	</div>
-	<script src="script/vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/admin_menu.js?<?php echo $time; ?>"></script>
 	<script src="script/configration_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		configration('configration.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');

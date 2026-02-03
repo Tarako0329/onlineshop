@@ -211,6 +211,20 @@ ver1.55.0:画像ファイル圧縮機能追加・特定商取引法に基づく�
   ALTER TABLE `shouhinMS_online_pic` ADD `SEQ` INT NOT NULL AUTO_INCREMENT AFTER `pic`, ADD `updDatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `SEQ`, ADD PRIMARY KEY (`SEQ`);
 ver1.56.0:特定商取引法に基づく表記の修正-commited
 ver1.57.0:お知らせの追加-commited
+ver1.58.0:ログイン画面作成
+  CREATE TABLE `AUTO_LOGIN_SHOP` (
+    `SEQ` int(11) NOT NULL,
+    `UID` varchar(100) NOT NULL,
+    `TOKEN` text NOT NULL,
+    `YUKOU_KIGEN` date NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  
+  ALTER TABLE `AUTO_LOGIN_SHOP`
+    ADD PRIMARY KEY (`SEQ`);
+  ALTER TABLE `AUTO_LOGIN_SHOP`
+    MODIFY `SEQ` int(11) NOT NULL AUTO_INCREMENT;
+  COMMIT;
+  ALTER TABLE `Users` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 
 【Issues】

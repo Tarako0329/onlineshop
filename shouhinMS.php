@@ -1,5 +1,5 @@
 <?php
-	require "php_header.php";
+	require "php_header_admin.php";
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
@@ -288,7 +288,7 @@
 		<div class="loader">Loading...</div>
 	</div>
 	</div><!--app-->
-	<script src="script/vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/admin_menu.js?<?php echo $time; ?>"></script>
 	<script src="script/shouhinMS_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		admin_menu('shouhinMS.php','','<?php echo $user_hash;?>').mount('#admin_menu');

@@ -1,5 +1,5 @@
 <?php
-  require "php_header.php";
+  require "php_header_admin.php";
   $token = csrf_create();
   if(empty($_GET["key"])){
     echo "参照用のURLが異なります。";
@@ -91,7 +91,8 @@
     <a :href='pdf_url' target="_blank" rel="noopener noreferrer" type='button' class='btn btn-outline-primary' style='min-width:40px;position:absolute;bottom:5px;right:5px;'><i class="bi bi-printer" style='font-size:14px;'></i></a>
   </FOOTER>
   </div>
-  <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/admin_menu.js?<?php echo $time; ?>"></script>
+  <script src="script/Unsipped_slip_vue3.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('Unshipped_slip.php','','<?php echo $user_hash;?>').mount('#admin_menu');
     Unsipped_slip('Unshipped_slip.php','<?php echo $token;?>','<?php echo $user_hash;?>').mount('#app');

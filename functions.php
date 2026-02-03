@@ -75,28 +75,6 @@ function aclog_writer($param,$pdo){
 }
 
 // =========================================================
-// トークンを作成
-// =========================================================
-function get_token() {
-	$TOKEN_LENGTH = 16;//16*2=32桁
-	$bytes = openssl_random_pseudo_bytes($TOKEN_LENGTH);
-	return bin2hex($bytes);
-}
-// =========================================================
-// トークンの削除(指定のトークン もしくは　期限切れのトークンを一括削除)
-// =========================================================
-function delete_old_token($token, $pdo) {
-	
-	$date = new DateTime("- 7 days");
-	
-	$sql = "DELETE FROM AUTO_LOGIN WHERE TOKEN = ? or REGISTRATED_TIME < ?;";
-	$stmt = $pdo->prepare($sql);
-	$stmt->bindValue(1, $token, PDO::PARAM_STR);
-	$stmt->bindValue(2, $date->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-	$stmt->execute();
-}
-
-// =========================================================
 // 自動ログイン処理
 // =========================================================
 function check_auto_login($cookie_token, $pdo) {
@@ -296,6 +274,31 @@ function csrf_checker($from,$chkpoint){
 	return $chkflg;
 }
 
+// =========================================================
+// トークンを作成
+// =========================================================
+function get_token() {
+	$TOKEN_LENGTH = 16;//16*2=32桁
+	//$bytes = openssl_random_pseudo_bytes($TOKEN_LENGTH);
+	$bytes = bin2hex(random_bytes($TOKEN_LENGTH));
+	//return bin2hex($bytes);
+	return $bytes;
+}
+// =========================================================
+// トークンの削除(指定のトークン もしくは　期限切れのトークンを一括削除)
+// =========================================================
+function delete_old_token($token, $pdo) {
+	
+	$date = new DateTime("- 7 days");
+	
+	//$sql = "DELETE FROM AUTO_LOGIN WHERE TOKEN = ? or REGISTRATED_TIME < ?;";
+	$sql = "DELETE FROM AUTO_LOGIN WHERE REGISTRATED_TIME < ?;";
+	$stmt = $pdo->prepare($sql);
+	//$stmt->bindValue(1, $token, PDO::PARAM_STR);
+	$stmt->bindValue(1, $date->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+	$stmt->execute();
+}
+
 
 function csrf_create(){
 	//INPUT HIDDEN で呼ぶ
@@ -311,16 +314,16 @@ function csrf_create(){
 // =========================================================
 // 不可逆暗号化
 // =========================================================
-function passEx($str,$uid,$key){
-	if(strlen($str)>0 and !empty($uid)){
-		$rtn = crypt($str,$key);
-		for($i = 0; $i < 1000; $i++){
-			$rtn = substr(crypt($rtn.$uid,$key),2);
-		}
-	}else{
-		$rtn = $str;
-	}
-	return $rtn;
+function passEx(string $str): string {
+	$pwd_peppered = hash_hmac("sha256", $str, KEY);
+	log_writer2("\$pwd_peppered",$pwd_peppered,"lv3");
+	return password_hash($pwd_peppered, PASSWORD_DEFAULT, ['cost' => 12]);
+}
+function verifyPassword(string $password, string $hashedPassword): bool {
+	// 第2引数にはDBから取得したハッシュ値を渡します。
+	$pwd_peppered = hash_hmac("sha256", $password, KEY);
+	log_writer2("\$pwd_peppered",$pwd_peppered,"lv3");
+	return password_verify($pwd_peppered, $hashedPassword);
 }
 // =========================================================
 // 可逆暗号(日本語文字化け対策)

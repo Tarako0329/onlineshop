@@ -6,6 +6,8 @@
   }
 
   $user_hash = $_GET["key"] ;
+  //require_once "auth.php";  //次のリリースで有効にする
+
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 ?>
 <!DOCTYPE html>
@@ -51,7 +53,7 @@
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>
   </div>
-  <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/admin_menu.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('admin_menu.php','','<?php echo $user_hash;?>').mount('#admin_menu');
   </script>

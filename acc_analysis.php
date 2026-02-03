@@ -147,7 +147,8 @@
 	</div>-->
 	</div><!--app-->
 
-	<script src="script/vue3.js?<?php echo $time; ?>"></script>
+	<script src="script/admin_menu.js?<?php echo $time; ?>"></script>
+	<script src="script/acc_analysis_vue3.js?<?php echo $time; ?>"></script>
 	<script>
 		acc_analysis('acc_analysis.php','<?php echo $token; ?>').mount('#app');
 		admin_menu('acc_analysis.php','','<?php echo $user_hash;?>').mount('#admin_menu');
