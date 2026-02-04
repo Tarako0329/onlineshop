@@ -225,6 +225,7 @@ ver1.58.0:ログイン画面作成-commited
     MODIFY `SEQ` int(11) NOT NULL AUTO_INCREMENT;
   COMMIT;
   ALTER TABLE `Users` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ver1.59.0:phinx.php導入
 
 
 【Issues】
@@ -239,6 +240,17 @@ ver1.58.0:ログイン画面作成-commited
 ・受注画面に購入のきっかけを追加　済
 
 
+マイグレーションコマンド
+#マイグレーションファイルを作る
+php vendor/bin/phinx create [テーブルを作る時: CreateUsersTable
+    カラムを追加する時: AddStatusToUsers
+    カラムを削除する時: RemoveUnusedColumnFromOrders
+    カラム名を変更する時: RenameOldNameInUsers
+    ]
+# 一つ前の状態に戻す（downメソッドが実行される）
+php vendor/bin/phinx rollback
+
+
 ローカルからテスト環境へ
 cd /home/pcntfsrg/public_html/onlineshop/onlineshop
 git fetch --all
@@ -246,6 +258,8 @@ git reset --hard origin/main
 php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
+#DBマイグレーション
+php vendor/bin/phinx migrate
 date
 
 
@@ -256,6 +270,8 @@ git reset --hard origin/main
 php load_font.php ipag css/ipag.ttf
 php load_font.php ipagp css/ipagp.ttf
 php load_font.php Kranky css/Kranky-Regular.ttf
+#DBマイグレーション
+php vendor/bin/phinx migrate
 date
 
 
