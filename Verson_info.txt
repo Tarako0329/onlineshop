@@ -211,7 +211,7 @@ ver1.55.0:画像ファイル圧縮機能追加・特定商取引法に基づく�
   ALTER TABLE `shouhinMS_online_pic` ADD `SEQ` INT NOT NULL AUTO_INCREMENT AFTER `pic`, ADD `updDatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `SEQ`, ADD PRIMARY KEY (`SEQ`);
 ver1.56.0:特定商取引法に基づく表記の修正-commited
 ver1.57.0:お知らせの追加-commited
-ver1.58.0:ログイン画面作成
+ver1.58.0:ログイン画面作成-commited
   CREATE TABLE `AUTO_LOGIN_SHOP` (
     `SEQ` int(11) NOT NULL,
     `UID` varchar(100) NOT NULL,
