@@ -5,8 +5,8 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // DBとの接続
 define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-define("USER_NAME", $_ENV["DBUSER"]);
-define("PASSWORD", $_ENV["PASS"]);
+define("USER_NAME", $_ENV["M_DBUSER"]);
+define("PASSWORD", $_ENV["M_PASS"]);
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 function get_pdo_options() {
