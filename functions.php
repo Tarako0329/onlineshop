@@ -902,7 +902,7 @@ function backupAndOptimizeImage($filePath) {
     $extension = strtolower($pathParts['extension']);
 
     // すでにAVIFの場合、またはバックアップファイルの場合は処理をスキップ
-    if ($extension === 'avif' || strpos($pathParts['filename'], '_BK') !== false || EXEC_MODE === 'Local') {
+    if (/*$extension === 'avif' || */strpos($pathParts['filename'], '_BK') !== false || EXEC_MODE === 'Local') {
         return $filePath; 
     }
 
@@ -933,6 +933,11 @@ function backupAndOptimizeImage($filePath) {
         $newWidth = $width;
         $newHeight = $height;
     }
+		//$newWidth,$newHeight縦横短い方に合わせて正方形にする
+    $shortSide = min($width, $height);
+    $newWidth = $shortSide;
+    $newHeight = $shortSide;
+    
 
     // 6. 画像の読み込み
     switch ($type) {
