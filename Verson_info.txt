@@ -226,7 +226,8 @@ ver1.58.0:ログイン画面作成-commited
   COMMIT;
   ALTER TABLE `Users` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ver1.59.0:phinx.php導入-commited
-ver1.60.0:商品登録画面改良
+ver1.60.0:商品登録画面改良-commited-20260210
+
 
 DROP TABLE ` users_test `
 【Issues】
