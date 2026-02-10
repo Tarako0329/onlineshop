@@ -19,6 +19,9 @@
 			.btn{
 				min-width: 120px;
 			}
+			.temp{
+				display:none;
+			}
 		</style>
 		<TITLE>商品管理</TITLE>
 </head>
@@ -198,22 +201,30 @@
 			</div>
 			<hr>
 			<div class='row mb-3'><!--写真アップロード-->
-				<div class='col-md-8 col-12'>
-					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード<p><small>縦横比４：３推奨</small></p></button>
+				<div class='col-md-8 col-12 flex-box'>
+					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
 					<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
-					<p><small>４：３にリサイズして表示（下表示イメージ）</small></p>
+					<button type='button' class='btn btn-info ms-3' @click='sort_mode_switch()'>{{choice_mode_btn_name}}</button>
 				</div>
 			</div>
 			<div class='row mb-3'>
 				<div class='col-md-8 col-12'>
 					<!--<small>ファイル名は"＆"マーク厳禁です。</small>-->
-					<div class='row'>
+					<div class='row m-1'>
+						<p v-if='choice_mode_btn_name==="並替え完了"'>並べ替えたい写真を選択し、入替先を選択してください。</p>
 					<template v-for='(list,index) in pic_list' :key='list.filename'>
-						<div class='col-md-4 col-6' style='padding:10px;'>
-							<div style='width:100%;'><button type='button' class='btn btn-info mb-1' @click='resort(index)' style='min-width: 50px;'>スライド順：{{list.sort}}</button></div>
-							<div class='img-div' style='position:relative;width:150px;height:100px;overflow: hidden;'>
-								<button type="button" class='btn btn-danger' style='position:absolute;top:0;right:0;min-width: 40px;' @click='pic_delete(list.filename)'>削除</button>
-								<img :src="list.filename" class="d-block img-item-sm" style='height: 100%;'>
+						<div class='col-md-4 col-6 pt-1' style='padding:10px;border:0.5px solid gray;' :id=`pic_${index}`>
+							<p v-if='index===0'>表紙</p>
+							<p v-else>スライド - {{index + 1}}</p>
+							<div style='width:100%;' class='temp'><button type='button' class='btn btn-primary mb-1 btn-sm' @click='resort(index)' style='min-width: 50px;'>{{choice_btn_name}}</button></div>
+							<div class='img-div' style='position:relative;width:100%;height:200px;overflow: hidden;'>
+								<!--<button type="button" class='btn btn-danger' style='position:absolute;top:0;right:0;min-width: 40px;' @click='pic_delete(list.filename)'>削除</button>-->
+								<div v-if='mode==="upd"' class='form-check ' style='position:absolute;top:0;right:0;min-width: 60px;background-color: white;border: 0.5px solid red; padding-left: 25px;'>
+									<input class='form-check-input' type='checkbox' style='' v-model='list.delete_flg' :id='`change_part_${index}`'>
+									<label class='form-check-label' :for='`change_part_${index}`'>削除</label>
+								</div>
+
+								<img :src="list.filename" class="d-block img-item-sm" style='height: 100%;width: 100%;object-fit: contain;'>
 							</div>
 						</div>
 					</template>
@@ -226,7 +237,7 @@
 				<div class='col-md-8 col-12'>
 					<button type='button' class='btn btn-primary' @click='ins_shouhinMS'>登録</button>
 					<button type='button' class='btn btn-warning ms-3' @click='set_shouhinNM("")'>キャンセル</button>
-					<button v-if='mode==="upd"' type='button' class='btn btn-danger ms-3' style='min-width:90px;' @click='upd_status("del",shouhinCD)'>削除</button>
+					<button v-if='mode==="upd"' type='button' class='btn btn-danger ms-3' style='min-width:90px;' @click='upd_status("del",shouhinCD)' id='change_part'>削除</button>
 				</div>
 			</div>
 		</div>

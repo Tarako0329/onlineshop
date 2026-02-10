@@ -226,8 +226,9 @@ ver1.58.0:ログイン画面作成-commited
   COMMIT;
   ALTER TABLE `Users` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ver1.59.0:phinx.php導入-commited
+ver1.60.0:商品登録画面改良
 
-
+DROP TABLE ` users_test `
 【Issues】
 ・特定取引なんとかのSTRIPE対応
 ・ログイン機能
@@ -242,7 +243,9 @@ ver1.59.0:phinx.php導入-commited
 
 マイグレーションコマンド
 #マイグレーションファイルを作る
-php vendor/bin/phinx create [テーブルを作る時: CreateUsersTable
+php vendor/bin/phinx create [
+    テーブルを作る時: CreateUsersTable
+    テーブルを削除: DropUsersTable
     カラムを追加する時: AddStatusToUsers
     カラムを削除する時: RemoveUnusedColumnFromOrders
     カラム名を変更する時: RenameOldNameInUsers

@@ -17,11 +17,13 @@ upload/*.html
 upload/*.png
 upload/*.jpeg
 upload/*.jpg
+upload/*.webp
 upload/*
 upload/temp/*.html
 upload/temp/*.png
 upload/temp/*.jpeg
 upload/temp/*.jpg
+upload/temp/*.webp
 *test*
 *template*
 *.mm

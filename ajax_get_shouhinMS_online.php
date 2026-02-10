@@ -106,6 +106,7 @@
 				,online.shouhinNM
 				,pic.sort
 				,pic.pic as filename
+				,false as delete_flg
 			from shouhinMS_online online 
 			left join shouhinMS_online_pic pic 
 			on online.uid = pic.uid 

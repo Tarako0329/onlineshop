@@ -101,6 +101,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					//console_log(response.data.pic_set)
 				}else{
 					console_log('get_shouhinMS_online succsess:NoData')
+					shouhinMS.value = []
+					shouhinMS_pic.value = []
 				}
 			})
 			.catch((error)=>{
@@ -119,6 +121,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					mode.value=(p_mode==="new")?"upd":"new"
 					return 0
 				}
+			}
+			if(choice_mode_btn_name.value==='並替え完了'){
+				//写真アップロード時は並べ替えモードを解除
+				sort_mode_switch()
 			}
 			mode.value=p_mode
 		}
@@ -145,6 +151,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					return 0
 				}
 			}
+			if(choice_mode_btn_name.value==='並替え完了'){
+				//並べ替えモードを解除
+				sort_mode_switch()
+			}
+
 			if(!p_shouhinNM){
 				clear_ms()
 				disp.value = 'none'
@@ -200,13 +211,46 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				,'text':''}
 		})
 
-		let sort = 1
-		const resort = (index) =>{//画像の並び順設定
-			if(pic_list.value.length < sort){
-				sort = 1
+		let moto_sort = null
+		let moto_index = null
+		const choice_btn_name = ref('選択')
+		const choice_mode_btn_name = ref('写真の並替え')
+		const resort = (index) =>{//画像の並び順入替
+			if(choice_btn_name.value==='選択'){
+				//moto_sortにpic_list.value[index]をclone
+				moto_sort = {...pic_list.value[index]}
+				moto_index = index
+				choice_btn_name.value='入替'
+				//#pic_ + index に blink-borderクラスを追加する
+				document.getElementById(`pic_${index}`).classList.add("blink-border")
+				
+			}else{
+				let saki_sort = {...pic_list.value[index]}
+				pic_list.value[index] = moto_sort
+				pic_list.value[moto_index] = saki_sort
+				//#pic_ + moto_index から blink-borderクラスを削除する
+				document.getElementById(`pic_${moto_index}`).classList.remove("blink-border")
+				moto_sort = null
+				moto_index = null
+				choice_btn_name.value='選択'
+				
 			}
-			pic_list.value[index].sort = sort
-			sort = Number(sort) + 1
+		}
+
+		const sort_mode_switch = () =>{
+			//class temp が空の場合、.tempにdisplay:blockを追加。
+			const temps = document.querySelectorAll('.temp');
+			temps.forEach((el) => {
+				if (el.style.display === 'none' || el.style.display === '') {
+					el.style.display = 'block';
+					choice_mode_btn_name.value='並替え完了'
+				} else {
+					choice_mode_btn_name.value='写真の並替え'
+					el.style.display = 'none';
+				}
+			});
+			//並べ替えは中断する
+			if(moto_index != null){resort(moto_index)}
 		}
 
 		const pic_sort_chk = computed(()=>{
@@ -226,9 +270,17 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 
 		const input_file_btn = (id) =>{//アップロードボタン
 			document.getElementById(id).click()
+			if(choice_mode_btn_name.value==='並替え完了'){
+				//写真アップロード時は並べ替えモードを解除
+				sort_mode_switch()
+			}
 		}
 		const uploadfile = (id) =>{//写真アップロード処理・写真をアップしファイルパスを取得
 			const params = new FormData();
+			let next_i
+			//next_iにpic_listの件数をセット
+			next_i = pic_list.value.length + 1
+			
 			
 			let i = 0
 			while(document.getElementById(id).files[i]!==undefined){
@@ -236,6 +288,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				i = i+1
 			}
 			params.append('fileparam',shouhinCD.value)
+			params.append(`csrf_token`, token)
+			params.append(`next_i`, next_i)
 			loader.value = true
 			axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response)=>{
@@ -245,16 +299,19 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				}else{
 					alert('写真アップロードエラー')
 				}
+				token = response.data.csrf_create
 			})
 			.catch((error)=>{
 				console_log(error)
 				alert('写真アップロードERROR')
+				token = response.data.csrf_create
 			})
 			.finally(()=>{
 				loader.value = false
 			})
 		}
 
+		/*廃止：商品登録時に削除処理をするように変更したため
 		const pic_delete = (filepass) =>{
 			//アップされたファイルを削除
 			//マスタに登録されたレコードを削除
@@ -290,8 +347,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			.finally(()=>{
 				//loader.value = false
 			})
-
 		}
+		*/
 
 		const ins_shouhinMS = ()=>{
 			let msg = ''
@@ -320,6 +377,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				alert(`${msg} を設定してください。`)
 				return
 			}
+			if(choice_mode_btn_name.value==='並替え完了'){
+				//写真アップロード時は並べ替えモードを解除
+				sort_mode_switch()
+			}
+
 			loader.value = true
 			//let p_hash_tag = hash_tag.value.replace('、',',')
 			hash_tag.value = hash_tag.value.replace('、',',')
@@ -346,12 +408,22 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			form.append(`ins_datetime`, ins_datetime.value)
 			form.append(`csrf_token`, token)
 			form.append(`hash`, hash)
-			let i = 0
+			let i = 0,del_i=0
 			pic_list.value.forEach((row)=>{
 				form.append(`user_file_name[${i}][sort]`,row.sort)
 				form.append(`user_file_name[${i}][filename]`,row.filename)
+				form.append(`user_file_name[${i}][delete_flg]`,(row.delete_flg)?'true':'false')
 				i=i+1
+				if(row.delete_flg===true){
+					del_i=del_i+1
+				}
 			})
+
+			if(del_i===i){//削除にチェックされてる写真の数とトータルの写真の数を比較
+				alert('写真を最低１枚は登録してください')
+				loader.value = false
+				return
+			}
 			axios.post("ajax_delins_shouhinMS.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response)=>{
 				console_log(response.data)
@@ -360,9 +432,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					if(mode.value==="new"){
 						//get_shouhinMS()
 						get_shouhinMS_newcd()
-					}else if(mode.value==="upd"){
-						get_shouhinMS_online()
 					}
+					/*else if(mode.value==="upd"){
+						get_shouhinMS_online()
+					}*/
+					get_shouhinMS_online()
 					alert(`${shouhinNM.value} を登録しました`)
 					clear_ms()
 					disp.value='none'
@@ -390,6 +464,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			midasi.value = ''
 			info.value = ''
 			hash_tag.value=''
+			haisou.value=''
 			customer_bikou.value='ご要望等ございましたらご記入ください。'
 			pic_list.value=[]
 			AI_answer.value = {'posts':[{'tags':'def'}]}
@@ -772,7 +847,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			get_shouhinMS_online,
 			input_file_btn,
 			uploadfile,
-			pic_delete,
+			//pic_delete,	//廃止：商品登録時に削除処理をするように変更したため
 			ins_shouhinMS,
 			resort,
 			shouhizei,
@@ -799,7 +874,10 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			tag_param,
 			text_len,
 			timing,
-			pic_sort_chk
+			pic_sort_chk,
+			choice_btn_name,	//写真並べ替えボタンの名称
+			sort_mode_switch,
+			choice_mode_btn_name
 		}
 	}
 });

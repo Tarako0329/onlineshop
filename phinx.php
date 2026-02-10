@@ -62,5 +62,8 @@ return
             'connection' => $pdo_h,
         ],
     ],
-    'version_order' => 'creation'
+    'version_order' => 'creation',
+    'templates' => [
+        'file' => '%%PHINX_CONFIG_DIR%%/db/migration_template.txt'
+    ],
 ];

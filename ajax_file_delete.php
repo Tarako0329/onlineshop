@@ -1,4 +1,5 @@
 <?php
+/*廃止
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header.php";
 //register_shutdown_function('shutdown');
@@ -93,7 +94,7 @@ header('Content-type: application/json');
 echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);
 
 exit();
-
+*/
 /*
 function shutdown(){
     // シャットダウン関数
@@ -126,4 +127,5 @@ function shutdown(){
   }
   
 */
+
 ?>

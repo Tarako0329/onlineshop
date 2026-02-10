@@ -53,7 +53,7 @@ if($rtn !== true){
 					$sqllog .= rtn_sqllog("commit",[]);
 					sqllogger($sqllog,0);
 
-					$msg .= "販売ステータスの変更を登録しました。";
+					$msg .= ($_POST["status"]!=='del')?"販売ステータスを変更しました。":"商品を削除しました。";
 					$alert_status = "alert-success";
 					$reseve_status=true;
 

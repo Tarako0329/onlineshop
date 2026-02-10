@@ -365,3 +365,13 @@ p {
 	50% { background-position: 100% 50%; }
 	100% { background-position: 0% 50%; }
 }
+
+/*borderを点滅させるクラス*/
+.blink-border {
+	border: 3px solid #ff0080;
+	animation: blink-border-animation 1.0s ease-in-out infinite alternate;
+}
+@keyframes blink-border-animation {
+	0% { border-color: rgba(255, 0, 128, 0); }
+	100% { border-color: rgba(255, 0, 128, 1); }
+}
