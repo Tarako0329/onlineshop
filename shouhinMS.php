@@ -202,10 +202,11 @@
 			<hr>
 			<div class='row mb-3'><!--写真アップロード-->
 				<div class='col-md-8 col-12 flex-box'>
-					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>写真アップロード</button>
+					<button type='button' class='btn btn-info' @click='input_file_btn("pic_file")'>商品画像アップ</button>
 					<input type='file' name='filename' style='display:none;' id='pic_file' @change='uploadfile("pic_file")' multiple accept="image/*">
 					<button type='button' class='btn btn-info ms-3' @click='sort_mode_switch()'>{{choice_mode_btn_name}}</button>
 				</div>
+				<p>※縦長・横長の画像は長い方の両端をカットし、正方形に変換されます。</p>
 			</div>
 			<div class='row mb-3'>
 				<div class='col-md-8 col-12'>

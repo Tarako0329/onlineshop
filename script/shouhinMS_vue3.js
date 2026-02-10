@@ -123,7 +123,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				}
 			}
 			if(choice_mode_btn_name.value==='並替え完了'){
-				//写真アップロード時は並べ替えモードを解除
+				//画像アップロード時は並べ替えモードを解除
 				sort_mode_switch()
 			}
 			mode.value=p_mode
@@ -214,7 +214,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		let moto_sort = null
 		let moto_index = null
 		const choice_btn_name = ref('選択')
-		const choice_mode_btn_name = ref('写真の並替え')
+		const choice_mode_btn_name = ref('画像の並替え')
 		const resort = (index) =>{//画像の並び順入替
 			if(choice_btn_name.value==='選択'){
 				//moto_sortにpic_list.value[index]をclone
@@ -245,7 +245,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 					el.style.display = 'block';
 					choice_mode_btn_name.value='並替え完了'
 				} else {
-					choice_mode_btn_name.value='写真の並替え'
+					choice_mode_btn_name.value='画像の並替え'
 					el.style.display = 'none';
 				}
 			});
@@ -259,7 +259,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			let sort_list = []
 			pic_list.value.forEach((row)=>{
 				if(sort_list.indexOf(row.sort)!==-1){
-					msg = '表示順が重複してます。「表示順」ボタンで写真のスライド順を調整してください。'
+					msg = '表示順が重複してます。「表示順」ボタンで画像のスライド順を調整してください。'
 				}else{
 					sort_list.push(row.sort)
 				}
@@ -271,11 +271,11 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const input_file_btn = (id) =>{//アップロードボタン
 			document.getElementById(id).click()
 			if(choice_mode_btn_name.value==='並替え完了'){
-				//写真アップロード時は並べ替えモードを解除
+				//画像アップロード時は並べ替えモードを解除
 				sort_mode_switch()
 			}
 		}
-		const uploadfile = (id) =>{//写真アップロード処理・写真をアップしファイルパスを取得
+		const uploadfile = (id) =>{//画像アップロード処理・画像をアップしファイルパスを取得
 			const params = new FormData();
 			let next_i
 			//next_iにpic_listの件数をセット
@@ -297,13 +297,13 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				if(response.data.status==="success"){
 					pic_list.value = [...pic_list.value,...response.data.filename]
 				}else{
-					alert('写真アップロードエラー')
+					alert('画像アップロードエラー')
 				}
 				token = response.data.csrf_create
 			})
 			.catch((error)=>{
 				console_log(error)
-				alert('写真アップロードERROR')
+				alert('画像アップロードERROR')
 				token = response.data.csrf_create
 			})
 			.finally(()=>{
@@ -371,14 +371,14 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				msg = msg + ' 送料・配送・納期、'
 			}
 			if(pic_list.value.length === 0){
-				msg = msg + ' 写真'
+				msg = msg + ' 画像'
 			}
 			if(msg.length != 0){
 				alert(`${msg} を設定してください。`)
 				return
 			}
 			if(choice_mode_btn_name.value==='並替え完了'){
-				//写真アップロード時は並べ替えモードを解除
+				//画像アップロード時は並べ替えモードを解除
 				sort_mode_switch()
 			}
 
@@ -419,8 +419,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 				}
 			})
 
-			if(del_i===i){//削除にチェックされてる写真の数とトータルの写真の数を比較
-				alert('写真を最低１枚は登録してください')
+			if(del_i===i){//削除にチェックされてる画像の数とトータルの画像の数を比較
+				alert('画像を最低１枚は登録してください')
 				loader.value = false
 				return
 			}
@@ -875,7 +875,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			text_len,
 			timing,
 			pic_sort_chk,
-			choice_btn_name,	//写真並べ替えボタンの名称
+			choice_btn_name,	//画像並べ替えボタンの名称
 			sort_mode_switch,
 			choice_mode_btn_name
 		}
