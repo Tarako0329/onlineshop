@@ -370,8 +370,13 @@ p {
 .blink-border {
 	border: 3px solid #ff0080;
 	animation: blink-border-animation 1.0s ease-in-out infinite alternate;
+	/*配下にあるimgタグの画像も点滅*/
+	img {
+		animation: blink-border-animation 1.0s ease-in-out infinite alternate;
+	}
+	
 }
 @keyframes blink-border-animation {
-	0% { border-color: rgba(255, 0, 128, 0); }
-	100% { border-color: rgba(255, 0, 128, 1); }
+	0% { border-color: rgba(255, 0, 128, 0); opacity: 1}
+	100% { border-color: rgba(255, 0, 128, 1); opacity: 0.4}
 }
