@@ -888,97 +888,83 @@ function gemini_api_kaiwa($p_ask,$p_type,$p_subject){
 
 
 /**
- * 画像をWebPに変換・最適化し、新しいファイルパスを返す
+ * 画像を正方形にクロップしてWebPに変換・最適化する
  * @param string $filePath 元の画像パス
  * @return string|false 成功時は新しいファイルパス、失敗時はfalse
  */
 function backupAndOptimizeImage($filePath) {
-    // 1. ファイルの存在確認
-    if (!file_exists($filePath)) {
-        return false;
-    }
+	if (!file_exists($filePath)) return false;
 
-    $pathParts = pathinfo($filePath);
-    $extension = strtolower($pathParts['extension']);
+	$pathParts = pathinfo($filePath);
+	$extension = isset($pathParts['extension']) ? strtolower($pathParts['extension']) : '';
 
-    // すでにAVIFの場合、またはバックアップファイルの場合は処理をスキップ
-    if (/*$extension === 'avif' || */strpos($pathParts['filename'], '_BK') !== false || EXEC_MODE === 'Local') {
-        return $filePath; 
-    }
+	if (strpos($pathParts['filename'], '_BK') !== false || (defined('EXEC_MODE') && EXEC_MODE === 'Local')) {
+			return $filePath; 
+	}
 
-    // 2. バックアップファイル名の作成
-    $backupPath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '_BK.' . $pathParts['extension'];
+	// バックアップ作成
+	$backupPath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '_BK.' . $extension;
+	if (!file_exists($backupPath)) {
+			if (!copy($filePath, $backupPath)) return false;
+	}
 
-    // 3. バックアップの実行（未作成の場合のみ）
-    if (!file_exists($backupPath)) {
-        if (!copy($filePath, $backupPath)) {
-            return false;
-        }
-    }
+	$imageInfo = getimagesize($filePath);
+	if (!$imageInfo) return false;
 
-    // 4. 画像情報の取得
-    $imageInfo = getimagesize($filePath);
-    if (!$imageInfo) return false;
+	$width = $imageInfo[0];
+	$height = $imageInfo[1];
+	$type = $imageInfo[2];
 
-    $width = $imageInfo[0];
-    $height = $imageInfo[1];
-    $type = $imageInfo[2];
+	// 5. 正方形の計算
+	// 短い方の辺に合わせて切り出しサイズを決定
+	$cropSize = min($width, $height);
+	
+	// 中央から切り抜くための開始座標を計算
+	$src_x = ($width - $cropSize) / 2;
+	$src_y = ($height - $cropSize) / 2;
 
-    // 5. リサイズ設定
-    $maxWidth = 800;
-    if ($width > $maxWidth) {
-        $newWidth = $maxWidth;
-        $newHeight = floor($height * ($maxWidth / $width));
-    } else {
-        $newWidth = $width;
-        $newHeight = $height;
-    }
-		//$newWidth,$newHeight縦横短い方に合わせて正方形にする
-    $shortSide = min($width, $height);
-    $newWidth = $shortSide;
-    $newHeight = $shortSide;
-    
+	// 出力サイズの設定（最大800pxの正方形）
+	$dstSize = min($cropSize, 800);
 
-    // 6. 画像の読み込み
-    switch ($type) {
-        case IMAGETYPE_JPEG: $source = imagecreatefromjpeg($filePath); break;
-        case IMAGETYPE_PNG:  $source = imagecreatefrompng($filePath); break;
-        case IMAGETYPE_GIF:  $source = imagecreatefromgif($filePath); break;
-        case IMAGETYPE_WEBP: $source = imagecreatefromwebp($filePath); break;
-        default: return false;
-    }
+	// 6. 画像の読み込み
+	switch ($type) {
+			case IMAGETYPE_JPEG: $source = imagecreatefromjpeg($filePath); break;
+			case IMAGETYPE_PNG:  $source = imagecreatefrompng($filePath); break;
+			case IMAGETYPE_GIF:  $source = imagecreatefromgif($filePath); break;
+			case IMAGETYPE_WEBP: $source = imagecreatefromwebp($filePath); break;
+			default: return false;
+	}
 
-    // 7. キャンバス作成とリサンプリング
-    $newImage = imagecreatetruecolor($newWidth, $newHeight);
-    
-    // 透明度の保持設定
-    imagealphablending($newImage, false);
-    imagesavealpha($newImage, true);
+	// 7. 正方形キャンバスの作成と切り抜き
+	$newImage = imagecreatetruecolor($dstSize, $dstSize);
+	
+	// 透過設定
+	imagealphablending($newImage, false);
+	imagesavealpha($newImage, true);
 
-    imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+	// imagecopyresampled(出力先, 元, 出力x, 出力y, 元x, 元y, 出力幅, 出力高, 元幅, 元高)
+	imagecopyresampled(
+			$newImage, $source, 
+			0, 0, $src_x, $src_y, 
+			$dstSize, $dstSize, $cropSize, $cropSize
+	);
 
-    // 8. WebPとして保存
-    $newFilePath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '.webp';
-    
-    // imagewebpを使用して保存
-    $success = imagewebp($newImage, $newFilePath, 80);
+	// 8. WebPとして保存
+	$newFilePath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '.webp';
+	$success = imagewebp($newImage, $newFilePath, 80);
 
-    // 9. メモリ解放
-    imagedestroy($source);
-    imagedestroy($newImage);
+	imagedestroy($source);
+	imagedestroy($newImage);
 
-    // 10. 後処理とリターン
-    if ($success) {
-        // 元のファイルが .webp でない場合は、古いファイルを削除
-        if ($extension !== 'webp') {
-            unlink($filePath);
-        }
-        return $newFilePath; // 新しいパスを返す
-    }
+	if ($success) {
+			if ($extension !== 'webp' && file_exists($newFilePath)) {
+					unlink($filePath);
+			}
+			return $newFilePath;
+	}
 
-    return false;
+	return false;
 }
-
 // --- 使用例 ---
 // backupAndOptimizeImage('images/profile.jpg');
 ?>
