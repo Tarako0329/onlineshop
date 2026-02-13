@@ -97,7 +97,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($sqlstr_h,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			//明細登録
 			$orderlist="【ご注文内容】\r\n";
@@ -124,7 +124,7 @@ if($rtn !== true){
 				$sqllog .= rtn_sqllog($sqlstr_m,$params);
 
 				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 				
 				$orderlist .= "◆".$params["shouhinNM"]."\r\n".$row["short_info"]."\r\n価格( ".return_num_disp($params["tanka"])." 円) x ".$params["su"]."(コ) = 合計 ".return_num_disp($params["goukeitanka"])." 円(税抜)\n\r備考：".$params["bikou"]."\r\n\r\n";
 			}
@@ -136,7 +136,7 @@ if($rtn !== true){
 			$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
 			$sqllog .= rtn_sqllog($sqlstr,$params);
 			$stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			//メールの作成
 			{

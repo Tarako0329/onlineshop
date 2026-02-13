@@ -89,7 +89,7 @@
 					$stmt->bindValue("accountId", $params["accountId"], PDO::PARAM_STR);
 					$sqllog = rtn_sqllog($sql,$params);
 					$status = $stmt->execute();
-					$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 					sqllogger($sqllog,0);
 		
@@ -113,7 +113,7 @@
 				$stmt = $pdo_h->prepare( $sql );
 				$sqllog = rtn_sqllog($sql,[]);
 				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 				
 				sqllogger($sqllog,0);
 				log_writer2("Stripe Account ID: {$account->id} は更新されましたが、まだアクティブではありません。","","lv1");

@@ -109,7 +109,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($sqlstr_h,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			if($colum ==="postage" || $colum === "postage_zeikbn"){
 				$sqlstr_h = "UPDATE juchuu_head set postage_zei = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where orderNO = :orderNO and uid like :uid";
@@ -121,7 +121,7 @@ if($rtn !== true){
 				$sqllog .= rtn_sqllog($sqlstr_h,$params);
 				
 				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			}
 			
 			//レジアプリユーザの売上連携
@@ -176,7 +176,7 @@ if($rtn !== true){
 					
 					$sqllog .= rtn_sqllog($sql,$params);
 					$stmt->execute();
-					$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 				}
 			}else if($user_ms[0]["webrez"]==="use" && $colum==="payment" && $value==0){
 				$sql ="DELETE from UriageData where uid=:uid and ShouhinNM Like :ShouhinNM";
@@ -186,7 +186,7 @@ if($rtn !== true){
 				$stmt->bindValue("ShouhinNM", $params["ShouhinNM"], PDO::PARAM_STR);
 				$sqllog .= rtn_sqllog($sql,$params);
 				$stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			}
 			

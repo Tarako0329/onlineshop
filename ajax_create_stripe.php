@@ -45,7 +45,7 @@
 			$sqllog = "";
 			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			$error="";
 			$alert_status = "success";

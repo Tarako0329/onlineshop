@@ -73,7 +73,7 @@ if($rtn !== true){
 			$count = $stmt -> rowCount();
 			log_writer2("\$count",$count,"lv3");
 
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);

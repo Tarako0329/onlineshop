@@ -49,7 +49,7 @@ if($rtn !== true){
 				$stmt->bindValue("SEQ", $params["SEQ"], PDO::PARAM_INT);
 				$sqllog .= rtn_sqllog($sqlstr,$params);
 				$stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			}
 
 			$stmt = $pdo_h->prepare( $sqlstr_m );
@@ -64,7 +64,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($sqlstr_m,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			//消費税明細の再計算（削除＆登録）
 			$sqlstr = "DELETE FROM juchuu_meisai WHERE orderNO = :orderNO AND zei <> 0";
@@ -72,14 +72,14 @@ if($rtn !== true){
 			$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
 			$sqllog .= rtn_sqllog($sqlstr,$params);
 			$stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			$sqlstr = "INSERT into juchuu_meisai select null as SEQ, orderNO,JM.zeikbn as shouhinCD,ZMS.hyoujimei,0 as su,0 as tanka,0 as goukeitanka,FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou ,NOW() as upd_datetime from juchuu_meisai JM inner join ZeiMS ZMS on JM.zeikbn = ZMS.zeiKBN where orderNO = :orderNO group by orderNO,ZMS.hyoujimei,JM.zeikbn,'-' having zei <> 0";
 			$stmt = $pdo_h->prepare($sqlstr);
 			$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
 			$sqllog .= rtn_sqllog($sqlstr,$params);
 			$stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);

@@ -26,7 +26,7 @@
 	  	$sqllog .= rtn_sqllog($sql_upd,$params);
 
 	  	$stmt->execute();
-	  	$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+	  	$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 	  	//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
 	  	$sql = "SELECT 

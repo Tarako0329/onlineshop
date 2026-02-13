@@ -129,7 +129,7 @@
 			$stmt2->bindValue("kurikoshiB", $params['kurikoshiB'], PDO::PARAM_INT);
 			$stmt2->execute();
 			
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			//次月のデータ作成
 			$params['getudo1'] = $yokugetu;
@@ -143,7 +143,7 @@
 
 			$stmt3->execute();
 			
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 
 		}

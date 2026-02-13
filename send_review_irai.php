@@ -152,7 +152,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			$sqllog .= rtn_sqllog($sql_upd,$params);
 
 			$stmt2->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			$cnt++;
 			

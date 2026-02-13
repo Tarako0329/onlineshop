@@ -92,7 +92,7 @@ if($rtn !== true){
                 $sqllog .= rtn_sqllog($sql,$params);
 
                 $status = $stmt->execute();
-                $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+                $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
             }
 
             //CtoBで始まるやり取り

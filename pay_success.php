@@ -41,7 +41,7 @@
 			$sqllog .= rtn_sqllog($sqlstr_h,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);

@@ -33,7 +33,7 @@
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
 			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 
 			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
 			exit();

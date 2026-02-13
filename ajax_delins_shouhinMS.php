@@ -72,7 +72,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($DELsql,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			$stmt = $pdo_h->prepare( $DELsql2 );
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -81,7 +81,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($DELsql2,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			$stmt = $pdo_h->prepare( $INSsql );
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -101,7 +101,7 @@ if($rtn !== true){
 			$sqllog .= rtn_sqllog($INSsql,$params);
 
 			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			
 			//画像ファイル処理
 			$i=1;	//sortの初期値
@@ -136,7 +136,7 @@ if($rtn !== true){
 				$sqllog .= rtn_sqllog($INSsql2,$params);
 
 				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("--execute():正常終了",[]);
+				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
 			}
 
 			$pdo_h->commit();

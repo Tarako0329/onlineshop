@@ -163,7 +163,7 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog($DELsql,$params);
 
             $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+            $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
             
             $stmt = $pdo_h->prepare( $INSsql );
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -201,7 +201,7 @@ if($rtn !== true){
             $sqllog .= rtn_sqllog($INSsql,$params);
 
             $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("--execute():正常終了",[]);
+            $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
             
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
