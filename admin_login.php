@@ -5,8 +5,8 @@
   $_SESSION["user_id"] = rot13decrypt2($user_hash);
 //  if(empty($_GET["key"])){
   if(empty(rot13decrypt2($user_hash))){
-    echo "参照用のURLが異なります。";
-    exit();
+    //echo "参照用のURLが異なります。";
+    //exit();
   }
 	$g_login = "signin_with";
 
