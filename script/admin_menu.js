@@ -44,6 +44,8 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
         menu.value = []//ログイン画面なのでメニューなし
       }else if(Where_to_use==="admin_pbPolicy.php"){
         menu.value = []//ログイン画面なのでメニューなし
+      }else if(Where_to_use==="admin_login.php"){
+        menu.value = []//ログイン画面なのでメニューなし
       }else{
       }
     })

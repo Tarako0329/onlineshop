@@ -9,6 +9,7 @@
     //exit();
   }
 	$g_login = "signin_with";
+	$login = false;
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
 	$sql = "SELECT UO.*,US.mail,US.password FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
@@ -67,12 +68,13 @@
 		</style>
 </head>
 <BODY>
-  <div id='app'>
-  <HEADER class='common_header'>
+  <div id='admin_menu'>
+		<?php include "header_tag_admin.php"  ?>
+  <!--<HEADER class='common_header'>
     <nav class="navbar navbar-expand-xl bg-body-tertiary fixed-top" style='padding:0;'>
       <div class="container common_header">
         <img src="img/android-chrome-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">
-        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php echo $user_hash;?>"><h1>管理メニュー【ログイン】</h1></a>
+        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php //echo $user_hash;?>"><h1>管理メニュー【ログイン】</h1></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -82,7 +84,7 @@
         </div>
       </div>
     </nav>
-  </HEADER>
+  </HEADER>-->
 
   <MAIN class='container common_main'>
 	<?php
@@ -159,6 +161,9 @@
   </FOOTER>
   </div>
   <script src="script/admin_menu.js?<?php echo $time; ?>"></script>
+  <script>
+    admin_menu('admin_login.php','','<?php echo $user_hash;?>').mount('#admin_menu');
+  </script>
   <script>
     	function handleCredentialResponse(response) {//googleログインでパスワードが認証されたときのみ、コールされる
   			// decodeJwtResponse() is a custom function defined by you
