@@ -40,6 +40,10 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
         document.getElementById("menu_09").classList.add("active");
       }else if(Where_to_use==="kiyaku.php"){
         document.getElementById("menu_010").classList.add("active");
+      }else if(Where_to_use==="admin_kiyaku.php"){
+        menu.value = []//ログイン画面なのでメニューなし
+      }else if(Where_to_use==="admin_pbPolicy.php"){
+        menu.value = []//ログイン画面なのでメニューなし
       }else{
       }
     })

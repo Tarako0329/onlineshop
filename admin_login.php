@@ -136,10 +136,10 @@
 			<div class='row'>
 				<div class='col-12 ps-3 pe-3 text-center fs-5'>
 					<div class='text-center mb-2 fs-5'>
-						<a href="pbPolicy.php">＜プライバシーポリシー＞</a>
+						<a href="admin_pbPolicy.php?key=<?php echo $user_hash;?>">＜プライバシーポリシー＞</a>
 					</div>
 					<div class='text-center mb-2 fs-5'>
-						<a href="kiyaku.php">＜利用規約＞</a>
+						<a href="admin_kiyaku.php?key=<?php echo $user_hash;?>">＜利用規約＞</a>
 					</div>
 				</div>
 			</div>

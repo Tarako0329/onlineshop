@@ -228,6 +228,7 @@ ver1.58.0:ログイン画面作成-commited
 ver1.59.0:phinx.php導入-commited
 ver1.60.0:商品登録画面改良-commited-20260210
 ver1.61.0:SQLLOGの修正-commited-20260213
+ver1.62.0:ログイン画面作成
 
 
 DROP TABLE ` users_test `
