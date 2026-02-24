@@ -1,5 +1,5 @@
 <?php
-  require "php_header.php";
+  require "php_header_admin.php";
 
   $user_hash = $_GET["key"] ;
   $_SESSION["user_id"] = rot13decrypt2($user_hash);

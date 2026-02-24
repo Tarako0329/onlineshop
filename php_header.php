@@ -58,7 +58,7 @@ define("GEMINI",$_ENV["GOOGLE_API"]);
 define("GEMINI_URL",$_ENV["GEMINI_URL"]);
 $MERCHANT_ID = $_ENV["MERCHANT_ID"];
 
-define("GOOGLE_AUTH",$_ENV["GOOGLE_AUTH"]);
+//define("GOOGLE_AUTH",$_ENV["GOOGLE_AUTH"]);
 
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
