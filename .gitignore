@@ -13,10 +13,10 @@ xxx*
 *.mp4
 *.htaccess
 *.csv
-upload/
-!upload/logo_sample.webp
-upload/temp/
-!upload/temp/dummy.txt
+/upload/*
+!/upload/logo_sample.webp
+/upload/temp/*
+!/upload/temp/dummy.txt
 *test*
 *template*
 *.mm
