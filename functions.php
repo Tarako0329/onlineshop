@@ -968,6 +968,3 @@ function backupAndOptimizeImage($filePath) {
 // --- 使用例 ---
 // backupAndOptimizeImage('images/profile.jpg');
 ?>
-
-
-
