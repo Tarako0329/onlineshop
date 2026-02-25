@@ -58,82 +58,85 @@ define("GEMINI",$_ENV["GOOGLE_API"]);
 define("GEMINI_URL",$_ENV["GEMINI_URL"]);
 $MERCHANT_ID = $_ENV["MERCHANT_ID"];
 
-//define("GOOGLE_AUTH",$_ENV["GOOGLE_AUTH"]);
-
-
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
-//リファイラの取得
+//require元PHPの取得
+$request_php = basename($_SERVER['PHP_SELF']);
+//リファイラの取得($request_phpがajax_から始まらない場合)
 
-if(!empty($_GET["amp;z"])){
-  $get_z = $_GET["amp;z"];
-}else if(!empty($_GET["z"])){
-  $get_z = $_GET["z"];
-}else{
-  $get_z = "";
-}
 
-if($get_z==="X"){
-  $get_z = "X.com";
-}else if($get_z==="fb"){
-  $get_z = "facebook";
-}else if($get_z==="ln"){
-  $get_z = "Line";
-}else if(!empty($_SERVER['HTTP_REFERER'])){
-  if(strpos($_SERVER['HTTP_REFERER'], "instagram")!==false){
-    $get_z = "instagram";
-  }else if(strpos($_SERVER['HTTP_REFERER'], "facebook")!==false){
+if(!str_starts_with($request_php, 'ajax_')){
+  if(!empty($_GET["amp;z"])){
+    $get_z = $_GET["amp;z"];
+  }else if(!empty($_GET["z"])){
+    $get_z = $_GET["z"];
+  }else{
+    $get_z = "";
+  }
+
+  if($get_z==="X"){
+    $get_z = "X.com";
+  }else if($get_z==="fb"){
+    $get_z = "facebook";
+  }else if($get_z==="ln"){
+    $get_z = "Line";
+  }else if(!empty($_SERVER['HTTP_REFERER'])){
+    if(strpos($_SERVER['HTTP_REFERER'], "instagram")!==false){
+      $get_z = "instagram";
+    }else if(strpos($_SERVER['HTTP_REFERER'], "facebook")!==false){
+      $get_z = "facebook";
+    }else{
+      $get_z = "direct";
+    }
+  }else if(!empty($_GET["fbclid"])){
     $get_z = "facebook";
   }else{
-    $get_z = "direct";
+    $get_z = "unknown";
   }
-}else if(!empty($_GET["fbclid"])){
-  $get_z = "facebook";
-}else{
-  $get_z = "unknown";
-}
 
-// クライアントのユーザエージェントを取得
-$ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
-$pattern_list_string = file_get_contents('bot_list.txt');
-$aclu="";
+  // クライアントのユーザエージェントを取得
+  $ua = !empty($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"";
+  $pattern_list_string = file_get_contents('bot_list.txt');
+  $aclu="";
 
-// 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
-if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === "" || !empty($_GET["author"])){
-  //大半のユーザはユーザエージェントある。ないのは非ユーザが大半で、あとは小数のセキュリティ意識高すぎ人なのでbotとして排除
-  //$_GET["author"]はgooglebot
-  $bot = "bot";
-}else{
-  //訪問者のマーキング
-  if(empty($_COOKIE["aclu"])){//アクセスログユーザの略
-    //$aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".$_SERVER['REMOTE_ADDR']);
-    $aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".session_id());
-    setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);
-    $bot = "first";
+  // 作成したパターン文字列を使い正規表現によるマッチングを行うbot判定
+  if(preg_match('/' . $pattern_list_string . '/', $ua) === 1 || $ua === "" || !empty($_GET["author"])){
+    //大半のユーザはユーザエージェントある。ないのは非ユーザが大半で、あとは小数のセキュリティ意識高すぎ人なのでbotとして排除
+    //$_GET["author"]はgooglebot
+    $bot = "bot";
   }else{
-    $aclu = $_COOKIE["aclu"];
-    setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);//延長
-    $bot = "repeater";
+    //訪問者のマーキング
+    if(empty($_COOKIE["aclu"])){//アクセスログユーザの略
+      //$aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".$_SERVER['REMOTE_ADDR']);
+      $aclu = rot13encrypt2(date('Y/m/d-H:i:s')."__".session_id());
+      setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);
+      $bot = "first";
+    }else{
+      $aclu = $_COOKIE["aclu"];
+      setCookie("aclu",$aclu , time() + 365*24*60*60, "/", "", TRUE, TRUE);//延長
+      $bot = "repeater";
+    }
+    //$bot = "user";
   }
-  //$bot = "user";
+  $_SESSION["mark_id"] = $_SESSION["mark_id"] ?? $aclu;
+
+  $get = print_r($_GET,true);
+  $get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
+  $log_param = [
+    $_SERVER['REMOTE_ADDR']
+    ,$bot
+    ,$ua
+    ,!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:""
+    ,!empty($_SERVER['PHP_SELF'])?$_SERVER['PHP_SELF']:""
+    ,!empty($_GET['id'])?$_GET['id']:""
+    ,$get
+    ,$get_z
+    ,$aclu
+  ];
+  $_SESSION["log_param"] = $log_param;
+  aclog_writer($log_param,$pdo_h);
+}else{
+  log_writer2("","ajax：アクセスログスキップ","lv3");
 }
-$_SESSION["mark_id"] = $_SESSION["mark_id"] ?? $aclu;
-
-$get = print_r($_GET,true);
-$get = str_replace(["\r","\n","\t"],"",$get);//改行・タブの削除
-$log_param = [
-  $_SERVER['REMOTE_ADDR']
-  ,$bot
-  ,$ua
-  ,!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:""
-  ,!empty($_SERVER['PHP_SELF'])?$_SERVER['PHP_SELF']:""
-  ,!empty($_GET['id'])?$_GET['id']:""
-  ,$get
-  ,$get_z
-  ,$aclu
-];
-$_SESSION["log_param"] = $log_param;
-aclog_writer($log_param,$pdo_h);
-
 
 ?>

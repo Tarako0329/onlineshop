@@ -9,7 +9,7 @@
 	$rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
 	log_writer2("\$POST",$_POST,"lv3");
 
-	$an_type = $_POST["an_type"];
+	//$an_type = $_POST["an_type"];
 	if(1<>1){
 	  $msg=$rtn;
 	  $alert_status = "alert-warning";

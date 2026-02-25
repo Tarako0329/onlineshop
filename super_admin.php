@@ -5,7 +5,7 @@
 新規出店者作成
 
 */
-require "php_header.php";
+require "php_header_admin.php";
 
 $msg="";
 if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
@@ -24,11 +24,11 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 	//新規出店者登録SQL
 	try{
 		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("INSERT INTO Users_online(uid,logo,yagou) values(:uid,'upload/logo_sample.png',:yagou)");
+		$stmt = $pdo_h->prepare("INSERT INTO Users_online(uid,logo,yagou) values(:uid,'upload/logo_sample.webp',:yagou)");
 		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
 		$stmt->bindValue(":yagou", $_POST["new_yagou"], PDO::PARAM_STR);
 		$stmt->execute();
-		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,password,question,answer) values(:uid,'-','-','-','-')");
+		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,password,question,answer,onlineshop) values(:uid,'-','-','-','-','use')");
 		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
 		$stmt->execute();
 		$pdo_h->commit();

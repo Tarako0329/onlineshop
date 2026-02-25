@@ -1,12 +1,14 @@
 <?php
-	require "php_header.php";
+	require "php_header_admin.php";
 	$token = csrf_create();
 	if(empty($_GET["key"])){
 		echo "参照用のURLが異なります。";
 		exit();
 	}
 	$user_hash = $_GET["key"] ;
-	$_SESSION["user_id"] = rot13decrypt2($user_hash);
+	$key_user = rot13decrypt2($user_hash);
+	require_once "auth.php";
+	//$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 	//同一時刻同一IP別セッションのbot疑惑ログをbot?に更新(とりあえず保留)
 	$sql = "UPDATE access_log AS AL INNER JOIN ( SELECT datetime,ip,count(*) FROM `access_log` where bot<>'bot' group by datetime,ip HAVING count(*) > 1 ) AS tmp ON AL.datetime = tmp.datetime AND AL.ip = tmp.ip SET bot = 'bot?'";

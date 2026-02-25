@@ -1,4 +1,5 @@
 <?php
+//お客さんが商品詳細を開いたときにLOGを取得するためのajax
 date_default_timezone_set('Asia/Tokyo'); 
 define("VERSION","ver1.35.0");
 

@@ -26,7 +26,6 @@
 
 		if($tani==='m'){
 			$word1 = "MONTH";
-			//$word2 = "CONCAT(YEAR(AL.date), '-', MONTH(AL.date))";
 			$word2 = "DATE_FORMAT(CONCAT(YEAR(AL.date), '-', MONTH(AL.date),'-01'), '%Y-%m')";
 			$word3 = "DATE_FORMAT(cal.date, '%Y-%m')";
 		}else{//d
@@ -49,18 +48,19 @@
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
-		$askNO = rot13decrypt2($_SESSION["askNO"]);
-		
+		//$askNO = rot13decrypt2($_SESSION["askNO"]);
+		$uid = $_SESSION["user_id"];
+
 		if($an_type == 1){
 			$sql = "WITH RECURSIVE cal AS (
 								SELECT :from1 AS date 
 								UNION ALL
-								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
+								SELECT DATE_ADD(cal.date, INTERVAL 1 $word1)
 								FROM cal
 								WHERE cal.date < :to1
 						)
 						SELECT 
-						".$word3." as date
+						$word3 as date
 							,IFNULL(jisseki.訪問者数,0) as 訪問者数
 							,IFNULL(jisseki.初訪問,0) as 初訪問
 							,IFNULL(jisseki.再訪問,0) as 再訪問
@@ -68,29 +68,29 @@
 						LEFT JOIN
 						(
 							SELECT 
-								".$word2." as date
+								$word2 as date
 								,count(*) as 訪問者数 
 								,sum(if(bot='first',1,0)) as 初訪問 
 								,sum(if(bot='repeater',1,0)) as 再訪問 
 							FROM access_log AL 
-							inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where uid in (0,".$_SESSION["user_id"].") and bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
+							inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where uid in (0,$uid) and bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
 							ON AL.SEQ = MIN_DATA.minseq 
 							group by 
-								".$word2."
+								$word2
 						) as jisseki
-						ON ".$word3." = jisseki.date
+						ON $word3 = jisseki.date
 						WHERE cal.date < :to3 AND cal.date <= CURDATE()
 						ORDER BY ".$word3." DESC";
 		}else if($an_type == 2){
 			$sql = "WITH RECURSIVE cal AS (
 								SELECT :from1 AS date 
 								UNION ALL
-								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
+								SELECT DATE_ADD(cal.date, INTERVAL 1 $word1)
 								FROM cal
 								WHERE cal.date < :to1
 						)
 						SELECT 
-							".$word3." as date
+							$word3 as date
 							,IFNULL(jisseki.訪問者数,0) as 訪問者数
 							,IFNULL(jisseki.X ,0) as X
 							,IFNULL(jisseki.instagram,0) as instagram
@@ -101,35 +101,35 @@
 						LEFT JOIN
 						(
 							SELECT 
-							".$word2." as date
+							$word2 as date
 							,count(*) as 訪問者数 
 							,sum(if(ref like '%//t.co/%',1,0)) as X
 							,sum(if(ref like '%instagram.com%',1,0)) as instagram 
 							,sum(if(ref like '%facebook%',1,0)) as facebook 
 							,sum(if(ref like '%google%',1,0)) as google 
 							FROM access_log AL 
-							inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where uid in (0,".$_SESSION["user_id"].") and bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
+							inner join ( SELECT date,mark_id,min(SEQ) as minseq FROM `access_log` where uid in (0,$uid) and bot <> 'bot' and date between :from2 and :to2 group by date,mark_id ) as MIN_DATA 
 							ON AL.SEQ = MIN_DATA.minseq 
 							group by 
-								".$word2."
+								$word2
 						) as jisseki
-						ON ".$word3." = jisseki.date
+						ON $word3 = jisseki.date
 						WHERE cal.date < :to3 AND cal.date <= CURDATE()
-						ORDER BY ".$word3." DESC";
+						ORDER BY $word3 DESC";
 		}else if($an_type == 3){//表示が煩雑になるので月集計・年集計のみ
 			//log_writer2("\$_POST[taishou_all]",$_POST["taishou_all"],"lv3");
 			$word4 = ($_POST["taishou_all"]==='false')?"":" AND (tmp.shouhinNM = 'TOPページ' OR tmp.shouhinNM IN (SELECT shouhinNM FROM shouhinMS_online WHERE status = 'show')) ";
 			$sql = "WITH RECURSIVE cal AS (
 								SELECT :from1 AS date 
 								UNION ALL
-								SELECT DATE_ADD(cal.date, INTERVAL 1 ".$word1.")
+								SELECT DATE_ADD(cal.date, INTERVAL 1 $word1)
 								FROM cal
 								WHERE cal.date < :to1
 						)
 						SELECT date,uid,shouhinNM,SUM(訪問者数) as 訪問者数 FROM
 						(
 							SELECT 
-								".$word3." as date
+								$word3 as date
 								,IFNULL(jisseki.uid,0) as uid
 								,IFNULL(jisseki.shouhinNM,'') as shouhinNM
 								,IFNULL(jisseki.訪問者数,0) as 訪問者数
@@ -137,28 +137,28 @@
 							LEFT JOIN
 							(
 								SELECT 
-									".$word2." as date
+									$word2 as date
 									,uid,shouhinNM
 									,count(*) as 訪問者数 
 								FROM 
 									( 
-										SELECT DISTINCT date,uid,IF(page='/index.php','TOPページ',shouhinNM) as shouhinNM,mark_id,bot FROM `access_log` where uid in (0,".$_SESSION["user_id"].") and bot <> 'bot' and date between :from2 and :to2 
+										SELECT DISTINCT date,uid,IF(page='/index.php','TOPページ',shouhinNM) as shouhinNM,mark_id,bot FROM `access_log` where uid in (0,$uid) and bot <> 'bot' and date between :from2 and :to2 
 									) as AL 
 								group by 
-									".$word2.",uid,shouhinNM
+									$word2,uid,shouhinNM
 							) as jisseki
-							ON ".$word3." = jisseki.date
+							ON $word3 = jisseki.date
 							UNION ALL
 							SELECT 
-								".$word3." as date
+								$word3 as date
 								,MS.uid as uid
 								,MS.shouhinNM as shouhinNM
 								,0 as 訪問者数
 							FROM cal
-							LEFT JOIN (select uid,shouhinNM,status from shouhinMS_online where uid in (".$_SESSION["user_id"].") UNION ALL select 0 as uid,'TOPページ' as shouhinNM,'show' as status) as MS
+							LEFT JOIN (select uid,shouhinNM,status from shouhinMS_online where uid in ($uid) UNION ALL select 0 as uid,'TOPページ' as shouhinNM,'show' as status) as MS
 							ON 1=1
 						) as tmp
-						WHERE tmp.date < :to3 ".$word4."
+						WHERE tmp.date < :to3 $word4
 						AND IFNULL(tmp.shouhinNM,'') <> ''
 						GROUP BY date,uid,shouhinNM
 						ORDER BY tmp.date DESC,tmp.shouhinNM";

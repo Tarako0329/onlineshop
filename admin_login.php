@@ -1,40 +1,42 @@
 <?php
   require "php_header_admin.php";
 
+	$errmsg = "";
+
   $user_hash = $_GET["key"] ;
-  $_SESSION["user_id"] = rot13decrypt2($user_hash);
-//  if(empty($_GET["key"])){
-  if(empty(rot13decrypt2($user_hash))){
-    //echo "参照用のURLが異なります。";
-    //exit();
-  }
+  $_SESSION["user_id"] = rot13decrypt2($user_hash) ;
+	$_SESSION["user_id"] = empty($_SESSION["user_id"])?-1:$_SESSION["user_id"];
+
 	$g_login = "signin_with";
 	$login = false;
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
-	$sql = "SELECT UO.*,US.mail,US.password FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
-	$stmt = $pdo_h->prepare($sql);
-	$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-	$stmt->execute();
-	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$sql = "SELECT UO.*,US.mail,US.password,US.login_type FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
+	$row = $db->SELECT($sql, [":uid" => $_SESSION["user_id"]]);
 	log_writer2("admin_menu.php start","","lv3");
 	//log_writer2("\$row",$row,"lv3");
 	log_writer2("\$_SESSION['user_id']",$_SESSION["user_id"],"lv3");
 	
-	$Yagou = $row[0]["yagou"];
-	$mail = $row[0]["mail"];
-	$password = $row[0]["password"];
 
-	if($mail==="-" && $password==="-"){
-		$g_login = "signup_with";
-		$btn_text = "新規登録";
+	if(Count($row)>0){
+		$Yagou = $row[0]["yagou"];
+		$mail = $row[0]["mail"];
+		$password = $row[0]["password"];
+		$logo_url = $row[0]["logo"];
+		$login_type = $row[0]["login_type"];
+		if($mail==="-" && $password==="-"){
+			$g_login = "signup_with";
+			$btn_text = "新規登録";
+		}else{
+			$g_login = "signin_with";
+			$btn_text = "ログイン";
+		}
 	}else{
-		$g_login = "signin_with";
-		$btn_text = "ログイン";
+		$errmsg = "<p>ログインURLが異なるか、未登録です。</p>";
 	}
 
 	$token = csrf_create();
-	$errmsg = $_SESSION["e-msg"];
+	$errmsg .= $_SESSION["e-msg"];
 	$_SESSION["e-msg"] = "";
 
 ?>
@@ -70,22 +72,6 @@
 <BODY>
   <div id='admin_menu'>
 		<?php include "header_tag_admin.php"  ?>
-  <!--<HEADER class='common_header'>
-    <nav class="navbar navbar-expand-xl bg-body-tertiary fixed-top" style='padding:0;'>
-      <div class="container common_header">
-        <img src="img/android-chrome-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">
-        <a class="navbar-brand alice-regular" href="admin_menu.php?key=<?php //echo $user_hash;?>"><h1>管理メニュー【ログイン】</h1></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse ms-5" id="navbarNav" >
-          <ul class="navbar-nav alice-regular">
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </HEADER>-->
-
   <MAIN class='container common_main'>
 	<?php
 		if (!empty($errmsg)) {
@@ -95,17 +81,22 @@
 	  <div class="card card-container">
 			<form class="form-signin" id="form1" method="post" action="ajax_login.php">
 				<div class="row mb-3">
-					<div class='col-12 text-center' style='height:50px;border-radius: 50%;'>
-						<div style='height:48px;width:48px;border-radius: 50%;background-color:red;margin:auto;'>
-							<img style='border-radius: 50%;' src='img/android-chrome-48x48.png'></img>
+					<div class='col-12 text-center' style='height:80px;border-radius: 50%;'>
+						<div style='height:75px;width:75px;border-radius: 50%;background-color:red;margin:auto;'>
+							<img style='border-radius: 50%;object-fit: cover;height: 100%;width: 100%;' src='<?php echo $logo_url;?>'></img>
 						</div>
 					</div>
 				</div> 
 				<div class="row mb-2">
 					<div class="col-12">
 						<p>ようこそ　『<?php echo $Yagou;?>』　様</p>
+						<p>このページは　『<?php echo $Yagou;?>』　様専用のログインページです。</p>
+						<p class='text-primary'>URLを保存するか、<i class="bi bi-star-fill" style="color:gold;"></i>お気に入りに登録してください。</p>
+						<?php echo ($btn_text==="新規登録")?"<p class='text-danger'>ユーザ登録をお願いします。メールアドレスとパスワードでログインを設定するか、Googleログインからログインしてください。</p>":"";?>
 					</div>
 				</div>
+
+				<?php echo ($login_type==="google")?"<!--":"";?>
 				<div class="input-group mb-1">
   				<input type="text" class="form-control" name="mail" placeholder="Input your E-mail" aria-label="Input your E-mail" aria-describedby="button-addon2" required>
 				</div>
@@ -114,14 +105,16 @@
   				<button class="btn btn-outline-primary" type="submit" id="button-addon2" name="login_type" value="<?php echo $g_login;?>"><?php echo $btn_text;?></button>
 				</div>
 				<a href="forget_pass_sendurl.php" class="forgot-password">ﾊﾟｽﾜｰﾄﾞを忘れたらｸﾘｯｸ</a>
+				<?php echo ($login_type==="google")?"-->":"";?>
 
 				<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="shubetu" value="IPASS">
 			</form><!-- /form -->
 
-				<p> OR </p>
-
-				<div class="g_id_signin " style='width:268px;margin:auto;'
+			<?php echo ($btn_text==="新規登録")?"<p> OR </p>":"";?>
+			
+			<?php echo ($login_type==="ipass")?"<!--":"";?>
+			<div class="g_id_signin " style='width:268px;margin:auto;'
 				data-type="standard"
 				data-size="large"
 				data-theme="outline"
@@ -134,6 +127,8 @@
 				data-callback="handleCredentialResponse"
 				data-auto_prompt="false">
 			</div>
+			<?php echo ($login_type==="ipass")?"-->":"";?>
+
 			<hr>
 			<div class='row'>
 				<div class='col-12 ps-3 pe-3 text-center fs-5'>

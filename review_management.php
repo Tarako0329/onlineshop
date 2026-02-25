@@ -4,7 +4,9 @@
 		exit();
 	}
 	$user_hash = $_GET["key"] ;
-  $_SESSION["user_id"] = rot13decrypt2($user_hash);
+  $key_user = rot13decrypt2($user_hash);
+  require_once "auth.php";  //次のリリースで有効にする
+  //$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
 
 	$token = csrf_create();
@@ -153,7 +155,7 @@
 	<script>
 		createApp({
 			setup(){
-				//const reviews = ref(<?php echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
+				//const reviews = ref(<?php //echo json_encode($reviews, JSON_UNESCAPED_UNICODE);?>)
 				const reviews = ref([])
 				let token = '<?php echo $token;?>'
 

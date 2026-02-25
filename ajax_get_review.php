@@ -3,6 +3,7 @@
   register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
   $alert_status = "alert_success";
+	$msg = "正常終了";
   $rtn = csrf_checker(["review_management.php","xxx.php"],["P","S"]);
   if($rtn !== true){
     $msg=$rtn;

@@ -6,7 +6,9 @@
 		exit();
 	}
 	$user_hash = $_GET["key"] ;
-	$_SESSION["user_id"] = rot13decrypt2($user_hash);
+  $key_user = rot13decrypt2($user_hash);
+  require_once "auth.php";  //次のリリースで有効にする
+	//$_SESSION["user_id"] = rot13decrypt2($user_hash);
 ?>
 <!DOCTYPE html>
 <html lang='ja'>
