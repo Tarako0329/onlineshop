@@ -33,15 +33,7 @@ if($rtn!==true){
 		$sql = "SELECT * FROM Users WHERE `uid` = :uid AND mail = :mail";
 		$row = $db->SELECT($sql, [":uid" => $_SESSION["user_id"],":mail" => $username]);
 	}
-	/*
-	$sql = "SELECT * FROM Users WHERE `uid` = :uid AND mail = :mail";
-	$stmt = $pdo_h->prepare($sql);
-	
-	$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-	$stmt->bindValue("mail", $username, PDO::PARAM_STR);
-	$stmt->execute();
-	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	*/
+
 	if(empty($row) ){
 		//ログイン失敗
 		$msg = "ログインに失敗しました。お客様のログインページのURLが不正です。";
@@ -50,8 +42,6 @@ if($rtn!==true){
 		if($_POST["login_type"]==="signup_with"){//新規登録
 			//Usersテーブルのパスワードを更新（メアドとパスワードを登録）
 			try{
-				//$pdo_h->beginTransaction();
-				//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 				$db->begin_tran();
 
 				$params["password"] = passEx($password);
@@ -59,37 +49,19 @@ if($rtn!==true){
 				$params["uid"] = $_SESSION["user_id"];
 				$params["login_type"] = $_POST["shubetu"];
 
-				$sql="UPDATE Users SET `password`=:password, `mail`=:mail, login_type = :login_type WHERE `uid` = :uid";
+				$sql="UPDATE Users SET `password_onlineshop`=:password, `mail`=:mail, login_type = :login_type WHERE `uid` = :uid";
 				$db->UP_DEL_EXEC($sql,[":password" => $params["password"],":mail" => $params["mail"],":uid" => $params["uid"],":login_type" => $params["login_type"]]);
 				
 				$db->commit_tran();
-				/*
-				$stmt = $pdo_h->prepare($sql);
-				$stmt->bindValue("password", $params["password"], PDO::PARAM_STR);
-				$stmt->bindValue("mail", $params["mail"], PDO::PARAM_STR);
-				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
-				$stmt->bindValue("login_type", $params["login_type"], PDO::PARAM_STR);
-				$sqllog .= rtn_sqllog($sql,$params);
-
-				$stmt->execute();
-				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-
-				$pdo_h->commit();
-				$sqllog .= rtn_sqllog("commit",[]);
-				sqllogger($sqllog,0);
-				*/
 	
 				$status = true;
 				//log_writer2("\$pass_hashed",$params["password"],"lv3");
 			}catch(Exception $e){
-				//$pdo_h->rollBack();
-				//$sqllog .= rtn_sqllog("rollBack",[]);
-				//sqllogger($sqllog,$e);
 				$db->rollback_tran();
 				log_writer2("\$e",$e,"lv0");
 				$msg = "予期せぬエラーが発生しました。";
 			}
-		}else if($_POST["login_type"]==="signin_with" && verifyPassword($password, $row[0]['password']) && $row[0]['mail'] === $username){//サインイン
+		}else if($_POST["login_type"]==="signin_with" && verifyPassword($password, $row[0]['password_onlineshop']) && $row[0]['mail'] === $username){//サインイン
 			//ログイン成功
 			$status = true;
 		
@@ -98,9 +70,9 @@ if($rtn!==true){
 			log_writer2("\$_POST['login_type']",$_POST["login_type"],"lv3");
 			log_writer2("\$row[0]['mail']",$row[0]['mail'],"lv3");
 			log_writer2("\$username",$username,"lv3");
-			log_writer2("\$row[0]['password']",$row[0]['password'],"lv3");
+			log_writer2("\$row[0]['password_onlineshop']",$row[0]['password_onlineshop'],"lv3");
 			log_writer2("\$password",$password,"lv3");
-			log_writer2("password_verify",verifyPassword($password, $row[0]['password']),"lv3");
+			log_writer2("password_verify",verifyPassword($password, $row[0]['password_onlineshop']),"lv3");
 			$msg = "ログインに失敗しました。メールアドレスまたはパスワードを確認してください。";
 		}
 	}

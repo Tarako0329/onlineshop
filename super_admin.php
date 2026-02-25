@@ -9,14 +9,18 @@ require "php_header_admin.php";
 
 $msg="";
 if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
-	$stmt = $pdo_h->prepare("select uid from Users where uid = :uid FOR UPDATE");
+	//$stmt = $pdo_h->prepare("select uid from Users where uid = :uid FOR UPDATE");
 	while(true){
 		//乱数からユーザIDを発行し、重複してなければ使用する
 		$new_id = rand(0,99999);
 		log_writer2("\$uid",$new_id,"lv3");
+		/*
 		$stmt->bindValue("uid", $new_id, PDO::PARAM_INT);
 		$stmt->execute();
 		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		*/
+
+		$row = $db->SELECT("SELECT `uid` from Users where `uid` = :uid FOR UPDATE", [":uid" => $new_id]);
 		if(empty($row["uid"])){
 			break;
 		}
@@ -28,7 +32,7 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
 		$stmt->bindValue(":yagou", $_POST["new_yagou"], PDO::PARAM_STR);
 		$stmt->execute();
-		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,password,question,answer,onlineshop) values(:uid,'-','-','-','-','use')");
+		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,`password_onlineshop`,question,answer,onlineshop) values(:uid,'-','-','-','-','use')");
 		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
 		$stmt->execute();
 		$pdo_h->commit();

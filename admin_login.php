@@ -11,7 +11,7 @@
 	$login = false;
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
-	$sql = "SELECT UO.*,US.mail,US.password,US.login_type FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
+	$sql = "SELECT UO.*,US.mail,US.password_onlineshop,US.login_type FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
 	$row = $db->SELECT($sql, [":uid" => $_SESSION["user_id"]]);
 	log_writer2("admin_menu.php start","","lv3");
 	//log_writer2("\$row",$row,"lv3");
@@ -21,10 +21,11 @@
 	if(Count($row)>0){
 		$Yagou = $row[0]["yagou"];
 		$mail = $row[0]["mail"];
-		$password = $row[0]["password"];
+		$password_onlineshop = $row[0]["password_onlineshop"];
 		$logo_url = $row[0]["logo"];
 		$login_type = $row[0]["login_type"];
-		if($mail==="-" && $password==="-"){
+		//if($mail==="-" && $password==="-"){
+		if($password_onlineshop==="-"){	//レジアプリ登録者はメアドが登録済みのため、パスワード"-"の場合のみ新規登録とみなす
 			$g_login = "signup_with";
 			$btn_text = "新規登録";
 		}else{
@@ -92,7 +93,7 @@
 						<p>ようこそ　『<?php echo $Yagou;?>』　様</p>
 						<p>このページは　『<?php echo $Yagou;?>』　様専用のログインページです。</p>
 						<p class='text-primary'>URLを保存するか、<i class="bi bi-star-fill" style="color:gold;"></i>お気に入りに登録してください。</p>
-						<?php echo ($btn_text==="新規登録")?"<p class='text-danger'>ユーザ登録をお願いします。メールアドレスとパスワードでログインを設定するか、Googleログインからログインしてください。</p>":"";?>
+						<?php echo ($btn_text==="新規登録")?"<div style='border:solid 1px red'><p class='text-danger'>※ユーザ登録をお願いします。※</p>メールアドレスとパスワードでログインを設定するか、Googleログインからログインしてください。</p></div>":"";?>
 					</div>
 				</div>
 
@@ -104,14 +105,18 @@
   				<input type="text" class="form-control" name="pass" placeholder="Input your Password" aria-label="Input your Password" aria-describedby="button-addon2" required>
   				<button class="btn btn-outline-primary" type="submit" id="button-addon2" name="login_type" value="<?php echo $g_login;?>"><?php echo $btn_text;?></button>
 				</div>
+				
+				<?php echo ($btn_text==="新規登録")?"<!--":"";?>
 				<a href="forget_pass_sendurl.php" class="forgot-password">ﾊﾟｽﾜｰﾄﾞを忘れたらｸﾘｯｸ</a>
+				<?php echo ($btn_text==="新規登録")?"-->":"";?>
+
 				<?php echo ($login_type==="google")?"-->":"";?>
 
 				<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="shubetu" value="IPASS">
 			</form><!-- /form -->
 
-			<?php echo ($btn_text==="新規登録")?"<p> OR </p>":"";?>
+			<?php echo ($btn_text==="新規登録")?"<div style='width:100%;' class='text-center mt-3 mb-3'><p> OR </p></div>":"";?>
 			
 			<?php echo ($login_type==="IPASS")?"<!--":"";?>
 			<div class="g_id_signin " style='width:268px;margin:auto;'
