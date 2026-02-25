@@ -113,7 +113,7 @@
 
 			<?php echo ($btn_text==="新規登録")?"<p> OR </p>":"";?>
 			
-			<?php echo ($login_type==="ipass")?"<!--":"";?>
+			<?php echo ($login_type==="IPASS")?"<!--":"";?>
 			<div class="g_id_signin " style='width:268px;margin:auto;'
 				data-type="standard"
 				data-size="large"
@@ -127,7 +127,7 @@
 				data-callback="handleCredentialResponse"
 				data-auto_prompt="false">
 			</div>
-			<?php echo ($login_type==="ipass")?"-->":"";?>
+			<?php echo ($login_type==="IPASS")?"-->":"";?>
 
 			<hr>
 			<div class='row'>
