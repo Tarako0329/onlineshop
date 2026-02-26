@@ -9,17 +9,10 @@ require "php_header_admin.php";
 
 $msg="";
 if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
-	//$stmt = $pdo_h->prepare("select uid from Users where uid = :uid FOR UPDATE");
 	while(true){
 		//乱数からユーザIDを発行し、重複してなければ使用する
 		$new_id = rand(0,99999);
 		log_writer2("\$uid",$new_id,"lv3");
-		/*
-		$stmt->bindValue("uid", $new_id, PDO::PARAM_INT);
-		$stmt->execute();
-		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
-
 		$row = $db->SELECT("SELECT `uid` from Users where `uid` = :uid FOR UPDATE", [":uid" => $new_id]);
 		if(empty($row["uid"])){
 			break;
@@ -27,18 +20,13 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 	}
 	//新規出店者登録SQL
 	try{
-		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("INSERT INTO Users_online(uid,logo,yagou) values(:uid,'upload/logo_sample.webp',:yagou)");
-		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
-		$stmt->bindValue(":yagou", $_POST["new_yagou"], PDO::PARAM_STR);
-		$stmt->execute();
-		$stmt = $pdo_h->prepare("INSERT INTO Users(uid,mail,`password_onlineshop`,question,answer,onlineshop) values(:uid,'-','-','-','-','use')");
-		$stmt->bindValue(":uid", $new_id, PDO::PARAM_INT);
-		$stmt->execute();
-		$pdo_h->commit();
+		$db->begin_tran();
+		$db->INSERT("Users_online",["uid"=>$new_id,"logo"=>"upload/logo_sample.webp","yagou"=>$_POST["new_yagou"]]);
+		$db->INSERT("Users",["uid"=>$new_id,"mail"=>"-","password_onlineshop"=>"-","question"=>"-","answer"=>"-","onlineshop"=>"use"]);
+		$db->commit_tran();
 		$msg='出店アカウントを作成しました。';
 	}catch(Exception $e){
-		$pdo_h->rollBack();
+		$db->rollback_tran();
 		var_dump($e);
 		exit();
 	}
@@ -47,24 +35,20 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 if(!empty($_POST["sns_f"]) && !empty($_POST["sns_t"])){
 	//自動ツイート間隔幅設定
 	try{
-		$pdo_h->beginTransaction();
-		$stmt = $pdo_h->prepare("UPDATE online_shop_config SET post_interval_F = :sns_f ,post_interval_T = :sns_t");
-		$stmt->bindValue(":sns_f", $_POST["sns_f"], PDO::PARAM_INT);
-		$stmt->bindValue(":sns_t", $_POST["sns_t"], PDO::PARAM_INT);
-		$stmt->execute();
-		$pdo_h->commit();
+		$db->begin_tran();
+		$db->UP_DEL_EXEC(
+			"UPDATE online_shop_config SET post_interval_F = :sns_f ,post_interval_T = :sns_t"
+			, [":sns_f" => $_POST["sns_f"], ":sns_t" => $_POST["sns_t"]]);
+		$db->commit_tran();
 		$msg='自動ツイート間隔幅を設定しました。';
 	}catch(Exception $e){
-		$pdo_h->rollBack();
+		$db->rollback_tran();
 		var_dump($e);
 		exit();
 	}
 }
-$sql = "select * from Users_online";
-$stmt = $pdo_h->prepare($sql);
-$stmt->execute();
-
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$sql = "SELECT * from Users_online";
+$data = $db->SELECT($sql);
 
 $i=0;
 foreach($data as $row){
@@ -73,10 +57,7 @@ foreach($data as $row){
 	 $i++;
 }
 
-$stmt = $pdo_h->prepare("SELECT * from online_shop_config");
-$stmt->execute();
-
-$config = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$config = $db->SELECT("SELECT * from online_shop_config");
 
 ?>
 <!DOCTYPE html>

@@ -1,6 +1,7 @@
 <?php
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header_admin.php";
+//require_once "classes/Security.php";
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
 $status = false;								    //ログイン成否
@@ -39,18 +40,24 @@ if($rtn!==true){
 		$msg = "ログインに失敗しました。お客様のログインページのURLが不正です。";
 	}else{
 		//IDあり
+		$Secrity = new Security($_SESSION["user_id"],KEY);
+
 		if($_POST["login_type"]==="signup_with"){//新規登録
 			//Usersテーブルのパスワードを更新（メアドとパスワードを登録）
 			try{
 				$db->begin_tran();
 
+				/*
 				$params["password"] = passEx($password);
 				$params["mail"] = $username;
 				$params["uid"] = $_SESSION["user_id"];
 				$params["login_type"] = $_POST["shubetu"];
+				*/
+				$pass_hashed = $Secrity->passEx($password);
+				
 
 				$sql="UPDATE Users SET `password_onlineshop`=:password, `mail`=:mail, login_type = :login_type WHERE `uid` = :uid";
-				$db->UP_DEL_EXEC($sql,[":password" => $params["password"],":mail" => $params["mail"],":uid" => $params["uid"],":login_type" => $params["login_type"]]);
+				$db->UP_DEL_EXEC($sql,[":password" => $pass_hashed,":mail" => $username,":uid" => $_SESSION["user_id"],":login_type" => $_POST["shubetu"]]);
 				
 				$db->commit_tran();
 	
@@ -61,8 +68,35 @@ if($rtn!==true){
 				log_writer2("\$e",$e,"lv0");
 				$msg = "予期せぬエラーが発生しました。";
 			}
-		}else if($_POST["login_type"]==="signin_with" && verifyPassword($password, $row[0]['password_onlineshop']) && $row[0]['mail'] === $username){//サインイン
-			//ログイン成功
+		//}else if($_POST["login_type"]==="signin_with" && verifyPassword($password, $row[0]['password_onlineshop']) && $row[0]['mail'] === $username){//サインイン
+		}else if($_POST["login_type"]==="signin_with" && $row[0]['mail'] === $username){//サインイン
+			
+			$ninshou = $Secrity->verifyPassword($password, $row[0]['password_onlineshop']);
+			if($ninshou==="success"){
+				//ログイン成功
+				$status = true;
+			}else if($ninshou==="update"){
+				try{
+					$db->begin_tran();
+
+					$pass_hashed = $Secrity->passEx($password);
+					$sql="UPDATE Users SET `password_onlineshop`=:password WHERE `uid` = :uid";
+					$db->UP_DEL_EXEC($sql,[":password" => $pass_hashed,":uid" => $_SESSION["user_id"]]);
+					$db->commit_tran();
+
+					$status = true;
+					//log_writer2("\$pass_hashed",$params["password"],"lv3");
+				}catch(Exception $e){
+					$db->rollback_tran();
+					log_writer2("\$e",$e,"lv0");
+					$msg = "予期せぬエラーが発生しました。";
+				}
+				$status = true;
+			}else{
+				$msg = "ログインに失敗しました。メールアドレスまたはパスワードを確認してください。";
+				log_writer2("\$ninshou",$ninshou,"lv3");
+			}
+		
 			$status = true;
 		
 		}else{
