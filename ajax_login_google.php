@@ -27,7 +27,7 @@ if($rtn!==true){
 	// 設定値
 	//$clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 	if (!$idToken) {
-	    $msg = '認証失敗：GoogleのIDトークンがありません';
+	  $msg = '認証失敗：GoogleのIDトークンがありません';
 	}
 	$client = new Google_Client(['client_id' => GOOGLE_AUTH]);
 	$payload = $client->verifyIdToken($idToken);

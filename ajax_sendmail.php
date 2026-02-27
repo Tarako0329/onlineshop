@@ -1,7 +1,6 @@
 <?php
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
 require "php_header.php";
-//register_shutdown_function('shutdown');
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
@@ -24,7 +23,6 @@ if($rtn !== true){
     $alert_status = "alert-warning";
     $reseve_status = true;
 }else{
-    //$rtn=check_session_userid_for_ajax($pdo_h);
     if($rtn===false){
         $reseve_status = true;
         $msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
@@ -44,9 +42,6 @@ if($rtn !== true){
 			$reseve_status=true;
 
         }catch(Exception $e){
-            //$pdo_h->rollBack();
-            //$sqllog .= rtn_sqllog("rollBack",[]);
-            //sqllogger($sqllog,$e);
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;
