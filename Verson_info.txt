@@ -229,7 +229,8 @@ ver1.59.0:phinx.php導入-commited
 ver1.60.0:商品登録画面改良-commited-20260210
 ver1.61.0:SQLLOGの修正-commited-20260213
 ver1.62.0:ログイン画面作成
-
+select `U`.`uid` AS `uid`,`U`.`mail` AS `Umail`,`U`.`password` AS `password`,`U`.`question` AS `question`,`U`.`answer` AS `answer`,`UO`.`yagou` AS `ショップ`,`UW`.`yagou` AS `レジ` ,`U`.`login_type`
+from ((`Users` `U` left join `Users_online` `UO` on(`U`.`uid` = `UO`.`uid`)) left join `Users_webrez` `UW` on(`U`.`uid` = `UW`.`uid`))
 
 【Issues】
 ・特定取引なんとかのSTRIPE対応
