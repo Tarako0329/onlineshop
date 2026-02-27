@@ -11,7 +11,6 @@ $uid_hash = "";
 $token="";
 
 log_writer2("\$_POST",$_POST,"lv3");
-log_writer2("\$_SESSION['user_id']",$_SESSION["user_id"],"lv3");
 
 $uid_hash = (string)$_POST['user_hash'];
 $email = (string)$_POST['mail'];

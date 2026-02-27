@@ -18,7 +18,7 @@
 	$row = $db->SELECT($sql, [":uid" => $uid]);
 	log_writer2("admin_menu.php start","","lv3");
 	//log_writer2("\$row",$row,"lv3");
-	log_writer2("\$_SESSION['user_id']",$uid,"lv3");
+	log_writer2("\$uid",$uid,"lv3");
 	
 
 	if(Count($row)>0){

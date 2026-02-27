@@ -54,7 +54,6 @@ function aclog_writer($param,$pdo){
 		$shouhinNM = $rows[0]["shouhinNM"];
 	}
 	//log_writer2("aclog_writer","finish1","lv3");
-	//$sql = "insert into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id)";
 	$sql = "INSERT into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id,uid,shouhinNM) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id,:uid,:shouhinNM)";
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
