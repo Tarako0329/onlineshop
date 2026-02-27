@@ -8,7 +8,7 @@ define("VERSION","ver1.62.0-1");
 //ini_set('max_input_time', -1);
 require_once "./vendor/autoload.php";
 require_once "functions.php";
-//require_once "classes/database.php";
+
 spl_autoload_register(function ($className) {
   // クラス名が Logger なら、classes/Logger.php を探す
   $file = __DIR__ . '/classes/' . $className . '.php';

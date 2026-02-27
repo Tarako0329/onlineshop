@@ -1,31 +1,36 @@
 <?php
   require "php_header_admin.php";
 
+	//cookie[remember_me]を破棄
+	setCookie("remember_me", "", -1, "/", "", TRUE, TRUE);
+	$_SESSION["user_id"] = -1;
+	
 	$errmsg = "";
 
   $user_hash = $_GET["key"] ;
-  $_SESSION["user_id"] = rot13decrypt2($user_hash) ;
-	$_SESSION["user_id"] = empty($_SESSION["user_id"])?-1:$_SESSION["user_id"];
+  $uid = rot13decrypt2($user_hash);
 
 	$g_login = "signin_with";
 	$login = false;
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
-	$sql = "SELECT UO.*,US.mail,US.password_onlineshop,US.login_type FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
-	$row = $db->SELECT($sql, [":uid" => $_SESSION["user_id"]]);
+	$sql = "SELECT UO.*,US.mail,US.password,US.login_type,US.webrez FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
+	$row = $db->SELECT($sql, [":uid" => $uid]);
 	log_writer2("admin_menu.php start","","lv3");
 	//log_writer2("\$row",$row,"lv3");
-	log_writer2("\$_SESSION['user_id']",$_SESSION["user_id"],"lv3");
+	log_writer2("\$_SESSION['user_id']",$uid,"lv3");
 	
 
 	if(Count($row)>0){
 		$Yagou = $row[0]["yagou"];
 		$mail = $row[0]["mail"];
-		$password_onlineshop = $row[0]["password_onlineshop"];
+		$password = $row[0]["password"];
 		$logo_url = $row[0]["logo"];
 		$login_type = $row[0]["login_type"];
-		//if($mail==="-" && $password==="-"){
-		if($password_onlineshop==="-"){	//レジアプリ登録者はメアドが登録済みのため、パスワード"-"の場合のみ新規登録とみなす
+		$webrez = $row[0]["webrez"];
+
+		
+		if($password==="-"){	//レジアプリ登録者はメアドが登録済みのため、パスワード"-"の場合のみ新規登録とみなす
 			$g_login = "signup_with";
 			$btn_text = "新規登録";
 		}else{
@@ -75,6 +80,9 @@
 		<?php include "header_tag_admin.php"  ?>
   <MAIN class='container common_main'>
 	<?php
+		if ($webrez === "use" && $login_type === "IPASS") {
+			echo "<div class='alert alert-primary text-center'>ログイン用のメールアドレスとパスワードは『WebRez+』と共通です</div>";
+		}
 		if (!empty($errmsg)) {
 			echo "<div class='alert alert-danger text-center'>".$errmsg."</div>";
 		}
@@ -113,6 +121,7 @@
 				<?php echo ($login_type==="google")?"-->":"";?>
 
 				<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+				<input type="hidden" name="user_hash" value="<?php echo $user_hash;?>">
 				<input type="hidden" name="shubetu" value="IPASS">
 			</form><!-- /form -->
 
@@ -174,20 +183,21 @@
   			console_log(responsePayload);
 				
 				const form = new FormData()
-				form.append("pass",responsePayload.sub)	//googleのユーザID
+				form.append("subid",responsePayload.sub)	//googleのユーザID
 				form.append("mail",responsePayload.email)
 				form.append("csrf_token","<?php echo $token;?>")
 				form.append("login_type","<?php echo $g_login;?>")
-				form.append("shubetu","google")
-				axios.post('ajax_login.php',form, {headers: {'Content-Type': 'multipart/form-data'}})
+				form.append("user_hash","<?php echo $user_hash;?>")
+				form.append("id_token",response.credential)
+				axios.post('ajax_login_google.php',form, {headers: {'Content-Type': 'multipart/form-data'}})
 				.then((response)=>{
 					console_log(response.data)
 					
 					if (response.data.status === 'success') {
- 					   // ログイン画面を履歴に残さないように移動
+ 					  // ログイン画面を履歴に残さないように移動
     				window.location.replace('admin_menu.php?key=<?php echo $user_hash;?>');
 					} else {
-    				alert('ログインに失敗しました');
+    				alert(response.data.MSG);
 					}
 				})
 				.catch((error)=>{

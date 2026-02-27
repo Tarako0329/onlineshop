@@ -11,24 +11,38 @@ $uid_hash = "";
 $token="";
 
 log_writer2("\$_POST",$_POST,"lv3");
-log_writer2("\$_SESSION['user_id']",$_SESSION["user_id"],"lv3");
 
 $uid_hash = (string)$_POST['user_hash'];
-$email = (string)$_POST['mail'];
+$gmail = (string)$_POST['mail'];
 $password = (string)trim($_POST['pass'] ?? '');
 $uid = rot13decrypt2($uid_hash);
+$idToken = (string)trim($_POST['id_token'] ?? '');
+$subid = (string)trim($_POST['subid'] ?? '');
 
 $rtn = csrf_checker(["admin_login.php",""],["P","C","S"]);
 if($rtn!==true){
 	$msg = $rtn;
-}else if(!empty($email) && !empty($password)){//ログイン処理
+}else if(!empty($gmail) && !empty($subid)){
+	//ログイン処理
+	/*
+		// 設定値
+		$clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
+		if (!$idToken) {
+		    die('IDトークンがありません');
+		}
+
+		$client = new Google_Client(['client_id' => $clientId]);
+		$payload = $client->verifyIdToken($idToken);
+	*/
+	
 	//ユーザIDの存在確認
 	if($_POST["login_type"]==="signup_with"){//新規の場合はIDのみで抽出
 		$sql = "SELECT * FROM Users WHERE `uid` = :uid ";
 		$row = $db->SELECT($sql, [":uid" => $uid]);
 	}else{
 		$sql = "SELECT * FROM Users WHERE `uid` = :uid AND mail = :mail";
-		$row = $db->SELECT($sql, [":uid" => $uid,":mail" => $email]);
+		$row = $db->SELECT($sql, [":uid" => $uid,":mail" => $gmail]);
 	}
 
 	if(empty($row) ){
@@ -36,16 +50,13 @@ if($rtn!==true){
 		$msg = "ログインに失敗しました。お客様のログインページのURLが不正です。";
 	}else{
 		//IDあり
-		$Secrity = new Security($uid,KEY);
-
 		if($_POST["login_type"]==="signup_with"){//新規登録
 			//Usersテーブルのパスワードを更新（メアドとパスワードを登録）
 			try{
 				$db->begin_tran();
 
-				$pass_hashed = $Secrity->passEx($password);
 				$sql="UPDATE Users SET `password`=:password, `mail`=:mail, `login_type` = :login_type WHERE `uid` = :uid";
-				$db->UP_DEL_EXEC($sql,[":password" => $pass_hashed,":mail" => $email,":uid" => $uid,":login_type" => "IPASS"]);
+				$db->UP_DEL_EXEC($sql,[":password" => $subid,":mail" => $gmail,":uid" => $uid,":login_type" => "google"]);
 				
 				$db->commit_tran();
 	
@@ -55,29 +66,18 @@ if($rtn!==true){
 				log_writer2("\$e",$e,"lv0");
 				$msg = "予期せぬエラーが発生しました。";
 			}
-		}else if($_POST["login_type"]==="signin_with" && $row[0]['mail'] === $email){//サインイン
-			$ninshou = $Secrity->verifyPassword($password, $row[0]['password']);
-			if($ninshou===true){
-				//ログイン成功
-				$status = true;
-			}else{
-				$msg = "ログインに失敗しました。メールアドレスまたはパスワードを確認してください。";
-			}
+		}else if($_POST["login_type"]==="signin_with" && hash_equals($row[0]['password'],$subid)){//サインインかつグーグル識別子IDが一致
+			//ログイン成功
+			$status = true;
 		}else{
 			//ログイン失敗
 			log_writer2("\$row[0]['mail']",$row[0]['mail'],"lv3");
-			log_writer2("\$email",$email,"lv3");
+			log_writer2("\$gmail",$gmail,"lv3");
 			log_writer2("\$row[0]['password']",$row[0]['password'],"lv3");
-			log_writer2("\$password",$password,"lv3");
-			$msg = "ログインに失敗しました。メールアドレスまたはパスワードを確認してください。";
+			$msg = "ログインに失敗しました。Googleアカウントとログイン画面ユーザーが不一致です。";
 		}
 	}
-}else{
-	$msg = "ログインに失敗しました。メールアドレスまたはパスワードを確認してください。";
 }
-			
-$_SESSION["e-msg"] = $msg;
-log_writer2("\$msg",$msg,"lv3");
 
 if($status===true){
 	//自動ログイン用の情報を登録
@@ -89,6 +89,7 @@ if($status===true){
 	
 	// 有効期限を設定（1週間後）
 	$expiry_date = date('Y-m-d H:i:s', strtotime('+1 week'));
+	log_writer2("\$_SESSION['user_id']",$uid,"lv3");
 	
 	// 有効期限切れのレコードを削除
 	$stmt = $pdo_h->prepare("DELETE FROM AUTO_LOGIN_SHOP WHERE YUKOU_KIGEN < NOW() ");
@@ -98,13 +99,12 @@ if($status===true){
 	$stmt->execute([$uid, $hashed_token, $expiry_date]);
 }
 
-if($status===true){
-	header('Location: admin_menu.php?key='.$uid_hash);
-	exit();
-}else{
-	header('Location: admin_login.php?key='.$uid_hash);
-	exit();
-}
-
+$return = array(
+	"MSG" => $msg
+	,"status" => ($status ? "success" : "false")
+	,"csrf_create" => $token
+);
+header('Content-type: application/json');  
+echo json_encode($return, JSON_UNESCAPED_UNICODE);
 exit();
 ?>

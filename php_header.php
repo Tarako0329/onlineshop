@@ -7,6 +7,13 @@ define("VERSION","ver1.60.0-1");
 //ini_set('max_input_time', -1);
 require "./vendor/autoload.php";
 require "functions.php";
+spl_autoload_register(function ($className) {
+  // クラス名が Logger なら、classes/Logger.php を探す
+  $file = __DIR__ . '/classes/' . $className . '.php';
+  if (file_exists($file)) {
+      require_once $file;
+  }
+});
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -22,7 +29,6 @@ define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 session_start();
 //$_SESSION = [];
 
-//if(MAIN_DOMAIN==="localhost:81"){
 if(EXEC_MODE<>"Product"){
   $time=date('Ymd-His');
   $id="demo";

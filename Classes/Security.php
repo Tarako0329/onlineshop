@@ -11,6 +11,8 @@ class Security {
   public function __construct(string $p_uid, string $p_key) {
     $this->uid = $p_uid;
     $this->key = $p_key;
+		log_writer2("\$p_uid",$p_uid,"lv3");
+		log_writer2("\$p_key",$p_key,"lv3");
 	}
 
 	public function passEx(string $str): string {
@@ -27,11 +29,11 @@ class Security {
 		$sts = "failure";
 		$return = false;
 		
-		$p_hash_r = $this->passEx_rez($password,$this->uid,$this->key);		//レジアプリのパスワードハッシュ
-		$p_hash_t = $this->passEx_tore($password,$this->uid,$this->key);	//肉体改造のパスワードハッシュ
-		$p_hash_k = $this->passEx_kakei($password,$this->uid,$this->key);	//のパスワードハッシュ
+		$p_hash_r = $this->passEx_rez($password,$this->uid,"bonBer");			//レジアプリのパスワードハッシュ
+		$p_hash_t = $this->passEx_tore($password,$this->uid,"bonBer");		//肉体改造のパスワードハッシュ
+		$p_hash_k = $this->passEx_kakei($password,$this->uid,"akgo8903");	//家計簿のパスワードハッシュ
 		$pwd_peppered = hash_hmac("sha256", $password, $this->key);
-		//log_writer2("\$pwd_peppered",$pwd_peppered,"lv3");
+		log_writer2("\$pwd_peppered","verifyPassword start","lv3");
 
 		if(hash_equals($p_hash_r,$hashedPassword)){
 			$sts = "update";
@@ -48,19 +50,24 @@ class Security {
 			}
 		}else{
 			$sts = "failure";
+			log_writer2("\$p_hash_r",$p_hash_r,"lv3");
+			log_writer2("\$p_hash_t",$p_hash_t,"lv3");
+			log_writer2("\$p_hash_k",$p_hash_k,"lv3");
 		}
 
+		log_writer2("\$sts",$sts,"lv3");
 		if($sts === "update"){
-			log_writer2("func:verifyPassword","パスワード更新","lv3");
+			log_writer2("func:verifyPassword","パスワード更新(今はスキップ)","lv3");
 			$db = new Database();
 			try{
-				$db->begin_tran();
-				$db->UP_DEL_EXEC("UPDATE Users SET `password`=:password WHERE `uid` = :uid", [":password" => $this->passEx($password),":uid" => $this->uid]);
-				$db->commit_tran();
-				$sts = "success";
+				//$db->begin_tran();
+				//$db->UP_DEL_EXEC("UPDATE Users SET `password`=:password WHERE `uid` = :uid", [":password" => $this->passEx($password),":uid" => $this->uid]);
+				//$db->commit_tran();
+				
 				$return = true;
 			}catch(Exception $e){
-				$db->rollback_tran();
+				//$db->rollback_tran();
+				log_writer2("func:verifyPassword","パスワード更新失敗","lv0");
 				log_writer2("\$e",$e,"lv0");
 			}
 		}

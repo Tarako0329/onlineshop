@@ -22,7 +22,7 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 	try{
 		$db->begin_tran();
 		$db->INSERT("Users_online",["uid"=>$new_id,"logo"=>"upload/logo_sample.webp","yagou"=>$_POST["new_yagou"]]);
-		$db->INSERT("Users",["uid"=>$new_id,"mail"=>"-","password_onlineshop"=>"-","question"=>"-","answer"=>"-","onlineshop"=>"use"]);
+		$db->INSERT("Users",["uid"=>$new_id,"mail"=>"-","password"=>"-","question"=>"-","answer"=>"-","onlineshop"=>"use"]);
 		$db->commit_tran();
 		$msg='出店アカウントを作成しました。';
 	}catch(Exception $e){

@@ -231,7 +231,6 @@ ver1.61.0:SQLLOGの修正-commited-20260213
 ver1.62.0:ログイン画面作成
 
 
-DROP TABLE ` users_test `
 【Issues】
 ・特定取引なんとかのSTRIPE対応
 ・ログイン機能
@@ -246,7 +245,7 @@ DROP TABLE ` users_test `
 
 マイグレーションコマンド
 #マイグレーションファイルを作る
-php vendor/bin/phinx create [
+ [
     テーブルを作る時: CreateUsersTable
     テーブルを削除: DropUsersTable
     カラムを追加する時: AddStatusToUsers
