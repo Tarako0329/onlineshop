@@ -9,7 +9,8 @@
         "symfony/http-client": "^7.2",
         "nyholm/psr7": "^1.8",
         "abraham/twitteroauth": "^7.0",
-        "robmorgan/phinx": "^0.14.0"
+        "robmorgan/phinx": "^0.14.0",
+        "google/apiclient": "^2.14"
     },
     "config": {
         "allow-plugins": {
