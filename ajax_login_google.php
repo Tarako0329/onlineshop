@@ -20,21 +20,29 @@ $idToken = (string)trim($_POST['id_token'] ?? '');
 $subid = (string)trim($_POST['subid'] ?? '');
 
 $rtn = csrf_checker(["admin_login.php",""],["P","C","S"]);
+$token = csrf_create();
 if($rtn!==true){
 	$msg = $rtn;
-}else if(!empty($gmail) && !empty($subid)){
-	//ログイン処理
-	/*
-		// 設定値
-		$clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
-
-		if (!$idToken) {
-		    die('IDトークンがありません');
-		}
-
-		$client = new Google_Client(['client_id' => $clientId]);
-		$payload = $client->verifyIdToken($idToken);
-	*/
+}else if(!empty($gmail) && !empty($subid)){//ログイン処理
+	// 設定値
+	//$clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+	if (!$idToken) {
+	    $msg = '認証失敗：GoogleのIDトークンがありません';
+	}
+	$client = new Google_Client(['client_id' => GOOGLE_AUTH]);
+	$payload = $client->verifyIdToken($idToken);
+	if ($payload) {
+	}else{
+		$msg = '認証失敗：アクセスが不正です';
+		$return = array(
+			"MSG" => $msg
+			,"status" => "false"
+			,"csrf_create" => $token
+		);
+		header('Content-type: application/json');  
+		echo json_encode($return, JSON_UNESCAPED_UNICODE);
+		exit();
+	}
 	
 	//ユーザIDの存在確認
 	if($_POST["login_type"]==="signup_with"){//新規の場合はIDのみで抽出
@@ -77,11 +85,13 @@ if($rtn!==true){
 			$msg = "ログインに失敗しました。Googleアカウントとログイン画面ユーザーが不一致です。";
 		}
 	}
+}else{
+	$msg = "ログインに失敗しました。";
 }
 
 if($status===true){
 	//自動ログイン用の情報を登録
-	$token = csrf_create();
+	
 	setCookie("remember_me", $uid.":".$token, time()+60*60*24*2, "/", "", TRUE, TRUE);
 
 	// トークンをハッシュ化（DB保存用）
