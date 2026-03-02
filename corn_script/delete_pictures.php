@@ -8,10 +8,7 @@ chdir($mypath);
 require "php_header_admin.php";
 
 try {
-    $sql = "SELECT * FROM shouhinMS_online_pic";
-    //$stmt = $pdo->prepare($sql);
-    //$stmt->execute();
-    //$pictures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT uid,shouhinCD,pic,concat($mypath,'/',pic) as pic_path FROM shouhinMS_online_pic";
     $pictures = $db->SELECT($sql,[]);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -29,7 +26,7 @@ if (!is_dir($removedDir)) {
 }
 
 // Get all filenames from the database and normalize them
-$dbFiles = array_column($pictures, 'pic');
+$dbFiles = array_column($pictures, 'pic_path');
 
 // Get all files currently in the upload directory
 $localFiles = glob($uploadDir . '*');
@@ -48,9 +45,9 @@ foreach ($localFiles as $file) {
         $destination = $removedDir . $filename;
         
         if (rename($file, $destination)) {
-            echo "Moved: " . $filename . " to removed folder.<br>";
+            echo "Moved: " . $filename . " to removed folder.\r\n";
         } else {
-            echo "Failed to move: " . $filename . "<br>";
+            echo "Failed to move: " . $filename . "\r\n";
         }
     }
 }
