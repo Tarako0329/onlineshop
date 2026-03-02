@@ -898,13 +898,13 @@ function backupAndOptimizeImage($filePath) {
 	$extension = isset($pathParts['extension']) ? strtolower($pathParts['extension']) : '';
 
 	if (strpos($pathParts['filename'], '_BK') !== false || (defined('EXEC_MODE') && EXEC_MODE === 'Local')) {
-			return $filePath; 
+		return $filePath; 
 	}
 
 	// バックアップ作成
 	$backupPath = $pathParts['dirname'] . '/' . $pathParts['filename'] . '_BK.' . $extension;
 	if (!file_exists($backupPath)) {
-			if (!copy($filePath, $backupPath)) return false;
+		if (!copy($filePath, $backupPath)) return false;
 	}
 
 	$imageInfo = getimagesize($filePath);

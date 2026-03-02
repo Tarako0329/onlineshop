@@ -53,10 +53,14 @@ const configration = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
         i = i+1
       }
       params.append('fileparam','')
+      params.append('csrf_token', token)
+
       loader.value = true
       axios.post("ajax_loader.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
+        token = response.data.csrf_create
+        
         if(response.data.status==="success"){
           logo.value = response.data.filename[0].filename
         }else{

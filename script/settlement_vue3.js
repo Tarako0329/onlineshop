@@ -18,8 +18,12 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     let stripe_mail = ''
 
     const fileupload = (id,filesubname) => {
-      UPLOADFILE(id,filesubname).then((response)=>{
+      UPLOADFILE(id,filesubname,token).then((response)=>{
         new_type.value.source=response.filename[0].filename
+        token = response.csrf_create
+      })
+      .catch((error)=>{
+        console_log(error)
       })
     }
 

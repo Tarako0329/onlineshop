@@ -1,8 +1,8 @@
 <?php
 require "php_header.php";
 
-log_writer("\$_FILES",$_FILES);
-log_writer("\$_POST",$_POST);
+log_writer2("\$_FILES",$_FILES,"lv3");
+log_writer2("\$_POST",$_POST,"lv3");
 $rtn = csrf_checker(["shouhinMS.php","configration.php","payment.php","settlement.php"],["P","C","S"]);
 if($rtn !== true){
 	$msg=$rtn;
