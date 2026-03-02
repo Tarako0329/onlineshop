@@ -3,7 +3,7 @@ require "php_header.php";
 
 log_writer("\$_FILES",$_FILES);
 log_writer("\$_POST",$_POST);
-$rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
+$rtn = csrf_checker(["shouhinMS.php","configration.php","payment.php","settlement.php"],["P","C","S"]);
 if($rtn !== true){
 	$msg=$rtn;
 	$alert_status = "alert-warning";
