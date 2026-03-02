@@ -16,6 +16,9 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
       {name:'利用規約',url : `kiyaku.php?key=${user_hash}`},
     ])
 
+    const password = ref('')
+    const password_show = ref(false)
+
     onMounted(()=>{
       console_log(`onMounted admin_menu: ${Where_to_use}`)
       if(Where_to_use==="configration.php"){
@@ -52,6 +55,8 @@ const admin_menu = (Where_to_use,p_token,user_hash) => createApp({//管理者メ
 
     return{
       menu,
+      password,
+      password_show,
     }
   }
 })

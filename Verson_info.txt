@@ -233,10 +233,11 @@ select `U`.`uid` AS `uid`,`U`.`mail` AS `Umail`,`U`.`password` AS `password`,`U`
 from ((`Users` `U` left join `Users_online` `UO` on(`U`.`uid` = `UO`.`uid`)) left join `Users_webrez` `UW` on(`U`.`uid` = `UW`.`uid`))
 
 【Issues】
+・請求メールの送信
+・メール受信確認機能
 ・特定取引なんとかのSTRIPE対応
 ・ログイン機能
 ・受注後のカスタムオーダー（削除と数量調整）
-・請求メールの送信
 ・sendmail・sendlineのログ
 ・レビュー管理からの個別連絡
 ・juchuu_headのcancel誤更新の調査

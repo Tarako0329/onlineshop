@@ -109,9 +109,13 @@
 				<div class="input-group mb-1">
   				<input type="text" class="form-control" name="mail" placeholder="Input your E-mail" aria-label="Input your E-mail" aria-describedby="button-addon2" required>
 				</div>
-				<div class="input-group mb-1">
-  				<input type="text" class="form-control" name="pass" placeholder="Input your Password" aria-label="Input your Password" aria-describedby="button-addon2" required>
+				<div class="input-group mb-1" style='position:relative;'>
+  				<input :type="password_show ? 'text' : 'password'" v-model="password" class="form-control" name="pass" placeholder="Input your Password" aria-label="Input your Password" aria-describedby="button-addon2" required>
   				<button class="btn btn-outline-primary" type="submit" id="button-addon2" name="login_type" value="<?php echo $g_login;?>"><?php echo $btn_text;?></button>
+					<div style='position:absolute;top:3px;right:70px;'>
+						<i class="bi bi-eye" v-if="!password_show" @click="password_show=!password_show"></i>
+						<i class="bi bi-eye-slash" v-if="password_show" @click="password_show=!password_show"></i>
+					</div>
 				</div>
 				
 				<?php echo ($btn_text==="新規登録")?"<!--":"";?>
