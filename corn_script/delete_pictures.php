@@ -8,7 +8,7 @@ chdir($mypath);
 require "php_header_admin.php";
 
 try {
-    $sql = "SELECT uid,shouhinCD,pic,concat($mypath,'/',pic) as pic_path FROM shouhinMS_online_pic";
+    $sql = "SELECT uid,shouhinCD,pic,concat('$mypath','/',`pic`) as pic_path FROM shouhinMS_online_pic";
     $pictures = $db->SELECT($sql,[]);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
