@@ -1,17 +1,18 @@
 <?php
-    //shouhinMS_online_picの全件を取得する
-	if (php_sapi_name() != 'cli') {
-		exit('このスクリプトはCLIからのみ実行可能です。');
-	}
-	$mypath = dirname(__DIR__);
-	chdir($mypath);
-	require "php_header_admin.php";
+//shouhinMS_online_picの全件を取得する
+if (php_sapi_name() != 'cli') {
+	exit('このスクリプトはCLIからのみ実行可能です。');
+}
+$mypath = dirname(__DIR__);
+chdir($mypath);
+require "php_header_admin.php";
 
 try {
     $sql = "SELECT * FROM shouhinMS_online_pic";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $pictures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //$stmt = $pdo->prepare($sql);
+    //$stmt->execute();
+    //$pictures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $pictures = $db->SELECT($sql,[]);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit;
@@ -19,8 +20,8 @@ try {
 
 // ../upload/　の中にあるファイル と テーブルshouhinMS_online_picのpicを比較し、一致しないものをupload配下のremovedフォルダに移動する
 //picの中には　upload/ から始まるファイルパスが格納されている
-$uploadDir = '../upload/';
-$removedDir = '../upload/removed/';
+$uploadDir = $mypath.'/upload/';
+$removedDir = $mypath.'/upload/removed/';
 
 // Create removed directory if it doesn't exist
 if (!is_dir($removedDir)) {
