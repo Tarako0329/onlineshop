@@ -30,8 +30,8 @@ if($rtn !== true){
     }else{
         $logfilename="sid_".$_SESSION['user_id'].".log";
 
-        //select * from Users_online where uid = :uid を実行し、取得した値を$params[]に初期値として格納。件数が０件の場合はスキップ
-        $sql = "select * from Users_online where uid = :uid";
+        //SELECT * from Users_online where uid = :uid を実行し、取得した値を$params[]に初期値として格納。件数が０件の場合はスキップ
+        $sql = "SELECT * from Users_online where uid = :uid";
         $stmt = $pdo_h->prepare( $sql );
         $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
         $status = $stmt->execute();
@@ -43,9 +43,9 @@ if($rtn !== true){
 
 
 
-        $DELsql = "delete from Users_online where uid = :uid ";
+        $DELsql = "DELETE from Users_online where uid = :uid ";
 
-        $INSsql = "insert into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color,credit,stripe_id,Stripe_Approval_Status)";
+        $INSsql = "INSERT into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color,credit,stripe_id,Stripe_Approval_Status)";
         $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color,:credit,:stripe_id,:Stripe_Approval_Status)";
 
         $params["uid"] = $_SESSION["user_id"];

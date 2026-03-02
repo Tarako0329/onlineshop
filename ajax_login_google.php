@@ -29,19 +29,21 @@ if($rtn!==true){
 	if (!$idToken) {
 	  $msg = '認証失敗：GoogleのIDトークンがありません';
 	}
-	$client = new Google_Client(['client_id' => GOOGLE_AUTH]);
-	$payload = $client->verifyIdToken($idToken);
-	if ($payload) {
-	}else{
-		$msg = '認証失敗：アクセスが不正です';
-		$return = array(
-			"MSG" => $msg
-			,"status" => "false"
-			,"csrf_create" => $token
-		);
-		header('Content-type: application/json');  
-		echo json_encode($return, JSON_UNESCAPED_UNICODE);
-		exit();
+	if(EXEC_MODE !== "Local"){
+		$client = new Google_Client(['client_id' => GOOGLE_AUTH]);
+		$payload = $client->verifyIdToken($idToken);
+		if ($payload) {
+		}else{
+			$msg = '認証失敗：アクセスが不正です';
+			$return = array(
+				"MSG" => $msg
+				,"status" => "false"
+				,"csrf_create" => $token
+			);
+			header('Content-type: application/json');  
+			echo json_encode($return, JSON_UNESCAPED_UNICODE);
+			exit();
+		}
 	}
 	
 	//ユーザIDの存在確認

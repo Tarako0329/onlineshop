@@ -22,7 +22,7 @@
   
   $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
   
- $sql = "select 
+ $sql = "SELECT 
   online.*
   ,pic.pic as filename
   ,ums_inline.yagou
