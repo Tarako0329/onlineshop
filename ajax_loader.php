@@ -10,10 +10,11 @@ if($rtn !== true){
 	$reseve_status = true;
 }else{
     $i=0;
-    $sort_i=$_POST["next_i"];
+    $sort_i=$_POST["next_i"] ?? 0;
+    $filesubname=$_POST["filesubname"] ?? "";
     while($i < count($_FILES)){
         $tempfile = $_FILES['user_file_name_'.$i]['tmp_name'];
-        $filename = 'upload/temp/' .$_SESSION["user_id"]."_".$_POST["filesubname"]."_".date('Ymd-His')."_".$_FILES['user_file_name_'.$i]['name'];
+        $filename = 'upload/temp/' .$_SESSION["user_id"]."_".$filesubname."_".date('Ymd-His')."_".$_FILES['user_file_name_'.$i]['name'];
         $stats = "false";
 
         if (is_uploaded_file($tempfile)) {
