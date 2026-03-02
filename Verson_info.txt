@@ -241,7 +241,6 @@ from ((`Users` `U` left join `Users_online` `UO` on(`U`.`uid` = `UO`.`uid`)) lef
 ・レビュー管理からの個別連絡
 ・juchuu_headのcancel誤更新の調査
 ・個人情報の処理を極力バックグラウンドに移行する
-・受注画面に購入のきっかけを追加　済
 
 
 マイグレーションコマンド

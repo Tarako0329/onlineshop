@@ -504,7 +504,7 @@
         window.gapi.surveyoptin.render(
         {
           // REQUIRED
-          "merchant_id": "<?php echo $MERCHANT_ID;?>",
+          "merchant_id": "<?php echo MERCHANT_ID;?>",
           "order_id": orderData.id,
           "email": orderData.email,
           "delivery_country": "JP",

@@ -1,6 +1,10 @@
 <?php
-ob_start();
 date_default_timezone_set('Asia/Tokyo'); 
+// PHPがCLIで実行されていない場合のみセッションを開始する
+if (php_sapi_name() !== 'cli') {
+    session_start();
+}
+//ob_start();
 define("VERSION","ver1.60.0-1");
 
 //ini_set('max_execution_time', -1);
@@ -26,7 +30,7 @@ define("TITLE",$_ENV["TITLE"]);
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
 //$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
-session_start();
+//session_start();
 //$_SESSION = [];
 
 if(EXEC_MODE<>"Product"){
@@ -62,7 +66,8 @@ define("WEBHOOK_SKEY",$_ENV["WEBHOOK_SKEY"]);
 
 define("GEMINI",$_ENV["GOOGLE_API"]);
 define("GEMINI_URL",$_ENV["GEMINI_URL"]);
-$MERCHANT_ID = $_ENV["MERCHANT_ID"];
+define("MERCHANT_ID",$_ENV["MERCHANT_ID"]);
+//$MERCHANT_ID = $_ENV["MERCHANT_ID"];
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
