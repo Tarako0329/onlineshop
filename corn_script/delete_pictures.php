@@ -1,10 +1,11 @@
 <?php
-//shouhinMS_online_picの全件を取得する
-date_default_timezone_set('Asia/Tokyo'); 
-if (php_sapi_name() != 'cli') {
-	exit('このスクリプトはCLIからのみ実行可能です。');
-}
-require_once('../php_header_admin.php.php');
+    //shouhinMS_online_picの全件を取得する
+	if (php_sapi_name() != 'cli') {
+		exit('このスクリプトはCLIからのみ実行可能です。');
+	}
+	$mypath = dirname(__DIR__);
+	chdir($mypath);
+	require "php_header_admin.php";
 
 try {
     $sql = "SELECT * FROM shouhinMS_online_pic";

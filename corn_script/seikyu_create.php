@@ -1,13 +1,12 @@
 <?php
 	//毎月１日にcornジョブから実行する
-	date_default_timezone_set('Asia/Tokyo'); 
 	if (php_sapi_name() != 'cli') {
 		exit('このスクリプトはCLIからのみ実行可能です。');
 	}
-  $mypath = dirname(__DIR__);
+	$mypath = dirname(__DIR__);
 	chdir($mypath);
 	require "php_header_admin.php";
-
+/*
   require $mypath."/vendor/autoload.php";
   require $mypath."/functions.php";
 
@@ -32,7 +31,7 @@
   define("POP_HOST", $_ENV["POP_HOST"]);
   define("POP_USER", $_ENV["POP_USER"]);
   define("POP_PASS", $_ENV["POP_PASS"]);
-
+*/
 
 
 	

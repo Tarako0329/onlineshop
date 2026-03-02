@@ -11,7 +11,7 @@ exit('サービスは停止してます');	//サービス一時停止
 
 
 //require "php_header.php";
-
+/*
 define("VERSION","ver1.36.1");
 
 require "./vendor/autoload.php";
@@ -54,7 +54,7 @@ define("GEMINI",$_ENV["GOOGLE_API"]);
 define("GEMINI_URL",$_ENV["GEMINI_URL"]);
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-
+*/
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 //log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;

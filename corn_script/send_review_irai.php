@@ -11,54 +11,8 @@
 	$mypath = dirname(__DIR__);
 	chdir($mypath);
 	require "php_header_admin.php";
-	/*
-	require "./vendor/autoload.php";
-	require "functions.php";
-
-	//.envの取得
-	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-	$dotenv->load();
-	define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
-	define("ROOT_URL",$_ENV["HTTP"]);
-	define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-	define("TITLE",$_ENV["TITLE"]);
-	//システム通知
-	define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
-
-	if(EXEC_MODE<>"Product"){
-	  $time=date('Ymd-His');
-	  $id="demo";
-	  $pass="00000000";
-	}else{
-	  $time=VERSION;
-	  $id="";
-	  $pass="";
-	}
-
-
-	// DBとの接続
-	define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-	define("USER_NAME", $_ENV["DBUSER"]);
-	define("PASSWORD", $_ENV["PASS"]);
-
-	//メール送信関連
-	define("HOST", $_ENV["HOST"]);
-	define("PORT", $_ENV["PORT"]);
-	define("FROM", $_ENV["FROM"]);
-	define("PROTOCOL", $_ENV["PROTOCOL"]);
-	define("POP_HOST", $_ENV["POP_HOST"]);
-	define("POP_USER", $_ENV["POP_USER"]);
-	define("POP_PASS", $_ENV["POP_PASS"]);
-
-	//stripe
-	define("S_KEY",$_ENV["SKey"]);
-	define("P_KEY",$_ENV["PKey"]);
-	define("OAuth",$_ENV["OAuth"]);
-
-
-	$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-	*/
-	$sqllog="";
+	
+	//$db = new Database();
 
 	$sql = "SELECT 
 			h.*
@@ -74,16 +28,16 @@
 			and review_irai = 'still' 
 			and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK) 
 		order by uid";
-	$stmt = $pdo_h->prepare($sql);
-	$stmt->execute();
-	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$data = $db->SELECT($sql,[]);
+	
 	try{
-		$pdo_h->beginTransaction();
-		$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+		$db->begin_tran();
 
 		$cnt = 0;
 		$taishou_list = "";
 		$shop_id = "";
+		$lineID = "";
+		$shop_mail = "";
 		
 		foreach($data as $row){
 			if($cnt <> 0 && $shop_id<>$row["uid"]){
@@ -104,11 +58,7 @@
 
 			//juchuu_meisaiをorderNOで検索
 			$sql_meisai = "SELECT * from juchuu_meisai where orderNO = :orderNO and su>0";
-			$stmt_meisai = $pdo_h->prepare($sql_meisai);
-			$stmt_meisai->bindValue("orderNO", $row["orderNO"], PDO::PARAM_STR);
-			$stmt_meisai->execute();
-			$meisai = $stmt_meisai->fetchAll(PDO::FETCH_ASSOC);
-			//log_writer2("\$meisai",$meisai,"lv3");
+			$meisai = $db->SELECT($sql_meisai,["orderNO" => $row["orderNO"]]);
 
 			//商品リストのセット
 			$shouhinList = "";
@@ -119,22 +69,22 @@
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
 			$site = TITLE;
 			$body = <<<EOM
-				$params[name] 様
+				{$row['name']} 様
 				
 				この度は、$site より商品をお買い上げいただき、ありがとうございました。
 				お届けした商品はいかがでしたでしょうか？
 				差し支えなければ、ご感想・レビューをお聞かせください♪
 				
 				【ご購入商品】
-				$shouhinList
+				{$shouhinList}
 
 				レビュー投稿はこちらから
-				$url
+				{$url}
 				
 				ご協力よろしくお願いいたします。
 
-				通販サイト『$site 』
-				販売元：$row[yagou]
+				通販サイト『{$site}』
+				販売元：{$row['yagou']}
 				https://cafe-present.greeen-sys.com/
 
 				EOM;
@@ -147,37 +97,30 @@
 			sleep(2);
 			//log_writer2("\$rtn",$rtn,"lv3");
 
-			$params["orderNO"] = $row["orderNO"];
-			$sql_upd = "update juchuu_head set review_irai = 'done' where orderNO = :orderNO";
-			$stmt2 = $pdo_h->prepare($sql_upd);
-			$stmt2->bindValue("orderNO", $params['orderNO'], PDO::PARAM_STR);
-			$sqllog .= rtn_sqllog($sql_upd,$params);
-
-			$stmt2->execute();
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+			$sql_upd = "UPDATE juchuu_head set review_irai = 'done' where orderNO = :orderNO";
+			$db->UP_DEL_EXEC($sql_upd,["orderNO" => $row["orderNO"]]);
 			
 			$cnt++;
 			
 		}
-		$pdo_h->commit();
-		$sqllog .= rtn_sqllog("commit",[]);
-		sqllogger($sqllog,0);
-
-		//出店者にメール送信
-		if($lineID <> "none"){
-			$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
-		}else{
-			$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
-		}
-		$taishou_list = "";
 		
+		//出店者にメール送信 (ループの最後の店舗)
+		if ($cnt > 0 && !empty($shop_mail)) {
+			if($lineID <> "none"){
+				$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+			}else{
+				$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+			}
+			$taishou_list = "";
+		}
+
+		$db->commit_tran();
+
 		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)";
 		echo $msg."\n";
     
 	}catch(Exception $e){
-      $pdo_h->rollBack();
-      $sqllog .= rtn_sqllog("rollBack",[]);
-      sqllogger($sqllog,$e);
+      $db->rollback_tran($e->getMessage());
   		echo "レビュー依頼処理でエラー\n".$e;
   }
   exit();
