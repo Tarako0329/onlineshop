@@ -5,6 +5,9 @@
 		exit('このスクリプトはCLIからのみ実行可能です。');
 	}
   $mypath = dirname(__DIR__);
+	chdir($mypath);
+	require "php_header_admin.php";
+
   require $mypath."/vendor/autoload.php";
   require $mypath."/functions.php";
 

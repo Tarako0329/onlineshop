@@ -15,7 +15,7 @@ spl_autoload_register(function ($className) {
   // クラス名が Logger なら、classes/Logger.php を探す
   $file = __DIR__ . '/classes/' . $className . '.php';
   if (file_exists($file)) {
-      require_once $file;
+    require_once $file;
   }
 });
 

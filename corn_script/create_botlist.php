@@ -3,6 +3,8 @@ date_default_timezone_set('Asia/Tokyo');
 if (php_sapi_name() != 'cli') {
 	exit('このスクリプトはCLIからのみ実行可能です。');
 }
+chdir(__DIR__);
+require "php_header_admin.php";
 
 //botリストの作成
 // jsonファイルを落としてくる
