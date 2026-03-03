@@ -6,34 +6,6 @@
 	$mypath = dirname(__DIR__);
 	chdir($mypath);
 	require "php_header_admin.php";
-/*
-  require $mypath."/vendor/autoload.php";
-  require $mypath."/functions.php";
-
-  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-  $dotenv->load();
-  define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
-  define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-  define("TITLE",$_ENV["TITLE"]);
-  define("ROOT_URL",$_ENV["HTTP"]);
-
-  // DBとの接続
-  define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-  define("USER_NAME", $_ENV["DBUSER"]);
-  define("PASSWORD", $_ENV["PASS"]);
-  $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-
-  //メール送信関連
-  define("HOST", $_ENV["HOST"]);
-  define("PORT", $_ENV["PORT"]);
-  define("FROM", $_ENV["FROM"]);
-  define("PROTOCOL", $_ENV["PROTOCOL"]);
-  define("POP_HOST", $_ENV["POP_HOST"]);
-  define("POP_USER", $_ENV["POP_USER"]);
-  define("POP_PASS", $_ENV["POP_PASS"]);
-*/
-
-
 	
 	$date = new DateTime(date('Y-m-d'));
 	//$date = new DateTime('2024-12-01');
@@ -88,14 +60,16 @@
 		and jisseki.getudo = seikyu.getudo
 		order by jisseki.uid,jisseki.getudo;";
 
-	$stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
-  $stmt->execute();
-  $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	//$stmt = $pdo_h->prepare($sql);
+  //$stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
+  //$stmt->execute();
+  //$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$data = $db->SELECT($sql,["getudo" => $getudo]);
 
 	try{
-			$pdo_h->beginTransaction();
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+		//$pdo_h->beginTransaction();
+		//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+		$db->begin_tran();
 
 		foreach($data as $row){
 			log_writer2("row",$row,"lv3");
@@ -113,8 +87,8 @@
 			$params["seikyuG"] = $row["seikyu3"];
 			$params["kurikoshiB"] = $row["kurikoshi"];
 
-			$sql_upd = "INSERT INTO online_seikyu (getudo,uid,jisseki,seikyu,seikyu2,seikyu3,kurikoshi) VALUES(:getudo1,:uid1,:jissekiA,:seikyuA,:seikyuB,:seikyuC,:kurikoshiA) ON DUPLICATE KEY UPDATE	jisseki = :jissekiD ,seikyu = :seikyuE,seikyu2 = :seikyuF,seikyu3 = :seikyuG,kurikoshi = :kurikoshiB";
-
+			$sql_upd = "INSERT INTO online_seikyu (getudo,`uid`,jisseki,seikyu,seikyu2,seikyu3,kurikoshi) VALUES(:getudo1,:uid1,:jissekiA,:seikyuA,:seikyuB,:seikyuC,:kurikoshiA) ON DUPLICATE KEY UPDATE	jisseki = :jissekiD ,seikyu = :seikyuE,seikyu2 = :seikyuF,seikyu3 = :seikyuG,kurikoshi = :kurikoshiB";
+			/*
 			$sqllog .= rtn_sqllog($sql_upd,$params);
 
 			$stmt2 = $pdo_h->prepare($sql_upd);
@@ -134,10 +108,14 @@
 			$stmt2->execute();
 			
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+			*/
+			$db->UP_DEL_EXEC($sql_upd,$params);
 
 			//次月のデータ作成
 			$params['getudo1'] = $yokugetu;
 			$sql_ins = 'INSERT INTO online_seikyu (getudo,uid,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)';
+			$db->INSERT("online_seikyu",["getudo1" => $params['getudo1'],"uid1" => $params['uid1'],"kurikoshiA" => $params['kurikoshiA']]);
+			/*
 			$stmt3 = $pdo_h->prepare($sql_ins);
 			$sqllog .= rtn_sqllog($sql_ins,$params);
 		
@@ -148,12 +126,14 @@
 			$stmt3->execute();
 			
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+			*/
 
 
 		}
-		$pdo_h->commit();
-		$sqllog .= rtn_sqllog("commit",[]);
-		sqllogger($sqllog,0);
+		//$pdo_h->commit();
+		//$sqllog .= rtn_sqllog("commit",[]);
+		//sqllogger($sqllog,0);
+		$db->commit_tran();
 
 		$to="green.green.midori@gmail.com";
 		$subject="【".EXEC_MODE."】ONLINESHOP_請求データ作成完了-".$getudo;
@@ -164,9 +144,9 @@
 		send_mail($to,$subject,$body,$fromname,$bcc);
 		exit();
 	}catch(Exception $e){
-      $pdo_h->rollBack();
-      $sqllog .= rtn_sqllog("rollBack",[]);
-      sqllogger($sqllog,$e);
+      $db->rollBack_tran($e->getMessage());
+      //$sqllog .= rtn_sqllog("rollBack",[]);
+      //sqllogger($sqllog,$e);
       log_writer2("\$e",$e,"lv0");
       $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
       $alert_status = "alert-danger";

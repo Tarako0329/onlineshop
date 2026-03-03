@@ -7,67 +7,21 @@ if (php_sapi_name() != 'cli') {
 chdir(__DIR__);
 require "php_header_admin.php";
 
+define("API_KEY",$_ENV["X_API_KEY"]);
+define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
+define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
+define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
+
 exit('サービスは停止してます');	//サービス一時停止
 
 
-//require "php_header.php";
-/*
-define("VERSION","ver1.36.1");
-
-require "./vendor/autoload.php";
-require "functions.php";
-
-//.envの取得
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-define("ROOT_URL",$_ENV["HTTP"]);
-define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-//システム通知
-define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
-
-if(EXEC_MODE<>"Product"){
-  $time=date('Ymd-His');
-  $id="demo";
-  $pass="00000000";
-}else{
-  $time=VERSION;
-  $id="";
-  $pass="";
-}
-
-
-// DBとの接続
-define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-define("USER_NAME", $_ENV["DBUSER"]);
-define("PASSWORD", $_ENV["PASS"]);
-
-//メール送信関連
-define("HOST", $_ENV["HOST"]);
-define("PORT", $_ENV["PORT"]);
-define("FROM", $_ENV["FROM"]);
-define("PROTOCOL", $_ENV["PROTOCOL"]);
-define("POP_HOST", $_ENV["POP_HOST"]);
-define("POP_USER", $_ENV["POP_USER"]);
-define("POP_PASS", $_ENV["POP_PASS"]);
-
-define("GEMINI",$_ENV["GOOGLE_API"]);
-define("GEMINI_URL",$_ENV["GEMINI_URL"]);
-
-$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-*/
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
-//log_writer2("\$_POST",$_POST,"lv1");
 use Abraham\TwitterOAuth\TwitterOAuth;
-//use GeminiAPI\Client;
-//use GeminiAPI\Resources\ModelName;
-//use GeminiAPI\Resources\Parts\TextPart;
 
 $status="false";
 
 //実行時間check
-$stmt = $pdo_h->prepare("select * from online_shop_config");
-$stmt->execute();
-$online_shop_config = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$online_shop_config = $db->SELECT("SELECT * from online_shop_config");
 
 if($online_shop_config[0]["next_post_time"] >= date('Y-m-d H:i:s')){
 	//実行時間前
@@ -82,29 +36,22 @@ if(EXEC_MODE==="Local"){
 		$status = "success";
 }else{
 	//ポスト内容取得
-
 	//商品選定
-	$stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status in ('show','soon') and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
-	$stmt->execute();
-	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$row = $db->SELECT("SELECT U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status in ('show','soon') and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
 	if(count($row)===0){//全件投稿完了・フラグリセット
 		try{
-			$pdo_h->beginTransaction();
-			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns=''");
-			$stmt->execute();
-			$pdo_h->commit();
+			$db->begin_tran();
+			$db->UP_DEL_EXEC("UPDATE shouhinMS_online set auto_post_sns=''");
+			$db->commit_tran();
 			echo "投稿済みフラグをリセット\n";
 
 			//商品再選定
-			$stmt = $pdo_h->prepare("select U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
-			$stmt->execute();
-			$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$row = $db->SELECT("SELECT U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
 		}catch(Exception $e){
-			$pdo_h->rollBack();
+			$db->rollback_tran($e->getMessage());
 			log_writer2("\$e",$e,"lv0");
 			echo "投稿済みフラグをリセットでエラー\n";
 		}
-	
 	}
 
 	$post_index = rand(0,(count($row)-1));
@@ -150,53 +97,6 @@ if(EXEC_MODE==="Local"){
 		$answer = $chk_result["result"];
 	}
 
-/*
-	$url = GEMINI_URL.GEMINI;
-	$data = [
-	  'contents' => [
-	    [
-	      'parts' => [
-	        ['text' => '凄腕インフルエンサーとして'.$sns_type.'で購買意欲を掻き立てる日本語の投稿例を10個出力。'.$sns_type.'にそのまま投稿できるようにＵＲＬとハッシュタグも含めて作成。phpのjson_decodeで処理できるように[{"post":投稿例},{"post":投稿例}]で出力。URLとハッシュタグを除いた文字数は100文字以下。JSONオブジェクトを、プレーンテキスト形式で出力してください'.$discription]
-	      ]
-	    ]
-	  ]
-	];
-
-	$options = [
-	  'http' => [
-	    'method' => 'POST',
-	    'header' => [
-	      'Content-Type: application/json',
-	    ],
-	    'content' => json_encode($data),
-	  ],
-	];
-
-	$context = stream_context_create($options);
-	$response = file_get_contents($url, false, $context);
-
-	log_writer2("\$response",$response,"lv3");
-
-	if ($response === false) {
-	  //$answer =  'Gemini呼び出しに失敗しました。時間をおいて、再度実行してください';
-		log_writer2("\$response",'Gemini呼び出しに失敗しました',"lv1");
-		log_writer2("\$response",$response,"lv1");
-		exit();
-	} else {
-    $result = json_decode($response, true);
-    $result = $result['candidates'][0]['content']['parts'][0]['text'];
-	
-    $result = str_replace('```json','',$result);
-   	$result = str_replace('```','',$result);
-    $result = str_replace('\n','',$result);
-    $result = str_replace('\r','',$result);
-    $result = str_replace('\r\n','',$result);
-    $answer = substr($result,1);
-		$answer = json_decode($answer,true);
-    //log_writer2("\$result",$result,"lv3"); 
-	}
-*/
-
 	$text = $answer[rand(0,9)]["post"];
 	echo $text."\n";
 
@@ -204,11 +104,6 @@ if(EXEC_MODE==="Local"){
 		echo "本番環境以外ではツイートしないで終了\n";
 		exit();
 	}
-	
-	define("API_KEY",$_ENV["X_API_KEY"]);
-	define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
-	define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
-	define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
 	
 	try{
 		$connection = new TwitterOAuth(
@@ -230,18 +125,16 @@ if(EXEC_MODE==="Local"){
 			//$this->info("ツイートが送信されました！");
 			echo "ツイートが送信されました！\n";
 			$status = "success";
-			$stmt = $pdo_h->prepare("update shouhinMS_online set auto_post_sns='X' where uid=:uid and shouhinCD=:shouhinCD");
-			$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
-			$stmt->bindValue(":shouhinCD", $shouhinCD, PDO::PARAM_STR);
-			$stmt->execute();
+			$db->UP_DEL_EXEC(
+				"UPDATE shouhinMS_online set auto_post_sns='X' where uid=:uid and shouhinCD=:shouhinCD",
+				['uid'=>$uid, 'shouhinCD'=>$shouhinCD]
+			);
 			
 		}else if($httpCode == 429){
 			echo "1日の送信可能数を超過しました。\n";
 			log_writer2("X-bot-ErrorHeader",$connection->getLastXHeaders(),"lv1");
 			$next = (24-17)*60;
-			$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)");
-			$stmt->bindValue(":next", $next, PDO::PARAM_INT);
-			$stmt->execute();
+			$db->UP_DEL_EXEC("UPDATE online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)", ['next'=>$next]);
 			echo "次は ".$next." 分後です";
 		}else{
 			$errorMessage = isset($result->errors) ?json_encode($result->errors, JSON_UNESCAPED_UNICODE) :'不明なエラー';
@@ -259,19 +152,16 @@ if(EXEC_MODE==="Local"){
 
 if($status==="success"){//次回の実行時間をセット
 	try{
-		$pdo_h->beginTransaction();
+		$db->begin_tran();
 		$next = rand($online_shop_config[0]["post_interval_F"],$online_shop_config[0]["post_interval_T"]);
-		$stmt = $pdo_h->prepare("update online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)");
-		$stmt->bindValue(":next", $next, PDO::PARAM_INT);
-		$stmt->execute();
-		$pdo_h->commit();
+		$db->UP_DEL_EXEC("UPDATE online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)", ['next'=>$next]);
+		$db->commit_tran();
 		echo "次は ".$next." 分後です";
 	}catch(Exception $e){
-		$pdo_h->rollBack();
+		$db->rollback_tran($e->getMessage());
 		log_writer2("\$e",$e,"lv0");
 		echo "次の投稿時間設定でエラー";
 	}
-	
 }
 
 exit();
