@@ -11,9 +11,11 @@
 	//$mypath = dirname(__DIR__);
 	
 
-	$json = file_get_contents('https://raw.githubusercontent.com/monperrus/crawler-user-agents/master/crawler-user-agents.json');
+	$URL = 'https://raw.githubusercontent.com/monperrus/crawler-user-agents/master/crawler-user-agents.json';
+	$json = file_get_contents($URL);
 	// 落とすのに失敗したら終了
 	if ($json === false) {
+		log_writer2("","create_botlist.phpでボットリストの作成ができませんでした。参照するURLを確認してください。","lv0");
 		return;
 	}
 
@@ -21,6 +23,7 @@
 	$arr = json_decode($json, true);
 	// 変換できなかったら終了
 	if ($arr === null) {
+		log_writer2("","create_botlist.phpでボットリストの作成ができませんでした。","lv0");
 		return;
 	}
 
