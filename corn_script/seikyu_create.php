@@ -87,52 +87,18 @@
 			$params["seikyuG"] = $row["seikyu3"];
 			$params["kurikoshiB"] = $row["kurikoshi"];
 
-			$sql_upd = "INSERT INTO online_seikyu (getudo,`uid`,jisseki,seikyu,seikyu2,seikyu3,kurikoshi) VALUES(:getudo1,:uid1,:jissekiA,:seikyuA,:seikyuB,:seikyuC,:kurikoshiA) ON DUPLICATE KEY UPDATE	jisseki = :jissekiD ,seikyu = :seikyuE,seikyu2 = :seikyuF,seikyu3 = :seikyuG,kurikoshi = :kurikoshiB";
-			/*
-			$sqllog .= rtn_sqllog($sql_upd,$params);
-
-			$stmt2 = $pdo_h->prepare($sql_upd);
-			$stmt2->bindValue("getudo1", $params['getudo1'], PDO::PARAM_INT);
-			$stmt2->bindValue("uid1", $params['uid1'], PDO::PARAM_INT);
-			$stmt2->bindValue("jissekiA", $params['jissekiA'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuA", $params['seikyuA'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuB", $params['seikyuB'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuC", $params['seikyuC'], PDO::PARAM_INT);
-			$stmt2->bindValue("kurikoshiA", $params['kurikoshiA'], PDO::PARAM_INT);
-
-			$stmt2->bindValue("jissekiD", $params['jissekiD'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuE", $params['seikyuE'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuF", $params['seikyuF'], PDO::PARAM_INT);
-			$stmt2->bindValue("seikyuG", $params['seikyuG'], PDO::PARAM_INT);
-			$stmt2->bindValue("kurikoshiB", $params['kurikoshiB'], PDO::PARAM_INT);
-			$stmt2->execute();
-			
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
+			$sql_upd = "INSERT INTO online_seikyu (getudo,`uid`,jisseki,seikyu,seikyu2,seikyu3,kurikoshi) VALUES(:getudo1,:uid1,:jissekiA,:seikyuA,:seikyuB,:seikyuC,:kurikoshiA) 
+			ON DUPLICATE KEY UPDATE jisseki = :jissekiD ,seikyu = :seikyuE,seikyu2 = :seikyuF,seikyu3 = :seikyuG,kurikoshi = :kurikoshiB";
 			$db->UP_DEL_EXEC($sql_upd,$params);
 
 			//次月のデータ作成
 			$params['getudo1'] = $yokugetu;
-			$sql_ins = 'INSERT INTO online_seikyu (getudo,uid,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)';
-			$db->INSERT("online_seikyu",["getudo1" => $params['getudo1'],"uid1" => $params['uid1'],"kurikoshiA" => $params['kurikoshiA']]);
-			/*
-			$stmt3 = $pdo_h->prepare($sql_ins);
-			$sqllog .= rtn_sqllog($sql_ins,$params);
-		
-			$stmt3->bindValue("getudo1", $params['getudo1'], PDO::PARAM_INT);
-			$stmt3->bindValue("uid1", $params['uid1'], PDO::PARAM_INT);
-			$stmt3->bindValue("kurikoshiA", $params['kurikoshiA'], PDO::PARAM_INT);
-
-			$stmt3->execute();
-			
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
-
+			//$sql_ins = 'INSERT INTO online_seikyu (getudo,uid,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)';
+			$sql_ins = 'INSERT INTO online_seikyu (getudo,`uid`,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)
+			ON DUPLICATE KEY UPDATE zenkuri = :kurikoshiB';
+			$db->UP_DEL_EXEC($sql_ins,["getudo1" => $params['getudo1'],"uid1" => $params['uid1'],"kurikoshiA" => $params['kurikoshiA'],"kurikoshiB" => $params['kurikoshiA']]);
 
 		}
-		//$pdo_h->commit();
-		//$sqllog .= rtn_sqllog("commit",[]);
-		//sqllogger($sqllog,0);
 		$db->commit_tran();
 
 		$to="green.green.midori@gmail.com";
@@ -145,13 +111,11 @@
 		exit();
 	}catch(Exception $e){
       $db->rollBack_tran($e->getMessage());
-      //$sqllog .= rtn_sqllog("rollBack",[]);
-      //sqllogger($sqllog,$e);
       log_writer2("\$e",$e,"lv0");
       $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
       $alert_status = "alert-danger";
       $reseve_status=true;
-			echo $msg."<br>".$e;
+			echo $msg."\r\n".$e;
   }
   exit();
   

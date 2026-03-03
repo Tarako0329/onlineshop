@@ -4,7 +4,8 @@
 if (php_sapi_name() != 'cli') {
 	exit('このスクリプトはCLIからのみ実行可能です。');
 }
-chdir(__DIR__);
+$mypath = dirname(__DIR__);
+chdir($mypath);
 require "php_header_admin.php";
 
 define("API_KEY",$_ENV["X_API_KEY"]);
@@ -12,7 +13,7 @@ define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
 define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
 define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
 
-exit('サービスは停止してます');	//サービス一時停止
+//exit('サービスは停止してます');	//サービス一時停止
 
 
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
