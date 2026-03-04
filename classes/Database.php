@@ -21,7 +21,7 @@ class Database {
         //newしたphpファイル名を$fileに取得
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $file = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
-        $this->log = "-- Source: {$file} " . date('Y-m-d H:i:s') . "\n";
+        $this->log = "-- New call from Source: {$file} " . date('Y-m-d H:i:s') . "\n";
         
     }
     public function __destruct() {
@@ -84,8 +84,11 @@ class Database {
         $log = str_replace(":".$key, (is_string($value) ? "'$value'" : (string)$value), $log);
       }
       //$log内の改行コードを半角スペースに変換
-      $log = str_replace(["\r\n", "\r", "\n"], " ", $log);
+      $log = str_replace(["\r\n", "\r", "\n","\t"], " ", $log);
+      //メソッドをコールしたphpファイル名を取得
+      $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
       
+      $this->log .=  "-- Source: ".basename($backtrace[0]['file']).": ".date('Y-m-d H:i:s') . "\n";
       $this->log .= $log.";\n";
       $this->sql = $log;  //Exceptionロールバックログ用にロールバック前に投げたSQLを記録
 
@@ -109,6 +112,10 @@ class Database {
       $log = str_replace(["\t"], "", $log);                 //$log内のタブを削除
       $log = str_replace(["\r\n", "\r", "\n"], " ", $log);  //$log内の改行コードを半角スペースに変換
       
+      //メソッドをコールしたphpファイル名を取得
+      $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+      
+      $this->log .=  "-- Source: ".basename($backtrace[0]['file']).": ".date('Y-m-d H:i:s') . "\n";
       $this->log .= $log.";\n"; //$this->logに実行できるSQL文を書き込む
       $this->sql = $sql;        //Exceptionロールバックログ用にロールバック前に投げたSQLを記録
 
@@ -134,7 +141,7 @@ class Database {
       $this->exec_log();
     }
 
-    private function exec_log():void{
+    public function exec_log():void{
       //sqllog/日付.sql ファイルに$msgを追記
       $dir = 'sqllog';
       if (!is_dir($dir)) {

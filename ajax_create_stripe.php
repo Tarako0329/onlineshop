@@ -4,7 +4,8 @@
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 	log_writer2("ajax_create_stripe.php start","","lv3");
 
-	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+	//$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+	$rtn = csrf_checker(["settlement.php"]);
 	if($rtn !== true){
 	  $alert_status = "warning";
 	  $reseve_status = true;
@@ -34,7 +35,9 @@
 			log_writer2("\$link",$link,"lv3");
 
 			//このPGが呼び出された時点でStripeIDはテーブルに登録される。
-			$sql = "UPDATE Users_online set stripe_id = :stripe_id where uid = :uid";
+			$sql = "UPDATE Users_online set stripe_id = :stripe_id where `uid` = :uid";
+			$db->UP_DEL_EXEC($sql,["stripe_id" => $id,"uid" => $_SESSION["user_id"]]);
+			/*
 			$stmt = $pdo_h->prepare( $sql );
 			$params["stripe_id"] = $id;
 			$params["uid"] = $_SESSION["user_id"];
@@ -46,7 +49,7 @@
 			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-
+			*/
 			$error="";
 			$alert_status = "success";
 		}catch(Exception $e){
@@ -55,14 +58,12 @@
 			$error = json_encode($e, JSON_UNESCAPED_UNICODE);
 		}
 		
-
 		$return_sts = array(
 			"status" => $alert_status
 			,"stripe_id" => $id
 			,"link" => $link->url
 			,"error" => $error
 		);
-				
 	}
   header('Content-type: application/json');  
   echo json_encode($return_sts, JSON_UNESCAPED_UNICODE);

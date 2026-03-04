@@ -230,6 +230,7 @@ ver1.60.0:商品登録画面改良-commited-20260210
 ver1.61.0:SQLLOGの修正-commited-20260213
 ver1.62.0:ログイン画面作成-commited-20260303
 ver1.63.0:corn scriptリファクタリング
+ver1.64.0:リファクタリング:オブジェクト指向化
 
 
 【Issues】

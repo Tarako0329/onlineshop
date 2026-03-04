@@ -28,7 +28,6 @@
 		$logo_url = $row[0]["logo"];
 		$login_type = $row[0]["login_type"];
 		$webrez = $row[0]["webrez"];
-
 		
 		if($password==="-"){	//レジアプリ登録者はメアドが登録済みのため、パスワード"-"の場合のみ新規登録とみなす
 			$g_login = "signup_with";

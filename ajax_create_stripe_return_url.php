@@ -6,9 +6,12 @@
 	log_writer2("ajax_create_stripe_return_url.php start","","lv3");
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
-	if($rtn !== true){
-	  $alert_status = "warning";
+	$rtn = csrf_checker(["ajax_create_stripe.php"]);
+	if(empty($_SESSION["user_id"]) || $rtn !== true){
+		//ユーザーIDが取得できない場合は不正アクセスの可能性があるため、処理を中止してadmin_login.phpにリダイレクトする
 	  $reseve_status = true;
+		header("Location:".ROOT_URL.'admin_login.php?key='.$_GET["hash"]);
+		exit();
 	}else{
 		try{
 			$stripe = new \Stripe\StripeClient(S_KEY);
@@ -18,14 +21,16 @@
 			log_writer2("\$account",$account,"lv3");
 
 			if(empty($account->settings->payments->statement_descriptor)){
-				//$_SESSION["stripe_setting"]="unable";
 				$stripe_setting = "Registering";	//登録中
 			}else{
-				//$_SESSION["stripe_setting"]="able";
 				$stripe_setting = "Registered";	//登録済み
 			}
+			$db->begin_tran();
+			$sql = "UPDATE Users_online set Stripe_Approval_Status = :stripe_setting WHERE `uid` = :uid";
+			$db->UP_DEL_EXEC($sql,["stripe_setting" => $stripe_setting,"uid" => $_SESSION["user_id"]]);
+			$db->commit_tran();
 
-			$sql = "UPDATE Users_online set Stripe_Approval_Status = :stripe_setting WHERE uid = :uid";
+			/*
 			$stmt = $pdo_h->prepare( $sql );
 			$params["stripe_setting"] = $stripe_setting;
 			$params["uid"] = $_SESSION["user_id"];
@@ -34,19 +39,19 @@
 			$sqllog .= rtn_sqllog($sql,$params);
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-
-			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
-			exit();
-
-
-			$alert_status = "success";
+			*/
+			$get_value = 'key='.$_GET["hash"];
+			//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
+			//exit();
 		}catch(Exception $e){
+			$get_value = 'key='.$_GET["hash"]."&stripe_setting=unable";
+			$db->rollback_tran($e->getMessage());
 			log_writer2("\$e",$e,"lv0");
-			$alert_status = "danger";
-			header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
-			exit();
+			//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
+			//exit();
 		}
-		
-				
 	}
+	header("Location:".ROOT_URL.'settlement.php?'.$get_value);
+	exit();
+
 ?>

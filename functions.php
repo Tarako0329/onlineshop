@@ -216,7 +216,7 @@ function check_session_userid_for_ajax($pdo_h){
 // データ更新時のセキュリティ対応（セッション・クッキー・ポストのチェック）
 //　一元化 (リファイラ[xxx.php,xxx.php],[S:session,C:cookie,G:get,P:post])
 // =========================================================
-function csrf_checker($from,$chkpoint){
+function csrf_checker(array $from = [],array $chkpoint = []):bool{
 	//リファイラーチェック
 	$chkflg=false;
 	foreach($from as $row){
@@ -240,10 +240,10 @@ function csrf_checker($from,$chkpoint){
 				$csrf_ck = (!empty($_COOKIE["csrf_token"])?$_COOKIE["csrf_token"]:"\$_COOKIE empty");
 				$checked=$checked."C";
 				setCookie("csrf_token", '', -1, "/", "", TRUE, TRUE); // secure, httponly// クッキー側のトークンを削除し再利用を防止
-			}if($row==="G"){
+			}else if($row==="G"){
 				$csrf_ck = (!empty($_GET["csrf_token"])?$_GET["csrf_token"]:"\$_GET empty");
 				$checked=$checked."G";
-			}if($row==="P"){
+			}else if($row==="P"){
 				$csrf_ck = (!empty($_POST["csrf_token"])?$_POST["csrf_token"]:"\$_POST empty");
 				$checked=$checked."P";
 			}
