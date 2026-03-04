@@ -85,12 +85,12 @@ class Database {
       $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
       //$this->logに実行できるSQL文を書き込む
       $log = $sql;
+      $log = str_replace(["\r\n", "\r", "\n","\t"], " ", $log); //$log内の改行コードを半角スペースに変換
       foreach ($data as $key => $value) {
         $value = ($value === "")? "NULL":$value;  //$valueが""の場合はNULLに変換する
         $log = str_replace([":$key,"], (is_string($value) ? "'$value'," : (string)$value.","), $log);
         $log = str_replace([":$key)"], (is_string($value) ? "'$value')" : (string)$value.")"), $log);
       }
-      $log = str_replace(["\r\n", "\r", "\n","\t"], " ", $log); //$log内の改行コードを半角スペースに変換
       $log = str_replace(["'NULL'"], "NULL", $log);
       $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1); //メソッドをコールしたphpファイル名を取得
       
@@ -117,13 +117,13 @@ class Database {
       */
       //ログ用SQLの作成
       $log = $sql;
+      $log = str_replace(["\t"], "", $log);                 //$log内のタブを削除
+      $log = str_replace(["\r\n", "\r", "\n"], " ", $log);  //$log内の改行コードを半角スペースに変換
       foreach ($data as $key => $value) { //":key" を "value" に変換
         $key = (strpos($key, ':') !== 0)?':'. $key:$key;  //keyが":"から始まってない場合は先頭に":"を付与する
         $value = ($value === "")? "NULL":$value; //valueが""の場合はNULLに変換する
         $log = str_replace($key, (is_string($value) ? "'$value'" : (string)$value), $log);
       }
-      $log = str_replace(["\t"], "", $log);                 //$log内のタブを削除
-      $log = str_replace(["\r\n", "\r", "\n"], " ", $log);  //$log内の改行コードを半角スペースに変換
       $log = str_replace(["'NULL'"], "NULL", $log);        //$log内の'NULL'をNULLに変換
       
       //メソッドをコールしたphpファイル名を取得
