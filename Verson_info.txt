@@ -231,6 +231,7 @@ ver1.61.0:SQLLOGの修正-commited-20260213
 ver1.62.0:ログイン画面作成-commited-20260303
 ver1.63.0:corn scriptリファクタリング
 ver1.64.0:リファクタリング:オブジェクト指向化
+ver1.64.1:リファクタリング:オブジェクト指向化
 
 
 【Issues】
@@ -246,7 +247,7 @@ ver1.64.0:リファクタリング:オブジェクト指向化
 
 マイグレーションコマンド
 #マイグレーションファイルを作る
- [
+ php vendor/bin/phinx create [
     テーブルを作る時: CreateUsersTable
     テーブルを削除: DropUsersTable
     カラムを追加する時: AddStatusToUsers
