@@ -31,22 +31,24 @@ if($rtn !== true){
         $logfilename="sid_".$_SESSION['user_id'].".log";
 
         //SELECT * from Users_online where uid = :uid を実行し、取得した値を$params[]に初期値として格納。件数が０件の場合はスキップ
-        $sql = "SELECT * from Users_online where uid = :uid";
+        $sql = "SELECT * from Users_online where `uid` = :uid";
+        /*
         $stmt = $pdo_h->prepare( $sql );
         $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
         $status = $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        */
+        $data = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
+        //log_writer2("\$data",$data,"lv3");
         if(count($data)===0){
         }else{
             $params = $data[0];
         }
 
+        //$DELsql = "DELETE from Users_online where uid = :uid ";
 
-
-        $DELsql = "DELETE from Users_online where uid = :uid ";
-
-        $INSsql = "INSERT into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color,credit,stripe_id,Stripe_Approval_Status)";
-        $INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color,:credit,:stripe_id,:Stripe_Approval_Status)";
+        //$INSsql = "INSERT into Users_online (uid,yagou,name,shacho,jusho,tel,mail,mail_body,mail_body_auto,mail_body_sent,mail_body_paid,mail_body_cancel,site_name,logo,site_pr,cc_mail,line_id,fb_id,x_id,chk_recept,chk_sent,chk_paid,lock_sts,cancel_rule,invoice,headcolor,bodycolor,h_font_color,credit,stripe_id,Stripe_Approval_Status)";
+        //$INSsql .= "values(:uid,:yagou,:name,:shacho,:jusho,:tel,:mail,:mail_body,:mail_body_auto,:mail_body_sent,:mail_body_paid,:mail_body_cancel,:site_name,:logo,:site_pr,:cc_mail,:line_id,:fb_id,:x_id,:chk_recept,:chk_sent,:chk_paid,:lock_sts,:cancel_rule,:invoice,:headcolor,:bodycolor,:h_font_color,:credit,:stripe_id,:Stripe_Approval_Status)";
 
         $params["uid"] = $_SESSION["user_id"];
         $params["yagou"] = $_POST["yagou"];
@@ -62,9 +64,11 @@ if($rtn !== true){
         $params["mail_body_cancel"] = $_POST["mail_body_cancel"];
         //$params["site_name"] = $_POST["site_name"];
         $params["site_name"] = $_POST["yagou"]; //とりあえず今は屋号を転記
-        $params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
+        //$params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
+        $params["logo"] = $_POST["logo"] ?? "";
         $params["cc_mail"] = $_POST["cc_mail"];
-        $params["line_id"] = !empty($_POST["line_id"])?$_POST["line_id"]:NULL;
+        //$params["line_id"] = !empty($_POST["line_id"])?$_POST["line_id"]:NULL;
+        $params["line_id"] = $_POST["line_id"] ;
         $params["fb_id"] = $_POST["fb_id"];
         $params["x_id"] = $_POST["x_id"];
         $params["site_pr"] = $_POST["site_pr"];
@@ -133,7 +137,8 @@ if($rtn !== true){
                     "発送連絡" => "OK (Local)",
                     "キャンセル受付" => "OK (Local)",
                 ]
-            ];        }
+            ];        
+        }
         
         //log_writer2("\$value_check",$value_check["result"],"lv3");
         
@@ -154,9 +159,12 @@ if($rtn !== true){
                 $msg .= "ロゴ画像ファイル保存失敗 or ロゴ画像ファイル未設定・NOFILE";
             }
 
-            $pdo_h->beginTransaction();
-            $sqllog .= rtn_sqllog("START TRANSACTION",[]);
+            //$pdo_h->beginTransaction();
+            //$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+            $db->begin_tran();
 
+            $db->UP_DEL_EXEC("DELETE from Users_online where `uid` = :uid ",["uid" => $params["uid"]]);
+            /*
             $stmt = $pdo_h->prepare( $DELsql );
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
             
@@ -164,7 +172,10 @@ if($rtn !== true){
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+            */
             
+            $db->INSERT("Users_online",$params);
+            /*
             $stmt = $pdo_h->prepare( $INSsql );
             $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
             $stmt->bindValue("yagou", $params["yagou"], PDO::PARAM_STR);
@@ -180,41 +191,47 @@ if($rtn !== true){
             $stmt->bindValue("mail_body_cancel", $params["mail_body_cancel"], PDO::PARAM_STR);
             $stmt->bindValue("site_name", $params["site_name"], PDO::PARAM_STR);
             $stmt->bindValue("logo", $params["logo"], PDO::PARAM_STR);
-            $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_STR);
-            $stmt->bindValue("line_id", $params["line_id"], PDO::PARAM_STR);
-            $stmt->bindValue("fb_id", $params["fb_id"], PDO::PARAM_STR);
-            $stmt->bindValue("x_id", $params["x_id"], PDO::PARAM_STR);
             $stmt->bindValue("site_pr", $params["site_pr"], PDO::PARAM_STR);
+            $stmt->bindValue("cc_mail", $params["cc_mail"], PDO::PARAM_STR);
             $stmt->bindValue("chk_recept", $params["chk_recept"], PDO::PARAM_INT);
             $stmt->bindValue("chk_sent", $params["chk_sent"], PDO::PARAM_INT);
             $stmt->bindValue("chk_paid", $params["chk_paid"], PDO::PARAM_INT);
             $stmt->bindValue("lock_sts", $params["lock_sts"], PDO::PARAM_STR);
             $stmt->bindValue("cancel_rule", $params["cancel_rule"], PDO::PARAM_STR);
+            $stmt->bindValue("line_id", $params["line_id"], PDO::PARAM_STR);
+            $stmt->bindValue("fb_id", $params["fb_id"], PDO::PARAM_STR);
+            $stmt->bindValue("x_id", $params["x_id"], PDO::PARAM_STR);
+            $stmt->bindValue("invoice", $params["invoice"], PDO::PARAM_STR);
+            $stmt->bindValue("stripe_id", $params["stripe_id"], PDO::PARAM_STR);
+            $stmt->bindValue("Stripe_Approval_Status", $params["Stripe_Approval_Status"], PDO::PARAM_STR);
+            $stmt->bindValue("credit", $params["credit"], PDO::PARAM_STR);
             $stmt->bindValue("headcolor", $params["headcolor"], PDO::PARAM_STR);
             $stmt->bindValue("bodycolor", $params["bodycolor"], PDO::PARAM_STR);
             $stmt->bindValue("h_font_color", $params["h_font_color"], PDO::PARAM_STR);
-            $stmt->bindValue("invoice", $params["invoice"], PDO::PARAM_STR);
-            $stmt->bindValue("credit", $params["credit"], PDO::PARAM_STR);
-            $stmt->bindValue("stripe_id", $params["stripe_id"], PDO::PARAM_STR);
-            $stmt->bindValue("Stripe_Approval_Status", $params["Stripe_Approval_Status"], PDO::PARAM_STR);
             
             $sqllog .= rtn_sqllog($INSsql,$params);
 
             $status = $stmt->execute();
             $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+            */
             
+            $db->commit_tran();
+            /*
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
-	
+            */
 			//$msg .= "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
         }catch(Exception $e){
+            $db->rollback_tran($e->getMessage());
+            /*
             $pdo_h->rollBack();
             $sqllog .= rtn_sqllog("rollBack",[]);
             sqllogger($sqllog,$e);
+            */
             log_writer2("\$e",$e,"lv0");
             $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";

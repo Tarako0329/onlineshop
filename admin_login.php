@@ -14,9 +14,9 @@
 	$login = false;
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
-	$sql = "SELECT UO.*,US.mail,US.password,US.login_type,US.webrez FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.uid =:uid";
+	$sql = "SELECT UO.*,US.mail,US.password,US.login_type,US.webrez FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.`uid` =:uid";
 	$row = $db->SELECT($sql, [":uid" => $uid]);
-	log_writer2("admin_menu.php start","","lv3");
+	log_writer2("admin_login.php start","","lv3");
 	//log_writer2("\$row",$row,"lv3");
 	log_writer2("\$uid",$uid,"lv3");
 	

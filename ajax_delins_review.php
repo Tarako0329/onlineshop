@@ -18,7 +18,8 @@ $stmt = $pdo_h->prepare($sql);
 $stmt->bindValue("uid", $_POST["shop_id"], PDO::PARAM_STR);
 $stmt->execute();
 $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$lineID = (!empty($user[0]["line_id"])?$user[0]["line_id"]:"none");
+//$lineID = (!empty($user[0]["line_id"])?$user[0]["line_id"]:"none");
+$lineID = $user[0]["line_id"] ?? "none";
 $mail = $user[0]["mail"];
 $head = " 様より商品レビューが投稿されました。";
 

@@ -49,6 +49,10 @@ define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8
 define("USER_NAME", $_ENV["DBUSER"]);
 define("PASSWORD", $_ENV["PASS"]);
 
+define("DB_HOST", $_ENV["SV"]);
+define("DB_NAME", $_ENV["DBNAME"]);
+
+
 //メール送信関連
 define("HOST", $_ENV["HOST"]);
 define("PORT", $_ENV["PORT"]);
@@ -70,6 +74,7 @@ define("MERCHANT_ID",$_ENV["MERCHANT_ID"]);
 //$MERCHANT_ID = $_ENV["MERCHANT_ID"];
 
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+$db = new Database();
 
 //require元PHPの取得
 $request_php = basename($_SERVER['PHP_SELF']);

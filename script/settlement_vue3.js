@@ -184,11 +184,9 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
         Stripe_Approval_Status.value = response.Users_online[0].Stripe_Approval_Status
         if(stripe_id.value==="none"){
           btn_name.value="Stripeアカウントの登録を始める"
-        //}else if(credit.value==="unable"){
         }else if(Stripe_Approval_Status.value==="Registering"){  //登録中
           btn_name.value="Stripeアカウントの登録を再開する"
         }
-        //if(credit.value!=="unable"){
         if(Stripe_Approval_Status.value==="Registered" || Stripe_Approval_Status.value==="Available"){  //登録済み以降
           stripe_dashboard.value=true
         }

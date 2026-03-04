@@ -53,7 +53,7 @@ $data = $db->SELECT($sql);
 $i=0;
 foreach($data as $row){
 	 //$row["yagou"]."　　　<a href=admin_menu.php?key=".rot13encrypt2($row["uid"]).">管理サイトへ</a><br>";
-	 $data[$i] = ["uri" => "admin_menu.php?key=".rot13encrypt2($row["uid"]),"yagou" => $row["yagou"]];
+	 $data[$i] = ["uri" => "admin_login.php?key=".rot13encrypt2($row["uid"]),"yagou" => $row["yagou"]];
 	 $i++;
 }
 
