@@ -3,8 +3,6 @@
 	データ更新はトライキャッチでくくり、トランザクション処理とする
 	依頼メールを送信したら、review_iraiにdoneをセットする
 	*/
-	//date_default_timezone_set('Asia/Tokyo'); 
-	//define("VERSION","ver1.37.0");
 	if (php_sapi_name() != 'cli') {
 		exit('このスクリプトはCLIからのみ実行可能です。');
 	}
@@ -42,8 +40,8 @@
 		foreach($data as $row){
 			if($cnt <> 0 && $shop_id<>$row["uid"]){
 				//出店者にメール送信
-				if($lineID <> "none"){
-					$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+				if(Utilities::exist($lineID)){
+					$rtn = Utilities::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 				}
@@ -52,7 +50,7 @@
 			}
 			$shop_id = $row["uid"];
 			
-			$lineID =(!empty($row["line_id"]))?$row["line_id"]:"none";
+			$lineID =$row["line_id"];
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
 
@@ -106,8 +104,8 @@
 		
 		//出店者にメール送信 (ループの最後の店舗)
 		if ($cnt > 0 && !empty($shop_mail)) {
-			if($lineID <> "none"){
-				$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+			if(Utilities::exist($lineID)){
+				$rtn = Utilities::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 			}else{
 				$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 			}

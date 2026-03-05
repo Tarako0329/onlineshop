@@ -86,8 +86,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		foreach($data as $row){
 			if($cnt <> 0 && $shop_id<>$row["uid"]){
 				//出店者にメール送信
-				if($lineID <> "none"){
-					$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+				if(Utilities::exist($lineID)){
+					$rtn = Utilities::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 				}
@@ -96,7 +96,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			}
 			$shop_id = $row["uid"];
 			
-			$lineID =(!empty($row["line_id"]))?$row["line_id"]:"none";
+			$lineID =$row["line_id"];
 			$shop_mail = $row["shop_mail"];
 			$taishou_list .= $row["name"]." 様\r\n";
 
@@ -162,8 +162,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		sqllogger($sqllog,0);
 
 		//出店者にメール送信
-		if($lineID <> "none"){
-			$rtn = send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
+		if(Utilities::exist($lineID)){
+			$rtn = Utilities::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 		}else{
 			$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 		}

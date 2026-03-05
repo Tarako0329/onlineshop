@@ -233,29 +233,8 @@ if($rtn !== true){
 					$st_tel
 				EOM;
 				
-				//$lineID =(!empty($owner[0]["line_id"]) && $owner[0]["line_id"] <> "null")?$owner[0]["line_id"]:"none";
-				//if($lineID <> "none"){//LINEで通知
 				if(Utilities::exist($owner[0]["line_id"])){//LINEで通知
-					/*
-						$url = ROOT_URL.'line_push_msg.php';
-
-						$data = array(
-							'LINE_USER_ID' => $owner[0]["line_id"],
-							'MSG' => "オーダー受注通知[No:".$orderNO."]\r\n".$body,
-						);
-
-						$context = array(
-							'http' => array(
-								'method'  => 'POST',
-								'header'  => implode("\r\n", array('Content-Type: application/x-www-form-urlencoded',)),
-								'content' => http_build_query($data)
-							)
-						);
-
-						$html = file_get_contents($url, false, stream_context_create($context));
-					*/
 					$rtn = Utilities::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
-					//echo $html;
 				}else if(!empty($owner[0]["mail"])){
 					$rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 				}

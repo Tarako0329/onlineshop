@@ -78,10 +78,9 @@
 				https://dashboard.stripe.com/payments
 			EOM;
 
-			$lineID =(!empty($owner[0]["line_id"]) && $owner[0]["line_id"] <> "null")?$owner[0]["line_id"]:"none";
-			//if(!empty($owner[0]["line_id"]) && EXEC_MODE <> "Local"){//LINEで通知
-			if($lineID <> "none"){//LINEで通知
-				$html = send_line($owner[0]["line_id"],$body);
+			$lineID =$owner[0]["line_id"];
+			if(Utilities::exist($lineID)){//LINEで通知
+				$rtn = Utilities::send_line($owner[0]["line_id"],$body);
 			}else if(!empty($owner[0]["mail"])){
 				$rtn = send_mail($owner[0]["mail"],"入金通知[No:".$juchuu_head[0]["orderNO"]."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 			}

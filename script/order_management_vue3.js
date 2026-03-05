@@ -330,8 +330,6 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
 
       const form = new FormData();
       form.append(`mailto`, qa_mail.value)
-      //form.append(`mailtoBCC`, "")
-      //form.append(`lineid`, shouhinMS_SALE.value[qa_index.value].line_id)
       form.append(`shop_id`, qa_shopid.value)
       form.append(`qa_head`, qa_head.value)
       form.append(`qa_name`, qa_name.value)
@@ -340,7 +338,6 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       form.append(`qa_text`, qa_text.value)
       form.append(`sts`, "Q")
       form.append(`csrf_token`, token)
-      //form.append(`hash`, hash)
 
       axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{

@@ -19,7 +19,7 @@ $stmt->bindValue("uid", $_POST["shop_id"], PDO::PARAM_STR);
 $stmt->execute();
 $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$lineID = $user[0]["line_id"] ?? "none";
+$lineID = $user[0]["line_id"];
 $mail = $user[0]["mail"];
 $head = " 様より商品レビューが投稿されました。";
 
@@ -139,8 +139,8 @@ if($rtn !== true){
             $body = "商品名：".$_POST["shouhinNM"]."\r\nレビュー：".$_POST["review"]."\r\n返信したい場合は、下記URLよりご確認ください。\r\n".$url;
             
 
-            if($lineID <> "none"){
-                $rtn = send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
+            if(Utilities::exist($lineID)){
+                $rtn = Utilities::send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
             }else{
                 $rtn = send_mail($mail,$params["Contributor"].$head,$body,TITLE,"");//出店者へお知らせメール
             }
