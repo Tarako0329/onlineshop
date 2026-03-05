@@ -57,6 +57,7 @@ class ComposerStaticInitc28cb46b0da2231e4ff1f608099e7f80
             'PhpOption\\' => 10,
             'Phinx\\' => 6,
             'ParagonIE\\ConstantTime\\' => 23,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'N' => 
         array (
@@ -207,6 +208,10 @@ class ComposerStaticInitc28cb46b0da2231e4ff1f608099e7f80
         'ParagonIE\\ConstantTime\\' => 
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Nyholm\\Psr7\\' => 
         array (

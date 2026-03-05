@@ -10,7 +10,8 @@
         "nyholm/psr7": "^1.8",
         "abraham/twitteroauth": "^7.0",
         "robmorgan/phinx": "^0.14.0",
-        "google/apiclient": "^2.14"
+        "google/apiclient": "^2.14",
+        "phpmailer/phpmailer": "^7.0"
     },
     "config": {
         "allow-plugins": {
