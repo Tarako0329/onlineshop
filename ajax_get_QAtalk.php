@@ -10,19 +10,23 @@
 		$askNO = rot13decrypt2($_SESSION["askNO"]);
 		$shop_id = $_SESSION["user_id"];
 		
-		$sql = "select qa.*,us.logo,us.yagou,us.mail,us.line_id
-		from online_q_and_a qa
-		inner join Users_online us
-		on qa.shop_id = us.uid
-		where askNO = :askNO 
-		and shop_id = :shop_id
-		order by seq";
+		$sql = "SELECT qa.*,us.logo,us.yagou,us.mail,us.line_id
+			from online_q_and_a qa
+			inner join Users_online us
+			on qa.`shop_id` = us.uid
+			where `askNO` = :askNO 
+			and `shop_id` = :shop_id
+			order by seq";
+		/*
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("shop_id", $shop_id, PDO::PARAM_INT);
 		$stmt->bindValue("askNO", $askNO, PDO::PARAM_INT);
 		
 		$stmt->execute();
 		$talk = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		*/
+		$talk = $db->SELECT($sql,["shop_id" => $shop_id,"askNO" => $askNO]);
+		
 	  //log_writer('\$talk',$talk);
 	}
   header('Content-type: application/json');  

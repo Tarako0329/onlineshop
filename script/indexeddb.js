@@ -6,7 +6,7 @@ const openReq  = indexedDB.open(dbName,dbVersion);
 //　DB名を指定して接続。DBがなければ新規作成される。
 
 openReq.onupgradeneeded = function(event){
-//onupgradeneededは、DBのバージョン更新(DBの新規作成も含む)時のみ実行
+  //onupgradeneededは、DBのバージョン更新(DBの新規作成も含む)時のみ実行
   let db = event.target.result;
   
   db.createObjectStore(tableNM, {keyPath : 'id'})
@@ -15,7 +15,7 @@ openReq.onupgradeneeded = function(event){
 }
 
 openReq.onsuccess = function(event){
-//onupgradeneededの後に実行。更新がない場合はこれだけ実行
+  //onupgradeneededの後に実行。更新がない場合はこれだけ実行
   console_log('db open success');
   let DBCon = event.target.result;
   let dbVersion = DBCon.version;
@@ -26,7 +26,7 @@ openReq.onsuccess = function(event){
 }
 
 openReq.onerror = function(event){
-// 接続に失敗
+  // 接続に失敗
   console_log('db open error');
 }
 

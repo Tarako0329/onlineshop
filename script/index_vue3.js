@@ -22,6 +22,7 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 					shouhinMS_pic.value = [...response.data.pic_set]
 					console_log('get_shouhinMS_online succsess')
 					//console_log(response.data.pic_set)
+					console_log(response.data.dataset)
 
 					IDD_Read_All(tableNM,(cart)=>{//indexDBのカートの内容を反映
 						cart.forEach((list)=>{
@@ -58,20 +59,26 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 		}
 
 		const Charge_amount_by_store = computed(()=>{//ショップごとの注文合計額
-			let kingakus = []
+			let kingakus = []	//shop毎の合計金額を保存
 			let kingaku_temp = new Decimal(0)
 
-			shouhinMS.value.forEach((row,index)=>{
+			//shouhinMS.valueをuidでソートして、orderd!==0のレコードを抽出した結果をORDER_LISTにディープコピーする
+			const ORDER_LIST = JSON.parse(JSON.stringify(shouhinMS.value))
+				.sort((a,b) => a.uid - b.uid)
+				.filter(item => Number(item.ordered) !== 0)
+			//console_log(ORDER_LIST);	//ショップID（出店者uid)
+
+			ORDER_LIST.forEach((row,index)=>{
 				let num1 = new Decimal(row.zeikomikakaku);
-				let num2 = new Decimal(row.ordered);
+				let num2 = new Decimal(row.ordered);	//注文個数
+				//console_log(`shopid:${row.uid}`);	//ショップID（出店者uid)
 				//console_log(num1.mul(num2).toNumber());
 
 				if(row.ordered != 0){
 					kingaku_temp = kingaku_temp.add(num1.mul(num2)) //税込合計
 				}
-				//if(index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0){
-				if(((index === (shouhinMS.value.length - 1) && kingaku_temp.toNumber() !== 0) 
-						|| index !== (shouhinMS.value.length - 1) && row.uid !== shouhinMS.value[index+1].uid && kingaku_temp.toNumber() !== 0)){
+				if(((index === (ORDER_LIST.length - 1) && kingaku_temp.toNumber() !== 0) 
+						|| index !== (ORDER_LIST.length - 1) && row.uid !== ORDER_LIST[index+1].uid && kingaku_temp.toNumber() !== 0)){
 					kingakus.push({
 						"uid":row.uid
 						,"yagou":row.yagou
@@ -100,9 +107,9 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 
 			return kingakus.filter((row) =>{
 				if(order_shop_id.value === ''){
-					return (row.ordered!=0)
+					return (row.ordered!==0)
 				}else{
-					return (row.ordered!=0 && row.uid === order_shop_id.value)
+					return (row.ordered!==0 && row.uid === order_shop_id.value)
 				}
 			})
 		})

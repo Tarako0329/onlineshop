@@ -41,8 +41,9 @@ class Database {
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,  // エラー時に例外を投げる
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,        // デフォルトを連想配列に
-            PDO::ATTR_EMULATE_PREPARES   => false,                  // 静的プレパレードステートメントを使用
-            PDO::MYSQL_ATTR_MULTI_STATEMENTS => false               // マルチステートメントを使用しない
+            PDO::ATTR_EMULATE_PREPARES   => false,                   // 静的プレパレードステートメントを使用
+            PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,               // マルチステートメントを使用しない
+            PDO::ATTR_STRINGIFY_FETCHES  => false,                   // 数値を文字列に変換しない
         ];
 
         try {

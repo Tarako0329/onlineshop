@@ -62,12 +62,9 @@ if($rtn !== true){
         $params["mail_body_paid"] = $_POST["mail_body_paid"];
         $params["mail_body_sent"] = $_POST["mail_body_sent"];
         $params["mail_body_cancel"] = $_POST["mail_body_cancel"];
-        //$params["site_name"] = $_POST["site_name"];
         $params["site_name"] = $_POST["yagou"]; //とりあえず今は屋号を転記
-        //$params["logo"] = !empty($_POST["logo"])?$_POST["logo"]:"";
         $params["logo"] = $_POST["logo"] ?? "";
         $params["cc_mail"] = $_POST["cc_mail"];
-        //$params["line_id"] = !empty($_POST["line_id"])?$_POST["line_id"]:NULL;
         $params["line_id"] = $_POST["line_id"] ;
         $params["fb_id"] = $_POST["fb_id"];
         $params["x_id"] = $_POST["x_id"];

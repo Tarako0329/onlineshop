@@ -5,7 +5,6 @@ require "php_header.php";
 // LINE Messaging API プッシュメッセージを送る
 $LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push";
 
-
 $LINE_CHANNEL_ACCESS_TOKEN = $_ENV["LINE_CHANNEL_ACCESS_TOKEN"];
 
 // Your user ID
