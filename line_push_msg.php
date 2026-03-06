@@ -53,26 +53,11 @@ if ($USE_CURL) {
     // HTTPステータスコードを取得
     $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
-}/*else{
-    // file_get_contentsを使った送信処理
-    $context = stream_context_create(array(
-        'http' => array(
-            'method' => 'POST',
-            'header' => implode("\r\n", $header),
-            'content'=>  json_encode($post_data),
-            'ignore_errors' => true
-        )
-    ));
+}
 
-    $result = file_get_contents(
-        $LINE_PUSH_URL,
-        false,
-        $context
-        );
-}*/
 $response_data = json_decode($result, true);
 
-if (empty($response_data)) {
+if ($http_code === 200) {
     $status = "success";
 } else {
     $status = "failed";
