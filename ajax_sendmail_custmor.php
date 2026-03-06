@@ -158,8 +158,6 @@ if($rtn !== true){
 				$send_cc_rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
 			}
 
-
-
 			if($send_rtn===true && $send_cc_rtn === true){
 				$msg = "送信完了";
 				$alert_status = "alert-success";

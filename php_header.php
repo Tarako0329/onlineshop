@@ -71,11 +71,11 @@ spl_autoload_register(function ($className) {
   $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
   // 2. クラスファイルを探すフルパスを組み立て
   $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
-  log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
+  //log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
   // 3. ファイルが存在すれば読み込む
   if (file_exists($file)) {
     require_once $file;
-    log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
+    //log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }else{
     log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }

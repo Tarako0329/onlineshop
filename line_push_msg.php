@@ -50,8 +50,10 @@ if ($USE_CURL) {
     curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
     curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
     $result = curl_exec($curl);
+    // HTTPステータスコードを取得
+    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
-}else{
+}/*else{
     // file_get_contentsを使った送信処理
     $context = stream_context_create(array(
         'http' => array(
@@ -67,22 +69,18 @@ if ($USE_CURL) {
         false,
         $context
         );
-}
+}*/
 $response_data = json_decode($result, true);
 
 if (empty($response_data)) {
-    //echo "メッセージが正常に送信されました（またはレスポンスが空です）。";
     $status = "success";
 } else {
-    /*echo "エラーが発生しました：<br>";
-    echo "<pre>";
-    print_r($response_data);
-    echo "</pre>";*/
     $status = "failed";
 }
 $result = array(
     "status" => $status,
-    "response" => $response_data
+    "response" => $response_data,
+    "http_code" => $http_code ?? null
 );
 $result = json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 header('Content-Type: application/json'); // レスポンスがJSONであることを明示
