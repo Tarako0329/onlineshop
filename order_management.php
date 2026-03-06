@@ -63,7 +63,7 @@
                           <div style="width: 100%;">注文日[{{String(list.juchuu_date).substring(0,10)}}] 注文者：{{list.name}}  ￥{{Number(list.税込総額).toLocaleString()}}</div>
                           <div style="width: 100%;">
                             受付NO:[{{list.orderNO}}] 　
-                            <template v-if='list.cancel===null'>
+                            <template v-if='!list.cancel'>
                               <template v-if='chk_recept'><template v-if='list.オーダー受付==="済"'><span style='color:blue;'>受付{{list.オーダー受付}}</span></template><template v-else ><span style='color:red;'>{{list.オーダー受付}}受付</span></template> 　</template>
                               <template v-if='chk_paid'><template v-if='list.入金==="済"'><span style='color:blue;'>入金{{list.入金}}</span></template><template v-else ><span style='color:red;'>{{list.入金}}入金</span></template> 　</template>
                               <template v-if='chk_sent'><template v-if='list.発送==="済"'><span style='color:blue;'>発送{{list.発送}}</span></template><template v-else ><span style='color:red;'>{{list.発送}}発送</span></template> </template>
@@ -84,7 +84,7 @@
                           </div>
                         </div>
 
-                        <div v-if='list.cancel===null' class='d-flex' style="position: relative;">
+                        <div v-if='!list.cancel' class='d-flex' style="position: relative;">
                           <div v-if='chk_recept' class='me-3'>
                             <p>受付</p>
                             <input type='radio' class='btn-check' :name='`statusU_${index}`' value="未" autocomplete='off' :id='`showU_${index}`' v-model='list.オーダー受付' @change='set_order_sts(list.orderNO,"first_answer",0,index)'>
