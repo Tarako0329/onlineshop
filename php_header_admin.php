@@ -62,9 +62,9 @@ spl_autoload_register(function ($className) {
   // 3. ファイルが存在すれば読み込む
   if (file_exists($file)) {
     require_once $file;
-    log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv1");
+    log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }else{
-    log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv1");
+    log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }
 });
 
