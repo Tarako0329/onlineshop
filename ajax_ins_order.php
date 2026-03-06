@@ -143,8 +143,12 @@ if($rtn !== true){
 				
 				if(U::exist($owner[0]["line_id"])){//LINEで通知
 					$rtn = U::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
-				}else if(!empty($owner[0]["mail"])){
+				}else if(U::exist($owner[0]["mail"])){
 					$rtn = U::send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+				}
+				if($rtn === false){
+					log_writer2("U::send_mail \$rtn","ショップへの注文メールの送信に失敗しました。","lv3");
+					throw new Exception("ショップへの注文メールの送信に失敗しました。");
 				}
 
 				//お客様向けメール 
@@ -166,7 +170,8 @@ if($rtn !== true){
 					
 					$rtn = U::send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["cc_mail"]);
 					if($rtn === false){
-						throw new Exception("注文内容確認メールの送信に失敗しました。");
+						log_writer2("U::send_mail \$rtn",$rtn,"lv3");
+						throw new Exception("注文者向けの注文内容確認メールの送信に失敗しました。");
 					}
 				}
 			}
