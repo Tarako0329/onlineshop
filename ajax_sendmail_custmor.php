@@ -116,7 +116,7 @@ if($rtn !== true){
 				}else{
 					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] send ".$send_rtn,"lv3");
+				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] Q send ".$send_rtn,"lv3");
 				$cc_address = $CusMailAdd;
 			}else if($sts==="A"){//通販画面QAのanswer（店⇒客）
 				$head = $yagou." より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
@@ -139,7 +139,7 @@ if($rtn !== true){
 				}else{
 					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] send ".$send_rtn,"lv3");
+				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] CA send ".$send_rtn,"lv3");
 				$cc_address = $CusMailAdd;
 			}else{
 				exit();//想定外
@@ -150,19 +150,17 @@ if($rtn !== true){
 			if($cc_address==="shop"){
 				if(U::exist($lineID)){
 					$ShopMailAdd = "LINE";
-					$send_rtn = U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+					$send_cc_rtn = U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$send_cc_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
-
 			}else{
-				$send_rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
-
+				$send_cc_rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
 			}
 
 
 
-			if($send_rtn===true){
+			if($send_rtn===true && $send_cc_rtn === true){
 				$msg = "送信完了";
 				$alert_status = "alert-success";
 
