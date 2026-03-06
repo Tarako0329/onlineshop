@@ -42,6 +42,7 @@ class Utilities {
 		);
 
 		$return = file_get_contents($url, false, stream_context_create($context));
+		log_writer2("Util::send_line - \$return",$return,"lv3");
 		if($return !== false){
 			$return = true;
 		}else{

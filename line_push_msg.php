@@ -68,9 +68,23 @@ if ($USE_CURL) {
         $context
         );
 }
+$response_data = json_decode($result, true);
 
-// デバグ確認用のログ：受信レスポンス
-//$file = 'tmp/result.txt';
-//file_put_contents($file, $result, FILE_APPEND);
-//file_put_contents($file, PHP_EOL.PHP_EOL, FILE_APPEND);
+if (empty($response_data)) {
+    //echo "メッセージが正常に送信されました（またはレスポンスが空です）。";
+    $status = "success";
+} else {
+    /*echo "エラーが発生しました：<br>";
+    echo "<pre>";
+    print_r($response_data);
+    echo "</pre>";*/
+    $status = "failed";
+}
+$result = array(
+    "status" => $status,
+    "response" => $response_data
+);
+$result = json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+header('Content-Type: application/json'); // レスポンスがJSONであることを明示
+echo $result;
 ?>
