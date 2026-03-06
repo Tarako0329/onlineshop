@@ -17,13 +17,7 @@ if($rtn !== true){
 	$alert_status = "alert-warning";
 	$reseve_status = true;
 }else{
-	//$rtn=check_session_userid_for_ajax($pdo_h);
-	/*if($rtn===false){
-		$reseve_status = true;
-		$msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
-		$_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
-		$timeout=true;
-	}*/
+
 	$owner = $db->SELECT("SELECT * from Users_online where `uid` = :uid",["uid" => $_POST["order_shop_id"]]);
 	//log_writer2("\$owner",$owner,"lv3");
 	if(count($owner)===0){
@@ -32,28 +26,8 @@ if($rtn !== true){
 		$post_id = $_POST['order_shop_id'] ?? "NULL";
 		log_writer2("","オーダー登録処理でエラー。ポストされたショップIDがUsers_onlineに存在しません。(\$_POST['order_shop_id'] = $post_id)","lv0");
 		$reseve_status = true;
-		//$_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
-		//$timeout=true;
 	}else{
-		/*
-		$stmt = $pdo_h->prepare("SELECT * from Users_online where uid = :uid");
-		$stmt->bindValue("uid", $_POST["order_shop_id"], PDO::PARAM_INT);
-		$stmt->execute();
-		$owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
-		
-
-		//log_writer2("\$owner",$owner,"lv3");
-
-		//更新モード(実行)
-		//$sqlstr_h = "insert into juchuu_head(uid,orderNO,name,yubin,jusho,tel,mail,bikou,st_name,st_yubin,st_jusho,st_tel,buy_trigger,mark_id) values(:uid,:orderNO,:name,:yubin,:jusho,:tel,:mail,:bikou,:st_name,:st_yubin,:st_jusho,:st_tel,:buy_trigger,:mark_id)";
-		//$sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
-
-		//$params["uid"] = $_SESSION["user_id"];
-
 		try{
-			//$pdo_h->beginTransaction();
-			//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 			$db->begin_tran();
 			$params["uid"] = $_POST["order_shop_id"];
 			$params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
@@ -75,21 +49,9 @@ if($rtn !== true){
 			//受注ヘッダ登録
 
 			//オーダー番号作成
-			//$stmt = $pdo_h->prepare("SELECT orderNO from juchuu_head where orderNO = :orderNO FOR UPDATE");
-			//$maxTries = 100000000;
-			$maxTries = 100;
+			$maxTries = 10000;
 			$i = 0;
 			while(true){
-				//乱数からオーダーナンバーを発行し、受注ヘッダで重複してなければ使用する
-				/*
-					$params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
-					$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
-					$stmt->execute();
-					$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-					if(empty($row[0]["orderNO"])){
-						break;
-					}
-				*/
 				try{
 					$db->INSERT("juchuu_head",$params);
 					break;
@@ -108,36 +70,10 @@ if($rtn !== true){
 				break;
 			}
 
-			/*
-				$stmt = $pdo_h->prepare( $sqlstr_h );
-				//bind処理
-				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
-				$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
-				$stmt->bindValue("name", $params["name"], PDO::PARAM_STR);
-				$stmt->bindValue("yubin", $params["yubin"], PDO::PARAM_STR);
-				$stmt->bindValue("jusho", $params["jusho"], PDO::PARAM_STR);
-				$stmt->bindValue("tel", $params["tel"], PDO::PARAM_STR);
-				$stmt->bindValue("mail", $params["mail"], PDO::PARAM_STR);
-				$stmt->bindValue("bikou", $params["bikou"], PDO::PARAM_STR);
-
-				$stmt->bindValue("st_name", $params["st_name"], PDO::PARAM_STR);
-				$stmt->bindValue("st_yubin", $params["st_yubin"], PDO::PARAM_STR);
-				$stmt->bindValue("st_jusho", $params["st_jusho"], PDO::PARAM_STR);
-				$stmt->bindValue("st_tel", $params["st_tel"], PDO::PARAM_STR);
-				$stmt->bindValue("buy_trigger", $params["buy_trigger"], PDO::PARAM_STR);
-				$stmt->bindValue("mark_id", $params["mark_id"], PDO::PARAM_STR);
-
-				$sqllog .= rtn_sqllog($sqlstr_h,$params);
-
-				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
-			
 			//明細登録
 			$orderlist="【ご注文内容】\r\n";
 			foreach($_POST["meisai"] as $row){
 				//log_writer2("\$row",$row,"lv3");
-				//$sqlstr_m = "insert into juchuu_meisai(orderNO,shouhinCD,shouhinNM,su,tanka,goukeitanka,zeikbn,bikou) values(:orderNO,:shouhinCD,:shouhinNM,:su,:tanka,:goukeitanka,:zeikbn,:bikou)";
 				$params_meisai["orderNO"] = $params["orderNO"];
 				$params_meisai["shouhinCD"] = $row["shouhinCD"];
 				$params_meisai["shouhinNM"] = $row["shouhinNM"];
@@ -148,21 +84,6 @@ if($rtn !== true){
 				$params_meisai["bikou"] = $row["bikou"];
 
 				$db->INSERT("juchuu_meisai",$params_meisai);
-				/*
-					$stmt = $pdo_h->prepare( $sqlstr_m );
-					$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
-					$stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_INT);
-					$stmt->bindValue("shouhinNM", $params["shouhinNM"], PDO::PARAM_STR);
-					$stmt->bindValue("su", $params["su"], PDO::PARAM_INT);
-					$stmt->bindValue("tanka", $params["tanka"], PDO::PARAM_INT);
-					$stmt->bindValue("goukeitanka", $params["goukeitanka"], PDO::PARAM_INT);
-					$stmt->bindValue("zeikbn", $params["zeikbn"], PDO::PARAM_INT);
-					$stmt->bindValue("bikou", $params["bikou"], PDO::PARAM_STR);
-					$sqllog .= rtn_sqllog($sqlstr_m,$params);
-
-					$status = $stmt->execute();
-					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-				*/
 				
 				$orderlist .= "◆".$params_meisai["shouhinNM"]."\r\n".$row["short_info"]."\r\n価格( ".return_num_disp($params_meisai["tanka"])." 円) x ".$params_meisai["su"]."(コ) = 合計 ".return_num_disp($params_meisai["goukeitanka"])." 円(税抜)\n\r備考：".$params_meisai["bikou"]."\r\n\r\n";
 			}
@@ -171,24 +92,11 @@ if($rtn !== true){
 			$sqlstr = "INSERT into juchuu_meisai SELECT null as SEQ, orderNO,JM.zeikbn as shouhinCD,ZMS.hyoujimei,0 as su,0 as tanka,0 as goukeitanka,
 				FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou ,NOW() as upd_datetime 
 				from juchuu_meisai JM inner join ZeiMS ZMS on JM.zeikbn = ZMS.zeiKBN where orderNO = :orderNO group by orderNO,ZMS.hyoujimei,JM.zeikbn,'-' having zei <> 0";
-			/*
-			$stmt = $pdo_h->prepare($sqlstr);
-			$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
-			$sqllog .= rtn_sqllog($sqlstr,$params);
-			$stmt->execute();
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
 			$db->UP_DEL_EXEC($sqlstr,["orderNO" => $params["orderNO"]]);
 			
 
 			//メールの作成
 			{
-				/*
-					$stmt = $pdo_h->prepare("SELECT orderNO,CAST(sum(goukeitanka) as char) + 0 as soutanka,CAST(sum(zei) as char) + 0 as souzei,CAST(sum(goukeitanka + zei) as char) + 0 as zeikomisou from juchuu_meisai where orderNO = :orderNO group by orderNO");
-					$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_INT);
-					$stmt->execute();
-					$orderlist2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				*/
 				$sql = "SELECT orderNO,CAST(sum(goukeitanka) as char) + 0 as soutanka,CAST(sum(zei) as char) + 0 as souzei,CAST(sum(goukeitanka + zei) as char) + 0 as zeikomisou from juchuu_meisai where orderNO = :orderNO group by orderNO";
 				$orderlist2 = $db->SELECT($sql,["orderNO" => $params["orderNO"]]);
 				
@@ -236,7 +144,7 @@ if($rtn !== true){
 				if(U::exist($owner[0]["line_id"])){//LINEで通知
 					$rtn = U::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
 				}else if(!empty($owner[0]["mail"])){
-					$rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+					$rtn = U::send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 				}
 
 				//お客様向けメール 
@@ -263,10 +171,6 @@ if($rtn !== true){
 				}
 			}
 
-			//$count = $stmt->rowCount();
-			//$pdo_h->commit();
-			//$sqllog .= rtn_sqllog("commit",[]);
-			//sqllogger($sqllog,0);
 			$db->commit_tran();
 	
 			$msg = "登録が完了しました。";
@@ -274,9 +178,6 @@ if($rtn !== true){
 			$reseve_status=true;
 
 		}catch(Exception $e){
-			//$pdo_h->rollBack();
-			//$sqllog .= rtn_sqllog("rollBack",[]);
-			//sqllogger($sqllog,$e);
 			$db->rollback_tran($e->getMessage());
 			log_writer2("\$e",$e,"lv0");
 			$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";

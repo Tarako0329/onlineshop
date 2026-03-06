@@ -112,13 +112,13 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
+				log_writer2("to出店者 - U::send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
 				$cc_address = $CusMailAdd;
 			}else if($sts==="A"){//通販画面QAのanswer（店⇒客）
 				$head = $yagou." より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
-				$rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
 				$cc_address = "shop";
 
 
@@ -127,7 +127,7 @@ if($rtn !== true){
 						?$yagou." よりお問い合わせがありました。\r\n"
 						:$yagou." より返信がありました。\r\n")
 						."ご回答いただく場合は\r\n".$CA_URL."\r\nよりお願いします\r\n\r\n====以下、".$yagou." より====\r\n\r\n";
-				$rtn = send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
 				$cc_address = "shop";
 			}else if($sts==="CA"){//受注管理画面のお客様からの返信（客⇒店）
 				$head = $_POST["qa_name"]." より回答がありました。追加でご確認したいことがございましたら\r\n".$BQ_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
@@ -135,9 +135,9 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
+				log_writer2("to出店者 - U::send_mail() \$rtn","[".$ShopMailAdd."] send ".$rtn,"lv3");
 				$cc_address = $CusMailAdd;
 			}else{
 				exit();//想定外
@@ -150,11 +150,11 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
 
 			}else{
-				$rtn = send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
 
 			}
 

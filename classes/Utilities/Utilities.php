@@ -20,9 +20,9 @@ class Utilities {
 	}
 
 	public static function send_line(string $to,string $body):bool{
-		log_writer2("Util::send_line - \$to",$to,"lv3");
-		log_writer2("Util::send_line - \$body",$body,"lv3");
 		if(EXEC_MODE==="Local"){
+			log_writer2("Util::send_line - \$to",$to,"lv3");
+			log_writer2("Util::send_line - \$body",$body,"lv3");
 			return true;
 		}
 
@@ -44,6 +44,8 @@ class Utilities {
 		$return = file_get_contents($url, false, stream_context_create($context));
 		if($return !== false){
 			$return = true;
+		}else{
+			self::send_mail(SYSTEM_NOTICE_MAIL,"LINE通知失敗","LINE通知に失敗しました。\r\n宛先:".$to."\r\n内容:\r\n".$body,TITLE." onLineShop");
 		}
 
 		return $return;
@@ -58,9 +60,9 @@ class Utilities {
 		,string $cc = ""
 		,string $from = FROM
 	):bool{
-		log_writer2("Util::send_line - \$to",$to,"lv3");
-		log_writer2("Util::send_line - \$body",$body,"lv3");
 		if(EXEC_MODE==="Local"){
+			log_writer2("Util::send_mail - \$to",$to,"lv3");
+			log_writer2("Util::send_mail - \$body",$body,"lv3");
 			return true;
 		}	
 		//phpmailerを使ってメール送信 $to,$subject,$body,$fromname,$bcc
@@ -68,7 +70,7 @@ class Utilities {
 
 		try {
 			// --- サーバー設定 (SMTP) ---
-			$mail->SMTPDebug = 2;               // デバッグ用（疎通確認時は 2 にすると詳細が出ます）
+			//$mail->SMTPDebug = 2;               // デバッグ用（疎通確認時は 2 にすると詳細が出ます）
 			$mail->isSMTP();                       // SMTPを使用
 			$mail->Host       = HOST;  // ★会社のSMTPサーバーアドレス
 			$mail->SMTPAuth   = true;                // ★SMTP認証が必要な場合

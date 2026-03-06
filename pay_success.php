@@ -82,7 +82,7 @@
 			if(U::exist($lineID)){//LINEで通知
 				$rtn = U::send_line($owner[0]["line_id"],$body);
 			}else if(!empty($owner[0]["mail"])){
-				$rtn = send_mail($owner[0]["mail"],"入金通知[No:".$juchuu_head[0]["orderNO"]."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+				$rtn = U::send_mail($owner[0]["mail"],"入金通知[No:".$juchuu_head[0]["orderNO"]."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 			}
 
 			//クレジット支払自動返信のONOFF設定を追加してから有効にする
@@ -100,7 +100,7 @@
 				領収書は下記ＵＲＬよりダウンロードをお願いいたします。
 				$ryoushu_url
 			EOM;
-			$rtn = send_mail($owner[0]["mail"],"お支払い完了通知[No:".$juchuu_head[0]["orderNO"]."]",$body2,TITLE." onLineShop",$juchuu_head[0]["mail"]);
+			$rtn = U::send_mail($owner[0]["mail"],"お支払い完了通知[No:".$juchuu_head[0]["orderNO"]."]",$body2,TITLE." onLineShop",$juchuu_head[0]["mail"]);
 			*/
 			$display_msg="<h1>ありがとうございます。</h1><h1>お支払いを受付いたしました。</h1>";
 		}else{//支払済みの状態で請求画面を開いた場合

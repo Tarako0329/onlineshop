@@ -13,7 +13,7 @@ function log_writer2($pgname,$msg,$kankyo){
 		log_writer($pgname,$msg);
 		$log = print_r($msg,true);
 		
-		send_mail(SYSTEM_NOTICE_MAIL,"【重要】".TITLE."でシステムエラー発生",$log,"","");
+		U::send_mail(SYSTEM_NOTICE_MAIL,"【重要】".TITLE."でシステムエラー発生",$log,"","");
 	}else if($kankyo==="lv1"){
 		log_writer($pgname,$msg);
 	}else if($kankyo==="lv2" && EXEC_MODE!=="Product"){
@@ -350,7 +350,7 @@ function get_pdo_options() {
 // =========================================================
 // メール送信 
 // =========================================================
-function send_mail($to,$subject,$body,$fromname,$bcc){
+/*function send_mail($to,$subject,$body,$fromname,$bcc){
 	//$to		: 送信先アドレス
 	//$subject	: 件名
 	//$body		: 本文
@@ -447,7 +447,7 @@ function send_line($to,$body){
 	$rtn = file_get_contents($url, false, stream_context_create($context));
 
 	return $rtn;
-}
+}*/
 // =========================================================
 // GUID取得
 // =========================================================
@@ -655,7 +655,7 @@ function shutdown_ajax($filename){
 		  
 		$emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
 		if(EXEC_MODE!=="Local"){
-			send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".$filename."でシステム停止",$emsg,"","");
+			U::send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".$filename."でシステム停止",$emsg,"","");
 		}
 		log_writer2($filename." [Exception \$lastError] =>",$lastError,"lv0");
 	
@@ -684,7 +684,7 @@ function shutdown_ajax($filename){
 				
 			$emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
 			if(EXEC_MODE!=="Local"){
-					send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"","");
+				U::send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"","");
 			}
 			log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
 			echo "予期せぬエラーが発生しました。<br>エラー内容は管理者へ自動通報されます。<br>ご迷惑をおかけしますが、復旧までしばらくお待ち下さい。";

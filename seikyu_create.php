@@ -157,7 +157,7 @@
 		$fromname=TITLE."@".EXEC_MODE;
 		$bcc="";
 
-		send_mail($to,$subject,$body,$fromname,$bcc);
+		U::send_mail($to,$subject,$body,$fromname,$bcc);
 		exit();
 	}catch(Exception $e){
       $pdo_h->rollBack();

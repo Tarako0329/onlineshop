@@ -102,7 +102,7 @@
 						$mail = $user_data['mail'];
 						$subject = "【".TITLE."】Stripeクレジット決済が利用可能になりました";
 						$body = "いつもご利用ありがとうございます。\r\n\r\nStripeクレジット決済の登録が完了し、現在ご利用可能となっております。\r\n\r\n今後ともよろしくお願いいたします。\r\n\r\n".TITLE;
-						send_mail($mail, $subject, $body, TITLE, "");
+						U::send_mail($mail, $subject, $body, TITLE, "");
 						log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv1");
 					}
 					

@@ -54,7 +54,7 @@
 	  	$sqllog .= rtn_sqllog("commit",[]);
 	  	sqllogger($sqllog,0);
     
-	  	send_mail($mail,$subject,$body,TITLE,"");
+	  	U::send_mail($mail,$subject,$body,TITLE,"");
 	  }catch(Exception $e){
 			$pdo_h->rollBack();
 			$sqllog .= rtn_sqllog("rollBack",[]);

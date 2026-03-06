@@ -142,7 +142,7 @@ if($rtn !== true){
             if(U::exist($lineID)){
                 $rtn = U::send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
             }else{
-                $rtn = send_mail($mail,$params["Contributor"].$head,$body,TITLE,"");//出店者へお知らせメール
+                $rtn = U::send_mail($mail,$params["Contributor"].$head,$body,TITLE,"");//出店者へお知らせメール
             }
             log_writer2("\$rtn",$rtn,"lv3");
 

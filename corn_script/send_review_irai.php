@@ -43,7 +43,7 @@
 				if(U::exist($lineID)){
 					$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
-					$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+					$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 				}
 				sleep(2);
 				$taishou_list = "";
@@ -91,7 +91,7 @@
 			$subject = "【".TITLE."】レビュー投稿のお願い";
 			$fromname = TITLE;
 			
-			$rtn = send_mail($mail,$subject,$body,$fromname,"");
+			$rtn = U::send_mail($mail,$subject,$body,$fromname,"");
 			sleep(2);
 			//log_writer2("\$rtn",$rtn,"lv3");
 
@@ -107,7 +107,7 @@
 			if(U::exist($lineID)){
 				$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 			}else{
-				$rtn = send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+				$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
 			}
 			$taishou_list = "";
 		}
