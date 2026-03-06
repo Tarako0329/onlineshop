@@ -42,10 +42,12 @@ class Utilities {
 		);
 
 		$return = file_get_contents($url, false, stream_context_create($context));
-		log_writer2("Util::send_line - \$return",$return,"lv3");
-		if($return !== false){
+		//$returnを連想配列に変換
+		$return = json_decode($return, true);
+		if($return["status"] === "success"){
 			$return = true;
 		}else{
+			log_writer2("Util::send_line - \$return",$return,"lv0");
 			self::send_mail(SYSTEM_NOTICE_MAIL,"LINE通知失敗","LINE通知に失敗しました。\r\n宛先:".$to."\r\n内容:\r\n".$body,TITLE." onLineShop");
 		}
 
