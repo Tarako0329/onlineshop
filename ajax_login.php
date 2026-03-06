@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require "php_header_admin.php";
+use classes\Security\Security;
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
 $status = false;								    //ログイン成否

@@ -11,11 +11,20 @@ define("VERSION","ver1.64.1");
 //ini_set('max_input_time', -1);
 require "./vendor/autoload.php";
 require "functions.php";
+class_alias("classes\Utilities\Utilities","U");
+use classes\Database\Database;
+
 spl_autoload_register(function ($className) {
-  // クラス名が Logger なら、classes/Logger.php を探す
-  $file = __DIR__ . '/classes/' . $className . '.php';
+  // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
+  // 例: App\Utils\Logger -> App/Utils/Logger
+  $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+  // 2. クラスファイルを探すフルパスを組み立て
+  //$file = __DIR__.DIRECTORY_SEPARATOR."classes".DIRECTORY_SEPARATOR.$path.'.php';
+  $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
+  log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
+  // 3. ファイルが存在すれば読み込む
   if (file_exists($file)) {
-    require_once $file;
+      require_once $file;
   }
 });
 

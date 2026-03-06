@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
-
+namespace classes\Security;
+use classes\Database\Database;
 class Security {
 	private const AUTH_OPTIONS = [
 		'cost' => 12, // 計算負荷を上げる（将来的に数値を増やす）
@@ -65,7 +66,7 @@ class Security {
 				//$db->commit_tran();
 				
 				$return = true;
-			}catch(Exception $e){
+			}catch(\Exception $e){
 				//$db->rollback_tran();
 				log_writer2("func:verifyPassword","パスワード更新失敗","lv0");
 				log_writer2("\$e",$e,"lv0");

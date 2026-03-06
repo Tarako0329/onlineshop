@@ -139,8 +139,8 @@ if($rtn !== true){
             $body = "商品名：".$_POST["shouhinNM"]."\r\nレビュー：".$_POST["review"]."\r\n返信したい場合は、下記URLよりご確認ください。\r\n".$url;
             
 
-            if(Utilities::exist($lineID)){
-                $rtn = Utilities::send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
+            if(U::exist($lineID)){
+                $rtn = U::send_line($lineID,"【".$params["Contributor"].$head."】\r\n".$body);//出店者へお知らせLINE
             }else{
                 $rtn = send_mail($mail,$params["Contributor"].$head,$body,TITLE,"");//出店者へお知らせメール
             }

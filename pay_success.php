@@ -79,8 +79,8 @@
 			EOM;
 
 			$lineID =$owner[0]["line_id"];
-			if(Utilities::exist($lineID)){//LINEで通知
-				$rtn = Utilities::send_line($owner[0]["line_id"],$body);
+			if(U::exist($lineID)){//LINEで通知
+				$rtn = U::send_line($owner[0]["line_id"],$body);
 			}else if(!empty($owner[0]["mail"])){
 				$rtn = send_mail($owner[0]["mail"],"入金通知[No:".$juchuu_head[0]["orderNO"]."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 			}

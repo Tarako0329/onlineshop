@@ -233,8 +233,8 @@ if($rtn !== true){
 					$st_tel
 				EOM;
 				
-				if(Utilities::exist($owner[0]["line_id"])){//LINEで通知
-					$rtn = Utilities::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
+				if(U::exist($owner[0]["line_id"])){//LINEで通知
+					$rtn = U::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
 				}else if(!empty($owner[0]["mail"])){
 					$rtn = send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
 				}
@@ -256,7 +256,10 @@ if($rtn !== true){
 					$body = str_replace("<問合担当者>",$owner[0]["name"],$body);
 					$body = str_replace("<代表者>",$owner[0]["shacho"],$body);
 					
-					$rtn = send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["cc_mail"]);
+					$rtn = U::send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["cc_mail"]);
+					if($rtn === false){
+						throw new Exception("注文内容確認メールの送信に失敗しました。");
+					}
 				}
 			}
 

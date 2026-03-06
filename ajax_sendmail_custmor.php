@@ -108,9 +108,9 @@ if($rtn !== true){
 						:"お客様より返信がありました。\r\n")
 						."".$A_URL."\r\nより回答をお願いします\r\n\r\n====以下、お客様より====\r\n\r\n";
 
-				if(Utilities::exist($lineID)){
+				if(U::exist($lineID)){
 					$ShopMailAdd = "LINE";
-					Utilities::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
@@ -131,9 +131,9 @@ if($rtn !== true){
 				$cc_address = "shop";
 			}else if($sts==="CA"){//受注管理画面のお客様からの返信（客⇒店）
 				$head = $_POST["qa_name"]." より回答がありました。追加でご確認したいことがございましたら\r\n".$BQ_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
-				if(Utilities::exist($lineID)){
+				if(U::exist($lineID)){
 					$ShopMailAdd = "LINE";
-					Utilities::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}
@@ -146,9 +146,9 @@ if($rtn !== true){
 			//送信者へのCC
 			$head = "下記内容にてメールを送信しました。\r\n========\r\n";
 			if($cc_address==="shop"){
-				if(Utilities::exist($lineID)){
+				if(U::exist($lineID)){
 					$ShopMailAdd = "LINE";
-					Utilities::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
+					U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
 					$rtn = send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
 				}

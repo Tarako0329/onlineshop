@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+namespace classes\Database;
+use PDO,PDOException,Exception;
 
 class Database {
     // 接続情報をプロパティとして保持（.envから読み込む想定）
@@ -31,7 +33,7 @@ class Database {
     /**
      * PDOインスタンスを取得する（シングルトンパターンに近い形）
      */
-    private function connect(): PDO {
+    private function connect(): \PDO {
         if ($this->pdo !== null) {
             return $this->pdo;
         }
