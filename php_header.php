@@ -11,22 +11,6 @@ define("VERSION","ver1.64.1");
 //ini_set('max_input_time', -1);
 require "./vendor/autoload.php";
 require "functions.php";
-class_alias("classes\Utilities\Utilities","U");
-use classes\Database\Database;
-
-spl_autoload_register(function ($className) {
-  // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
-  // 例: App\Utils\Logger -> App/Utils/Logger
-  $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
-  // 2. クラスファイルを探すフルパスを組み立て
-  //$file = __DIR__.DIRECTORY_SEPARATOR."classes".DIRECTORY_SEPARATOR.$path.'.php';
-  $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
-  log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
-  // 3. ファイルが存在すれば読み込む
-  if (file_exists($file)) {
-      require_once $file;
-  }
-});
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -82,15 +66,30 @@ define("GEMINI_URL",$_ENV["GEMINI_URL"]);
 define("MERCHANT_ID",$_ENV["MERCHANT_ID"]);
 //$MERCHANT_ID = $_ENV["MERCHANT_ID"];
 
+spl_autoload_register(function ($className) {
+  // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
+  $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+  // 2. クラスファイルを探すフルパスを組み立て
+  $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
+  log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
+  // 3. ファイルが存在すれば読み込む
+  if (file_exists($file)) {
+    require_once $file;
+    log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv1");
+  }else{
+    log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv1");
+  }
+});
+
+class_alias('classes\Utilities\Utilities','U');
+use classes\Database\Database;
+
 $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 $db = new Database();
 
 //require元PHPの取得
 $request_php = basename($_SERVER['PHP_SELF']);
-//リファイラの取得($request_phpがajax_から始まらない場合)
-
-
-if(!str_starts_with($request_php, 'ajax_')){
+if(!str_starts_with($request_php, 'ajax_')){//リファイラの取得($request_phpがajax_から始まらない場合)
   if(!empty($_GET["amp;z"])){
     $get_z = $_GET["amp;z"];
   }else if(!empty($_GET["z"])){
