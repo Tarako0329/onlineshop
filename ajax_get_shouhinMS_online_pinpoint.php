@@ -1,4 +1,5 @@
 <?php
+/*廃止・未使用のはず
 	//１品検索用
   require "php_header.php";
 	//$shop = (($_GET["s"])!=="undefined")?$_GET["s"]:"-";
@@ -77,4 +78,5 @@
   header('Content-type: application/json');  
   echo json_encode($return, JSON_UNESCAPED_UNICODE);
   exit();
+*/
 ?>

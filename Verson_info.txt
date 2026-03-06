@@ -233,10 +233,12 @@ ver1.63.0:corn scriptリファクタリング-commited-20260305
 ver1.64.0:リファクタリング:オブジェクト指向化:サイト設定画面-commited-20260305
 ver1.64.1:リファクタリング:obj指向化:LineIDがnoneの時の処理を修正-commited-20260305
 ver1.65.0:PHPMailer導入/namespase導入-commited-20260306
+ver1.66.0:リファクタリング:obj指向化:namespase導入
 
 
 【Issues】
 ・利用する受付ステータスの設定機能
+・キャンセルの通知、なくない？
 ・請求メールの送信
 ・メール受信確認機能
 ・Line送信失敗したときにメールに切り替える機能

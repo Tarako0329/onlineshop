@@ -5,10 +5,13 @@
     $user_hash = $_GET["key"] ;
     $_SESSION["user_hash"] = $_GET["key"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
+    /*
     $stmt = $pdo_h->prepare("select * from Users_online where uid = :uid");
     $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
     $stmt->execute();
     $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    */
+    $owner = $db->SELECT("SELECT * from Users_online where `uid` = :uid",["uid" => $_SESSION["user_id"]]);
     $_SESSION["h_color"] = "style='background-color:".$owner[0]["headcolor"].";color:".$owner[0]["h_font_color"].";'";
     $_SESSION["b_color"] = "style='background-color:".$owner[0]["bodycolor"].";'";
     $_SESSION["hf_color"] = "style='color:".$owner[0]["h_font_color"].";'";
@@ -355,12 +358,12 @@
             <label for='trigger_friend' class="form-check-label">知人から</label>
           </div>
           <div class="form-check">
-            <input value="イベント・店舗" v-model='trigger' name='trigger' type='radio' value='イベント・店舗' class='form-check-input' id='trigger_friend'>
-            <label for='trigger_friend' class="form-check-label">イベント・店舗</label>
+            <input value="イベント・店舗" v-model='trigger' name='trigger' type='radio' value='イベント・店舗' class='form-check-input' id='trigger_event'>
+            <label for='trigger_event' class="form-check-label">イベント・店舗</label>
           </div>
           <div class="form-check">
-            <input value="チラシ" v-model='trigger' name='trigger' type='radio' value='チラシ' class='form-check-input' id='trigger_friend'>
-            <label for='trigger_friend' class="form-check-label">チラシ</label>
+            <input value="チラシ" v-model='trigger' name='trigger' type='radio' value='チラシ' class='form-check-input' id='trigger_chirashi'>
+            <label for='trigger_chirashi' class="form-check-label">チラシ</label>
           </div>
         </div>
       </div>

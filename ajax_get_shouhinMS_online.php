@@ -68,15 +68,6 @@
 				and online.shouhinNM like :hinmei 
 				and online.status <> 'del' 
 			order by 
-				/*online.uid
-				,case 
-					when online.status = 'soon' then 0
-					when online.status = 'show' then 1
-					when online.status = 'limited' then 2
-					when online.status = 'soldout' then 3
-					when online.status = 'stop' then 4
-				end
-				,online.shouhinCD*/
 				sort_priority , -- 1(高), 2(中), 3(低) の順にソート
     		CASE sort_priority
     		    WHEN 1 THEN ins_datetime 	-- 優先度1の場合はins_datetimeの降順
@@ -84,12 +75,15 @@
 						WHEN 3 THEN RAND()				-- 優先度3の場合はランダム
     		END DESC -- 日時順（新しいものが先）を適用;";
 
+		/*
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
 		$stmt->execute();
 		$count = $stmt->rowCount();
 		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		*/
+		$dataset = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "hinmei" => $hinmei]);
 
 		$i=0;
 		foreach($dataset as $row){
@@ -100,7 +94,7 @@
 		}
 		
 		
-		$sql = "select 
+		$sql = "SELECT 
 				online.uid
 				,online.shouhinCD
 				,online.shouhinNM
@@ -113,19 +107,18 @@
 			and online.shouhinCD = pic.shouhinCD
 			where online.uid like :uid and online.shouhinNM like :hinmei and online.status <> 'del'
 			order by online.uid,online.shouhinCD,pic.sort";
+		/*
 		$stmt = $pdo_h->prepare($sql);
 		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
 		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
 		$stmt->execute();
 		$pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
+		*/
+		$pic_set = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "hinmei" => $hinmei]);
 		
-		if($count!==0){
+		if(count($dataset)!==0){
 			$alert_status = "success";
 		}
-		
-
 		
 		$return = array(
 	    "alert" => $alert_status,

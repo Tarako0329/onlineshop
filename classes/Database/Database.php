@@ -67,14 +67,14 @@ class Database {
       $stmt = $this->connect()->prepare($sql);
       $stmt -> execute($params);
       $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-      log_writer2("\$result",$result,"lv3");
+      //log_writer2("\$result",$result,"lv3");
       //$resultのNULLを空文字に変換
       $result = array_map(function($row){
         return array_map(function($value){
           return $value === null ? "" : $value;
         }, $row);
       }, $result);
-      log_writer2("\$result Null変換後",$result,"lv3");
+      //log_writer2("\$result Null変換後",$result,"lv3");
       return $result;
     }
 
