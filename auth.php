@@ -1,5 +1,6 @@
 <?php
-require_once "classes/Database.php";
+//require_once "classes/Database.php";
+use classes\Database\Database;
 $db = $db ?? new Database();
 
 // 1. すでにセッションがあり、GetKeyのUIDと等しい場合は何もしない
