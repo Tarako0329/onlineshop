@@ -41,14 +41,15 @@ class Utilities {
 			)
 		);
 
-		$return = file_get_contents($url, false, stream_context_create($context));
+		$response = file_get_contents($url, false, stream_context_create($context));
 		//$returnを連想配列に変換
-		$return = json_decode($return, true);
-		if($return["status"] === "success"){
+		$response = json_decode($response, true);
+		if($response["status"] === "success"){
 			$return = true;
 		}else{
-			log_writer2("Util::send_line - \$return",$return,"lv0");
+			log_writer2("Util::send_line - \$response",$response,"lv0");
 			self::send_mail(SYSTEM_NOTICE_MAIL,"LINE通知失敗","LINE通知に失敗しました。\r\n宛先:".$to."\r\n内容:\r\n".$body,TITLE." onLineShop");
+			$return = false;
 		}
 
 		return $return;
