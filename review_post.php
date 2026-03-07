@@ -25,20 +25,21 @@
     inner join juchuu_meisai m 
     on h.orderNO = m.orderNO 
     inner join shouhinMS_online_pic p
-    on h.uid = p.uid
+    on h.`uid` = p.`uid`
     and m.shouhinCD = p.shouhinCD
     and p.sort=1
     inner join Users_online u
-    on h.uid = u.uid
+    on h.`uid` = u.`uid`
     left join review_online r
     on h.orderNO = r.orderNO
-    and h.uid = r.shop_id
+    and h.`uid` = r.shop_id
     and m.shouhinCD = r.shouhinCD
     where h.orderNO = :orderNO";
-  $stmt = $pdo_h->prepare($sql);
+  /*$stmt = $pdo_h->prepare($sql);
   $stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
   $stmt->execute();
-  $buylist = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $buylist = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
+  $buylist = $db->SELECT($sql,["orderNO"=>$orderNO]);
 
 ?>
 <!DOCTYPE html>
