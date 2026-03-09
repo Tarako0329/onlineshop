@@ -13,7 +13,7 @@ define("API_SECRET_KEY",$_ENV["X_API_SECRET_KEY"]);
 define("ACCESS_TOKEN",$_ENV["X_ACCESS_TOKEN"]);
 define("SECRET_ACCESS_TOKEN",$_ENV["X_SECRET_ACCESS_TOKEN"]);
 
-//exit('サービスは停止してます');	//サービス一時停止
+exit('サービスは停止してます');	//サービス一時停止
 
 
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
