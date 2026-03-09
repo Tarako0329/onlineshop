@@ -52,8 +52,10 @@ foreach ($localFiles as $file) {
             echo "Moved: " . $filename . " to removed folder.\r\n";
         } else {
             echo "Failed to move: " . $filename . "\r\n";
+            
         }
     }
 }
-
+echo "Failed cleanup 完了\r\n";
+exit();
 ?>

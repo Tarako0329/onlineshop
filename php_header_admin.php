@@ -68,7 +68,7 @@ spl_autoload_register(function ($className) {
   }
 });
 
-class_alias('classes\Utilities\Utilities','Utilities');
+class_alias('classes\Utilities\Utilities','U');
 use classes\Database\Database;
 
 

@@ -25,7 +25,9 @@ class Utilities {
 			log_writer2("Util::send_line - \$body",$body,"lv3");
 			return true;
 		}
-
+		if(EXEC_MODE!=="Product"){
+			$body = "[TEST] \r\n".$body;
+		}	
 		$url = ROOT_URL.'line_push_msg.php';
 
 		$data = array(
@@ -68,6 +70,9 @@ class Utilities {
 			log_writer2("Util::send_mail - \$to",$to,"lv3");
 			log_writer2("Util::send_mail - \$body",$body,"lv3");
 			return true;
+		}	
+		if(EXEC_MODE!=="Product"){
+			$subject = "[TEST] ".$subject;
 		}	
 		//phpmailerを使ってメール送信 $to,$subject,$body,$fromname,$bcc
 		$mail = new PHPMailer(true); // true: 例外を有効にする

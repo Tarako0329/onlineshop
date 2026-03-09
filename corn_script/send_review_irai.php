@@ -25,7 +25,7 @@
 			sent = 1 
 			and review_irai = 'still' 
 			and sent_ymd <= DATE_SUB(CURDATE(), INTERVAL 1 WEEK) 
-		order by uid";
+		order by `uid`";
 	$data = $db->SELECT($sql,[]);
 	
 	try{
