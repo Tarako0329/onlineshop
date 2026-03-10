@@ -161,7 +161,7 @@
 	</div>
   </div><!--app-->
 
-  <script src="script/vue3.js?<?php echo $time; ?>"></script>
+  <script src="script/admin_menu.js?<?php echo $time; ?>"></script>
   <script>
     admin_menu('Q_and_A.php','','<?php echo $user_hash;?>').mount('#admin_menu');
     createApp({//販売画面
