@@ -131,14 +131,31 @@ class Database {
       $sql = "Update TableName set col1 = :col1 where col2 = :col2";
       $data = ["col1" => "test","col2" => "test"]
       */
+      // プレースホルダに含まれるキーだけを残す
+      $normalizedData = [];
+      foreach ($data as $key => $value) {
+        $normalizedKey = ltrim($key, ':');
+        $normalizedData[$normalizedKey] = $value;
+      }
+      $placeholders = [];
+      if (preg_match_all('/(?<!:):([a-zA-Z0-9_]+)/', $sql, $matches)) {
+        $placeholders = array_unique($matches[1]);
+      }
+      $filteredData = [];
+      foreach ($placeholders as $name) {
+        if (array_key_exists($name, $normalizedData)) {
+          $filteredData[$name] = $normalizedData[$name];
+        }
+      }
+
       //ログ用SQLの作成
       $log = $sql;
       $log = str_replace(["\t"], "", $log);                 //$log内のタブを削除
       $log = str_replace(["\r\n", "\r", "\n"], " ", $log);  //$log内の改行コードを半角スペースに変換
-      foreach ($data as $key => $value) { //":key" を "value" に変換
-        $key = (strpos($key, ':') !== 0)?':'. $key:$key;  //keyが":"から始まってない場合は先頭に":"を付与する
+      foreach ($filteredData as $key => $value) { //":key" を "value" に変換
+        $placeholder = ':'.$key;
         $value = ($value === "")? "NULL":$value; //valueが""の場合はNULLに変換する
-        $log = str_replace($key, (is_string($value) ? "'$value'" : (string)$value), $log);
+        $log = str_replace($placeholder, (is_string($value) ? "'$value'" : (string)$value), $log);
       }
       $log = str_replace(["'NULL'"], "NULL", $log);        //$log内の'NULL'をNULLに変換
       
@@ -149,15 +166,15 @@ class Database {
       $this->log .= $log.";\n"; //$this->logに実行できるSQL文を書き込む
       $this->sql = $sql;        //Exceptionロールバックログ用にロールバック前に投げたSQLを記録
 
-      //$dataの空文字をにNULL変換
-      foreach($data as $key => $value){
+      //$filteredDataの空文字をNULL変換
+      foreach($filteredData as $key => $value){
         if($value === ""){
-          $data[$key] = null;
+          $filteredData[$key] = null;
         }
       }
       //SQL実行
       $stmt = $this->connect()->prepare($sql);
-      return $stmt -> execute($data);
+      return $stmt -> execute($filteredData);
     }
 
     public function begin_tran():void{

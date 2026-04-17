@@ -63,70 +63,39 @@
 			$isTransfersActive = $account->capabilities->transfers === 'active';
 
 			// 完全に利用可能かどうかの判断
-			if ($isSubmitted && $isPaymentsActive && $isTransfersActive) {
-					//  登録完了！
-					
-					// データベースの該当ユーザーのステータスを「Stripeアカウント連携済み」などに更新
-					$accountId = $account->id;
-					
-					//Users_online から Stripe_Approval_Statusとmail　を取得
-					$sql = "SELECT Stripe_Approval_Status,mail from Users_online where stripe_id = :accountId";
-					$user_data = $db->SELECT($sql, [":accountId" => $accountId]);
-					$user_data = !empty($user_data) ? $user_data[0] : null;
-					/*
-					$stmt = $pdo_h->prepare( $sql );
-					$stmt->bindValue("accountId", $accountId, PDO::PARAM_STR);
-
-					$stmt->execute();
-					$user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-					*/
-
-					if ($user_data['Stripe_Approval_Status'] === 'Available') {
-						// 既にAvailableの場合は何もしない
-						log_writer2("Stripe Account ID: {$account->id} は既にAvailableです。","","lv1");
-						return;
-					}
-					
-
-					$sql = "UPDATE Users_online set Stripe_Approval_Status = 'Available',credit=IF(credit = 'use', 'use', 'no_use') where stripe_id = :accountId";
-					/*
-					$stmt = $pdo_h->prepare( $sql );
-					$params["accountId"] = $accountId;
-					$stmt->bindValue("accountId", $params["accountId"], PDO::PARAM_STR);
-					$sqllog = rtn_sqllog($sql,$params);
-					$status = $stmt->execute();
-					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-
-					sqllogger($sqllog,0);
-					*/
-					$db->UP_DEL_EXEC($sql, [":accountId" => $accountId]);
-		
-					
-					// ログ記録など
-					log_writer2("Stripe Account ID: {$account->id} の登録が完了しました。","","lv1");
-					
-					//users_onlineテーブルからメアドを取得し、クレジットが利用可能となった旨のメールを送信する
-					if ($user_data && $user_data['mail']) {
-						$mail = $user_data['mail'];
-						$subject = "【".APP_NAME."】Stripeクレジット決済が利用可能になりました";
-						$body = "いつもご利用ありがとうございます。\r\n\r\nStripeクレジット決済の登録が完了し、現在ご利用可能となっております。\r\n\r\n今後ともよろしくお願いいたします。\r\n\r\n".APP_NAME;
-						U::send_mail($mail, $subject, $body, APP_NAME, "");
-						log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv1");
-					}
-					
-			} else {
+			if ($isSubmitted && $isPaymentsActive && $isTransfersActive) {//  登録完了！
+				// データベースの該当ユーザーのステータスを「Stripeアカウント連携済み」などに更新
 				$accountId = $account->id;
-				// 登録情報の提出はされたが、まだStripeの審査が完了していない、取引が停止になったなどの状態
+				
+				//Users_online から Stripe_Approval_Statusとmail　を取得
+				$sql = "SELECT Stripe_Approval_Status,mail from Users_online where stripe_id = :accountId";
+				$user_data = $db->SELECT($sql, [":accountId" => $accountId]);
+				$user_data = !empty($user_data) ? $user_data[0] : null;
+				
+				if ($user_data['Stripe_Approval_Status'] === 'Available') {// 既にAvailableの場合は何もしない
+					log_writer2("Stripe Account ID: {$account->id} は既にAvailableです。","","lv1");
+					return;
+				}
+				
+				$sql = "UPDATE Users_online set Stripe_Approval_Status = 'Available',credit=IF(credit = 'use', 'use', 'no_use') where stripe_id = :accountId";
+				$db->UP_DEL_EXEC($sql, [":accountId" => $accountId]);
+				
+				// ログ記録など
+				log_writer2("Stripe Account ID: {$account->id} の登録が完了しました。","","lv1");
+				
+				//users_onlineテーブルからメアドを取得し、クレジットが利用可能となった旨のメールを送信する
+				if ($user_data && $user_data['mail']) {
+					$mail = $user_data['mail'];
+					$subject = "【".APP_NAME."】Stripeクレジット決済が利用可能になりました";
+					$body = "いつもご利用ありがとうございます。\r\n\r\nStripeクレジット決済の登録が完了し、現在ご利用可能となっております。\r\n\r\n今後ともよろしくお願いいたします。\r\n\r\n".APP_NAME;
+					U::send_mail($mail, $subject, $body, APP_NAME, "");
+					log_writer2("Stripeクレジット決済利用可能メールを送信しました。", "メールアドレス: " . $mail, "lv1");
+				}
+			} else {// 登録情報の提出はされたが、まだStripeの審査が完了していない、取引が停止になったなどの状態
+				$accountId = $account->id;
 				$sql = "UPDATE Users_online set Stripe_Approval_Status = 'Registered' where stripe_id = :accountId";
 				$db->UP_DEL_EXEC($sql, [":accountId" => $accountId]);
-				/*
-				$stmt = $pdo_h->prepare( $sql );
-				$sqllog = rtn_sqllog($sql,[]);
-				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-				
-				sqllogger($sqllog,0);
-				*/
+
 				log_writer2("Stripe Account ID: {$account->id} は更新されましたが、まだアクティブではありません。","","lv1");
 			}
 	}	
