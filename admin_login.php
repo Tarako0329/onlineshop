@@ -9,11 +9,14 @@
     // クッキーの有効期限を過去（1時間前）に設定して削除
     setcookie(session_name(), '', time() - 3600, '/');
 	}
-
-	// サーバー側のセッションデータを完全に破棄する
-	session_destroy();
-	//cookie[remember_me]を破棄
 	setCookie("remember_me", "", -1, "/", "", TRUE, TRUE);
+
+	// サーバー側のセッションデータを完全に破棄してセッション再開
+	session_destroy();
+	session_name("PresentOnline_SESSION");
+  session_start();
+	session_regenerate_id(true);
+	//cookie[remember_me]を破棄
 	$_SESSION["user_id"] = -1;
 	
 	$errmsg = "";
