@@ -2,7 +2,10 @@
 date_default_timezone_set('Asia/Tokyo'); 
 // PHPがCLIで実行されていない場合のみセッションを開始する
 if (php_sapi_name() !== 'cli') {
-    session_start();
+  ini_set('session.cookie_httponly', 1);
+  ini_set('session.use_strict_mode', 1);
+  session_name("PresentOnline_SESSION");
+  session_start();
 }
 //ob_start();
 define("VERSION","ver1.66.0");
@@ -18,7 +21,7 @@ $dotenv->load();
 define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
 define("ROOT_URL",$_ENV["HTTP"]);
 define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-define("TITLE",$_ENV["TITLE"]);
+define("APP_NAME",$_ENV["APP_NAME"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 

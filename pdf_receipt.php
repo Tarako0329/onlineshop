@@ -23,11 +23,14 @@ $filename = ($_GET["tp"]==="1"?"Ryoushusho":"Nouhinsho");
 
 $sysname="cafe present";
 
-$sql="select * from Users_online where uid = ?";
+$sql="SELECT * from Users_online where `uid` = ?";
+$userinfo = $db->SELECT($sql, [$uid]);
+/*
 $stmt = $pdo_h->prepare($sql);
 $stmt->bindValue(1, $uid, PDO::PARAM_INT);
 $stmt->execute();
 $userinfo = $stmt->fetch(PDO::FETCH_ASSOC);
+*/
 $from = $userinfo["yagou"];
 $invoice = $userinfo["invoice"];
 $add = $userinfo["jusho"];
@@ -35,12 +38,15 @@ $inquiry = $userinfo["tel"];
 
 //売上明細の取得
 {
-$sql="select * from juchuu_head hd inner join juchuu_meisai ms on hd.orderNO = ms.orderNO where hd.orderNO = :orderNO and uid = :uid order by shouhinCD";
+$sql="SELECT * from juchuu_head hd inner join juchuu_meisai ms on hd.orderNO = ms.orderNO where hd.orderNO = :orderNO and hd.uid = :uid order by shouhinCD";
+/*
 $stmt = $pdo_h->prepare($sql);
 $stmt->bindValue("uid", $uid, PDO::PARAM_INT);
 $stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetchAll();
+*/
+$result = $db->SELECT($sql, [":uid" => $uid, ":orderNO" => $orderNO]);
 
 $i=0;
 $Goukei=0;
@@ -69,15 +75,16 @@ foreach($result as $row){
 
 //税率ごとの合計
 {
-$sql="select orderNO,ZeiMS.hyoujimei as 税率,Uri.zeikbn, sum(売上金額) as 売上金額, sum(消費税額) as 消費税額 from 
-(select orderNO,zeikbn, (goukeitanka) as 売上金額, (zei) as 消費税額 from juchuu_meisai 
+$sql="SELECT orderNO,ZeiMS.hyoujimei as 税率,Uri.zeikbn, sum(売上金額) as 売上金額, sum(消費税額) as 消費税額 from 
+(SELECT orderNO,zeikbn, (goukeitanka) as 売上金額, (zei) as 消費税額 from juchuu_meisai 
 union all
-select orderNO,postage_zeikbn, (postage-postage_zei) as 売上金額, (postage_zei) as 消費税額 from juchuu_head ) as
+SELECT orderNO,postage_zeikbn, (postage-postage_zei) as 売上金額, (postage_zei) as 消費税額 from juchuu_head ) as
 Uri inner join ZeiMS on Uri.zeiKBN = ZeiMS.zeiKBN where orderNO = :orderNO group by orderNO,ZeiMS.hyoujimei,ZeiMS.zeiKBN order by ZeiMS.zeiKBN";
-$stmt = $pdo_h->prepare($sql);
+/*$stmt = $pdo_h->prepare($sql);
 $stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
 $stmt->execute();
-$result = $stmt->fetchAll();
+$result = $stmt->fetchAll();*/
+$result = $db->SELECT($sql, [":orderNO" => $orderNO]);
 $ZeiGoukei = 0;
 foreach($result as $row){
 	if($row["売上金額"] <>0){
@@ -201,11 +208,16 @@ $html = <<< EOM
 EOM;
 $html = str_replace(["\r","\n","\t"],"",$html);//改行・タブの削除
 try{
-$sqllog="";
-//if($saiban==="on"){
-	$pdo_h->beginTransaction();
-	$sqllog .= rtn_sqllog("START TRANSACTION",[]);
-	$sql = "insert into ryoushu(uid,R_NO,Atena,html) values(:uid,:R_NO,:Atena,:html)  ON DUPLICATE KEY UPDATE Atena = :Atena2,html=:html2";
+	$sqllog="";
+
+	//$pdo_h->beginTransaction();
+	//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+	$db->begin_tran();
+	$sql = "INSERT into ryoushu(`uid`,R_NO,Atena,html) values(:uid,:R_NO,:Atena,:html)  ON DUPLICATE KEY UPDATE Atena = :Atena2,html=:html2";
+	$db->UP_DEL_EXEC($sql,[":uid" => $uid, ":R_NO" => $RyoushuuNO, ":Atena" => $Atena, ":html" => $html, ":Atena2" => $Atena, ":html2" => $html]);
+
+	$db->commit_tran();
+	/*
 	$stmt = $pdo_h->prepare($sql);
 	$stmt->bindValue("uid", $id, PDO::PARAM_INT);
 	$stmt->bindValue("R_NO", $RyoushuuNO, PDO::PARAM_INT);
@@ -220,28 +232,34 @@ $sqllog="";
 	$pdo_h->commit();
 	$sqllog .= rtn_sqllog("commit",[]);
 	sqllogger($sqllog,0);
-//}
-// PDFの設定～出力
-output($html,$filename);
+	*/
+	
+	// PDFの設定～出力
+	output($html,$filename);
 
 }catch(Exception $e){
-$pdo_h->rollBack();
-$sqllog .= rtn_sqllog("rollBack",[]);
-sqllogger($sqllog,$e);
-echo "システム不具合が発生したため、領収書が発行できませんでした。<br>";
-echo "システム管理者に不具合発生を通知いたしました。<br>";
-echo "ご迷惑をおかけいたしますが、復旧までお待ちください。<br>";
-echo "<button onclick='window.close()'>戻る</button>\n";
+	/*
+	$pdo_h->rollBack();
+	$sqllog .= rtn_sqllog("rollBack",[]);
+	sqllogger($sqllog,$e);
+	*/
+	$db->rollback_tran($e->getMessage());
+	U::send_E($e,"pdf_receipt.phpで例外発生。","");
+
+	echo "システム不具合が発生したため、領収書が発行できませんでした。<br>";
+	echo "システム管理者に不具合発生を通知いたしました。<br>";
+	echo "ご迷惑をおかけいたしますが、復旧までお待ちください。<br>";
+	echo "<button onclick='window.close()'>戻る</button>\n";
 }
 
 function output($html,$filename){
-$dompdf = new Dompdf();
-$dompdf->loadHtml($html);
-$options = $dompdf->getOptions();
-$options->set(array('isRemoteEnabled' => false));
-$dompdf->setOptions($options);
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
-$dompdf->stream($filename, array('Attachment' => 0));
+	$dompdf = new Dompdf();
+	$dompdf->loadHtml($html);
+	$options = $dompdf->getOptions();
+	$options->set(array('isRemoteEnabled' => false));
+	$dompdf->setOptions($options);
+	$dompdf->setPaper('A4', 'portrait');
+	$dompdf->render();
+	$dompdf->stream($filename, array('Attachment' => 0));
 }
 ?>

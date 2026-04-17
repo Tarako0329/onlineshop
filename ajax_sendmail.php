@@ -31,7 +31,7 @@ if($rtn !== true){
     }else{
 
         try{
-            $rtn = U::send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],TITLE,$_POST["mailtoCC"]);
+            $rtn = U::send_mail($_POST["mailto"],$_POST["subject"],$_POST["mailbody"],APP_NAME,$_POST["mailtoCC"]);
             if($rtn===true){
                 $msg = "送信完了";
                 $alert_status = "alert-success";

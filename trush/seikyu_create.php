@@ -10,7 +10,7 @@
   $dotenv->load();
   define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
   define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-  define("TITLE",$_ENV["TITLE"]);
+  define("APP_NAME",$_ENV["APP_NAME"]);
   define("ROOT_URL",$_ENV["HTTP"]);
 
   // DBとの接続
@@ -154,7 +154,7 @@
 		$to="green.green.midori@gmail.com";
 		$subject="【".EXEC_MODE."】ONLINESHOP_請求データ作成完了-".$getudo;
 		$body=$getudo."月度の請求データを作成しました。";
-		$fromname=TITLE."@".EXEC_MODE;
+		$fromname=APP_NAME."@".EXEC_MODE;
 		$bcc="";
 
 		U::send_mail($to,$subject,$body,$fromname,$bcc);

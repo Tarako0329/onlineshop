@@ -2,6 +2,15 @@
 declare(strict_types=1);
 namespace classes\Database;
 use PDO,PDOException,Exception;
+use classes\Utilities\Utilities as U;
+
+/**
+ * Usage of defined constants required for this class:
+ * - DB_HOST: Database host server address (e.g., localhost or IP address)
+ * - DB_NAME: Name of the database to connect to
+ * - USER_NAME: Username for database authentication
+ * - PASSWORD: Password for database authentication
+ */
 
 class Database {
     // 接続情報をプロパティとして保持（.envから読み込む想定）
@@ -79,10 +88,9 @@ class Database {
     }
 
     public function INSERT(string $table,array $data=[]):bool{
-      /*
-      引数サンプル
-      $table = "TableName";
-      $params = ["col" => "test"]
+      /*引数サンプル
+        $table = "TableName";
+        $params = ["col" => "test"]
       */
       $columns = "`".implode('`, `', array_keys($data))."`";  //項目名をカンマ区切りで取得
       $placeholders = ':' . implode(', :', array_keys($data));
@@ -92,6 +100,10 @@ class Database {
       $log = str_replace(["\r\n", "\r", "\n","\t"], " ", $log); //$log内の改行コードを半角スペースに変換
       foreach ($data as $key => $value) {
         $value = ($value === "")? "NULL":$value;  //$valueが""の場合はNULLに変換する
+        //$valueの中の'を''に変換する
+        if(is_string($value)){
+          $value = str_replace("'", "''", $value);
+        }
         $log = str_replace([":$key,"], (is_string($value) ? "'$value'," : (string)$value.","), $log);
         $log = str_replace([":$key)"], (is_string($value) ? "'$value')" : (string)$value.")"), $log);
       }
@@ -157,7 +169,8 @@ class Database {
       $this->connect()->commit();
       $this->exec_log();
     }
-    public function rollback_tran(string $msg=""):void{
+    public function rollback_tran($msg=""):void{
+      $msg = var_export($msg, true); //配列やオブジェクトも文字列化してログに出力できるようにする
       $this->log .= "rollback;\n";
       $this->log .= "/*ERROR SQL:[".$this->sql.";]*/\n";
       $this->log .= "/*".$msg."*/\n";

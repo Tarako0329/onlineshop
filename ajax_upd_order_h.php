@@ -82,11 +82,12 @@ if($rtn !== true){
 
 		//$columと$sent_ymdはインジェクション対策済み
 		if($colum==="sent"){
-			$sent_ymd = ($value==1) ? "CURDATE()" : "''";
-			$sqlstr_h = "UPDATE juchuu_head set `sent` = :$colum,sent_ymd = $sent_ymd where orderNO = :orderNO and uid like :uid";
+			//$sent_ymd = ($value==1) ? "CURDATE()" : "''";
+			$sent_ymd = ($value==1) ? date("Y-m-d") : "''";
+			$sqlstr_h = "UPDATE juchuu_head set `sent` = :$colum,`sent_ymd` = '$sent_ymd' where `orderNO` = :orderNO and `uid` like :uid";
 
 		}else{
-			$sqlstr_h = "UPDATE juchuu_head set `$colum` = :$colum where orderNO = :orderNO and uid like :uid";
+			$sqlstr_h = "UPDATE juchuu_head set `$colum` = :$colum where `orderNO` = :orderNO and `uid` like :uid";
 		}
 
 
@@ -95,13 +96,13 @@ if($rtn !== true){
 		$params["orderNO"] = $_POST["orderNO"];
 
 		try{
-			$pdo_h->beginTransaction();
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			//$pdo_h->beginTransaction();
+			//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			$db->begin_tran();
 
 			//受注ヘッダ登録
-
+			/*
 			$stmt = $pdo_h->prepare( $sqlstr_h );
-			//bind処理
 			$stmt->bindValue($colum, $params[$colum], PDO::PARAM_STR);
 			$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -110,9 +111,14 @@ if($rtn !== true){
 
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+			*/
+			$db->UP_DEL_EXEC($sqlstr_h,$params);
 
 			if($colum ==="postage" || $colum === "postage_zeikbn"){
-				$sqlstr_h = "UPDATE juchuu_head set postage_zei = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where orderNO = :orderNO and uid like :uid";
+				$sqlstr_h = "UPDATE `juchuu_head` set `postage_zei` = postage - CEILING (postage / if(postage_zeikbn = 0,0,1.1)) where `orderNO` = :orderNO and `uid` like :uid";
+				$db->UP_DEL_EXEC($sqlstr_h,$params);
+
+				/*
 				$stmt = $pdo_h->prepare( $sqlstr_h );
 				//bind処理
 				$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
@@ -122,14 +128,18 @@ if($rtn !== true){
 				
 				$status = $stmt->execute();
 				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+				*/
 			}
 			
 			//レジアプリユーザの売上連携
-			$sqlstr_h ="SELECT * from Users where uid = :uid";
+			$sqlstr_h ="SELECT * from Users where `uid` = :uid";
+			$user_ms = $db->SELECT($sqlstr_h, [":uid" => $params["uid"]]);
+			/*
 			$stmt = $pdo_h->prepare( $sqlstr_h );
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 			$stmt->execute();
 			$user_ms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			*/
 
 			if($user_ms[0]["webrez"]==="use" && $colum==="payment" && $value==1){
 				$sql = "SELECT m.orderNO,m.zeikbn,sum(m.goukeitanka) as urikin,sum(m.zei) as zei ,h.name
@@ -137,32 +147,43 @@ if($rtn !== true){
 							inner join juchuu_head h
 							on m.orderNO = h.orderNO
 							where h.uid = :uid and m.orderNO = :orderNO group by h.uid,m.orderNO,zeikbn";
+				$Uriage = $db->SELECT($sql, [":uid" => $params["uid"], ":orderNO" => $params["orderNO"]]);
+				/*
 				$stmt = $pdo_h->prepare( $sql );
 				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 				$stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
 				$stmt->execute();
 				$Uriage = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				*/
 
-				$sql = "SELECT MAX(UriageNO) as MAX_URINO from UriageData where uid = :uid";
+				$sql = "SELECT MAX(UriageNO) as MAX_URINO from UriageData where `uid` = :uid";
+				$UriageNO = $db->SELECT($sql, [":uid" => $params["uid"]]);
+				/*
 				$stmt = $pdo_h->prepare( $sql );
 				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 				$stmt->execute();
 				$UriageNO = $stmt->fetch(PDO::FETCH_ASSOC);
+				*/
 				log_writer2("\$UriageNO",$UriageNO,"lv3");
 
-				$sql = "INSERT into UriageData(uid,UriageNO,UriDate,TokuisakiNM,ShouhinCD,ShouhinNM,su,tanka,UriageKin,zei,zeiKBN)";
-				$sql .= "	values(:uid,:UriageNO,CURDATE(),:TokuisakiNM,:ShouhinCD,:ShouhinNM,1,:tanka,:UriageKin,:zeigaku,:zeiKBN)";
+				//$sql = "INSERT into UriageData(uid,UriageNO,UriDate,TokuisakiNM,ShouhinCD,ShouhinNM,su,tanka,UriageKin,zei,zeiKBN)";
+				//$sql .= "	values(:uid,:UriageNO,CURDATE(),:TokuisakiNM,:ShouhinCD,:ShouhinNM,1,:tanka,:UriageKin,:zeigaku,:zeiKBN)";
+				$params = [];
 				foreach($Uriage as $row){
 					$NextUriNO = $UriageNO["MAX_URINO"] + 1;
-					//$params["uid"]="";
+					$params["uid"] = $_SESSION["user_id"];
 					$params["UriageNO"]=$NextUriNO;
+					$params["UriDate"]=date("Y-m-d");
 					$params["TokuisakiNM"]=$row["name"]."様";
 					$params["ShouhinCD"]=99999;
 					$params["ShouhinNM"]="OnLine受注NO [".$row["orderNO"]."]";
 					$params["tanka"]=$row["urikin"];
 					$params["UriageKin"]=$row["urikin"];
-					$params["zeigaku"]=$row["zei"];
+					$params["zei"]=$row["zei"];
 					$params["zeiKBN"]=$row["zeikbn"];
+					$db->INSERT("UriageData",$params);
+
+					/*
 					$stmt = $pdo_h->prepare( $sql );
 					$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 					$stmt->bindValue("UriageNO", $params["UriageNO"], PDO::PARAM_INT);
@@ -177,9 +198,12 @@ if($rtn !== true){
 					$sqllog .= rtn_sqllog($sql,$params);
 					$stmt->execute();
 					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+					*/
 				}
 			}else if($user_ms[0]["webrez"]==="use" && $colum==="payment" && $value==0){
-				$sql ="DELETE from UriageData where uid=:uid and ShouhinNM Like :ShouhinNM";
+				$sql ="DELETE from UriageData where `uid`=:uid and `ShouhinNM` Like :ShouhinNM";
+				$db->UP_DEL_EXEC($sql,[":uid" => $params["uid"], ":ShouhinNM" => "OnLine受注NO [".$params["orderNO"]."]"]);
+				/*
 				$stmt = $pdo_h->prepare($sql);
 				$params["ShouhinNM"]="OnLine受注NO [".$params["orderNO"]."]";
 				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
@@ -187,23 +211,29 @@ if($rtn !== true){
 				$sqllog .= rtn_sqllog($sql,$params);
 				$stmt->execute();
 				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+				*/
 
 			}
-			
-			//$count = $stmt->rowCount();
+			$db->commit_tran();
+			/*
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
+			*/
 	
 			$msg = "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
 		}catch(Exception $e){
+			/*
 			$pdo_h->rollBack();
 			$sqllog .= rtn_sqllog("rollBack",[]);
 			sqllogger($sqllog,$e);
 			log_writer2("\$e",$e,"lv0");
+			*/
+			$db->rollback_tran($e->getMessage());
+			U::send_E($e,"ajax_upd_order_h.phpで例外発生。","");
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

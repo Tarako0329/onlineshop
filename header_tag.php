@@ -4,7 +4,7 @@
         <?php /*カラー変更されてる場合はロゴを表示しない*/
           if(($_SESSION["h_color"] ?? '')==="#f9d0d8" || empty($_SESSION["h_color"])){echo '<img src="img/icon-48x48.png" alt="Logo" width="48" height="48" class="d-inline-block align-text-top">';} 
         ?>
-        <a class="navbar-brand alice-regular" href="index.php?key=<?php echo $_SESSION["user_hash"] ?? '';?>"><h1 <?php echo $_SESSION["hf_color"] ?? '';?>><?php echo TITLE.($_SESSION["yagou"] ?? '');?></h1></a>
+        <a class="navbar-brand alice-regular" href="index.php?key=<?php echo $_SESSION["user_hash"] ?? '';?>"><h1 <?php echo $_SESSION["hf_color"] ?? '';?>><?php echo APP_NAME.($_SESSION["yagou"] ?? '');?></h1></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

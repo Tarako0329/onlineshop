@@ -4,7 +4,7 @@
 // =========================================================
 function log_writer($pgname,$msg){
 	$log = print_r($msg,true);
-	file_put_contents("error_log","[".date("Y/m/d H:i:s")."] ORG_LOG from [".$_SERVER["PHP_SELF"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
+	file_put_contents(".error_log","[".date("Y/m/d H:i:s")."] ORG_LOG from [".$_SERVER["PHP_SELF"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 }
 function log_writer2($pgname,$msg,$kankyo){
 	//$kankyo:lv0=全環境+メール通知 lv1=全環境 lv2=本番以外 lv3=テスト・ローカル環境のみ
@@ -13,7 +13,7 @@ function log_writer2($pgname,$msg,$kankyo){
 		log_writer($pgname,$msg);
 		$log = print_r($msg,true);
 		
-		U::send_mail(SYSTEM_NOTICE_MAIL,"【重要】".TITLE."でシステムエラー発生",$log,"","");
+		U::send_mail(SYSTEM_NOTICE_MAIL,"【重要】".APP_NAME."でシステムエラー発生",$log,"","");
 	}else if($kankyo==="lv1"){
 		log_writer($pgname,$msg);
 	}else if($kankyo==="lv2" && EXEC_MODE!=="Product"){
@@ -655,7 +655,7 @@ function shutdown_ajax($filename){
 		  
 		$emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
 		if(EXEC_MODE!=="Local"){
-			U::send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".$filename."でシステム停止",$emsg,"","");
+			U::send_mail(SYSTEM_NOTICE_MAIL,"【".APP_NAME." - WARNING】".$filename."でシステム停止",$emsg,"","");
 		}
 		log_writer2($filename." [Exception \$lastError] =>",$lastError,"lv0");
 	
@@ -684,7 +684,7 @@ function shutdown_ajax($filename){
 				
 			$emsg = "uid::".$_SESSION['user_id']." ERROR_MESSAGE::予期せぬエラー".$lastError['message'];
 			if(EXEC_MODE!=="Local"){
-				U::send_mail(SYSTEM_NOTICE_MAIL,"【".TITLE." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"","");
+				U::send_mail(SYSTEM_NOTICE_MAIL,"【".APP_NAME." - WARNING】".basename(__FILE__)."でシステム停止",$emsg,"","");
 			}
 			log_writer2(basename(__FILE__)." [Exception \$lastError] =>",$lastError,"lv0");
 			echo "予期せぬエラーが発生しました。<br>エラー内容は管理者へ自動通報されます。<br>ご迷惑をおかけしますが、復旧までしばらくお待ち下さい。";
@@ -716,6 +716,14 @@ function gemini_api($p_ask,$p_type, $response_schema = null){
         'required' => ['check_results']	//必須項目
     ];
 	*/
+	if(EXEC_MODE==="Local"){
+		log_writer2("gemini_api - \$p_ask",$p_ask,"lv3");
+		log_writer2("gemini_api - \$response_schema",$response_schema,"lv3");
+		return array(
+			'emsg' => "",
+			'result' => $response_schema
+		);
+	}
 	$url = GEMINI_URL.GEMINI;
 	$request_payload =  [
 		'contents' => [

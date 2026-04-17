@@ -11,7 +11,7 @@
 	<style>
 	</style>
 	<meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
-	<TITLE><?php echo TITLE;?> 特定商取引法に基づく表記</TITLE>
+	<TITLE><?php echo APP_NAME;?> 特定商取引法に基づく表記</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag.php"  ?>
@@ -20,47 +20,7 @@
 		<div class='row mb-5'>
 				<div class='col-12 '>
 					<div class='text-center'> <h1>特定商取引法に基づく表記</h1></div>
-					<!--<div class='p-5'>
-						<div class='mb-3'>
-							<h4>１ サイト運営元・基本ポリシー</h4>
-							<p  class='ps-4'>当サイトは[ Midori System ]が運営してます。</p>
 
-							<div class='ms-4' style='width:100px;height:100px;'><img src='img/msystem_logo.png' class='img-fluid'></div>
-							<p  class='ps-4'><a href='https://site.greeen-sys.com/'>https://site.greeen-sys.com/</a></p>
-
-							<p  class='ps-4'>当サイトのシステム的な不備・不具合については当社。販売される商品については、当サイトを通じて販売する出店者(以降、出店者と呼ぶ)が責任をもって管理するものとする。</p>
-							<p  class='ps-4'>商品サービス販売における商品・金銭の授受に関しては項２以降に基づき、出店者とお客様の間で責任をもって実施するものとする。</p>
-							<p  class='ps-4'>なお、商品未発送、未支払いについては法にのっとり当社が対処するものとする。</p>
-						</div>
-						<div class='mb-3'>
-							<h4>２  返品について  </h4>
-							<p  class='ps-4'>お届けした商品が不良品だった場合、返品を受け付け致します。 </p>
-							<p  class='ps-4'>上記以外の理由における返品・交換については出店者の判断により、対応いたします。  </p>
-						</div>
-						<div class='mb-3'>
-							<h4>３ キャンセルポリシー  </h4>
-							<p  class='ps-4'>各商品ページの記載にのっとります。</p>
-							<p  class='ps-4'>なお、特段記載なき場合は、法律により『商品の引渡し（特定権利の移転）が完了した日から数えて８日以内』まではキャンセルを受け付けます。</p>
-						</div>
-						<div class='mb-3'>
-							<h4>４ 支払について </h4>
-							<p  class='ps-4'>各商品ページの記載にのっとります。</p>
-						</div>
-						<div class='mb-3'>
-							<h4>５ お問い合わせ窓口 </h4>
-							<p  class='ps-4'>商品についての質問・配送状況などについては、<a href='index.php'>商品販売のページ</a>より問合せをお願いいたします。</p>
-							<p  class='ps-4'>出店者（商品販売元）へのお問い合わせについては、<a href='shops.php'>Shopsページ</a>より問合せをお願いいたします。</p>
-							<p  class='ps-4'>当サイトに関するお問い合わせは<a href='https://site.greeen-sys.com/contact-page/'>https://site.greeen-sys.com/contact-page/</a>よりお願いいたします。</p>
-						</div>
-						
-						<div class='mb-3'>
-							※当社：当サイト運営者。　出店者：当サイトを通じて商品を販売する業者。
-						</div>
-						<div class='mb-3'>
-							【2025年05月22日改定】
-							【2024年11月22日制定】
-						</div>
-					</div>-->
 					<div class='p-5'>
 						<div class='mb-3'>
 							<h4>１ プラットフォーム運営事業者</h4>

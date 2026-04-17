@@ -1,6 +1,17 @@
 <?php
   require "php_header_admin.php";
 
+	// セッション変数をすべて空にする
+	$_SESSION = array();
+
+	// ブラウザ側のセッションクッキーを削除する
+	if (isset($_COOKIE[session_name()])) {
+    // クッキーの有効期限を過去（1時間前）に設定して削除
+    setcookie(session_name(), '', time() - 3600, '/');
+	}
+
+	// サーバー側のセッションデータを完全に破棄する
+	session_destroy();
 	//cookie[remember_me]を破棄
 	setCookie("remember_me", "", -1, "/", "", TRUE, TRUE);
 	$_SESSION["user_id"] = -1;
@@ -52,7 +63,7 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_admin.php" 
     ?>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE><?php echo APP_NAME;?></TITLE>
 		<style>
 			.card-container.card {
 			    max-width: 350px;

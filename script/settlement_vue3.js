@@ -46,8 +46,10 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
           new_type.value.source = new_type.value.source.replace('temp/','')
           pay_lists.value.push(new_type.value)
           new_type.value = {types:"bank",payname:"",source:"",hosoku:"",flg:true}
+          alert(response.data.MSG)
         }else if(response.data.status==="warning"){
-          alert('決済名が重複してます')
+          //alert('決済名が重複してます')
+          alert(response.data.MSG)
         }else{
           alert('登録処理エラー')
         }

@@ -13,7 +13,7 @@ $dotenv->load();
 define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
 define("ROOT_URL",$_ENV["HTTP"]);
 define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-define("TITLE",$_ENV["TITLE"]);
+define("APP_NAME",$_ENV["APP_NAME"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 

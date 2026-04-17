@@ -24,18 +24,22 @@ if($rtn !== true){
 
 		$CusMailAdd = $_POST["mailto"];
 		try{
+			$db->begin_tran();
 			//uidからusers_onlineの情報を取得
+			/*
 			$sql = "select * from Users_online where uid = :uid";
 			$stmt = $pdo_h->prepare($sql);
 			$stmt->bindValue("uid", $_POST["shop_id"], PDO::PARAM_STR);
 			$stmt->execute();
 			$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			*/
+			$user = $db->SELECT("SELECT * from Users_online where `uid` = :uid", [":uid" => $_POST["shop_id"]]);
 			$ShopMailAdd = $user[0]["mail"];
 			$yagou = $user[0]["yagou"];
 			$lineID = $user[0]["line_id"];
 			
-			$pdo_h->beginTransaction();
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			//$pdo_h->beginTransaction();
+			//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
 			//QA管理画面から来た場合はSESSIONに値を持つ
 			$firstQ = false;    //初回質問フラグ
@@ -45,31 +49,36 @@ if($rtn !== true){
 			}else{
 				$sts = $_POST["sts"];
 				//問合せNoの取得（同一ユーザが同じ対象に問合せした場合に同じNoを利用する.shopID,返信先メアド,Subjectで判断）
+				/*
 				$stmt = $pdo_h->prepare("select IFNULL(askNO,'') as askNO from online_q_and_a where shop_id = :shop_id and customer = :customer and shouhinNM = :shouhinNM");
 				$stmt->bindValue("shop_id", $_POST["shop_id"], PDO::PARAM_STR);
 				$stmt->bindValue("customer", $CusMailAdd, PDO::PARAM_STR);
 				$stmt->bindValue("shouhinNM", $_POST["qa_head"], PDO::PARAM_STR);
 				$stmt->execute();
 				$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if($stmt->rowCount() > 0){
+				*/
+				$rows = $db->SELECT("SELECT IFNULL(askNO,'') as askNO from online_q_and_a where shop_id = :shop_id and customer = :customer and shouhinNM = :shouhinNM", [":shop_id" => $_POST["shop_id"], ":customer" => $CusMailAdd, ":shouhinNM" => $_POST["qa_head"]]);
+				//if($stmt->rowCount() > 0){
+				if(!empty($rows)){
 					$askNO = $rows[0]["askNO"];
 				}else{
 					//初回質問。問合せ番号を新規発行
 					$firstQ = true;
-					$stmt = $pdo_h->prepare("select max(askNO) + 1 as nextNO from online_q_and_a");
-					$stmt->execute();
-					if($stmt->rowCount() == 0){
+					//$stmt = $pdo_h->prepare("select max(askNO) + 1 as nextNO from online_q_and_a");
+					//$stmt->execute();
+					$askNO_rows = $db->SELECT("SELECT max(askNO) + 1 as nextNO from online_q_and_a", []);
+					if(empty($askNO_rows) || $askNO_rows[0]["nextNO"] === null){
 						$askNO = 1;
 					}else{
-						$tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
-						$askNO = $tmp[0]["nextNO"];
+						//$tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$askNO = $askNO_rows[0]["nextNO"];
 					}
 				}
 			}
 
 			{//db登録
-				$sql = "insert into online_q_and_a(shop_id,askNO,customer,name,shouhinNM,sts,body) values(:shop_id,:askNO,:customer,:name,:shouhinNM,:sts,:body)";
-				$stmt = $pdo_h->prepare( $sql );
+				//$sql = "insert into online_q_and_a(shop_id,askNO,customer,name,shouhinNM,sts,body) values(:shop_id,:askNO,:customer,:name,:shouhinNM,:sts,:body)";
+				//$stmt = $pdo_h->prepare( $sql );
 
 				$params["shop_id"] = $_POST["shop_id"];
 				$params["askNO"] = $askNO;
@@ -78,7 +87,9 @@ if($rtn !== true){
 				$params["shouhinNM"] = $_POST["qa_head"];
 				$params["sts"] = $sts;
 				$params["body"] = $_POST["qa_text"];
-
+				$params["insdate"] = date("Y-m-d H:i:s");
+				$db->INSERT("online_q_and_a",$params);
+				/*
 				$stmt->bindValue("shop_id", $params["shop_id"], PDO::PARAM_STR);
 				$stmt->bindValue("askNO", $params["askNO"], PDO::PARAM_STR);
 				$stmt->bindValue("customer", $params["customer"], PDO::PARAM_STR);
@@ -91,6 +102,7 @@ if($rtn !== true){
 
 				$status = $stmt->execute();
 				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+				*/
 			}
 
 			//CtoBで始まるやり取り
@@ -114,13 +126,13 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					$send_rtn = U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//出店者へお知らせメール
 				}
 				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] Q send ".$send_rtn,"lv3");
 				$cc_address = $CusMailAdd;
 			}else if($sts==="A"){//通販画面QAのanswer（店⇒客）
 				$head = $yagou." より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
-				$send_rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$send_rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//客向け回答メール
 				$cc_address = "shop";
 
 
@@ -129,7 +141,7 @@ if($rtn !== true){
 						?$yagou." よりお問い合わせがありました。\r\n"
 						:$yagou." より返信がありました。\r\n")
 						."ご回答いただく場合は\r\n".$CA_URL."\r\nよりお願いします\r\n\r\n====以下、".$yagou." より====\r\n\r\n";
-				$send_rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$send_rtn = U::send_mail($CusMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//客向け回答メール
 				$cc_address = "shop";
 			}else if($sts==="CA"){//受注管理画面のお客様からの返信（客⇒店）
 				$head = $_POST["qa_name"]." より回答がありました。追加でご確認したいことがございましたら\r\n".$BQ_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
@@ -137,7 +149,7 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					$send_rtn = U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//出店者へお知らせメール
 				}
 				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] CA send ".$send_rtn,"lv3");
 				$cc_address = $CusMailAdd;
@@ -152,39 +164,45 @@ if($rtn !== true){
 					$ShopMailAdd = "LINE";
 					$send_cc_rtn = U::send_line($lineID,$head."【".$_POST["subject"]."】\r\n".$_POST["mailbody"]);//出店者へお知らせLINE
 				}else{
-					$send_cc_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//出店者へお知らせメール
+					$send_cc_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//出店者へお知らせメール
 				}
 			}else{
-				$send_cc_rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],TITLE,"");//客向け回答メール
+				$send_cc_rtn = U::send_mail($cc_address,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//客向け回答メール
 			}
 
 			if($send_rtn===true && $send_cc_rtn === true){
 				$msg = "送信完了";
 				$alert_status = "alert-success";
+				$db->commit_tran();
 
-				$pdo_h->commit();
+				/*$pdo_h->commit();
 				$sqllog .= rtn_sqllog("commit",[]);
-				sqllogger($sqllog,0);
+				sqllogger($sqllog,0);*/
 			}else{
-				$msg = "送信　失敗";
+				$msg = "送信失敗";
 				$alert_status = "alert-warning";
+				$db->rollback_tran("送信失敗のためロールバック");
 	
-				$pdo_h->rollBack();
+				/*$pdo_h->rollBack();
 				$sqllog .= rtn_sqllog("rollBack",[]);
-				sqllogger($sqllog,$e);
+				sqllogger($sqllog,$e);*/
 			}
 
 			$reseve_status=true;
 
 		}catch(Exception $e){
+			/*
 			$pdo_h->rollBack();
 			$sqllog .= rtn_sqllog("rollBack",[]);
 			sqllogger($sqllog,$e);
+			*/
+			$db->rollback_tran($e->getMessage());
+			U::send_E($e,"ajax_sendmail_custmor.phpで例外発生。","");
 
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;
-			log_writer2("\$e",$e,"lv0");
+			//log_writer2("\$e",$e,"lv0");
 		}
 	}
 }

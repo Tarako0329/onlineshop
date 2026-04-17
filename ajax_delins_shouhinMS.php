@@ -16,7 +16,7 @@ if(empty($_POST["hash"])){
 $user_hash = $_POST["hash"] ;
 $_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-log_writer2("\$_POST",$_POST,"lv3");
+U::log("\$_POST",$_POST,4);
 
 $rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
 if($rtn !== true){
@@ -31,6 +31,7 @@ if($rtn !== true){
 		$_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
 		$timeout=true;
 	}else{
+		/*
 		$DELsql = "delete from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD";
 		$DELsql2 = "delete from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD";
 
@@ -46,7 +47,7 @@ if($rtn !== true){
 		$INSsql = "insert into shouhinMS_online(uid,shouhinCD,shouhinNM,status,short_info,infomation,haisou,customer_bikou,tanka,zeikbn,shouhizei,hash_tag,limited_cd $add_sql_cul) ";
 		$INSsql .= "values(:uid,:shouhinCD,:shouhinNM,:status,:short_info,:infomation,:haisou,:customer_bikou,:tanka,:zeikbn,:shouhizei,:hash_tag,:limited_cd $add_sql_val)";
 		$INSsql2 = "insert into shouhinMS_online_pic(uid,shouhinCD,sort,pic) values(:uid,:shouhinCD,:sort,:pic)";
-
+		*/
 		$params["uid"] = $_SESSION["user_id"];
 		$params["shouhinCD"] = $_POST["shouhinCD"];
 		$params["shouhinNM"] = $_POST["shouhinNM"];
@@ -60,11 +61,42 @@ if($rtn !== true){
 		$params["shouhizei"] = $_POST["shouhizei"];
 		$params["hash_tag"] = $_POST["hash_tag"];
 		$params["limited_cd"] = $_POST["limited_cd"];
+		$params["ins_datetime"] = (U::exist($_POST["ins_datetime"])) ? $_POST["ins_datetime"] : date("Y-m-d H:i:s");
+		$params["upd_datetime"] = date("Y-m-d H:i:s");
 
 		try{
-			$pdo_h->beginTransaction();
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			//$pdo_h->beginTransaction();
+			//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
+			$db->begin_tran();
+		
+			$db->UP_DEL_EXEC("DELETE from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD",[
+				"uid" => $params["uid"],
+				"shouhinCD" => $params["shouhinCD"]
+			]);
+			$db->UP_DEL_EXEC("DELETE from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD",[
+				"uid" => $params["uid"],
+				"shouhinCD" => $params["shouhinCD"]
+			]);
 
+			$db->INSERT("shouhinMS_online",[
+				"uid" => $params["uid"],
+				"shouhinCD" => $params["shouhinCD"],
+				"shouhinNM" => $params["shouhinNM"],
+				"status" => $params["status"],
+				"short_info" => $params["short_info"],
+				"infomation" => $params["infomation"],
+				"haisou" => $params["haisou"],
+				"customer_bikou" => $params["customer_bikou"],
+				"tanka" => $params["tanka"],
+				"zeikbn" => $params["zeikbn"],
+				"shouhizei" => $params["shouhizei"],
+				"hash_tag" => $params["hash_tag"],
+				"limited_cd" => $params["limited_cd"],
+				"ins_datetime" => $params["ins_datetime"],
+				"upd_datetime" => $params["upd_datetime"]
+			]);
+
+			/*
 			$stmt = $pdo_h->prepare( $DELsql );
 			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 			$stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
@@ -102,7 +134,7 @@ if($rtn !== true){
 
 			$status = $stmt->execute();
 			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			
+			*/
 			//画像ファイル処理
 			$i=1;	//sortの初期値
 			foreach($_POST["user_file_name"] as $row){
@@ -127,7 +159,13 @@ if($rtn !== true){
 					$msg = "ファイル保存失敗・NOFILE";
 					continue;
 				}
-
+				$db->INSERT("shouhinMS_online_pic",[
+					"uid" => $params["uid"],
+					"shouhinCD" => $params["shouhinCD"],
+					"sort" => $params["sort"],
+					"pic" => $params["pic"]		
+				]);
+				/*
 				$stmt = $pdo_h->prepare( $INSsql2 );
 				$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
 				$stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
@@ -137,21 +175,27 @@ if($rtn !== true){
 
 				$status = $stmt->execute();
 				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+				*/
 			}
-
+			$db->commit_tran();
+			/*
 			$pdo_h->commit();
 			$sqllog .= rtn_sqllog("commit",[]);
 			sqllogger($sqllog,0);
-	
+			*/
 			$msg .= "登録が完了しました。";
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
 		}catch(Exception $e){
+			/*
 			$pdo_h->rollBack();
 			$sqllog .= rtn_sqllog("rollBack",[]);
 			sqllogger($sqllog,$e);
 			log_writer2("\$e",$e,"lv0");
+			*/
+			$db->rollback_tran();
+			U::send_E($e,"ajax_delins_shouhinMS.php - DBエラー","商品マスタの更新に失敗");
 			$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

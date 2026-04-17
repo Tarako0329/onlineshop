@@ -9,8 +9,6 @@
 	$mypath = dirname(__DIR__);
 	chdir($mypath);
 	require "php_header_admin.php";
-	
-	//$db = new Database();
 
 	$sql = "SELECT 
 			h.*
@@ -43,7 +41,7 @@
 				if(U::exist($lineID)){
 					$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
-					$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+					$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",APP_NAME." onLineShop","");
 				}
 				sleep(2);
 				$taishou_list = "";
@@ -65,7 +63,7 @@
 			}
 			
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
-			$site = TITLE;
+			$site = APP_NAME;
 			$body = <<<EOM
 				{$row['name']} 様
 				
@@ -88,8 +86,8 @@
 				EOM;
 			
 			$mail = $row["mail"];
-			$subject = "【".TITLE."】レビュー投稿のお願い";
-			$fromname = TITLE;
+			$subject = "【".APP_NAME."】レビュー投稿のお願い";
+			$fromname = APP_NAME;
 			
 			$rtn = U::send_mail($mail,$subject,$body,$fromname,"");
 			sleep(2);
@@ -107,7 +105,7 @@
 			if(U::exist($lineID)){
 				$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 			}else{
-				$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+				$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",APP_NAME." onLineShop","");
 			}
 			$taishou_list = "";
 		}

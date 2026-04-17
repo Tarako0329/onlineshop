@@ -3,6 +3,7 @@ const review_post = (p_buylist,p_token) => createApp({
     const buylist = ref(p_buylist)
     const token = ref(p_token)
     const review_type = ref('shouhin') //or shop
+    const loader = ref(false)
 
     //axiosでajax_delins_review.phpを呼び出す関数
     const review_post_submit = (index) =>{
@@ -19,6 +20,7 @@ const review_post = (p_buylist,p_token) => createApp({
       form.append(`orderNO`, buylist.value[index].orderNO)
       form.append(`csrf_token`, token.value)
 
+      loader.value = true
       axios.post("ajax_delins_review.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
@@ -27,7 +29,7 @@ const review_post = (p_buylist,p_token) => createApp({
         if(response.data.status==="alert-success"){
           buylist.value[index].btn_name = '更新'
         }else{
-          //alert('レビュー投稿に失敗しました')
+          alert('レビュー投稿に失敗しました')
         }
       })
       .catch((error)=>{
@@ -35,6 +37,7 @@ const review_post = (p_buylist,p_token) => createApp({
         alert('レビュー投稿に失敗しました')
       })
       .finally(()=>{
+        loader.value = false
       })
     }
     
@@ -53,6 +56,7 @@ const review_post = (p_buylist,p_token) => createApp({
       buylist
       ,review_type
       ,review_post_submit
+      ,loader
     }
   }
 });

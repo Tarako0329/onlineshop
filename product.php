@@ -75,13 +75,13 @@
   $discription = "販売元:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
   $x_id = !empty($dataset[0]["x_id"])?"&via=".$dataset[0]["x_id"]."&related=".$dataset[0]["x_id"]:"";
 
-  $meta  = "<title>".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』</title> \r\n";
+  $meta  = "<title>".$dataset[0]["shouhinNM"]." - 通販サイト『".APP_NAME." - ".$dataset[0]["yagou"]."』</title> \r\n";
   $meta .= "<meta name='description' content='".$discription."'>\r\n";
-  $meta .= "<meta property='og:title' content='".$dataset[0]["shouhinNM"]." - 通販サイト『".TITLE." - ".$dataset[0]["yagou"]."』'>\r\n";
+  $meta .= "<meta property='og:title' content='".$dataset[0]["shouhinNM"]." - 通販サイト『".APP_NAME." - ".$dataset[0]["yagou"]."』'>\r\n";
   $meta .= "<meta property='og:description' content=''.$discription.''>\r\n";
   $meta .= "<meta property='og:url' content=''.ROOT_URL.'product.php?id=".$hinmei."'>\r\n";
   $meta .= "<meta property='og:type' content='website'>\r\n";
-  $meta .= "<meta property='og:site_name' content='通販サイト『".TITLE."』'>\r\n";
+  $meta .= "<meta property='og:site_name' content='通販サイト『".APP_NAME."』'>\r\n";
   $meta .= "<meta property='og:image' content='".ROOT_URL.$dataset[0]['filename']."'>\r\n";
   $meta .= "<meta property='fb:app_id' content='".$dataset[0]["fb_id"]."'>\r\n";
   $meta .= "<meta name='twitter:card' content='summary_large_image'>\r\n";
@@ -321,11 +321,7 @@
   <script src="script/vue3.js?<?php echo $time; ?>"></script>
   <script src="script/product_vue3.js?<?php echo $time; ?>"></script>
   <script>
-      product_page('product','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo TITLE; ?>').mount('#app');
-  </script>
-  <script type="module">
-    //import {product_page} from "./script/product_vue3.js?<?php //echo $time; ?>"
-    //product_page('product','<?php //echo $token; ?>','<?php //echo $shouhin_id; ?>','<?php //echo TITLE; ?>').mount('#app');
+      product_page('product','<?php echo $token; ?>','<?php echo $shouhin_id; ?>','<?php echo APP_NAME; ?>').mount('#app');
   </script>
   <script>// Enterキーが押された時にSubmitされるのを抑制する
       window.onload = function() {

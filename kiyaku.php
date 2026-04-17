@@ -14,7 +14,7 @@
 	<style>
 	</style>
 	<meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
-	<TITLE><?php echo TITLE;?> 規約</TITLE>
+	<TITLE><?php echo APP_NAME;?> 規約</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag_admin.php"  ?>

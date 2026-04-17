@@ -11,7 +11,7 @@ $login = false;
 		?>
 	</HEAD>
 	<!--ログイン画面-->
-	<TITLE><?php echo TITLE;?></TITLE>
+	<TITLE><?php echo APP_NAME;?></TITLE>
 	<BODY>
 		<div id='app'>
 			<?php include "header_tag_admin.php"  ?>

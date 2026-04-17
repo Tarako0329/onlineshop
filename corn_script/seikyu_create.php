@@ -104,7 +104,7 @@
 		$to="green.green.midori@gmail.com";
 		$subject="【".EXEC_MODE."】ONLINESHOP_請求データ作成完了-".$getudo;
 		$body=$getudo."月度の請求データを作成しました。";
-		$fromname=TITLE."@".EXEC_MODE;
+		$fromname=APP_NAME."@".EXEC_MODE;
 		$bcc="";
 
 		U::send_mail($to,$subject,$body,$fromname,$bcc);

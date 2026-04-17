@@ -29,6 +29,7 @@ if($rtn !== true){
 	}else{
 		try{
 			$db->begin_tran();
+			$datetime = date('Y-m-d H:i:s');
 			$params["uid"] = $_POST["order_shop_id"];
 			$params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
 			$params["name"] = $_POST["name"];
@@ -43,7 +44,8 @@ if($rtn !== true){
 			$params["st_tel"] = $_POST["st_tel"];
 			$params["buy_trigger"] = $_POST["buy_trigger"];
 			$params["mark_id"] = rot13decrypt2($_SESSION["mark_id"]);
-
+			$params["juchuu_date"] = $datetime;
+			
 			//通知メール用
 			$head_bikou = $params["bikou"];
 			//受注ヘッダ登録
@@ -82,6 +84,7 @@ if($rtn !== true){
 				$params_meisai["goukeitanka"] = $row["goukeitanka"];
 				$params_meisai["zeikbn"] = $row["zeikbn"];
 				$params_meisai["bikou"] = $row["bikou"];
+				$params_meisai["upd_datetime"] = $datetime;
 
 				$db->INSERT("juchuu_meisai",$params_meisai);
 				
@@ -90,9 +93,9 @@ if($rtn !== true){
 
 			//消費税明細の登録
 			$sqlstr = "INSERT into juchuu_meisai SELECT null as SEQ, orderNO,JM.zeikbn as shouhinCD,ZMS.hyoujimei,0 as su,0 as tanka,0 as goukeitanka,
-				FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou ,NOW() as upd_datetime 
+				FLOOR(sum(goukeitanka) * ZMS.zeiritu / 100) as zei ,JM.zeikbn,'-' as bikou ,:upd_datetime as upd_datetime 
 				from juchuu_meisai JM inner join ZeiMS ZMS on JM.zeikbn = ZMS.zeiKBN where orderNO = :orderNO group by orderNO,ZMS.hyoujimei,JM.zeikbn,'-' having zei <> 0";
-			$db->UP_DEL_EXEC($sqlstr,["orderNO" => $params["orderNO"]]);
+			$db->UP_DEL_EXEC($sqlstr,["orderNO" => $params["orderNO"], "upd_datetime" => $datetime]);
 			
 
 			//メールの作成
@@ -144,7 +147,7 @@ if($rtn !== true){
 				if(U::exist($owner[0]["line_id"])){//LINEで通知
 					$rtn = U::send_line($owner[0]["line_id"],"オーダー受注通知[No:".$orderNO."]\r\n".$body);
 				}else if(U::exist($owner[0]["mail"])){
-					$rtn = U::send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["mail"]);
+					$rtn = U::send_mail($owner[0]["mail"],"オーダー受注通知[No:".$orderNO."]",$body,APP_NAME." onLineShop",$owner[0]["mail"]);
 				}
 				if($rtn === false){
 					log_writer2("U::send_mail \$rtn","ショップへの注文メールの送信に失敗しました。","lv3");
@@ -153,7 +156,7 @@ if($rtn !== true){
 
 				//お客様向けメール 
 				{
-					$title = TITLE;
+					$title = APP_NAME;
 					
 					$body = $owner[0]["mail_body_auto"];
 					$body = str_replace("<購入者名>",$name,$body);
@@ -168,7 +171,7 @@ if($rtn !== true){
 					$body = str_replace("<問合担当者>",$owner[0]["name"],$body);
 					$body = str_replace("<代表者>",$owner[0]["shacho"],$body);
 					
-					$rtn = U::send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,TITLE." onLineShop",$owner[0]["cc_mail"]);
+					$rtn = U::send_mail($params["mail"],"注文内容ご確認（自動配信メール）[No:".$orderNO."]",$body,APP_NAME." onLineShop",$owner[0]["cc_mail"]);
 					if($rtn === false){
 						log_writer2("U::send_mail \$rtn",$rtn,"lv3");
 						throw new Exception("注文者向けの注文内容確認メールの送信に失敗しました。");

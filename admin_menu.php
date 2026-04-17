@@ -19,7 +19,7 @@
     //共通部分、bootstrap設定、フォントCND、ファビコン等
     include "head_admin.php" 
     ?>
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE><?php echo APP_NAME;?></TITLE>
 </head>
 <BODY>
   <div id='app'>

@@ -48,9 +48,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cafe-present.greeen-sys.com" />
     <meta property="og:image" content="https://cafe-present.greeen-sys.com/img/android-chrome-256x256.png" />
-    <meta property="og:site_name" content="<?php echo TITLE;?> 通販サイト" />
+    <meta property="og:site_name" content="<?php echo APP_NAME;?> 通販サイト" />
 
-    <TITLE><?php echo TITLE;?>(プレゼントセレクション) 通販サイト</TITLE>
+    <TITLE><?php echo APP_NAME;?>(プレゼントセレクション) 通販サイト</TITLE>
 </head>
 <BODY >
   <div id='app' style='min-height: 100%' >

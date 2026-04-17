@@ -19,7 +19,7 @@ $dotenv->load();
 define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
 define("ROOT_URL",$_ENV["HTTP"]);
 define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-define("TITLE",$_ENV["TITLE"]);
+define("APP_NAME",$_ENV["APP_NAME"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
@@ -89,7 +89,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				if(U::exist($lineID)){
 					$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 				}else{
-					$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+					$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",APP_NAME." onLineShop","");
 				}
 				sleep(2);
 				$taishou_list = "";
@@ -115,7 +115,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 			}
 			
 			$url = ROOT_URL."review_post.php?key=".rot13encrypt2($row["orderNO"]);
-			$site = TITLE;
+			$site = APP_NAME;
 			$body = <<<EOM
 				$params[name] 様
 				
@@ -138,8 +138,8 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 				EOM;
 			
 			$mail = $row["mail"];
-			$subject = "【".TITLE."】レビュー投稿のお願い";
-			$fromname = TITLE;
+			$subject = "【".APP_NAME."】レビュー投稿のお願い";
+			$fromname = APP_NAME;
 			
 			$rtn = U::send_mail($mail,$subject,$body,$fromname,"");
 			sleep(2);
@@ -165,7 +165,7 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		if(U::exist($lineID)){
 			$rtn = U::send_line($lineID,"レビュー依頼メール送信完了\r\n\r\n".$taishou_list."へ、レビュー依頼を送信しました。");//出店者へお知らせLINE
 		}else{
-			$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",TITLE." onLineShop","");
+			$rtn = U::send_mail($shop_mail,"レビュー依頼メール送信完了",$taishou_list."へ、レビュー依頼を送信しました。",APP_NAME." onLineShop","");
 		}
 		$taishou_list = "";
 		
@@ -173,10 +173,10 @@ $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 		echo $msg."\n";
     
 	}catch(Exception $e){
-      $pdo_h->rollBack();
-      $sqllog .= rtn_sqllog("rollBack",[]);
-      sqllogger($sqllog,$e);
-  		echo "レビュー依頼処理でエラー\n".$e;
+    $pdo_h->rollBack();
+    $sqllog .= rtn_sqllog("rollBack",[]);
+    sqllogger($sqllog,$e);
+  	echo "レビュー依頼処理でエラー\n".$e;
   }
   exit();
   

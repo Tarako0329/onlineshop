@@ -94,7 +94,7 @@
       }
     </style>
     <meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
-    <TITLE><?php echo TITLE;?></TITLE>
+    <TITLE><?php echo APP_NAME;?></TITLE>
 </head>
 <BODY>
   <div id='app' style='height: 100%'>

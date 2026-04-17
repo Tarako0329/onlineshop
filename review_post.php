@@ -52,7 +52,7 @@
     <style>
 
     </style>
-    <TITLE><?php echo TITLE;?>レビューポスト</TITLE>
+    <TITLE><?php echo APP_NAME;?>レビューポスト</TITLE>
 </head>
 <BODY >
   <div id='app' style='min-height: 100%' >
@@ -129,9 +129,9 @@
   </MAIN>
   <FOOTER class='container common_footer fixed-bottom'>
   </FOOTER>
-  <!--<div class="loader-wrap" v-show='loader'>
+  <div class="loader-wrap" v-show='loader'>
 		<div class="loader">Loading...</div>
-	</div>-->
+	</div>
   <!-- Modal -->
 
   </div>

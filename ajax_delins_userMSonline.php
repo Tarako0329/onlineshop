@@ -78,6 +78,7 @@ if($rtn !== true){
         $params["bodycolor"] = $_POST["bodycolor"];
         $params["h_font_color"] = $_POST["h_font_color"];
         $params["invoice"] = $_POST["invoice"];
+        $params["upddatetime"] = $_POST["upddatetime"] ?? date("Y-m-d H:i:s");
         $ask_json = <<<EOM
             mailbodys:{
                 自動返信:"$params[mail_body_auto]",

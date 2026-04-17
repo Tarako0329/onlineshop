@@ -47,7 +47,7 @@
   fwrite($fp, "<?xml version='1.0' encoding='UTF-8'?>\r\n");
   fwrite($fp, "<rss xmlns:g='http://base.google.com/ns/1.0' version='2.0'>\r\n");
   fwrite($fp, "<channel>\r\n");
-  fwrite($fp, "<title>".TITLE."</title>\r\n");
+  fwrite($fp, "<title>".APP_NAME."</title>\r\n");
   fwrite($fp, "<link>https://cafe-present.greeen-sys.com</link>\r\n");
   fwrite($fp, "<description>アレルギーっ子にもおいしいお菓子をお届けしたい。小麦・卵・乳・白砂糖を使わない食べ物を販売します。グルテンフリー,アレルギー対応（小麦・卵・乳 不使用）</description>\r\n");
   

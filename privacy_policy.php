@@ -11,7 +11,7 @@
 	<style>
 	</style>
 	<meta name="robots" content="noindex,nofollow"><!--googleクローラ不要-->
-	<TITLE><?php echo TITLE;?> プライバシーポリシー</TITLE>
+	<TITLE><?php echo APP_NAME;?> プライバシーポリシー</TITLE>
 </head>
 <BODY>
 	<?php include "header_tag.php"  ?>

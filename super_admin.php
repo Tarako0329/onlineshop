@@ -72,7 +72,7 @@ $config = $db->SELECT("SELECT * from online_shop_config");
 				min-width: 50px;
 			}
 		</style>
-		<TITLE><?php echo TITLE;?>管理画面</TITLE>
+		<TITLE><?php echo APP_NAME;?>管理画面</TITLE>
 </head>
 <BODY >
 	<div id='app' class='container'>

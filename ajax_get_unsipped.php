@@ -17,7 +17,7 @@
 		//未発送商品一覧
 		$to = empty($_GET["to"])?"3000-01-01":$_GET["to"];
 		$from = empty($_GET["from"])?"2000-01-01":$_GET["from"];
-		$sql="select BD.shouhinNM,BD.tanka,sum(BD.su) as goukei from juchuu_head HD inner join juchuu_meisai BD on HD.orderNO = BD.orderNO 
+		$sql="SELECT BD.shouhinNM,BD.tanka,sum(BD.su) as goukei from juchuu_head HD inner join juchuu_meisai BD on HD.orderNO = BD.orderNO 
 		where zei = 0 and sent = 0 and cancel is null 
 		and uid = :uid 
 		and CAST(HD.juchuu_date AS DATE) between :from and :to
@@ -30,7 +30,7 @@
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		//受注日別未発送商品一覧
-		$sql="select CAST(HD.juchuu_date AS DATE) as order_dt,HD.name,HD.orderNO,HD.sent_flg,HD.yubin,HD.jusho,HD.tel,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,
+		$sql="SELECT CAST(HD.juchuu_date AS DATE) as order_dt,HD.name,HD.orderNO,HD.sent_flg,HD.yubin,HD.jusho,HD.tel,HD.st_name,HD.st_yubin,HD.st_jusho,HD.st_tel,
 		BD.shouhinNM,BD.tanka,(BD.su) as goukei 
 		from juchuu_head HD 
 		inner join juchuu_meisai BD 

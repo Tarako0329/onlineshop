@@ -105,7 +105,7 @@
 		include "head_admin.php" 
 	?>
 	<script src="https://js.stripe.com/v3/"></script>
-	<TITLE><?php echo TITLE;?> お支払い</TITLE>
+	<TITLE><?php echo APP_NAME;?> お支払い</TITLE>
 </head>
 <BODY>
 	<?php //include "header_tag_admin.php"  ?>
@@ -143,12 +143,10 @@
 	<script src="script/vue3.js?<?php echo $time; ?>"></script>
 	<script src="script/settlement_vue3.js?<?php echo $time; ?>"></script>
 	<script>
-		//admin_menu('settlement.php','','<?php echo $user_hash;?>').mount('#admin_menu');
 		settlement('settlement.php','<?php echo $token; ?>','<?php echo $user_hash;?>').mount('#app');
 	</script>
 	<script>
 		if("<?php echo $siharai;?>"==="done"){
-			//window.location.assign('<?php echo ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
 			window.location.assign('<?php echo ROOT_URL."pay_success.php?paytype=done&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token;?>')
 		}else{
 			//console_log("なんで？")

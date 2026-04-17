@@ -2,6 +2,9 @@
 declare(strict_types=1);
 namespace classes\Security;
 use classes\Database\Database;
+use classes\Utilities\Utilities as U;
+
+
 class Security {
 	private const AUTH_OPTIONS = [
 		'cost' => 12, // 計算負荷を上げる（将来的に数値を増やす）
@@ -66,14 +69,34 @@ class Security {
 				//$db->commit_tran();
 				
 				$return = true;
-			}catch(\Exception $e){
+			}catch(\Throwable $e){
 				//$db->rollback_tran();
-				log_writer2("func:verifyPassword","パスワード更新失敗","lv0");
-				log_writer2("\$e",$e,"lv0");
+				U::send_E($e,"パスワードハッシュ更新に失敗", "パスワードハッシュ更新に失敗しました。");
 			}
 		}
 		
 		return $return;
+	}
+
+	//暗号化（可逆）
+	public function encrypt(string $str=""): string {
+		if(!U::exist($str)){
+			return "";
+		}
+		$method = "AES-256-CBC";
+		$key = hash('sha256', $this->key);
+		$iv = substr(hash('sha256', $this->uid), 0, 16);
+		return openssl_encrypt($str, $method, $key, 0, $iv);
+	}
+	//復号化（可逆）
+	public function decrypt(string $str=""): string {
+		if(!U::exist($str)){
+			return "";
+		}
+		$method = "AES-256-CBC";
+		$key = hash('sha256', $this->key);
+		$iv = substr(hash('sha256', $this->uid), 0, 16);
+		return openssl_decrypt($str, $method, $key, 0, $iv);
 	}
 
 	//tore
@@ -113,7 +136,7 @@ class Security {
 			$rtn = $str;
 		}
 		return $rtn;
-	}	
-
+	}
+	
 }
 ?>
