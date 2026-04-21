@@ -236,7 +236,8 @@ ver1.65.0:PHPMailer導入/namespase導入-commited-20260306
 ver1.66.0:リファクタリング:obj指向化:namespase導入-commited-20260307
 ver1.66.1:リファクタリング:obj指向化:namespase導入-commited-20260309
 ver1.66.2:bugfix:QA画面の不具合-commited-20260310
-ver1.66.3:リファクタリング:obj指向化:namespase導入:日時をトリガーでセットしない:axiosライブラリ更新
+ver1.66.3:リファクタリング:obj指向化:namespase導入:日時をトリガーでセットしない:axiosライブラリ更新-commited-20260421
+ver1.66.4:リファクタリング:obj指向化
 
 
 【Issues】
