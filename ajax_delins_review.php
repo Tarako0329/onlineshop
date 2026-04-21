@@ -15,12 +15,7 @@ log_writer2("\$_POST",$_POST,"lv3");
 //User_onlineよりデータ取得
 $sql = "SELECT * from Users_online where uid = :uid";
 $user = $db->SELECT($sql,["uid" => $_POST["shop_id"]]);
-/*
-$stmt = $pdo_h->prepare($sql);
-$stmt->bindValue("uid", $_POST["shop_id"], PDO::PARAM_STR);
-$stmt->execute();
-$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-*/
+
 $lineID = $user[0]["line_id"];
 $mail = $user[0]["mail"];
 $head = " 様より商品レビューが投稿されました。";
@@ -38,11 +33,6 @@ if($rtn !== true){
         $_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
         $timeout=true;
     }else{
-
-        //$DELsql2 = "DELETE from review_online where shop_id = :shop_id and shouhinCD = :shouhinCD and Contributor = :Contributor and orderNO = :orderNO";
-        //$INsql2 = "INSERT into review_online (shop_id,shouhinCD,review,Contributor,NoName,orderNO,score) values(:shop_id,:shouhinCD,:review,:Contributor,:NoName,:orderNO,:score)";
-        
-        
          //Geminiで誹謗中傷check
         $ask = '次のレビューが過度な誹謗中傷にあたるかどうかを判断してください。判断結果はPHPで利用するため、下記のJSONスキーマに厳密に従ってJSONを出力してください。
             誹謗中傷と判断された場合"NG"。問題ない場合は"OK"を。NGの場合は理由も出力。出力形式は[{"判定":結果,"理由":"理由"}]です。
@@ -92,8 +82,6 @@ if($rtn !== true){
         }
 
         try{
-            //$pdo_h->beginTransaction();
-            //$sqllog .= rtn_sqllog("START TRANSACTION",[]);
             $params["shop_id"] = $_POST["shop_id"];
             $params["Contributor"] = $_POST["Contributor"];
             $params["shouhinCD"] = $_POST["shouhinCD"];
@@ -114,41 +102,9 @@ if($rtn !== true){
                 "Contributor" => $params["Contributor"],
                 "orderNO" => $params["orderNO"]
             ],$sqllog);
-            /*
-            $stmt = $pdo_h->prepare( $DELsql2 );
-            $stmt->bindValue("shop_id", $params["shop_id"], PDO::PARAM_INT);
-            $stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
-            $stmt->bindValue("Contributor", $params["Contributor"], PDO::PARAM_STR);
-            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
-            
-            $sqllog .= rtn_sqllog($DELsql2,$params);
-            
-            $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-            */
 
             $db->INSERT("review_online",$params);
-            /*
-            $stmt = $pdo_h->prepare( $INsql2 );
-            $stmt->bindValue("shop_id", $params["shop_id"], PDO::PARAM_INT);
-            $stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
-            $stmt->bindValue("Contributor", $params["Contributor"], PDO::PARAM_STR);
-            $stmt->bindValue("review", $params["review"], PDO::PARAM_STR);
-            $stmt->bindValue("NoName", $params["NoName"], PDO::PARAM_STR);
-            $stmt->bindValue("orderNO", $params["orderNO"], PDO::PARAM_STR);
-            $stmt->bindValue("score", $params["score"], PDO::PARAM_INT);
-            
-            $sqllog .= rtn_sqllog($INsql2,$params);
-
-            $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-            */
             $db->commit_tran();
-            /*
-            $pdo_h->commit();
-            $sqllog .= rtn_sqllog("commit",[]);
-            sqllogger($sqllog,0);
-            */
     
             $msg .= "登録が完了しました。";
             $alert_status = "alert-success";
@@ -168,11 +124,6 @@ if($rtn !== true){
 
         }catch(Exception $e){
             $db->rollback_tran($e->getMessage());
-            /*
-            $pdo_h->rollBack();
-            $sqllog .= rtn_sqllog("rollBack",[]);
-            sqllogger($sqllog,$e);
-            */
             log_writer2("\$e",$e,"lv0");
             $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";

@@ -17,14 +17,6 @@
 			where `askNO` = :askNO 
 			and `shop_id` = :shop_id
 			order by seq";
-		/*
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("shop_id", $shop_id, PDO::PARAM_INT);
-		$stmt->bindValue("askNO", $askNO, PDO::PARAM_INT);
-		
-		$stmt->execute();
-		$talk = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
 		$talk = $db->SELECT($sql,["shop_id" => $shop_id,"askNO" => $askNO]);
 		
 	  //log_writer('\$talk',$talk);

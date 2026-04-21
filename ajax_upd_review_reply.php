@@ -13,26 +13,13 @@
   
 	  try{
 	  	//トランザクションスタート
-	  	//$pdo_h->beginTransaction();
 			$db->begin_tran();
-	  	//トランザクションログ
-	  	//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
-    
+   
 	  	$params["reply"] = $_POST["reply"];
 	  	$params["seq"] = $_POST["seq"];
 	  	$params["reply_date"] = date('Y-m-d');
-	  	//$sql = "UPDATE review_online set reply = :reply, reply_date = CURDATE() where seq = :seq";
 	  	$sql = "UPDATE review_online set reply = :reply, reply_date = :reply_date where seq = :seq";
 			$db->UP_DEL_EXEC($sql,$params);
-			/*
-	  	$stmt = $pdo_h->prepare($sql);
-	  	$stmt->bindValue("reply", $params["reply"], PDO::PARAM_STR);
-	  	$stmt->bindValue("seq", $params["seq"], PDO::PARAM_STR);
-	  	$sqllog .= rtn_sqllog($sql_upd,$params);
-
-	  	$stmt->execute();
-	  	$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
 	  	//レビューに返信があったことを投稿者にsend_mail関数を利用してメールで通知
 	  	$sql = "SELECT 
 	  			h.mail 
@@ -45,31 +32,15 @@
 	  		where 
 	  			r.seq = :seq";
 			$mail_data = $db->SELECT($sql,["seq" => $_POST["seq"]]);
-			/*
-	  	$stmt = $pdo_h->prepare($sql);
-	  	$stmt->bindValue("seq", $_POST["seq"], PDO::PARAM_STR);
-	  	$stmt->execute();
-	  	$mail_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			*/
 	  	$mail = $mail_data[0]["mail"];
 	  	$subject = "【".APP_NAME."】レビューへの返信がありました。";
 	  	$body = $mail_data[0]["yagou"]." よりレビューへの返信がありました。\r\n\r\n".$params["reply"];
     
-	  	//コミット
-	  	//$pdo_h->commit();
-	  	//トランザクションログ
-	  	//$sqllog .= rtn_sqllog("commit",[]);
-	  	//sqllogger($sqllog,0);
 			$db->commit_tran();
     
 	  	U::send_mail($mail,$subject,$body,APP_NAME,"");
 	  }catch(Exception $e){
 			$db->rollback_tran($e->getMessage());
-			/*
-			$pdo_h->rollBack();
-			$sqllog .= rtn_sqllog("rollBack",[]);
-			sqllogger($sqllog,$e);
-			*/
 			log_writer2("\$e",$e,"lv0");
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";

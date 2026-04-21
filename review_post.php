@@ -35,10 +35,6 @@
     and h.`uid` = r.shop_id
     and m.shouhinCD = r.shouhinCD
     where h.orderNO = :orderNO";
-  /*$stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
-  $stmt->execute();
-  $buylist = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
   $buylist = $db->SELECT($sql,["orderNO"=>$orderNO]);
 
 ?>

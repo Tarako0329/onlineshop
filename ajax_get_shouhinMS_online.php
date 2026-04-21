@@ -75,14 +75,6 @@
 						WHEN 3 THEN RAND()				-- 優先度3の場合はランダム
     		END DESC -- 日時順（新しいものが先）を適用;";
 
-		/*
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
-		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
-		$stmt->execute();
-		$count = $stmt->rowCount();
-		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
 		$dataset = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "hinmei" => $hinmei]);
 
 		$i=0;
@@ -107,13 +99,7 @@
 			and online.shouhinCD = pic.shouhinCD
 			where online.uid like :uid and online.shouhinNM like :hinmei and online.status <> 'del'
 			order by online.uid,online.shouhinCD,pic.sort";
-		/*
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
-		$stmt->execute();
-		$pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
+
 		$pic_set = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "hinmei" => $hinmei]);
 		
 		if(count($dataset)!==0){

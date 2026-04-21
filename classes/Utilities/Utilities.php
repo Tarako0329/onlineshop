@@ -5,6 +5,7 @@ namespace classes\Utilities;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
+
 /**
  * Usage of defined constants required for this class:
  * - EXEC_MODE: Execution mode (e.g., Local, Test, Product) for conditional behavior

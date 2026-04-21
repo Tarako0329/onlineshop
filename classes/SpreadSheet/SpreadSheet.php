@@ -8,6 +8,7 @@ namespace classes\SpreadSheet;
  * - GOOGLE_AUTH_SKEY: Google API client secret for authentication
  */
 
+
 class SpreadSheet {
 	private $service;
 	private $spreadsheetId;

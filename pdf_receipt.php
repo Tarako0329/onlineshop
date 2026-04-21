@@ -16,7 +16,6 @@ if(empty($_GET)){
 	exit();
 }
 $uid=rot13decrypt2($_GET["hash"]);
-//$orderNO=rot13decrypt2($_GET["orderNO"]);
 $orderNO=($_GET["val"]);
 $type = ($_GET["tp"]==="1"?"領　収　書":"納　品　書");
 $filename = ($_GET["tp"]==="1"?"Ryoushusho":"Nouhinsho");
@@ -25,12 +24,7 @@ $sysname="cafe present";
 
 $sql="SELECT * from Users_online where `uid` = ?";
 $userinfo = $db->SELECT($sql, [$uid]);
-/*
-$stmt = $pdo_h->prepare($sql);
-$stmt->bindValue(1, $uid, PDO::PARAM_INT);
-$stmt->execute();
-$userinfo = $stmt->fetch(PDO::FETCH_ASSOC);
-*/
+
 $from = $userinfo["yagou"];
 $invoice = $userinfo["invoice"];
 $add = $userinfo["jusho"];
@@ -39,13 +33,6 @@ $inquiry = $userinfo["tel"];
 //売上明細の取得
 {
 $sql="SELECT * from juchuu_head hd inner join juchuu_meisai ms on hd.orderNO = ms.orderNO where hd.orderNO = :orderNO and hd.uid = :uid order by shouhinCD";
-/*
-$stmt = $pdo_h->prepare($sql);
-$stmt->bindValue("uid", $uid, PDO::PARAM_INT);
-$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
-$stmt->execute();
-$result = $stmt->fetchAll();
-*/
 $result = $db->SELECT($sql, [":uid" => $uid, ":orderNO" => $orderNO]);
 
 $i=0;
@@ -80,10 +67,7 @@ $sql="SELECT orderNO,ZeiMS.hyoujimei as 税率,Uri.zeikbn, sum(売上金額) as 
 union all
 SELECT orderNO,postage_zeikbn, (postage-postage_zei) as 売上金額, (postage_zei) as 消費税額 from juchuu_head ) as
 Uri inner join ZeiMS on Uri.zeiKBN = ZeiMS.zeiKBN where orderNO = :orderNO group by orderNO,ZeiMS.hyoujimei,ZeiMS.zeiKBN order by ZeiMS.zeiKBN";
-/*$stmt = $pdo_h->prepare($sql);
-$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
-$stmt->execute();
-$result = $stmt->fetchAll();*/
+
 $result = $db->SELECT($sql, [":orderNO" => $orderNO]);
 $ZeiGoukei = 0;
 foreach($result as $row){
@@ -210,39 +194,16 @@ $html = str_replace(["\r","\n","\t"],"",$html);//改行・タブの削除
 try{
 	$sqllog="";
 
-	//$pdo_h->beginTransaction();
-	//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 	$db->begin_tran();
 	$sql = "INSERT into ryoushu(`uid`,R_NO,Atena,html) values(:uid,:R_NO,:Atena,:html)  ON DUPLICATE KEY UPDATE Atena = :Atena2,html=:html2";
 	$db->UP_DEL_EXEC($sql,[":uid" => $uid, ":R_NO" => $RyoushuuNO, ":Atena" => $Atena, ":html" => $html, ":Atena2" => $Atena, ":html2" => $html]);
 
 	$db->commit_tran();
-	/*
-	$stmt = $pdo_h->prepare($sql);
-	$stmt->bindValue("uid", $id, PDO::PARAM_INT);
-	$stmt->bindValue("R_NO", $RyoushuuNO, PDO::PARAM_INT);
-	$stmt->bindValue("Atena", $Atena, PDO::PARAM_STR);
-	$stmt->bindValue("html", $html, PDO::PARAM_STR);
-	$stmt->bindValue("Atena2", $Atena, PDO::PARAM_STR);
-	$stmt->bindValue("html2", $html, PDO::PARAM_STR);
-
-	$status = $stmt->execute();
-	$sqllog .= rtn_sqllog($sql,[$id,$RyoushuuNO,$UriNo,$Atena,$html,$Atena,$html]);
-
-	$pdo_h->commit();
-	$sqllog .= rtn_sqllog("commit",[]);
-	sqllogger($sqllog,0);
-	*/
 	
 	// PDFの設定～出力
 	output($html,$filename);
 
 }catch(Exception $e){
-	/*
-	$pdo_h->rollBack();
-	$sqllog .= rtn_sqllog("rollBack",[]);
-	sqllogger($sqllog,$e);
-	*/
 	$db->rollback_tran($e->getMessage());
 	U::send_E($e,"pdf_receipt.phpで例外発生。","");
 

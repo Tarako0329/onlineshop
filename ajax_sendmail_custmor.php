@@ -26,21 +26,11 @@ if($rtn !== true){
 		try{
 			$db->begin_tran();
 			//uidからusers_onlineの情報を取得
-			/*
-			$sql = "select * from Users_online where uid = :uid";
-			$stmt = $pdo_h->prepare($sql);
-			$stmt->bindValue("uid", $_POST["shop_id"], PDO::PARAM_STR);
-			$stmt->execute();
-			$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			*/
 			$user = $db->SELECT("SELECT * from Users_online where `uid` = :uid", [":uid" => $_POST["shop_id"]]);
 			$ShopMailAdd = $user[0]["mail"];
 			$yagou = $user[0]["yagou"];
 			$lineID = $user[0]["line_id"];
 			
-			//$pdo_h->beginTransaction();
-			//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
-
 			//QA管理画面から来た場合はSESSIONに値を持つ
 			$firstQ = false;    //初回質問フラグ
 			if($_POST["sts"]==="session"){
@@ -49,37 +39,22 @@ if($rtn !== true){
 			}else{
 				$sts = $_POST["sts"];
 				//問合せNoの取得（同一ユーザが同じ対象に問合せした場合に同じNoを利用する.shopID,返信先メアド,Subjectで判断）
-				/*
-				$stmt = $pdo_h->prepare("select IFNULL(askNO,'') as askNO from online_q_and_a where shop_id = :shop_id and customer = :customer and shouhinNM = :shouhinNM");
-				$stmt->bindValue("shop_id", $_POST["shop_id"], PDO::PARAM_STR);
-				$stmt->bindValue("customer", $CusMailAdd, PDO::PARAM_STR);
-				$stmt->bindValue("shouhinNM", $_POST["qa_head"], PDO::PARAM_STR);
-				$stmt->execute();
-				$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				*/
 				$rows = $db->SELECT("SELECT IFNULL(askNO,'') as askNO from online_q_and_a where shop_id = :shop_id and customer = :customer and shouhinNM = :shouhinNM", [":shop_id" => $_POST["shop_id"], ":customer" => $CusMailAdd, ":shouhinNM" => $_POST["qa_head"]]);
-				//if($stmt->rowCount() > 0){
 				if(!empty($rows)){
 					$askNO = $rows[0]["askNO"];
 				}else{
 					//初回質問。問合せ番号を新規発行
 					$firstQ = true;
-					//$stmt = $pdo_h->prepare("select max(askNO) + 1 as nextNO from online_q_and_a");
-					//$stmt->execute();
 					$askNO_rows = $db->SELECT("SELECT max(askNO) + 1 as nextNO from online_q_and_a", []);
 					if(empty($askNO_rows) || $askNO_rows[0]["nextNO"] === null){
 						$askNO = 1;
 					}else{
-						//$tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						$askNO = $askNO_rows[0]["nextNO"];
 					}
 				}
 			}
 
 			{//db登録
-				//$sql = "insert into online_q_and_a(shop_id,askNO,customer,name,shouhinNM,sts,body) values(:shop_id,:askNO,:customer,:name,:shouhinNM,:sts,:body)";
-				//$stmt = $pdo_h->prepare( $sql );
-
 				$params["shop_id"] = $_POST["shop_id"];
 				$params["askNO"] = $askNO;
 				$params["customer"] = $CusMailAdd;
@@ -89,20 +64,6 @@ if($rtn !== true){
 				$params["body"] = $_POST["qa_text"];
 				$params["insdate"] = date("Y-m-d H:i:s");
 				$db->INSERT("online_q_and_a",$params);
-				/*
-				$stmt->bindValue("shop_id", $params["shop_id"], PDO::PARAM_STR);
-				$stmt->bindValue("askNO", $params["askNO"], PDO::PARAM_STR);
-				$stmt->bindValue("customer", $params["customer"], PDO::PARAM_STR);
-				$stmt->bindValue("name", $params["name"], PDO::PARAM_STR);
-				$stmt->bindValue("shouhinNM", $params["shouhinNM"], PDO::PARAM_STR);
-				$stmt->bindValue("sts", $params["sts"], PDO::PARAM_STR);
-				$stmt->bindValue("body", $params["body"], PDO::PARAM_STR);
-				
-				$sqllog .= rtn_sqllog($sql,$params);
-
-				$status = $stmt->execute();
-				$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-				*/
 			}
 
 			//CtoBで始まるやり取り
@@ -174,28 +135,15 @@ if($rtn !== true){
 				$msg = "送信完了";
 				$alert_status = "alert-success";
 				$db->commit_tran();
-
-				/*$pdo_h->commit();
-				$sqllog .= rtn_sqllog("commit",[]);
-				sqllogger($sqllog,0);*/
 			}else{
 				$msg = "送信失敗";
 				$alert_status = "alert-warning";
 				$db->rollback_tran("送信失敗のためロールバック");
-	
-				/*$pdo_h->rollBack();
-				$sqllog .= rtn_sqllog("rollBack",[]);
-				sqllogger($sqllog,$e);*/
 			}
 
 			$reseve_status=true;
 
 		}catch(Exception $e){
-			/*
-			$pdo_h->rollBack();
-			$sqllog .= rtn_sqllog("rollBack",[]);
-			sqllogger($sqllog,$e);
-			*/
 			$db->rollback_tran($e->getMessage());
 			U::send_E($e,"ajax_sendmail_custmor.phpで例外発生。","");
 

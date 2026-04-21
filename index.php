@@ -5,12 +5,7 @@
     $user_hash = $_GET["key"] ;
     $_SESSION["user_hash"] = $_GET["key"] ;
     $_SESSION["user_id"] = rot13decrypt2($user_hash);
-    /*
-    $stmt = $pdo_h->prepare("select * from Users_online where uid = :uid");
-    $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
-    $stmt->execute();
-    $owner = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    */
+
     $owner = $db->SELECT("SELECT * from Users_online where `uid` = :uid",["uid" => $_SESSION["user_id"]]);
     $_SESSION["h_color"] = "style='background-color:".$owner[0]["headcolor"].";color:".$owner[0]["h_font_color"].";'";
     $_SESSION["b_color"] = "style='background-color:".$owner[0]["bodycolor"].";'";

@@ -37,19 +37,7 @@
 			//このPGが呼び出された時点でStripeIDはテーブルに登録される。
 			$sql = "UPDATE Users_online set stripe_id = :stripe_id where `uid` = :uid";
 			$db->UP_DEL_EXEC($sql,["stripe_id" => $id,"uid" => $_SESSION["user_id"]]);
-			/*
-			$stmt = $pdo_h->prepare( $sql );
-			$params["stripe_id"] = $id;
-			$params["uid"] = $_SESSION["user_id"];
 
-			$stmt->bindValue("stripe_id", $params["stripe_id"], PDO::PARAM_STR);
-			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
-
-			$sqllog = "";
-			$sqllog .= rtn_sqllog($sql,$params);
-			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
 			$error="";
 			$alert_status = "success";
 		}catch(Exception $e){

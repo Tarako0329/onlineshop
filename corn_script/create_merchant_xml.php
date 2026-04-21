@@ -4,27 +4,7 @@
   $mypath = dirname(__DIR__);
   chdir($mypath);
   require "php_header_admin.php";
-  /*require $mypath."/vendor/autoload.php";
 
-  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-  $dotenv->load();
-  define("MAIN_DOMAIN",$_ENV["MAIN_DOMAIN"]);
-  define("EXEC_MODE",$_ENV["EXEC_MODE"]);
-  define("TITLE",$_ENV["TITLE"]);
-  define("ROOT_URL",$_ENV["HTTP"]);
-
-  if(EXEC_MODE<>"Product"){
-  }else{
-  }
-  
-  
-  // DBとの接続
-  define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-  define("USER_NAME", $_ENV["DBUSER"]);
-  define("PASSWORD", $_ENV["PASS"]);
-  
-  $pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
-  */
  $sql = "SELECT 
   online.*
   ,pic.pic as filename
@@ -37,9 +17,7 @@
   on online.uid = ums_inline.uid
   where status<>'stop'
   order by online.uid,online.shouhinCD,pic.sort" ;
-  //$stmt = $pdo_h->prepare($sql);
-  //$stmt->execute();
-  //$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
   $dataset = $db->SELECT($sql,[]);
 
   $fp = fopen("$mypath/product_list.xml", "w");
@@ -97,11 +75,5 @@
   fwrite($fp, "</rss>\r\n");
   fclose($fp);
   exit();
-/*
-  function get_pdo_options() {
-    return array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                 PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,   //sqlの複文禁止 "select * from hoge;delete from hoge"みたいなの
-                 PDO::ATTR_EMULATE_PREPARES => false);        //同上
-  }
-*/                 
+
 ?>

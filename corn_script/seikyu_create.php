@@ -60,15 +60,9 @@
 		and jisseki.getudo = seikyu.getudo
 		order by jisseki.uid,jisseki.getudo;";
 
-	//$stmt = $pdo_h->prepare($sql);
-  //$stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
-  //$stmt->execute();
-  //$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$data = $db->SELECT($sql,["getudo" => $getudo]);
 
 	try{
-		//$pdo_h->beginTransaction();
-		//$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 		$db->begin_tran();
 
 		foreach($data as $row){
@@ -93,7 +87,6 @@
 
 			//次月のデータ作成
 			$params['getudo1'] = $yokugetu;
-			//$sql_ins = 'INSERT INTO online_seikyu (getudo,uid,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)';
 			$sql_ins = 'INSERT INTO online_seikyu (getudo,`uid`,zenkuri) VALUES(:getudo1,:uid1,:kurikoshiA)
 			ON DUPLICATE KEY UPDATE zenkuri = :kurikoshiB';
 			$db->UP_DEL_EXEC($sql_ins,["getudo1" => $params['getudo1'],"uid1" => $params['uid1'],"kurikoshiA" => $params['kurikoshiA'],"kurikoshiB" => $params['kurikoshiA']]);

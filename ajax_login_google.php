@@ -25,7 +25,6 @@ if($rtn!==true){
 	$msg = $rtn;
 }else if(!empty($gmail) && !empty($subid)){//ログイン処理
 	// 設定値
-	//$clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 	if (!$idToken) {
 	  $msg = '認証失敗：GoogleのIDトークンがありません';
 	}
@@ -104,12 +103,8 @@ if($status===true){
 	log_writer2("\$_SESSION['user_id']",$uid,"lv3");
 	
 	// 有効期限切れのレコードを削除
-	//$stmt = $pdo_h->prepare("DELETE FROM AUTO_LOGIN_SHOP WHERE YUKOU_KIGEN < NOW() ");
-	//$stmt->execute();
 	$db->UP_DEL_EXEC("DELETE FROM AUTO_LOGIN_SHOP WHERE YUKOU_KIGEN < :kigen ",[":kigen" => date('Y-m-d H:i:s')]);
 	// DBに保存
-	//$stmt = $pdo_h->prepare("INSERT INTO AUTO_LOGIN_SHOP (UID, TOKEN, YUKOU_KIGEN) VALUES (?, ?, ?)");
-	//$stmt->execute([$uid, $hashed_token, $expiry_date]);
 	$db->INSERT("AUTO_LOGIN_SHOP",[
 		"UID" => $uid,
 		"TOKEN" => $hashed_token,

@@ -92,13 +92,34 @@ class Database {
         $table = "TableName";
         $params = ["col" => "test"]
       */
-      $columns = "`".implode('`, `', array_keys($data))."`";  //項目名をカンマ区切りで取得
-      $placeholders = ':' . implode(', :', array_keys($data));
+      // テーブルのカラムを取得
+      $stmt = $this->connect()->prepare("SHOW COLUMNS FROM `$table`");
+      $stmt->execute();
+      $columnsInfo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $tableColumns = array_column($columnsInfo, 'Field');
+
+      // $dataのキーをチェックし、存在しないキーを警告ログに出力し、無視
+      $filteredData = [];
+      foreach ($data as $key => $value) {
+        if (in_array($key, $tableColumns)) {
+          $filteredData[$key] = $value;
+        } else {
+          U::log("","Warning: Column '$key' does not exist in table '$table'",4);
+        }
+      }
+
+      if (empty($filteredData)) {
+        U::log("","Warning: No valid columns provided for INSERT into table '$table'",4);
+        return false;
+      }
+
+      $columns = "`".implode('`, `', array_keys($filteredData))."`";  //項目名をカンマ区切りで取得
+      $placeholders = ':' . implode(', :', array_keys($filteredData));
       $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
       //$this->logに実行できるSQL文を書き込む
       $log = $sql;
       $log = str_replace(["\r\n", "\r", "\n","\t"], " ", $log); //$log内の改行コードを半角スペースに変換
-      foreach ($data as $key => $value) {
+      foreach ($filteredData as $key => $value) {
         $value = ($value === "")? "NULL":$value;  //$valueが""の場合はNULLに変換する
         //$valueの中の'を''に変換する
         if(is_string($value)){
@@ -114,15 +135,15 @@ class Database {
       $this->log .= $log.";\n";
       $this->sql = $log;  //Exceptionロールバックログ用にロールバック前に投げたSQLを記録
       
-      //$dataの空文字をにNULL変換
-      foreach($data as $key => $value){
+      //$filteredDataの空文字をにNULL変換
+      foreach($filteredData as $key => $value){
         if($value === ""){
-          $data[$key] = null;
+          $filteredData[$key] = null;
         }
       }
       //log_writer2("\$data",$data,"lv3");
       $stmt = $this->connect()->prepare($sql);
-      return $stmt -> execute($data);
+      return $stmt -> execute($filteredData);
     }
 
     public function UP_DEL_EXEC(string $sql,array $data=[]):bool{
@@ -206,6 +227,6 @@ class Database {
       $this->log = "";
     }
     
-
+ 
 }
 ?>

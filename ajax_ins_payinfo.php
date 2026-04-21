@@ -55,29 +55,7 @@ if($rtn !== true){
 				}
 			}
 			log_writer2("\$params",$params,"lv3");
-			/*
-			$pdo_h->beginTransaction();
-			$sqllog .= rtn_sqllog("START TRANSACTION",[]);
 
-			$stmt = $pdo_h->prepare( $INSsql );
-			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
-			$stmt->bindValue("types", $params["types"], PDO::PARAM_STR);
-			$stmt->bindValue("payname", $params["payname"], PDO::PARAM_STR);
-			$stmt->bindValue("source", $params["source"], PDO::PARAM_STR);
-			$stmt->bindValue("hosoku", $params["hosoku"], PDO::PARAM_STR);
-			
-			$sqllog .= rtn_sqllog($INSsql,$params);
-
-			$status = $stmt->execute();
-			$count = $stmt -> rowCount();
-			log_writer2("\$count",$count,"lv3");
-
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			
-			$pdo_h->commit();
-			$sqllog .= rtn_sqllog("commit",[]);
-			sqllogger($sqllog,0);
-			*/
 			if(count($db->SELECT("SELECT * from Users_online_payinfo where `uid` = :uid and payname = :payname",["uid" => $params["uid"], "payname" => $params["payname"]])) > 0){
 				$msg = "既に同じ支払い方法が登録されています。名称を変更して再登録してください。";
 				$alert_status = "warning";
@@ -88,24 +66,9 @@ if($rtn !== true){
 				$msg = "登録が完了しました。";
 				$alert_status = "success";
 			}
-			/*
-			if($count>0){
-				$msg .= "登録が完了しました。";
-				$alert_status = "success";
-			}else{
-				$msg .= "登録が完了しました。(キー重複)";
-				$alert_status = "warning";
-			}
-			*/
 			$reseve_status=true;
 
 		}catch(\Throwable $e){
-			/*
-			$pdo_h->rollBack();
-			$sqllog .= rtn_sqllog("rollBack",[]);
-			sqllogger($sqllog,$e);
-			log_writer2("\$e",$e,"lv0");
-			*/
 			$db->rollback_tran($e->getMessage());
 			U::send_E($e,"オンラインショップ支払い方法の登録失敗","オンラインショップの支払い方法の登録に失敗しました。");
 			$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";

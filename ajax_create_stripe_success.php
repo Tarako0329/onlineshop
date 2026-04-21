@@ -36,7 +36,7 @@
 			case 'account.updated':
 					$account = $event->data->object; // 更新されたアカウントオブジェクト
 					log_writer2("stripe_webhook sent \$account",$account,"lv1");
-					handleAccountUpdated($account,$pdo_h);
+					handleAccountUpdated($account);
 					break;
 					
 			// 他に必要なイベント（例：payment_intent.succeeded など）もここで処理
@@ -52,7 +52,7 @@
 	
 	// --- 登録完了を判断する関数の例 ---
 	
-	function handleAccountUpdated($account,$pdo_h) {
+	function handleAccountUpdated($account) {
 			global $db;
 			// ① `details_submitted` が true であることを確認
 			$isSubmitted = $account->details_submitted;

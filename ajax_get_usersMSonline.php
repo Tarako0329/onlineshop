@@ -20,12 +20,7 @@
 			on um.uid = sm.uid
 			where um.uid like :uid 
 			order by RAND()";
-		/*
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-		$stmt->execute();
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
+
 		$data = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
 
 		if(empty($data)){
@@ -46,12 +41,7 @@
 				*,if(flg=1,'true','false') as flg
 			from Users_online_payinfo
 			where uid like :uid ";
-		/*
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-		$stmt->execute();
-		$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
+
 		$data2 = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
 
 		//$alert_status = "alert-success";

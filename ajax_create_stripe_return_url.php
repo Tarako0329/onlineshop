@@ -30,25 +30,11 @@
 			$db->UP_DEL_EXEC($sql,["stripe_setting" => $stripe_setting,"uid" => $_SESSION["user_id"]]);
 			$db->commit_tran();
 
-			/*
-			$stmt = $pdo_h->prepare( $sql );
-			$params["stripe_setting"] = $stripe_setting;
-			$params["uid"] = $_SESSION["user_id"];
-			$stmt->bindValue("stripe_setting", $params["stripe_setting"], PDO::PARAM_STR);
-			$stmt->bindValue("uid", $params["uid"], PDO::PARAM_STR);
-			$sqllog .= rtn_sqllog($sql,$params);
-			$status = $stmt->execute();
-			$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-			*/
 			$get_value = 'key='.$_GET["hash"];
-			//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]);
-			//exit();
 		}catch(Exception $e){
 			$get_value = 'key='.$_GET["hash"]."&stripe_setting=unable";
 			$db->rollback_tran($e->getMessage());
 			log_writer2("\$e",$e,"lv0");
-			//header("Location:".ROOT_URL.'settlement.php?key='.$_GET["hash"]."&stripe_setting=unable");
-			//exit();
 		}
 	}
 	header("Location:".ROOT_URL.'settlement.php?'.$get_value);
