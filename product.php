@@ -21,56 +21,49 @@
   $_SESSION["askNO"]="";
   $hinmei = $_GET["id"];
   $shouhin_id = $_GET["id"];
-  $sql = "select 
-    online.shouhinCD
-    ,online.shouhinNM
-    ,online.status
-    ,online.short_info
-    ,online.infomation
-    ,online.customer_bikou
-    ,online.tanka
-    ,online.zeikbn
-    ,online.shouhizei
-    ,ifnull(online.hash_tag,'') as hash_tag
-    ,NULL as rezCD
-    ,online.tanka + online.shouhizei as zeikomikakaku
-    ,'0' as ordered
-    ,'0' as goukeikingaku
-    ,ums_inline.*
-    ,pic.pic as filename
-  from shouhinMS_online online 
-  inner join Users_online ums_inline
-  on online.uid = ums_inline.uid
-  left join shouhinMS_online_pic pic 
-  on online.uid = pic.uid 
-  and online.shouhinCD = pic.shouhinCD
-  and pic.sort=1
-  where concat(online.uid,'-',online.shouhinCD) = :hinmei 
-  order by online.uid,online.shouhinCD";
+  $sql = "SELECT 
+      online.shouhinCD
+      ,online.shouhinNM
+      ,online.status
+      ,online.short_info
+      ,online.infomation
+      ,online.customer_bikou
+      ,online.tanka
+      ,online.zeikbn
+      ,online.shouhizei
+      ,ifnull(online.hash_tag,'') as hash_tag
+      ,NULL as rezCD
+      ,online.tanka + online.shouhizei as zeikomikakaku
+      ,'0' as ordered
+      ,'0' as goukeikingaku
+      ,ums_inline.*
+      ,pic.pic as filename
+    from shouhinMS_online online 
+    inner join Users_online ums_inline
+    on online.uid = ums_inline.uid
+    left join shouhinMS_online_pic pic 
+    on online.uid = pic.uid 
+    and online.shouhinCD = pic.shouhinCD
+    and pic.sort=1
+    where concat(online.uid,'-',online.shouhinCD) = :hinmei 
+    order by online.uid,online.shouhinCD";
 
-  $stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
-  $stmt->execute();
-  $count = $stmt->rowCount();
-  $dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $dataset = $db->SELECT($sql,["hinmei" => $hinmei]);
 
 
-  $sql = "select 
-    online.uid
-    ,online.shouhinCD
-    ,online.shouhinNM
-    ,pic.sort
-    ,pic.pic as filename
-  from shouhinMS_online online 
-  left join shouhinMS_online_pic pic 
-  on online.uid = pic.uid 
-  and online.shouhinCD = pic.shouhinCD
-  where concat(online.uid,'-',online.shouhinCD) = :hinmei 
-  order by online.uid,online.shouhinCD,pic.sort";
-  $stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
-  $stmt->execute();
-  $pic_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $sql = "SELECT 
+      online.uid
+      ,online.shouhinCD
+      ,online.shouhinNM
+      ,pic.sort
+      ,pic.pic as filename
+    from shouhinMS_online online 
+    left join shouhinMS_online_pic pic 
+    on online.uid = pic.uid 
+    and online.shouhinCD = pic.shouhinCD
+    where concat(online.uid,'-',online.shouhinCD) = :hinmei 
+    order by online.uid,online.shouhinCD,pic.sort";
+  $pic_set = $db->SELECT($sql,["hinmei" => $hinmei]);
 
   $discription = "販売元:".$dataset[0]["yagou"]."/税込:".$dataset[0]["zeikomikakaku"]."円　".$dataset[0]["short_info"];
   $x_id = !empty($dataset[0]["x_id"])?"&via=".$dataset[0]["x_id"]."&related=".$dataset[0]["x_id"]:"";

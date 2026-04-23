@@ -57,7 +57,7 @@ if($rtn !== true){
 				try{
 					$db->INSERT("juchuu_head",$params);
 					break;
-				}catch(Exception $e){
+				}catch(\Throwable $e){
 					// 重複エラー(23000)ならリトライ、それ以外は外側に投げる
 					if ($e->getCode() === '23000' && $i < $maxTries - 1) {
 						$params["orderNO"] = substr("0000000".((string)rand(0,99999999)),-8);
@@ -185,9 +185,8 @@ if($rtn !== true){
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
-		}catch(Exception $e){
-			$db->rollback_tran($e->getMessage());
-			log_writer2("\$e",$e,"lv0");
+		}catch(\Throwable $e){
+			$db->Exception_rollback($e);
 			$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

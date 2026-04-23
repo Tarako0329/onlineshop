@@ -143,9 +143,8 @@ if($rtn !== true){
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
-		}catch(Exception $e){
-			$db->rollback_tran($e->getMessage());
-			U::send_E($e,"ajax_upd_order_h.phpで例外発生。","");
+		}catch(\Throwable $e){
+			$db->Exception_rollback($e);
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

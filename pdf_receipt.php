@@ -203,9 +203,8 @@ try{
 	// PDFの設定～出力
 	output($html,$filename);
 
-}catch(Exception $e){
-	$db->rollback_tran($e->getMessage());
-	U::send_E($e,"pdf_receipt.phpで例外発生。","");
+}catch(\Throwable $e){
+	$db->Exception_rollback($e);
 
 	echo "システム不具合が発生したため、領収書が発行できませんでした。<br>";
 	echo "システム管理者に不具合発生を通知いたしました。<br>";

@@ -1,7 +1,7 @@
 <?php
-//log_writer2(basename(__FILE__)."",$sql,"lv3");
+//クレジットカードの利用フラグを更新
+//PGNAME:ajax_upd_userMSonline_credit.php
 require "php_header.php";
-//register_shutdown_function('shutdown');
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
@@ -30,40 +30,24 @@ if($rtn !== true){
         $_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
         $timeout=true;
     }else{
-        //更新モード(実行)
-        $sqlstr_h = "UPDATE Users_online set credit = :credit where uid like :uid";
-
-        $params["credit"] = $_POST["credit"];
-        $params["uid"] = $_SESSION["user_id"];
-
         try{
-            $pdo_h->beginTransaction();
-            $sqllog .= rtn_sqllog("START TRANSACTION",[]);
+            //更新モード(実行)
+            $sqlstr_h = "UPDATE Users_online set credit = :credit where `uid` like :uid";
 
-            $stmt = $pdo_h->prepare( $sqlstr_h );
-            //bind処理
-            $stmt->bindValue("credit", $params["credit"], PDO::PARAM_STR);
-            $stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
+            $params["credit"] = $_POST["credit"];
+            $params["uid"] = $_SESSION["user_id"];
 
-            $sqllog .= rtn_sqllog($sqlstr_h,$params);
-
-            $status = $stmt->execute();
-            $sqllog .= rtn_sqllog("-- execute():正常終了",[]);
+            $db->begin_tran();
+            $db->UP_DEL_EXEC($sqlstr_h,$params);
             
-            //$count = $stmt->rowCount();
-			$pdo_h->commit();
-			$sqllog .= rtn_sqllog("commit",[]);
-			sqllogger($sqllog,0);
+            $db->commit_tran();
 	
 			$msg = "登録が完了しました。";
 			$alert_status = "success";
 			$reseve_status=true;
 
-        }catch(Exception $e){
-            $pdo_h->rollBack();
-            $sqllog .= rtn_sqllog("rollBack",[]);
-            sqllogger($sqllog,$e);
-            log_writer2("\$e",$e,"lv0");
+        }catch(\Throwable $e){
+		    $db->Exception_rollback($e);
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "danger";
             $reseve_status=true;

@@ -41,7 +41,7 @@ if($rtn !== true){
             }
 			$reseve_status=true;
 
-        }catch(Exception $e){
+        }catch(\Throwable $e){
             $msg = "システムエラーによる更新失敗。管理者へ通知しました。";
             $alert_status = "alert-danger";
             $reseve_status=true;

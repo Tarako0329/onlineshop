@@ -1,6 +1,8 @@
 <?php
   require "php_header.php";
 	/*
+	pgname: ajax_get_analysis.php
+	概要: アクセス解析の集計データを取得するためのAJAX
 	パラメータ
 	集計単位⇒年/月/日
 	集計期間
@@ -48,7 +50,6 @@
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
-		//$askNO = rot13decrypt2($_SESSION["askNO"]);
 		$uid = $_SESSION["user_id"];
 
 		if($an_type == 1){
@@ -166,30 +167,23 @@
 			$sql = "SELECT *,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY SEQ DESC";
 		}
 		//log_writer2("\$sql",$sql,"lv3");
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("from1", $from, PDO::PARAM_STR);
-		$stmt->bindValue("to1", $to, PDO::PARAM_STR);
 		if($an_type != 4){
-			$stmt->bindValue("from2", $from, PDO::PARAM_STR);
-			$stmt->bindValue("to2", $to, PDO::PARAM_STR);
-			$stmt->bindValue("to3", $to, PDO::PARAM_STR);
+			$data = $db->SELECT($sql,[
+				"from1" => $from,
+				"to1" => $to,
+				"from2" => $from,
+				"to2" => $to,
+				"to3" => $to
+			]);
+		}else{
+			$data = $db->SELECT($sql,[
+				"from1" => $from,
+				"to1" => $to
+			]);
 		}
-		$stmt->execute();
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 		//log_writer2("\$data",$data,"lv3");
-		//log_writer('\$talk',$talk);
 	}
 	header('Content-type: application/json');  
 	echo json_encode($data, JSON_UNESCAPED_UNICODE);
 	exit();
 ?>
-
-
-(
-    SELECT '2024-01-01' AS date  -- 開始日
-    UNION ALL
-    SELECT DATE_ADD(cal.date, INTERVAL 1 DAY)
-    FROM cal
-    WHERE cal.date < '2024-12-31'  -- 終了日
-)

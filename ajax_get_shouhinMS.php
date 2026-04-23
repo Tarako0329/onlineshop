@@ -1,4 +1,6 @@
 <?php
+//商品マスタの検索用AJAX
+//PGNAME:ajax_get_shouhinMS.php
   require "php_header.php";
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
 
@@ -11,7 +13,7 @@
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
 	  $sql = 
-			"select 
+			"SELECT 
 				shouhinCD
 				,shouhinNM
 				,tanka
@@ -24,11 +26,7 @@
 	    where rezMS.uid = :uid
 			and shouhinNM like :hinmei
 			order by shouhinNM";
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-		$stmt->bindValue("hinmei", $hinmei, PDO::PARAM_STR);
-		$stmt->execute();
-		$dataset = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$dataset = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "hinmei" => $hinmei]);
 
 		$alert_status = "alert-success";
 		

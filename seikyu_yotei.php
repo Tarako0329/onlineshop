@@ -21,8 +21,6 @@
 	//$date->modify('-1 month');
 	//$zengetu=$date->format('Ym');
 
-
-
 	$sql = "SELECT 
 		jisseki.uid
 		,jisseki.getudo as 月度
@@ -71,11 +69,7 @@
 		where jisseki.uid = :uid
 		order by jisseki.uid,jisseki.getudo;";
 		
-	$stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-  $stmt->bindValue("getudo", $getudo, PDO::PARAM_STR);
-  $stmt->execute();
-  $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $data = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "getudo" => $getudo]);
 
 	$sql = "SELECT 
 		*
@@ -87,11 +81,7 @@
 		) as taishou
 		,LAST_DAY(concat(left(getudo,4),'-',right(getudo,2),'-01')) + INTERVAL 1 DAY as gessho
 		,seikyu+seikyu2+seikyu3 as goukei from online_seikyu where uid = :uid and getudo < :getudo order by getudo desc";
-	$stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-	$stmt->bindValue("getudo", $tougetu, PDO::PARAM_STR);
-  $stmt->execute();
-  $data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$data2 = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "getudo" => $tougetu]);
 
 ?>
 <!DOCTYPE html>

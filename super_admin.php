@@ -25,9 +25,8 @@ if(!empty($_POST["new_yagou"])){//知り合いの新規出店者手動登録
 		$db->INSERT("Users",["uid"=>$new_id,"mail"=>"-","password"=>"-","question"=>"-","answer"=>"-","onlineshop"=>"use"]);
 		$db->commit_tran();
 		$msg='出店アカウントを作成しました。';
-	}catch(Exception $e){
-		$db->rollback_tran();
-		var_dump($e);
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
 		exit();
 	}
 }
@@ -41,9 +40,8 @@ if(!empty($_POST["sns_f"]) && !empty($_POST["sns_t"])){
 			, [":sns_f" => $_POST["sns_f"], ":sns_t" => $_POST["sns_t"]]);
 		$db->commit_tran();
 		$msg='自動ツイート間隔幅を設定しました。';
-	}catch(Exception $e){
-		$db->rollback_tran();
-		var_dump($e);
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
 		exit();
 	}
 }

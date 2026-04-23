@@ -17,18 +17,12 @@
 	}else{
 		//ymlist
 		$sql = "WITH RECURSIVE months AS (SELECT '2024-11-01' AS start_date UNION ALL SELECT DATE_ADD(start_date, INTERVAL 1 MONTH) FROM months WHERE start_date < NOW())	SELECT DATE_FORMAT(start_date, '%Y-%m') AS 年月	FROM months ORDER BY DATE_FORMAT(start_date, '%Y-%m') DESC";
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->execute();
-		$ymlist = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ymlist = $db->SELECT($sql,[]);
 		
 		//ylist
 		$sql = "WITH RECURSIVE months AS ( SELECT '2024-01-01' AS start_date UNION ALL SELECT DATE_ADD(start_date, INTERVAL 1 YEAR) FROM months WHERE start_date < now() ) SELECT DATE_FORMAT(start_date, '%Y') AS 年月 FROM months ORDER BY DATE_FORMAT(start_date, '%Y') DESC;";
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->execute();
-		$ylist = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ylist = $db->SELECT($sql,[]);
 
-		//log_writer2("\$data",$data,"lv3");
-		//log_writer('\$talk',$talk);
 		$data = array(
 			'ymlist' => $ymlist
 			,'ylist' => $ylist
@@ -38,12 +32,3 @@
 	echo json_encode($data, JSON_UNESCAPED_UNICODE);
 	exit();
 ?>
-
-
-(
-    SELECT '2024-01-01' AS date  -- 開始日
-    UNION ALL
-    SELECT DATE_ADD(cal.date, INTERVAL 1 DAY)
-    FROM cal
-    WHERE cal.date < '2024-12-31'  -- 終了日
-)

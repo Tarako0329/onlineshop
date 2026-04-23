@@ -83,11 +83,10 @@ spl_autoload_register(function ($className) {
     log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }
 });
+$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 class_alias('classes\Utilities\Utilities','U');
 use classes\Database\Database;
-
-$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 $db = new Database();
 
 //require元PHPの取得

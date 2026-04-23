@@ -347,6 +347,7 @@
 				<div class="tab-content" id="nav-tabContent" style='width:100%;'>
 					<div class="tab-pane fade show active" id="nav-mail_body_auto" role="tabpanel" aria-labelledby="nav-mail_body_auto-tab" tabindex="0">
 						<button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_auto=""}'>クリア</button>
+						<button type='button' class='btn btn-success m-2' style='width:100px;min-width:100px;' @click='mail_temp_Initializer("mail_body_auto")'>規定に戻す</button>
 						<textarea type='memo' class='form-control' id='mail_body_auto' rows="20" v-model='mail_body_auto'></textarea>
 						<div class='row mb-3 mt-2'>
 							<div class='col-12'>
@@ -374,6 +375,7 @@
 					</div>
 					<div class="tab-pane fade" id="nav-mail_body" role="tabpanel" aria-labelledby="nav-mail_body-tab" tabindex="0">
 						<button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body=""}'>クリア</button>
+						<button type='button' class='btn btn-success m-2' style='width:100px;min-width:100px;' @click='mail_temp_Initializer("mail_body")'>規定に戻す</button>
 						<textarea type='memo' class='form-control' id='mail_body' rows="20" v-model='mail_body'></textarea>
 						<div class='row mb-3 mt-2'>
 							<div class='col-12'>
@@ -401,6 +403,7 @@
 					</div>
 					<div class="tab-pane fade" id="nav-mail_body_sent" role="tabpanel" aria-labelledby="nav-mail_body_sent-tab" tabindex="0">
 						<button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_sent=""}'>クリア</button>
+						<button type='button' class='btn btn-success m-2' style='width:100px;min-width:100px;' @click='mail_temp_Initializer("mail_body_sent")'>規定に戻す</button>
 						<textarea type='memo' class='form-control' id='mail_body_sent' rows="20" v-model='mail_body_sent'></textarea>
 						<div class='row mb-3 mt-2'>
 							<div class='col-12'>
@@ -429,6 +432,7 @@
 					</div>
 					<div class="tab-pane fade" id="nav-mail_body_paid" role="tabpanel" aria-labelledby="nav-mail_body_paid-tab" tabindex="0">
 						<button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_paid=""}'>クリア</button>
+						<button type='button' class='btn btn-success m-2' style='width:100px;min-width:100px;' @click='mail_temp_Initializer("mail_body_paid")'>規定に戻す</button>
 						<textarea type='memo' class='form-control' id='mail_body_paid' rows="20" v-model='mail_body_paid'></textarea>
 						<div class='row mb-3 mt-2'>
 							<div class='col-12'>
@@ -457,6 +461,7 @@
 					</div>
 					<div class="tab-pane fade" id="nav-mail_body_cancel" role="tabpanel" aria-labelledby="nav-mail_body_cancel-tab" tabindex="0">
 						<button type='button' class='btn btn-warning m-2' style='width:70px;min-width:50px;' @click='()=>{mail_body_cancel=""}'>クリア</button>
+						<button type='button' class='btn btn-success m-2' style='width:100px;min-width:100px;' @click='mail_temp_Initializer("mail_body_cancel")'>規定に戻す</button>
 						<textarea type='memo' class='form-control' id='mail_body_cancel' rows="20" v-model='mail_body_cancel'></textarea>
 						<div class='row mb-3 mt-2'>
 							<div class='col-12'>

@@ -102,13 +102,12 @@
 
 		U::send_mail($to,$subject,$body,$fromname,$bcc);
 		exit();
-	}catch(Exception $e){
-      $db->rollBack_tran($e->getMessage());
-      log_writer2("\$e",$e,"lv0");
-      $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
-      $alert_status = "alert-danger";
-      $reseve_status=true;
-			echo $msg."\r\n".$e;
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
+    $msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
+    $alert_status = "alert-danger";
+    $reseve_status=true;
+		echo $msg."\r\n".$e;
   }
   exit();
   

@@ -8,18 +8,15 @@
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
-		$sql = "select 
-				max(shouhinCD) + 1 as nextCD
+		$sql = "SELECT 
+				MAX(shouhinCD) + 1 as nextCD
 			from shouhinMS_online
-			where uid = :uid group by uid order by shouhinNM";
-		$stmt = $pdo_h->prepare($sql);
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_STR);
-		$stmt->execute();
-		if($stmt->rowCount() == 0){
+			where `uid` = :uid group by `uid` order by shouhinNM";
+		$row = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
+		if(Count($row) === 0){
 			$NewCD = 1;
 		}else{
-			$NewCD = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$NewCD = $NewCD[0]["nextCD"];
+			$NewCD = $row[0]["nextCD"];
 		}
 
 		$alert_status = "alert-success";

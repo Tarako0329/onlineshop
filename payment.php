@@ -17,27 +17,17 @@
 	//log_writer2("\$kingaku",$kingaku,"lv3");
 	$siharai = "still";//まだ
 	try{
-		$sql = "select count(*) as cnt from juchuu_head where uid = :uid and orderNO = :orderNO and payment = 1";
-		$stmt = $pdo_h->prepare( $sql );
-		//bind処理
-		$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
-		$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_INT);
-		$status = $stmt->execute();
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$sql = "SELECT count(*) as cnt from juchuu_head where `uid` = :uid and orderNO = :orderNO and payment = 1";
+		$data = $db->SELECT($sql,["uid" => $_SESSION["user_id"], "orderNO" => $orderNO]);
 		
 		if($data[0]["cnt"]<>0){//支払ずみ
 			$siharai = "done";//済
 		}else{
-			$sql = "select * from Users_online where uid = :uid";
-			$stmt = $pdo_h->prepare( $sql );
-			//bind処理
-			$stmt->bindValue("uid", $_SESSION["user_id"], PDO::PARAM_INT);
-			$status = $stmt->execute();
-			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$sql = "SELECT * from Users_online where uid = :uid";
+			$data2 = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
 
-			//if($data[0]["stripe_id"]<>"none"){
-			if($data[0]["credit"]==="use" && $data[0]["Stripe_Approval_Status"]==="Available"){
-				$_SESSION["stripe_connect_id"] = $data[0]["stripe_id"];
+			if($data2[0]["credit"]==="use" && $data2[0]["Stripe_Approval_Status"]==="Available"){
+				$_SESSION["stripe_connect_id"] = $data2[0]["stripe_id"];
 	
 				$stripe = new \Stripe\StripeClient(S_KEY);
 				//log_writer2("S_KEY",S_KEY,"lv3");
@@ -71,7 +61,6 @@
 					//'payment_intent_data' => ['application_fee_amount' => 100],
 					'mode' => 'payment',
 					// ご自身のサイトURLを入力
-					//'success_url' => ROOT_URL."pay_success.php?key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//支払ありがとうページ
 					'success_url' => ROOT_URL."pay_success.php?paytype=stripe&key=".$user_hash."&orderNO=".$orderNO."&val=".$kingaku."&csrf_token=".$token,	//成功：支払ありがとうページ
 					'cancel_url' => ROOT_URL."payment.php?key=".$user_hash."&val=".$kingaku."&no=".$orderNO,//支払キャンセル
 					]
@@ -82,16 +71,14 @@
 				//stripe登録なし
 			}
 	
+			$data2 = [];
 			$sql = "SELECT * FROM juchuu_head where orderNO = :orderNO";
-			$stmt = $pdo_h->prepare( $sql );
-			$stmt->bindValue("orderNO", $orderNO, PDO::PARAM_STR);
-			$status = $stmt->execute();
-			$data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$data2 = $db->SELECT($sql,["orderNO" => $orderNO]);
 	
 		}
 
-	}catch(Exception $e){
-		log_writer2("Exception \$e",$e,"lv0");
+	}catch(\Throwable $e){
+		U::send_E($e,"【".EXEC_MODE."payment.phpでException発生", "orderNO:".$orderNO."\nuser_id:".$_SESSION["user_id"]);
 	}
 
 ?>
@@ -154,6 +141,3 @@
 	</script>
 </BODY>
 </html>
-
-<?php
-?>

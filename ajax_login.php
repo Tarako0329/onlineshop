@@ -26,14 +26,16 @@ if($rtn!==true){
 	if($_POST["login_type"]==="signup_with"){//新規の場合はIDのみで抽出
 		$sql = "SELECT * FROM Users WHERE `uid` = :uid ";
 		$row = $db->SELECT($sql, [":uid" => $uid]);
+		$emsg = "ログインに失敗しました。お客様のログインページのURLが不正です。";
 	}else{
 		$sql = "SELECT * FROM Users WHERE `uid` = :uid AND mail = :mail";
 		$row = $db->SELECT($sql, [":uid" => $uid,":mail" => $email]);
+		$emsg = "ログインに失敗しました。お客様のログインページのURLとメールアドレスが一致しません。";
 	}
 
 	if(empty($row) ){
 		//ログイン失敗
-		$msg = "ログインに失敗しました。お客様のログインページのURLが不正です。";
+		$msg = $emsg;
 	}else{
 		//IDあり
 		$Secrity = new Security($uid,KEY);
@@ -50,9 +52,8 @@ if($rtn!==true){
 				$db->commit_tran();
 	
 				$status = true;
-			}catch(Exception $e){
-				$db->rollback_tran();
-				log_writer2("\$e",$e,"lv0");
+			}catch(\Throwable $e){
+				$db->Exception_rollback($e);
 				$msg = "予期せぬエラーが発生しました。";
 			}
 		}else if($_POST["login_type"]==="signin_with" && $row[0]['mail'] === $email){//サインイン
@@ -91,11 +92,9 @@ if($status===true){
 	$expiry_date = date('Y-m-d H:i:s', strtotime('+1 week'));
 	
 	// 有効期限切れのレコードを削除
-	$stmt = $pdo_h->prepare("DELETE FROM AUTO_LOGIN_SHOP WHERE YUKOU_KIGEN < NOW() ");
-	$stmt->execute();
+	$db->UP_DEL_EXEC("DELETE FROM AUTO_LOGIN_SHOP WHERE YUKOU_KIGEN < NOW() ", []);
 	// DBに保存
-	$stmt = $pdo_h->prepare("INSERT INTO AUTO_LOGIN_SHOP (UID, TOKEN, YUKOU_KIGEN) VALUES (?, ?, ?)");
-	$stmt->execute([$uid, $hashed_token, $expiry_date]);
+	$db->UP_DEL_EXEC("INSERT INTO AUTO_LOGIN_SHOP (`UID`, TOKEN, YUKOU_KIGEN) VALUES (:uid, :token, :expiry_date)", [":uid" => $uid, ":token" => $hashed_token, ":expiry_date" => $expiry_date]);
 }
 
 if($status===true){

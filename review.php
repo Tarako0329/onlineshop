@@ -32,11 +32,8 @@
     where m.shouhinCD = :shouhinCD
     and m.uid = :shop_id
   order by r.insdatetime desc";
-  $stmt = $pdo_h->prepare($sql);
-  $stmt->bindValue("shouhinCD", $shouhinCD, PDO::PARAM_STR);
-  $stmt->bindValue("shop_id", $shop_id, PDO::PARAM_STR);
-  $stmt->execute();
-  $review = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $review = $db->SELECT($sql,["shouhinCD"=>$shouhinCD,"shop_id"=>$shop_id]);
+  //log_writer2("\$review",$review,"lv3");
 
 ?>
 <!DOCTYPE html>

@@ -39,9 +39,8 @@
 			$db->commit_tran();
     
 	  	U::send_mail($mail,$subject,$body,APP_NAME,"");
-	  }catch(Exception $e){
-			$db->rollback_tran($e->getMessage());
-			log_writer2("\$e",$e,"lv0");
+	  }catch(\Throwable $e){
+			$db->Exception_rollback($e);
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

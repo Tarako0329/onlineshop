@@ -48,7 +48,7 @@ if(EXEC_MODE==="Local"){
 
 			//商品再選定
 			$row = $db->SELECT("SELECT U.yagou,M.* from shouhinMS_online as M inner join Users_online as U on M.uid=U.uid where status='show' and IFNULL(auto_post_sns,'') not like '%X%' order by shouhinCD");
-		}catch(Exception $e){
+		}catch(\Throwable $e){
 			$db->rollback_tran($e->getMessage());
 			log_writer2("\$e",$e,"lv0");
 			echo "投稿済みフラグをリセットでエラー\n";
@@ -143,9 +143,9 @@ if(EXEC_MODE==="Local"){
 			log_writer2("X-bot-ErrorHeader",$connection->getLastXHeaders(),"lv1");
 			//log_writer2("\$msg",$msg,"lv1");
 		}
-	}catch(Exception $e){
+	}catch(\Throwable $e){
 		//print_r($e,true);
-		echo "catch(Exception \$e)";
+		echo "catch(\Throwable \$e)";
 		log_writer2("\$e",$e,"lv0");
 		exit();
 	}
@@ -158,9 +158,8 @@ if($status==="success"){//次回の実行時間をセット
 		$db->UP_DEL_EXEC("UPDATE online_shop_config set next_post_time=DATE_ADD(NOW(), INTERVAL :next MINUTE)", ['next'=>$next]);
 		$db->commit_tran();
 		echo "次は ".$next." 分後です";
-	}catch(Exception $e){
-		$db->rollback_tran($e->getMessage());
-		log_writer2("\$e",$e,"lv0");
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
 		echo "次の投稿時間設定でエラー";
 	}
 }

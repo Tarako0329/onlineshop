@@ -1,5 +1,6 @@
 <?php
 //お客さんが商品詳細を開いたときにLOGを取得するためのajax
+//PGNAME:ajax_ins_access_log.php
 date_default_timezone_set('Asia/Tokyo'); 
 define("VERSION","ver1.35.0");
 
@@ -18,13 +19,33 @@ define("APP_NAME",$_ENV["APP_NAME"]);
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
 session_start();
-log_writer2("\$time",$time,"lv3");
+//log_writer2("\$time",$time,"lv3");
 
 // DBとの接続
 define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
 define("USER_NAME", $_ENV["DBUSER"]);
 define("PASSWORD", $_ENV["PASS"]);
-$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+define("DB_HOST", $_ENV["SV"]);
+define("DB_NAME", $_ENV["DBNAME"]);
+
+//$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
+spl_autoload_register(function ($className) {
+  // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
+  $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+  // 2. クラスファイルを探すフルパスを組み立て
+  $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
+  //log_writer2("Autoloading class", $className . " (Path: " . $file . ")", "lv3");
+  // 3. ファイルが存在すれば読み込む
+  if (file_exists($file)) {
+    require_once $file;
+    //log_writer2("Autoloading success", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
+  }else{
+    log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
+  }
+});
+use classes\Database\Database;
+$db = new Database();
+
 
 //メール送信関連
 define("HOST", $_ENV["HOST"]);
@@ -58,8 +79,8 @@ if(empty($_SESSION["log_param"])){
 
 		$msg="ログ書き込み成功";
 		$reseve_status=true;
-	}catch(Exception $e){
-		log_writer2("\$e",$e,"lv0");
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
 		$msg .= "アクセスログ登録エラー。管理者へ通知しました。";
 		$reseve_status=true;
 	}

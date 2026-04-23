@@ -114,11 +114,11 @@
 
 		$msg = ($cnt==0)?"レビュー依頼対象者なし":"レビュー依頼メール送信完了(".$cnt." 件)";
 		echo $msg."\n";
-    
-	}catch(Exception $e){
-      $db->rollback_tran($e->getMessage());
-  		echo "レビュー依頼処理でエラー\n".$e;
-  }
-  exit();
-  
+		
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
+		echo "レビュー依頼処理でエラー\n".$e;
+	}
+	exit();
+	
 ?>

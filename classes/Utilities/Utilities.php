@@ -124,9 +124,8 @@ class Utilities {
 			log_writer2("Utilities::send_mail - Mailer Error",$mail->ErrorInfo,"lv1");
 			log_writer2("Utilities::send_mail - Mailer Error \$e",$e,"lv1");
 			return false;
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			// エラーが発生した場合は、後で Monolog などで記録できるようにしておく
-			//error_log("Message could not be sent. Error: {$e->getMessage()}");
 			log_writer2("Utilities::send_mail - Error",$e->getMessage(),"lv1");
 			log_writer2("Utilities::send_mail - Error \$e",$e,"lv1");
 			return false;

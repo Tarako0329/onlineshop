@@ -73,8 +73,25 @@ class Database {
       */
       $this->sql = $sql;  //Exceptionロールバックログ用にロールバック前に投げたSQLを記録
 
+      // プレースホルダに含まれるキーだけを残す
+      $normalizedParams = [];
+      foreach ($params as $key => $value) {
+        $normalizedKey = ltrim($key, ':');
+        $normalizedParams[$normalizedKey] = $value;
+      }
+      $placeholders = [];
+      if (preg_match_all('/(?<!:):([a-zA-Z0-9_]+)/', $sql, $matches)) {
+        $placeholders = array_unique($matches[1]);
+      }
+      $filteredParams = [];
+      foreach ($placeholders as $name) {
+        if (array_key_exists($name, $normalizedParams)) {
+          $filteredParams[$name] = $normalizedParams[$name];
+        }
+      }
+
       $stmt = $this->connect()->prepare($sql);
-      $stmt -> execute($params);
+      $stmt -> execute($filteredParams);
       $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
       //log_writer2("\$result",$result,"lv3");
       //$resultのNULLを空文字に変換
@@ -215,8 +232,16 @@ class Database {
       $this->connect()->rollback();
       $this->exec_log();
     }
+    public function Exception_rollback(\Throwable $e):void{
+      //例外が発生した場合のロールバック処理と管理者への通知を行うメソッド
+      $this->rollback_tran("Exception Message:".$e->getMessage());
+      //メソッドをコールしたファイルを取得
+      $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+      $file = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
+      U::send_E($e,"【".EXEC_MODE."】[$file]でExceptionロールバック発生", "ErrorSQL:".$this->sql."\nログ:\n".$this->log);
+    }
 
-    public function exec_log():void{
+    private function exec_log():void{
       //sqllog/日付.sql ファイルに$msgを追記
       $dir = 'sqllog';
       if (!is_dir($dir)) {

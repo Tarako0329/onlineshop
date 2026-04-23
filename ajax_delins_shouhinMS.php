@@ -112,9 +112,8 @@ if($rtn !== true){
 			$alert_status = "alert-success";
 			$reseve_status=true;
 
-		}catch(Exception $e){
-			$db->rollback_tran();
-			U::send_E($e,"ajax_delins_shouhinMS.php - DBエラー","商品マスタの更新に失敗");
+		}catch(\Throwable $e){
+			$db->Exception_rollback($e);
 			$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;

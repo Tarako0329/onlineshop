@@ -31,10 +31,9 @@
 			$db->commit_tran();
 
 			$get_value = 'key='.$_GET["hash"];
-		}catch(Exception $e){
+		}catch(\Throwable $e){
+			$db->Exception_rollback($e);
 			$get_value = 'key='.$_GET["hash"]."&stripe_setting=unable";
-			$db->rollback_tran($e->getMessage());
-			log_writer2("\$e",$e,"lv0");
 		}
 	}
 	header("Location:".ROOT_URL.'settlement.php?'.$get_value);

@@ -1,4 +1,6 @@
 <?php
+//商品管理の販売ステータス変更を行うajaxファイル
+//PGNAME; ajax_upd_shouhinMS_status.php
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
@@ -22,49 +24,27 @@ if($rtn !== true){
 	$alert_status = "alert-warning";
 	$reseve_status = true;
 }else{
-	if($rtn===false){
-			$reseve_status = true;
-			$msg="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
-			$_SESSION["EMSG"]="長時間操作されていないため、自動ﾛｸﾞｱｳﾄしました。再度ログインし、もう一度xxxxxxして下さい。";
-			$timeout=true;
-	}else{
-			$sql = "update shouhinMS_online set status = :status where uid = :uid and shouhinCD = :shouhinCD";
+	try{
+		$sql = "UPDATE shouhinMS_online set status = :status where uid = :uid and shouhinCD = :shouhinCD";
 
-			$params["status"] = $_POST["status"];
-			$params["uid"] = $_SESSION["user_id"];
-			$params["shouhinCD"] = $_POST["shouhinCD"];
+		$params["status"] = $_POST["status"];
+		$params["uid"] = $_SESSION["user_id"];
+		$params["shouhinCD"] = $_POST["shouhinCD"];
+		$db->begin_tran();
 
-			try{
-					$pdo_h->beginTransaction();
-					$sqllog .= rtn_sqllog("START TRANSACTION",[]);
-
-					$stmt = $pdo_h->prepare( $sql );
-					$stmt->bindValue("status", $params["status"], PDO::PARAM_INT);
-					$stmt->bindValue("uid", $params["uid"], PDO::PARAM_INT);
-					$stmt->bindValue("shouhinCD", $params["shouhinCD"], PDO::PARAM_STR);
+		$db->UP_DEL_EXEC($sql,$params);
 					
-					$sqllog .= rtn_sqllog($sql,$params);
+		$db->commit_tran();
 
-					$status = $stmt->execute();
-					$sqllog .= rtn_sqllog("-- execute():正常終了",[]);
-					
-					$pdo_h->commit();
-					$sqllog .= rtn_sqllog("commit",[]);
-					sqllogger($sqllog,0);
+		$msg .= ($_POST["status"]!=='del')?"販売ステータスを変更しました。":"商品を削除しました。";
+		$alert_status = "alert-success";
+		$reseve_status=true;
 
-					$msg .= ($_POST["status"]!=='del')?"販売ステータスを変更しました。":"商品を削除しました。";
-					$alert_status = "alert-success";
-					$reseve_status=true;
-
-			}catch(Exception $e){
-					$pdo_h->rollBack();
-					$sqllog .= rtn_sqllog("rollBack",[]);
-					sqllogger($sqllog,$e);
-					log_writer2("\$e",$e,"lv0");
-					$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
-					$alert_status = "alert-danger";
-					$reseve_status=true;
-			}
+	}catch(\Throwable $e){
+		$db->Exception_rollback($e);
+		$msg .= "システムエラーによる更新失敗。管理者へ通知しました。";
+		$alert_status = "alert-danger";
+		$reseve_status=true;
 	}
 }
 

@@ -59,9 +59,9 @@ if(EXEC_MODE<>"Product"){
       /*}else{
         $msg = "文章が長すぎます。全角100文字程度に収めてください。 - ".strlen($_POST["tweet"]);
       }*/
-    }catch(Exception $e){
+    }catch(\Throwable $e){
       print_r($e,true);
-      echo "catch(Exception \$e)";
+      echo "catch(Throwable \$e)";
       log_writer2("\$e",$e,"lv0");
     }
 }

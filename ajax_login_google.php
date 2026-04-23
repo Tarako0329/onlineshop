@@ -70,9 +70,8 @@ if($rtn!==true){
 				$db->commit_tran();
 	
 				$status = true;
-			}catch(Exception $e){
-				$db->rollback_tran();
-				log_writer2("\$e",$e,"lv0");
+			}catch(\Throwable $e){
+				$db->Exception_rollback($e);
 				$msg = "予期せぬエラーが発生しました。";
 			}
 		}else if($_POST["login_type"]==="signin_with" && hash_equals($row[0]['password'],$subid)){//サインインかつグーグル識別子IDが一致

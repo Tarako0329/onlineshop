@@ -28,10 +28,11 @@ function log_writer2($pgname,$msg,$kankyo){
 // オリジナルログ出力(access_log)
 // =========================================================
 function aclog_writer($param,$pdo){
-	//log_writer2("\$param",$param,"lv3");
+	U::log("start aclog_writer","",4);
+	U::log("\$param",$param,4);
 	//log_writer2("\$_SERVER[PHP_SELF]",$_SERVER["PHP_SELF"],"lv3");
+	global $db;
 	if(!($_SERVER["PHP_SELF"]==="/index.php" || $_SERVER["PHP_SELF"]==="/product.php" || $_SERVER["PHP_SELF"]==="/ajax_ins_access_log.php")){
-		//file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => 対象外:".$_SERVER["PHP_SELF"]."\n",FILE_APPEND);
 		return 0;
 	}
 	//$log = print_r($msg,true);
@@ -44,16 +45,19 @@ function aclog_writer($param,$pdo){
 		$uid = substr($param[5],0, $position-1);
 		$shouhinCD = substr($param[5], $position);
 		log_writer2("mojira",$uid."-".$shouhinCD,"lv3");
-		//$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = $uid and shouhinCD = $shouhinCD");
+		/*
 		$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD");
 		$stmt->bindValue("uid", $uid, PDO::PARAM_INT);
 		$stmt->bindValue("shouhinCD", $shouhinCD, PDO::PARAM_STR);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		*/
+		$rows = $db->SELECT("SELECT * FROM shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD",["uid"=>$uid,"shouhinCD"=>$shouhinCD]);
 		log_writer2("/rows",$rows,"lv3");
 		$shouhinNM = $rows[0]["shouhinNM"];
 	}
 	//log_writer2("aclog_writer","finish1","lv3");
+	/*
 	$sql = "INSERT into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id,uid,shouhinNM) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id,:uid,:shouhinNM)";
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
@@ -69,6 +73,21 @@ function aclog_writer($param,$pdo){
 	$stmt->bindValue("uid", $uid, PDO::PARAM_INT);
 	$stmt->bindValue("shouhinNM", $shouhinNM, PDO::PARAM_STR);
 	$stmt->execute();
+	*/
+	$db->INSERT("access_log",[
+		"ip" => $param[0],
+		"bot" => $param[1],
+		"ua" => $param[2],
+		"ref" => $param[3],
+		"page" => $param[4],
+		"param" => $param[5],
+		"get_param" => $param[6],
+		"koukoku_sns" => $param[7],
+		"mark_id" => rot13decrypt2($param[8]),
+		"session_id" => session_id(),
+		"uid" => $uid,
+		"shouhinNM" => $shouhinNM,
+	]);
 	//file_put_contents("access_log.txt","[".date("Y/m/d H:i:s")."] => [".$_SERVER["PHP_SELF"]." ".$_GET["id"]." -> ".$pgname."] => ".$log."\n",FILE_APPEND);
 	//log_writer2("aclog_writer","finish","lv3");
 }
@@ -347,107 +366,6 @@ function get_pdo_options() {
 }
 
 
-// =========================================================
-// メール送信 
-// =========================================================
-/*function send_mail($to,$subject,$body,$fromname,$bcc){
-	//$to		: 送信先アドレス
-	//$subject	: 件名
-	//$body		: 本文
-	//$fromname : 送信者
-
-	//SMTP送信
-	$return_flag = 'false';
-	if(EXEC_MODE==="Local"){
-		log_writer2("send_mail - \$to",$to,"lv3");
-		log_writer2("send_mail - \$bcc",$bcc,"lv3");
-		log_writer2("send_mail - \$body",$body,"lv3");
-		return "success";
-	}
-	
-	$mypath = dirname(__FILE__);
-	require $mypath."/vendor/autoload.php";
-  
-	require_once($mypath.'/qdmail.php');
-	require_once($mypath.'/qdsmtp.php');
-
-	try{
-		$mail = new Qdmail();
-		$mail -> smtp(true);
-		$param = array(
-			'host'=> HOST,
-			'port'=> PORT ,
-			'from'=> FROM,
-			'protocol'=>PROTOCOL,
-			'pop_host'=>POP_HOST,
-			'pop_user'=>POP_USER,
-			'pop_pass'=>POP_PASS,
-		);
-		$mail->smtpServer($param);
-		$mail->charsetBody('UTF-8','base64');
-		$mail->kana(true);
-		$mail->errorDisplay(false);
-		//$mail->errorDisplay(true);
-		$mail->smtpObject()->error_display = false;
-		//$mail->smtpObject()->error_display = true;
-		$mail->logLevel(1);//0:ログを出力しない（デフォルト）/1:シンプルタイプ（送信ログ）/2:ヘッダー情報も含むログ/3:メール本文も含めたログ
-		
-		$mail->errorlogLevel( 1 );//0:エラーログを出力しない（デフォルト）/1:シンプルタイプ（エラーメッセージのみ）/2:ヘッダー情報も含むエラーログ/3:メール本文も含めたエラーログ
-		//$mail -> smtpLoglevelLink( true );//QdmailとQdsmtpを併用している場合、Qdmailのログのレベルを以下のメソッドで、Qdsmtpに渡して、同レベルのログをとるよう、Qdsmtpに指示することができます。
-		//$mail->logPath('./log/');
-		//$mail->logFilename('anpi.log');
-		//$smtp ->timeOut(10);
-		$mail->smtpObject()->timeOut(10);
-		
-		$mail ->to($to);
-		if(!empty($bcc)){$mail ->bcc($bcc);}
-		$mail ->from(FROM , $fromname);
-		$mail ->subject($subject);
-		$mail ->text($body);
-	
-		//送信
-		$mail ->send();
-		$rtn = $mail -> errorStatment();
-		if(empty($rtn)){
-			$return_flag = 'success';
-		}else{
-			array_unshift($rtn,$to." / ".$bcc." へのメール送信に失敗しました");
-			log_writer2("\$mail_send_rtn",$rtn,"lv0");
-			$return_flag = 'false';
-		}
-	}catch(Exception $e){
-		log_writer2("send_mail [Exception] \$e",$e,"lv0");
-	}
-	log_writer2("send_mail \$return_flag","[".$to." / ".$bcc."] send ".$return_flag,"lv3");
-	return $return_flag;
-}
-
-function send_line($to,$body){
-	log_writer2("send_line - \$to",$to,"lv3");
-	log_writer2("send_line - \$body",$body,"lv3");
-	if(EXEC_MODE==="Local"){
-		return "success";
-	}
-
-	$url = ROOT_URL.'line_push_msg.php';
-
-	$data = array(
-		'LINE_USER_ID' => $to,
-		'MSG' => $body,
-	);
-
-	$context = array(
-		'http' => array(
-			'method'  => 'POST',
-			'header'  => implode("\r\n", array('Content-Type: application/x-www-form-urlencoded',)),
-			'content' => http_build_query($data)
-		)
-	);
-
-	$rtn = file_get_contents($url, false, stream_context_create($context));
-
-	return $rtn;
-}*/
 // =========================================================
 // GUID取得
 // =========================================================

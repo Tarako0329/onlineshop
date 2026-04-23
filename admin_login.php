@@ -1,6 +1,6 @@
 <?php
   require "php_header_admin.php";
-
+	$errmsg .= $_SESSION["e-msg"] ?? "";
 	// セッション変数をすべて空にする
 	$_SESSION = array();
 
@@ -19,8 +19,6 @@
 	//cookie[remember_me]を破棄
 	$_SESSION["user_id"] = -1;
 	
-	$errmsg = "";
-
   $user_hash = $_GET["key"] ;
   $uid = rot13decrypt2($user_hash);
 
@@ -55,8 +53,8 @@
 	}
 
 	$token = csrf_create();
-	$errmsg .= $_SESSION["e-msg"];
-	$_SESSION["e-msg"] = "";
+	
+	//$_SESSION["e-msg"] = "";
 
 ?>
 <!DOCTYPE html>

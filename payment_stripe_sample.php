@@ -50,8 +50,8 @@
       ['stripe_account' => $_GET["i"]]
     );
     log_writer2("\$session",$session,"lv3");
-  }catch(Exception $e){
-    log_writer2("Exception \$e",$e,"lv0");
+  }catch(\Throwable $e){
+    log_writer2("Throwable \$e",$e,"lv0");
   }
 ?>
 <!DOCTYPE html>
