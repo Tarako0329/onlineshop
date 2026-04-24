@@ -110,7 +110,7 @@
 			</div>
 
 			<template v-for='(list,index) in pay_lists' :key='list.source'>
-				<div class='col-12 text-center mb-5'>
+				<div v-if='list.flg' class='col-12 text-center mb-5'>
 					<div style='font-size:medium;'>【　{{list.payname}}　】</div>
 					<div v-if='list.types==="QR"' class='p-3'><div class='img-div mx-auto' style="height:100px;width:100px;"><img :src="list.source" class='img-item-sm'></div></div>
 					<div v-else  class='p-3' style='white-space: pre-wrap;'>{{list.source}}</div>
