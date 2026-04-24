@@ -238,6 +238,7 @@ ver1.66.1:リファクタリング:obj指向化:namespase導入-commited-2026030
 ver1.66.2:bugfix:QA画面の不具合-commited-20260310
 ver1.66.3:リファクタリング:obj指向化:namespase導入:日時をトリガーでセットしない:axiosライブラリ更新-commited-20260421
 ver1.66.4:リファクタリング:obj指向化
+ver1.66.5:リファクタリング:obj指向化:新商品登録時の商品CD取得方法変更
 
 
 【Issues】

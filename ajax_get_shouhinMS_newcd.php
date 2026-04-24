@@ -1,4 +1,5 @@
 <?php
+/*廃止
   require "php_header.php";
 
 	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
@@ -26,4 +27,5 @@
   header('Content-type: application/json');  
   echo json_encode($return, JSON_UNESCAPED_UNICODE);
   exit();
+*/
 ?>

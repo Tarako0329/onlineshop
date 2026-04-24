@@ -48,17 +48,28 @@ if($rtn !== true){
 
 		try{
 			$db->begin_tran();
-		
-			$db->UP_DEL_EXEC("DELETE from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD",[
-				"uid" => $params["uid"],
-				"shouhinCD" => $params["shouhinCD"]
-			]);
-			$db->UP_DEL_EXEC("DELETE from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD",[
-				"uid" => $params["uid"],
-				"shouhinCD" => $params["shouhinCD"]
-			]);
 
-			$db->INSERT("shouhinMS_online",[
+			//新規マスタの商品CD取得
+			if($params["shouhinCD"]==-999){
+				$sql = "SELECT 
+						MAX(shouhinCD) + 1 as nextCD
+					from shouhinMS_online
+					where `uid` = :uid group by `uid`";
+				$row = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
+				$params["shouhinCD"] = (Count($row) === 0) ? 1 : $row[0]["nextCD"];
+			}else{
+				//既存マスタの更新の場合は、既存画像データを削除してから新規登録する
+				$db->UP_DEL_EXEC("DELETE from shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD",[
+					"uid" => $params["uid"],
+					"shouhinCD" => $params["shouhinCD"]
+				]);
+				$db->UP_DEL_EXEC("DELETE from shouhinMS_online_pic where uid = :uid and shouhinCD = :shouhinCD",[
+					"uid" => $params["uid"],
+					"shouhinCD" => $params["shouhinCD"]
+				]);
+			}
+		
+			$db->INSERT("shouhinMS_online",$params/*[
 				"uid" => $params["uid"],
 				"shouhinCD" => $params["shouhinCD"],
 				"shouhinNM" => $params["shouhinNM"],
@@ -74,7 +85,7 @@ if($rtn !== true){
 				"limited_cd" => $params["limited_cd"],
 				"ins_datetime" => $params["ins_datetime"],
 				"upd_datetime" => $params["upd_datetime"]
-			]);
+			]*/);
 
 			//画像ファイル処理
 			$i=1;	//sortの初期値
