@@ -8,7 +8,7 @@ if (php_sapi_name() !== 'cli') {
   session_start();
 }
 //ob_start();
-define("VERSION","ver1.66.0");
+define("VERSION","ver1.66.5");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
