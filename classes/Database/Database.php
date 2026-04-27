@@ -76,7 +76,7 @@ class Database {
       // プレースホルダに含まれるキーだけを残す
       $normalizedParams = [];
       foreach ($params as $key => $value) {
-        $normalizedKey = ltrim($key, ':');
+        $normalizedKey = ltrim((string)$key, ':');
         $normalizedParams[$normalizedKey] = $value;
       }
       $placeholders = [];

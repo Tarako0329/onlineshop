@@ -137,7 +137,7 @@ class Utilities {
 	// =========================================================
 	private static function log_writer($hensuu_name,$msg){
 		$log = var_export($msg,true);
-		error_log("U::log => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n");
+		error_log("U::log => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log);
 	}
 	public static function log(string $hensuu_name = "",$msg="",int $kankyo = 4):void{
 		//$kankyo:1=全環境+メール通知 2=全環境 3=本番以外 4=テスト・ローカル環境のみ(デフォルト)
