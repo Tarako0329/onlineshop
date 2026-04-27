@@ -1,5 +1,10 @@
-<?php
-  require "php_header.php";
+<?php 
+  if(!empty($_GET["key"])){
+    require "php_header_admin.php";
+  }else{
+    require "php_header.php";
+  }
+  //require "php_header.php";
   $token = csrf_create();
   //$_SESSION["user_id"] = "%";
   if(empty($_GET)){
@@ -9,11 +14,12 @@
   $_SESSION["askNO"] = $_GET["askNO"];  //暗号
   $_SESSION["sts"] = $_GET["QA"];        //暗号
   $sts = rot13decrypt2($_SESSION["sts"]);
-  log_writer2("\$sts",$sts,"lv3");
+  U::log("\$sts",$sts,4);
 
   if($sts==="Q" || $sts==="CA"){//お客さんが質問する。もしくは回答する
     $subject="返信が届きました";
     $body="返信内容";
+    $user_hash = "";
   }else if($sts==="A" || $sts==="BQ"){//お客さんに答える。もしくは問い返す
     $subject="回答が届きました";
     $body="回答内容";
@@ -24,6 +30,8 @@
     echo "見せないよ！er2:".$sts;
     exit();
   }
+  U::log("\$_SESSION[askNO]",$_SESSION["askNO"],4);
+  U::log("\$_SESSION[user_id]",$_SESSION["user_id"],4);
 
 ?>
 <!DOCTYPE html>

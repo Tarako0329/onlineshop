@@ -1,4 +1,5 @@
 <?php
+//PGNAME:ajax_sendmail_custmor.php
 require "php_header.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
@@ -7,7 +8,7 @@ $alert_status = "alert-warning";    //bootstrap alert class
 $reseve_status=false;               //処理結果セット済みフラグ。
 $timeout=false;                     //セッション切れ。ログイン画面に飛ばすフラグ
 $sqllog="";
-log_writer2("\$_POST",$_POST,"lv3");
+U::log("\$_POST",$_POST,4);
 
 $rtn = csrf_checker(["order_management.php","index.php","Q_and_A.php","order_rireki.php",""],["P","C","S"]);
 if($rtn !== true){
@@ -66,10 +67,10 @@ if($rtn !== true){
 				$db->INSERT("online_q_and_a",$params);
 			}
 
-			//CtoBで始まるやり取り
+			//CtoB（顧客の問い合わせから）で始まるやり取り
 			$Q_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("Q");
 			$A_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("A")."&key=".rot13encrypt2($_POST["shop_id"]);
-			//BtoCで始まるやり取り
+			//BtoC（出店者から顧客へ）で始まるやり取り
 			$BQ_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("BQ")."&key=".rot13encrypt2($_POST["shop_id"]);;
 			$CA_URL = ROOT_URL."Q_and_A.php?askNO=".rot13encrypt2($askNO)."&QA=".rot13encrypt2("CA");
 			
@@ -89,7 +90,7 @@ if($rtn !== true){
 				}else{
 					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] Q send ".$send_rtn,"lv3");
+				U::log("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] Q send ".$send_rtn,4);
 				$cc_address = $CusMailAdd;
 			}else if($sts==="A"){//通販画面QAのanswer（店⇒客）
 				$head = $yagou." より回答がありました。追加でご確認したいことがございましたら\r\n".$Q_URL."\r\nよりメッセージを入力して下さい。\r\n\r\n";
@@ -112,7 +113,7 @@ if($rtn !== true){
 				}else{
 					$send_rtn = U::send_mail($ShopMailAdd,$_POST["subject"],$head.$_POST["mailbody"],APP_NAME,"");//出店者へお知らせメール
 				}
-				log_writer2("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] CA send ".$send_rtn,"lv3");
+				U::log("to出店者 - U::send_mail() \$send_rtn","[".$ShopMailAdd."] CA send ".$send_rtn,4);
 				$cc_address = $CusMailAdd;
 			}else{
 				exit();//想定外
@@ -149,7 +150,7 @@ if($rtn !== true){
 			$msg = "システムエラーによる更新失敗。管理者へ通知しました。";
 			$alert_status = "alert-danger";
 			$reseve_status=true;
-			//log_writer2("\$e",$e,"lv0");
+			//U::log("\$e",$e,"lv0");
 		}
 	}
 }

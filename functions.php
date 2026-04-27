@@ -241,8 +241,8 @@ function csrf_checker(array $from = [],array $chkpoint = []):bool{
 	foreach($from as $row){
 		if(false !== strpos($_SERVER['HTTP_REFERER'],ROOT_URL.$row)){
 			$chkflg=true;
-			log_writer2("func:csrf_checker","HTTP_REFERER success \$_SERVER[".$_SERVER['HTTP_REFERER']."]","lv3");
-			log_writer2("func:csrf_checker","HTTP_REFERER success ParamUrl[".ROOT_URL.$row."]","lv3");
+			U::log("func:csrf_checker","HTTP_REFERER success \$_SERVER[".$_SERVER['HTTP_REFERER']."]",4);
+			U::log("func:csrf_checker","HTTP_REFERER success ParamUrl[".ROOT_URL.$row."]",4);
 			break;
 		}
 	}
@@ -269,23 +269,23 @@ function csrf_checker(array $from = [],array $chkpoint = []):bool{
 			if($i!==0){
 				if($csrf !== $csrf_ck){
 					$chkflg=false;
-					log_writer2("func:csrf_checker","CSRF failed [".$checked."]","lv3");
-					log_writer2("func:csrf_checker","CSRF failed [".$csrf."]","lv3");
-					log_writer2("func:csrf_checker","CSRF failed [".$csrf_ck."]","lv3");
+					U::log("func:csrf_checker","CSRF failed [".$checked."]",4);
+					U::log("func:csrf_checker","CSRF failed [".$csrf."]",4);
+					U::log("func:csrf_checker","CSRF failed [".$csrf_ck."]",4);
 					$chkflg = "セッションが正しくありません";
 					break;
 				}else{
-					log_writer2("func:csrf_checker","CSRF success [".$checked."]","lv3");
-					log_writer2("func:csrf_checker","CSRF success [".$csrf."]","lv3");
-					log_writer2("func:csrf_checker","CSRF success [".$csrf_ck."]","lv3");
+					U::log("func:csrf_checker","CSRF success [".$checked."]",4);
+					U::log("func:csrf_checker","CSRF success [".$csrf."]",4);
+					U::log("func:csrf_checker","CSRF success [".$csrf_ck."]",4);
 				}
 			}
 			$csrf=$csrf_ck;
 			$i++;
 		}
 	}else{
-		log_writer2("func:csrf_checker","HTTP_REFERER failed \$_SERVER[".$_SERVER['HTTP_REFERER']."]","lv3");
-		log_writer2("func:csrf_checker","HTTP_REFERER failed ParamUrl[".ROOT_URL.$row."]","lv3");
+		U::log("func:csrf_checker","HTTP_REFERER failed \$_SERVER[".$_SERVER['HTTP_REFERER']."]",4);
+		U::log("func:csrf_checker","HTTP_REFERER failed ParamUrl[".ROOT_URL.$row."]",4);
 		$chkflg = "アクセス元が不正です";
 	}
 	

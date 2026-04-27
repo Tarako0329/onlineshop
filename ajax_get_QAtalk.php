@@ -15,7 +15,7 @@
 			inner join Users_online us
 			on qa.`shop_id` = us.uid
 			where `askNO` = :askNO 
-			and `shop_id` = :shop_id
+			and `shop_id` like :shop_id
 			order by seq";
 		$talk = $db->SELECT($sql,["shop_id" => $shop_id,"askNO" => $askNO]);
 		
