@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Tokyo');
 if (php_sapi_name() !== 'cli') {
   ini_set('session.cookie_httponly', 1);
   ini_set('session.use_strict_mode', 1);
-  session_name("PresentOnline_SESSION");
+  session_name("PresentOnline_user_SESSION");
   session_start();
 }
 //ob_start();
