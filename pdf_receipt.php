@@ -22,8 +22,8 @@ $filename = ($_GET["tp"]==="1"?"Ryoushusho":"Nouhinsho");
 
 $sysname="cafe present";
 
-$sql="SELECT * from Users_online where `uid` = ?";
-$userinfo = $db->SELECT($sql, [$uid]);
+$sql="SELECT * from Users_online where `uid` = :uid";
+$userinfo = $db->SELECT($sql, [":uid" => $uid]);
 
 $from = $userinfo["yagou"];
 $invoice = $userinfo["invoice"];
