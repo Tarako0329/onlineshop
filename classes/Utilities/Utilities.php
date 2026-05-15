@@ -86,8 +86,8 @@ class Utilities {
 		,string $from = FROM
 		):bool{
 		if(EXEC_MODE==="Local"){
-			log_writer2("Util::send_mail - \$to",$to,"lv3");
-			log_writer2("Util::send_mail - \$body",$body,"lv3");
+			self::log("Util::send_mail - \$to",$to,4);
+			self::log("Util::send_mail - \$body",$body,4);
 			return true;
 		}	
 		if(EXEC_MODE!=="Product"){
@@ -126,8 +126,8 @@ class Utilities {
 			return false;
 		} catch (\Throwable $e) {
 			// エラーが発生した場合は、後で Monolog などで記録できるようにしておく
-			log_writer2("Utilities::send_mail - Error",$e->getMessage(),"lv1");
-			log_writer2("Utilities::send_mail - Error \$e",$e,"lv1");
+			self::log("Utilities::send_mail - Error",$e->getMessage(),2);
+			self::log("Utilities::send_mail - Error \$e",$e,2);
 			return false;
 		}
 	}

@@ -5,8 +5,15 @@
 ２．登録１ヵ月後・情報更新１週間以内は更新日時で降順
 ３．１・２以外はランダム
 ４．販売していない商品
+
+PGNAME:ajax_get_shouhinMS_online.php
 */
-  require "php_header.php";
+	$kengen = $_GET["kengen"] ?? "admin";
+	if($kengen === "user"){
+		require "php_header.php";
+	}else{
+		require "php_header_admin.php";
+	}
 	$hinmei = (($_GET["f"])!=="undefined")?$_GET["f"]:"%";
 	//log_writer2("",$hinmei,"lv3");
 	//$_SESSION["user_id"] = "%";

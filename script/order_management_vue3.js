@@ -388,21 +388,22 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       const form = new FormData();
       //お客様情報
       form.append(`mailto`, qa_mail.value)
-      //form.append(`mailtoCC`, cc_mail.value)
       form.append(`subject`, qa_head.value)
-      form.append(`qa_text`, send_mailbody.value)
-      form.append(`mailbody`, `${send_mailbody.value}\n\n※このメールは送信専用です。返信はメール上部のURLよりお願いします。※\n`)
-      form.append(`shop_id`, qa_shopid.value)
+      //form.append(`qa_text`, send_mailbody.value)
+      form.append(`mailbody`, `${send_mailbody.value}`)
+      form.append(`shop_id`, qa_shopid.value)//出店者ID
+      form.append(`action`, 'kakunin')//action:kakunin:客への`確認` or kaitou:客からの回答に対する'回答'
       form.append(`csrf_token`, token)
 
       //出店者CC情報
-      form.append(`qa_head`, qa_head.value)
+      //form.append(`qa_head`, qa_head.value)
       form.append(`qa_name`, qa_name.value)
-      form.append(`sts`, "BQ")
+      //form.append(`sts`, "BQ")
       form.append(`csrf_token`, token)
       //form.append(`hash`, hash)
 
-      axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      //axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+      axios.post("ajax_sendmail_from_B.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
       .then((response)=>{
         console_log(response.data)
         loader.value = false

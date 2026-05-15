@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Tokyo');
 if (php_sapi_name() !== 'cli') {
   ini_set('session.cookie_httponly', 1);
   ini_set('session.use_strict_mode', 1);
-  session_name("PresentOnline_SESSION");
+  session_name("PresentOnline_admin_SESSION");
   session_start();
 }
 define("VERSION","ver1.66.5");
@@ -57,7 +57,6 @@ define("KEY",$_ENV["KEY"]);
 
 spl_autoload_register(function ($className) {
   // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
-  // 例: App\Utils\Logger -> App/Utils/Logger
   $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
   // 2. クラスファイルを探すフルパスを組み立て
   $file = __DIR__.DIRECTORY_SEPARATOR.$path.'.php';
@@ -87,5 +86,5 @@ if(EXEC_MODE<>"Product"){
   $id="";
   $pass="";
 }
-
+U::log("セッション名","PresentOnline_admin_SESSION",4);
 ?>

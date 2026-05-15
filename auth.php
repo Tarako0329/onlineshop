@@ -8,11 +8,11 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === $key_user) {
 	// ログイン済みなので処理終了
 	U::log("\$_SESSION['user_id']", $_SESSION['user_id'], 4);
 	U::log("\$key_user", $key_user, 4);
-	log_writer2("","セッションあるよ！","lv3");
+	U::log("","セッションあるよ！",4);
 	return;
 }
 
-log_writer2("","セッション切れた。","lv3");
+U::log("","セッション切れた。",4);
 
 // 2. Cookieがあるか確認
 $cookie = $_COOKIE['remember_me'] ?? null;

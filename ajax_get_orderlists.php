@@ -1,7 +1,7 @@
 <?php
-  require "php_header.php";
+  require "php_header_admin.php";
 	//log_writer2("\$_GET",$_GET,"lv3");
-	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+	$rtn = csrf_checker(["order_management.php","xxx.php"],[]);
 	if($rtn !== true){
 	  $msg=$rtn;
 	  $alert_status = "alert-warning";
@@ -43,12 +43,12 @@
 
 		$alert_status = "success";
 		
-		$return = array(
-	    "alert" => $alert_status,
-	    "header" => $dataset,
-	    "body" => $dataset2
-	  );
 	}
+	$return = array(
+	  "alert" => $alert_status,
+	  "header" => $dataset ?? [],
+	  "body" => $dataset2 ?? []
+	);
   header('Content-type: application/json');  
   echo json_encode($return, JSON_UNESCAPED_UNICODE);
   exit();

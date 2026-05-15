@@ -1,14 +1,23 @@
 <?php
-  require "php_header.php";
+	if($_GET["key"] ==="customer"){
+  	require "php_header.php";
+	}else if($_GET["key"] ==="shop"){
+		require "php_header_admin.php";
+	}else{
+		//require "php_header.php";
+	}
+
+	//U::log("\$_SESSION",$_SESSION,4);
+	U::log("\$_GET",$_GET,4);
 
 	if(empty($_SESSION["askNO"])){
-	  $msg=$rtn;
 	  $alert_status = "alert-warning";
 	  $reseve_status = true;
+		$talk = [];
 	}else{
-	  //log_writer('\$_SESSION["uid"]',++$a);
 		$askNO = rot13decrypt2($_SESSION["askNO"]);
-		$shop_id = $_SESSION["user_id"];
+		$shop_id = $_SESSION["user_id"] ?? "%";
+		U::log("\$askNO",$askNO,4);
 		
 		$sql = "SELECT qa.*,us.logo,us.yagou,us.mail,us.line_id
 			from online_q_and_a qa
@@ -18,8 +27,7 @@
 			and `shop_id` like :shop_id
 			order by seq";
 		$talk = $db->SELECT($sql,["shop_id" => $shop_id,"askNO" => $askNO]);
-		
-	  //log_writer('\$talk',$talk);
+		//U::log("\$talk",$talk,4);
 	}
   header('Content-type: application/json');  
   echo json_encode($talk, JSON_UNESCAPED_UNICODE);

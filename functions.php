@@ -28,9 +28,8 @@ function log_writer2($pgname,$msg,$kankyo){
 // オリジナルログ出力(access_log)
 // =========================================================
 function aclog_writer($param,$pdo){
-	U::log("start aclog_writer","",4);
-	U::log("\$param",$param,4);
-	//log_writer2("\$_SERVER[PHP_SELF]",$_SERVER["PHP_SELF"],"lv3");
+	//U::log("start aclog_writer","",4);
+	//U::log("\$param",$param,4);
 	global $db;
 	if(!($_SERVER["PHP_SELF"]==="/index.php" || $_SERVER["PHP_SELF"]==="/product.php" || $_SERVER["PHP_SELF"]==="/ajax_ins_access_log.php")){
 		return 0;

@@ -7,13 +7,12 @@ if (php_sapi_name() !== 'cli') {
   session_name("PresentOnline_user_SESSION");
   session_start();
 }
-//ob_start();
 define("VERSION","ver1.66.5");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
-require "./vendor/autoload.php";
-require "functions.php";
+require_once "./vendor/autoload.php";
+require_once "functions.php";
 
 //.envの取得
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -25,9 +24,14 @@ define("APP_NAME",$_ENV["APP_NAME"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
-//$rtn=session_set_cookie_params(24*60*60*24*3,'/',MAIN_DOMAIN,true,true);
-//session_start();
-//$_SESSION = [];
+// DBとの接続
+define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
+define("USER_NAME", $_ENV["DBUSER"]);
+define("PASSWORD", $_ENV["PASS"]);
+
+define("DB_HOST", $_ENV["SV"]);
+define("DB_NAME", $_ENV["DBNAME"]);
+
 
 if(EXEC_MODE<>"Product"){
   $time=date('Ymd-His');
@@ -39,14 +43,6 @@ if(EXEC_MODE<>"Product"){
   $pass="";
 }
 
-
-// DBとの接続
-define("DNS","mysql:host=".$_ENV["SV"].";dbname=".$_ENV["DBNAME"].";charset=utf8");
-define("USER_NAME", $_ENV["DBUSER"]);
-define("PASSWORD", $_ENV["PASS"]);
-
-define("DB_HOST", $_ENV["SV"]);
-define("DB_NAME", $_ENV["DBNAME"]);
 
 
 //メール送信関連
@@ -83,10 +79,12 @@ spl_autoload_register(function ($className) {
     log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }
 });
-$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 
 class_alias('classes\Utilities\Utilities','U');
 use classes\Database\Database;
+
+
+$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 $db = new Database();
 
 //require元PHPの取得
@@ -164,5 +162,5 @@ if(!str_starts_with($request_php, 'ajax_')){//リファイラの取得($request_
 }else{
   //log_writer2("","ajax：アクセスログスキップ","lv3");
 }
-
+U::log("セッション名","PresentOnline_user_SESSION",4);
 ?>

@@ -32,7 +32,7 @@ class Database {
         //newしたphpファイル名を$fileに取得
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $file = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
-        $this->log = "-- New call from Source: {$file} " . date('Y-m-d H:i:s') . "\n";
+        //$this->log = "-- New call from Source: {$file} " . date('Y-m-d H:i:s') . "\n";
         
     }
     public function __destruct() {
@@ -232,13 +232,14 @@ class Database {
       $this->connect()->rollback();
       $this->exec_log();
     }
-    public function Exception_rollback(\Throwable $e):void{
+    public function Exception_rollback(\Throwable $e,String $msg=""):void{
       //例外が発生した場合のロールバック処理と管理者への通知を行うメソッド
-      $this->rollback_tran("Exception Message:".$e->getMessage());
+      $msg = (U::exist($msg) ? "$msg\n" : "");
+      $this->rollback_tran($msg."Exception Message:".$e->getMessage());
       //メソッドをコールしたファイルを取得
       $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
       $file = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
-      U::send_E($e,"【".EXEC_MODE."】[$file]でExceptionロールバック発生", "ErrorSQL:".$this->sql."\nログ:\n".$this->log);
+      U::send_E($e,"【".EXEC_MODE."】[$file]でExceptionロールバック発生", $msg."ErrorSQL:".$this->sql."\nログ:\n".$this->log);
     }
 
     private function exec_log():void{

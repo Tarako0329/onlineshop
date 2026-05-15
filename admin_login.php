@@ -1,6 +1,6 @@
 <?php
   require "php_header_admin.php";
-	$errmsg .= $_SESSION["e-msg"] ?? "";
+	$errmsg = $_SESSION["e-msg"] ?? "";
 	// セッション変数をすべて空にする
 	$_SESSION = array();
 
@@ -19,11 +19,17 @@
 	//cookie[remember_me]を破棄
 	$_SESSION["user_id"] = -1;
 	
-  $user_hash = $_GET["key"] ;
-  $uid = rot13decrypt2($user_hash);
+	if(U::exist($_GET["key"])){
+  	$user_hash = $_GET["key"] ?? "";
+  	$uid = rot13decrypt2($user_hash);
+	}else{
+		$user_hash = "";
+		$uid = "9999999999999";
+	}
 
 	$g_login = "signin_with";
 	$login = false;
+	$webrez = "";
 
 	//Users_onlineテーブルのuidと$_SESSION["user_id"]が等しい１レコードを取得し、$Yagou に yagouの項目値をセットする。
 	$sql = "SELECT UO.*,US.mail,US.password,US.login_type,US.webrez FROM Users_online UO INNER JOIN Users US ON UO.uid = US.uid WHERE UO.`uid` =:uid";
@@ -96,7 +102,7 @@
 		}
 		if (!empty($errmsg)) {
 			echo "<div class='alert alert-danger text-center'>".$errmsg."</div>";
-		}
+		}else{
 	?>
 	  <div class="card card-container">
 			<form class="form-signin" id="form1" method="post" action="ajax_login.php">
@@ -180,6 +186,9 @@
 			</form>
 
 		</div><!-- /card-container -->
+	<?php
+		}
+	?>
   </MAIN>
   <FOOTER class='container-fluid common_footer'>
   </FOOTER>

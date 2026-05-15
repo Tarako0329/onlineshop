@@ -60,7 +60,8 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     const shoplist = ref([])
 
     onMounted(()=>{
-      GET_USER2()
+      //GET_USER2()
+      axios.get("ajax_get_ShopList.php")
       .then((response)=>{
         console_log(response)
         shoplist.value = response.Users_online

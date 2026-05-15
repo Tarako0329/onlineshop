@@ -1,6 +1,6 @@
 <?php
 require "php_header_admin.php";
-$user_hash = $_GET["key"] ;
+$user_hash = $_GET["key"]??"" ;
 $login = false;
 ?>
 <!DOCTYPE html>

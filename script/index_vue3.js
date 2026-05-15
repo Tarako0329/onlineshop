@@ -15,7 +15,7 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 			//自動でUID分の商品のみが返ってくる
 			//p_serch は 商品名
 			axios
-			.get(`ajax_get_shouhinMS_online.php?f=${p_serch}`)
+			.get(`ajax_get_shouhinMS_online.php?f=${p_serch}&kengen=user`)
 			.then((response) => {
 				if(response.data.alert==="success"){
 					shouhinMS.value = [...response.data.dataset]
@@ -439,15 +439,17 @@ const sales = (Where_to_use,p_token,p_user_id) => createApp({//販売画面
 			const form = new FormData();
 			form.append(`mailto`, qa_mail.value)
 			form.append(`shop_id`, shouhinMS_SALE.value[qa_index.value].uid)
-			form.append(`qa_head`, qa_head.value)
+			form.append(`subject`, qa_head.value)
 			form.append(`qa_name`, qa_name.value)
-			form.append(`subject`, `【${qa_yagou.value}】ご質問を受付ました「${qa_head.value}」`)
-			form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\nお問い合わせ内容\n\n${qa_text.value}`)
-			form.append(`qa_text`, qa_text.value)
-			form.append(`sts`, "Q")
+			//form.append(`subject`, `【${qa_yagou.value}】ご質問を受付ました「${qa_head.value}」`)
+			//form.append(`mailbody`, `※このメールは送信専用です。返信しても出店者には届きません。※\nお問い合わせ内容\n\n${qa_text.value}`)
+			form.append(`mailbody`, qa_text.value)
+			//form.append(`sts`, "Q")
+			form.append(`action`, 'toiawase')//action:toiawase:初回の問合せ or kaitou:それぞれからの'回答'（初回問合せは客の場合indexphpから、店の場合は受注管理画面からなので、actionは必要ないが、念のためつける）
 			form.append(`csrf_token`, token)
 
-			axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+			//axios.post("ajax_sendmail_custmor.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
+			axios.post("ajax_sendmail_from_C.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response)=>{
 				console_log(response.data)
 				loader.value = false
