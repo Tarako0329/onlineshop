@@ -52,7 +52,7 @@
 									<td>{{list.askNO}}</td>
 									<td>{{list.shouhinNM}}</td>
 									<td>{{list.name}}</td>
-									<td><a :href='`Q_and_A.php?askNO=${list.askNO_hash}&QA=<?php echo rot13encrypt2("A");?>&key=<?php echo $user_hash;?>`' class='btn btn-primary'>回答</a></td>
+									<td><a :href='`Q_and_A.php?askNO=${list.askNO_hash}&sender=<?php echo rot13encrypt2("shop");?>&key=<?php echo $user_hash;?>`' class='btn btn-primary'>回答</a></td>
 								</tr>
 							</template>
 						</tbody>
