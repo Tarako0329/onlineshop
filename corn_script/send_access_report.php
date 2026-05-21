@@ -35,13 +35,20 @@
 		$context = stream_context_create($options);
 
 		// リクエスト送信とレスポンスの取得
-		$response[$i] = file_get_contents($url, false, $context);
+		$response[$i] = json_decode(file_get_contents($url, false, $context), true);
 
 		// 結果を表示
 		//echo "受信側の応答: " . $response[$i] . "\n";
 	}
 
-	echo generateAccessReportTables($response[2], $response[3], $response[4]);
+	$report = generateAccessReportTables($response[2], $response[3], $response[4]);
+
+	$rtn = U::send_mail(
+		"green.green.midori@gmail.com"
+		,"アクセスレポート"
+		,$report
+		,APP_NAME
+		);
 
 
 /**
