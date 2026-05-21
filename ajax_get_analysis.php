@@ -8,8 +8,8 @@
 	集計期間
 	集計タイプ⇒１：新規ORリピーター　２：どこ経由　３：広告宣伝効果　４：商品別
 	*/
-	$rtn = csrf_checker(["shouhinMS.php"],["P","C","S"]);
-	//log_writer2("\$POST",$_POST,"lv3");
+	$rtn = csrf_checker(["shouhinMS.php","send_access_report.php"],["P","C","S"]);
+	log_writer2("\$POST",$_POST,"lv3");
 
 	$an_type = $_POST["an_type"];
 	$from = $_POST["from"];
@@ -50,7 +50,7 @@
 	  $reseve_status = true;
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
-		$uid = $_SESSION["user_id"];
+		$uid = $_POST["user_id"] ?? $_SESSION["user_id"];
 
 		if($an_type == 1){
 			$sql = "WITH RECURSIVE cal AS (
