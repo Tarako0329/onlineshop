@@ -164,7 +164,11 @@
 						GROUP BY date,uid,shouhinNM
 						ORDER BY tmp.date DESC,tmp.shouhinNM";
 		}else if($an_type == 4){
-			$sql = "SELECT *,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY SEQ DESC";
+			$sql = "SELECT 
+				`datetime`
+				,`name`
+				,koukoku_sns
+				,IF(shouhinNM <> '',shouhinNM,'TOPページ') as PAGE_NAME FROM Buyer_Footprint WHERE date between :from1 and :to1 ORDER BY SEQ DESC";
 		}
 		//log_writer2("\$sql",$sql,"lv3");
 		if($an_type != 4){
@@ -184,6 +188,6 @@
 		//log_writer2("\$data",$data,"lv3");
 	}
 	header('Content-type: application/json');  
-	echo json_encode($data, JSON_UNESCAPED_UNICODE);
+	echo json_encode($data ?? [], JSON_UNESCAPED_UNICODE);
 	exit();
 ?>
