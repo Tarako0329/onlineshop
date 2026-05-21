@@ -15,8 +15,8 @@
 		// 送信したいデータ（連想配列）
 		$data = [
 		    'an_type' => (string)$i,
-		    'from' => '2026-03',
-		    'to' => '2026-03',
+		    'from' => '2026-04',
+		    'to' => '2026-04',
 		    'tani' => 'm',
 		    'taishou_all' => 'true',
 			'user_id' => '2'
@@ -41,7 +41,7 @@
 		//echo "受信側の応答: " . $response[$i] . "\n";
 	}
 
-	$report = generateAccessReportTables($response[2], $response[3], $response[4]);
+	$report = generateAccessReportTables($response[2] ?? [], $response[3] ?? [], $response[4] ?? []);
 
 	$rtn = U::send_mail(
 		"green.green.midori@gmail.com"
@@ -107,6 +107,9 @@ function generateAccessReportTables(array $adEffect, array $pageViews, array $re
                 </tr>
               </thead>";
     $html .= "<tbody>";
+	if(empty($adEffect)){
+		$html .= "<tr><td colspan='7' {$tdStyle} style='text-align: center;'>データがありません</td></tr>";
+	}
     foreach ($adEffect as $row) {
         $html .= "<tr>";
         $html .= "<td {$tdStyle}><strong>" . htmlspecialchars($row['訪問者数']) . " 名</strong></td>";
@@ -131,6 +134,9 @@ function generateAccessReportTables(array $adEffect, array $pageViews, array $re
                 </tr>
               </thead>";
     $html .= "<tbody>";
+	if(empty($pageViews)){
+		$html .= "<tr><td colspan='2' {$tdStyle} style='text-align: center;'>データがありません</td></tr>";
+	}
     foreach ($pageViews as $index => $row) {
         $rowStyle = ($index % 2 === 0) ? "" : $bgGray;
         $html .= "<tr {$rowStyle}>";
@@ -154,6 +160,9 @@ function generateAccessReportTables(array $adEffect, array $pageViews, array $re
                 </tr>
               </thead>";
     $html .= "<tbody>";
+	if(empty($repeaters)){
+		$html .= "<tr><td colspan='4' {$tdStyle} style='text-align: center;'>データがありません</td></tr>";
+	}
     foreach ($repeaters as $index => $row) {
         $rowStyle = ($index % 2 === 0) ? "" : $bgGray;
         $html .= "<tr {$rowStyle}>";
