@@ -1,5 +1,5 @@
 <?php
-  require "php_header.php";
+  require "php_header_admin.php";
 	/*
 	pgname: ajax_get_analysis.php
 	概要: アクセス解析の集計データを取得するためのAJAX
