@@ -13,7 +13,7 @@
 
 	// サーバー側のセッションデータを完全に破棄してセッション再開
 	session_destroy();
-	session_name("PresentOnline_SESSION");
+	session_name("PresentOnline_admin_SESSION");
   session_start();
 	session_regenerate_id(true);
 	//cookie[remember_me]を破棄
