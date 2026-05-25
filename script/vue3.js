@@ -1,5 +1,5 @@
 const { createApp, ref, onMounted, onBeforeMount, computed,watch } = Vue;
-
+/*
 const Unsipped_slip = (Where_to_use,p_token,p_hash) => createApp({//発送サポート
   setup() {
     let token = p_token
@@ -53,7 +53,7 @@ const Unsipped_slip = (Where_to_use,p_token,p_hash) => createApp({//発送サポ
     }
   }
 })
-
+*/
 
 const shops = (Where_to_use,p_token) => createApp({//サイト設定
   setup() {
@@ -74,7 +74,7 @@ const shops = (Where_to_use,p_token) => createApp({//サイト設定
     }
   }
 })
-
+/*
 const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
   setup() {
     const shoplist = ref([])
@@ -349,6 +349,6 @@ const acc_analysis = (Where_to_use,p_token,p_hash) => createApp({//サイト設�
     }
   }
 })
-
+*/
 
 

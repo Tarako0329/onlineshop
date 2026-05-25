@@ -271,7 +271,9 @@ function csrf_checker(array $from = [],array $chkpoint = []):bool{
 					U::log("func:csrf_checker","CSRF failed [".$checked."]",4);
 					U::log("func:csrf_checker","CSRF failed [".$csrf."]",4);
 					U::log("func:csrf_checker","CSRF failed [".$csrf_ck."]",4);
-					$chkflg = "セッションが正しくありません";
+					U::log("func:csrf_checker","CSRF failed セッションが正しくありません",4);
+					//$chkflg = "セッションが正しくありません";
+					$chkflg = false;
 					break;
 				}else{
 					U::log("func:csrf_checker","CSRF success [".$checked."]",4);
@@ -285,7 +287,9 @@ function csrf_checker(array $from = [],array $chkpoint = []):bool{
 	}else{
 		U::log("func:csrf_checker","HTTP_REFERER failed \$_SERVER[".$_SERVER['HTTP_REFERER']."]",4);
 		U::log("func:csrf_checker","HTTP_REFERER failed ParamUrl[".ROOT_URL.$row."]",4);
-		$chkflg = "アクセス元が不正です";
+		U::log("func:csrf_checker","HTTP_REFERER failed アクセス元が不正です",4);
+		//$chkflg = "アクセス元が不正です";
+		$chkflg = false;
 	}
 	
 	return $chkflg;

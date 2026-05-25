@@ -1,7 +1,7 @@
 <?php
 	require "php_header.php";
 	$token = csrf_create();
-	$_SESSION["user_id"] = "%";
+	//$_SESSION["user_id"] = "%";
 ?>
 <!DOCTYPE html>
 <html lang='ja'>

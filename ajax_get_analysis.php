@@ -1,5 +1,4 @@
 <?php
-  require "php_header_admin.php";
 	/*
 	pgname: ajax_get_analysis.php
 	概要: アクセス解析の集計データを取得するためのAJAX
@@ -8,8 +7,9 @@
 	集計期間
 	集計タイプ⇒１：新規ORリピーター　２：どこ経由　３：広告宣伝効果　４：商品別
 	*/
-	$rtn = csrf_checker(["shouhinMS.php","send_access_report.php"],["P","C","S"]);
-	log_writer2("\$POST",$_POST,"lv3");
+  require "php_header_admin.php";
+	$rtn = csrf_checker(["shouhinMS.php","send_access_report.php","acc_analysis.php"],[]);
+	//log_writer2("\$POST",$_POST,"lv3");
 
 	$an_type = $_POST["an_type"];
 	$from = $_POST["from"];
@@ -36,18 +36,13 @@
 			$word3 = "cal.date";
 		}
 	}
-	/*
-	log_writer2("\$from",$from,"lv3");
-	log_writer2("\$to",$to,"lv3");
-	log_writer2("\$word1",$word1,"lv3");
-	log_writer2("\$word2",$word2,"lv3");
-	log_writer2("\$word3",$word3,"lv3");
-	*/
 
-	if(1<>1){
-	  $msg=$rtn;
-	  $alert_status = "alert-warning";
+	if($rtn !== true){
 	  $reseve_status = true;
+		$data = array(
+			"status" => "alert-warning",
+			"msg" => "不正なアクセスが検出されました。"
+		);
 	}else{
 	  //log_writer('\$_SESSION["uid"]',++$a);
 		$uid = $_POST["user_id"] ?? $_SESSION["user_id"];
