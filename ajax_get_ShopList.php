@@ -14,7 +14,6 @@
 
 	register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
-	//$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	$rtn = csrf_checker(["shops.php","send_access_report.php"],[]);
 	U::log("\$rtn",$rtn,4);
 	if($rtn !== true){

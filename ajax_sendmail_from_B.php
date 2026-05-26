@@ -14,7 +14,6 @@ $timeout=false;                     //セッション切れ。ログイン画面
 $sqllog="";
 U::log("\$_POST",$_POST,4);
 
-//$rtn = csrf_checker(["order_management.php","index.php","Q_and_A.php","order_rireki.php",""],["P","C","S"]);
 $rtn = csrf_checker(["order_management.php","","Q_and_A.php","",""],["P","C","S"]);
 if($rtn !== true){
 	$msg=$rtn;

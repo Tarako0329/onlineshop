@@ -5,7 +5,6 @@
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 	log_writer2("ajax_create_stripe_return_url.php start","","lv3");
 
-	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
 	$rtn = csrf_checker(["ajax_create_stripe.php"]);
 	if(empty($_SESSION["user_id"]) || $rtn !== true){
 		//ユーザーIDが取得できない場合は不正アクセスの可能性があるため、処理を中止してadmin_login.phpにリダイレクトする

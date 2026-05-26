@@ -1,7 +1,7 @@
 <?php
 	//pgname: ajax_get_OAtalk_list.php
 	//概要: 問い合わせのスレッド一覧を取得するためのAJAX
-  require "php_header.php";
+  require "php_header_admin.php";
 
 	if(empty($_SESSION["user_id"])){
 	  $msg=$rtn;
