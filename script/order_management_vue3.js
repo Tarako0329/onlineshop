@@ -11,11 +11,11 @@ const order_mng = (Where_to_use,p_token,p_hash) => createApp({//販売管理
       axios
       .get(`ajax_get_orderlists.php`)
       .then((response) => {
+        console_log(response.data)
         if(response.data.alert==="success"){
           orderlist_hd.value = [...response.data.header]
           orderlist_bd.value = [...response.data.body]
           console_log('ajax_get_orderlists succsess')
-          console_log(response.data)
         }else{
           console_log('ajax_get_orderlists succsess:NoData')
         }
