@@ -4,7 +4,6 @@
   require "php_header_admin.php";
 
 	if(empty($_SESSION["user_id"])){
-	  $msg=$rtn;
 	  $alert_status = "alert-warning";
 	  $reseve_status = true;
 	}else{
