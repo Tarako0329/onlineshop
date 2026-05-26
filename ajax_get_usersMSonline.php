@@ -4,9 +4,9 @@
   require "php_header_admin.php";
 	register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
-	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]);
+	$rtn = csrf_checker(["order_rireki.php","acc_analysis.php","configration.php","settlement.php","order_management.php"],[]);
 	if($rtn !== true){
-	  $msg=$rtn;
+	  $msg="アクセス元が不正です";
 	  $alert_status = "alert-warning";
 	  $reseve_status = true;
 	}else{
@@ -23,7 +23,7 @@
 			where um.uid like :uid 
 			order by RAND()";
 
-		$data = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
+		$data = $db->SELECT($sql,["uid" => $_SESSION["user_id"] ?? "%"]);
 
 		if(empty($data)){
 			$alert_status = "alert-danger";
@@ -44,17 +44,8 @@
 			from Users_online_payinfo
 			where uid like :uid ";
 
-		$data2 = $db->SELECT($sql,["uid" => $_SESSION["user_id"]]);
-
-		//$alert_status = "alert-success";
-
-		/*$return_sts = array(
-			"status" => $alert_status
-			,"msg" => $msg
-			,"Users_online" => $data
-			,"Users_online_payinfo" => $data2
-		);*/
-				
+		$data2 = $db->SELECT($sql,["uid" => $_SESSION["user_id"] ?? "%"]);
+	
 	}
 
 	$return_sts = array(
