@@ -4,7 +4,7 @@
   require "php_header_admin.php";
 	register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
-	$rtn = csrf_checker(["order_rireki.php","acc_analysis.php","configration.php","settlement.php","order_management.php"],[]);
+	$rtn = csrf_checker(["order_rireki.php","acc_analysis.php","configration.php","settlement.php","order_management.php","payment.php"],[]);
 	if($rtn !== true){
 	  $msg="アクセス元が不正です";
 	  $alert_status = "alert-warning";

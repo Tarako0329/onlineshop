@@ -178,6 +178,7 @@ const settlement = (Where_to_use,p_token,p_hash) => createApp({//サイト設定
     onMounted(()=>{
       GET_USER2()
       .then((response)=>{
+        console_log(response)
         console_log(response.Users_online[0].mail)
         pay_lists.value = response.Users_online_payinfo
         stripe_mail = response.Users_online[0].mail
