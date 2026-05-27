@@ -1,7 +1,7 @@
 <?php
 //支払方法の利用フラグを更新
 //PGNAME:ajax_upd_userMSonline_pay.php
-require "php_header.php";
+require "php_header_admin.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ

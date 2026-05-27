@@ -1,6 +1,6 @@
 <?php
 //log_writer2(basename(__FILE__)."",$sql,"lv3");
-require "php_header.php";
+require "php_header_admin.php";
 //register_shutdown_function('shutdown');
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 

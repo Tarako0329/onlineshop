@@ -221,7 +221,6 @@
 							<p v-else>スライド - {{index + 1}}</p>
 							<div style='width:100%;' class='temp'><button type='button' class='btn btn-primary mb-1 btn-sm' @click='resort(index)' style='min-width: 50px;'>{{choice_btn_name}}</button></div>
 							<div class='img-div' style='position:relative;width:100%;height:200px;overflow: hidden;'>
-								<!--<button type="button" class='btn btn-danger' style='position:absolute;top:0;right:0;min-width: 40px;' @click='pic_delete(list.filename)'>削除</button>-->
 								<div v-if='mode==="upd"' class='form-check ' style='position:absolute;top:0;right:0;min-width: 60px;background-color: white;border: 0.5px solid red; padding-left: 25px;'>
 									<input class='form-check-input' type='checkbox' style='' v-model='list.delete_flg' :id='`change_part_${index}`'>
 									<label class='form-check-label' :for='`change_part_${index}`'>削除</label>

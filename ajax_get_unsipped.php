@@ -1,6 +1,6 @@
 <?php
-  require "php_header.php";
-	//log_writer2("\$_GET",$_GET,"lv3");
+  require "php_header_admin.php";
+	U::log("\$_GET",$_GET,4);
 	if(empty($_GET["hash"])){
     echo "アクセスが不正です。";
     exit();
@@ -8,7 +8,7 @@
 	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 
-	$rtn = true;//csrf_checker(["xxx.php","xxx.php"],["P","C","S"]); 
+	$rtn = csrf_checker(["Unshipped_slip.php","xxx.php"]); 
 	if($rtn !== true){
 	  $msg=$rtn;
 	  $alert_status = "alert-warning";
@@ -37,13 +37,15 @@
 
 		$alert_status = "success";
 		
-		$return = array(
-	    "alert" => $alert_status,
-	    "result" => $result,
-	    "result2" => $result2
-	  );
 	}
-  header('Content-type: application/json');  
+
+	$return = array(
+    "alert" => $alert_status,
+    "result" => $result ?? [],
+    "result2" => $result2 ?? []
+  );
+
+	header('Content-type: application/json');  
   echo json_encode($return, JSON_UNESCAPED_UNICODE);
   exit();
 ?>

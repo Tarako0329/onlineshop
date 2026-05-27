@@ -1,6 +1,6 @@
 <?php
 //テスト用
-require "php_header.php";
+require "php_header_admin.php";
 $stripe = new \Stripe\StripeClient(S_KEY);
 
 //$stripe->accounts->delete('acct_1OybDqAQ64vUhFxt', []);

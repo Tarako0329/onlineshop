@@ -1,14 +1,14 @@
 <?php
-require "php_header.php";
+require "php_header_admin.php";
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
-log_writer2("\$_POST",$_POST,"lv3");
+U::log("\$_POST",$_POST,4);
 
 
-$rtn = true;//csrf_checker(["review_post.php"],["P","S"]);
+$rtn = csrf_checker(["configration.php","shouhinMS.php"]);
 if($rtn !== true){
-	$msg=$rtn;
+	$msg=["不正なアクセスです。リクエストを拒否しました。"];
 	$alert_status = "alert-warning";
 	$reseve_status = true;
 }else{
@@ -19,46 +19,7 @@ if($rtn !== true){
 	//$type = "one";
 	$response_schema = json_decode($_POST["response_schema"],true) ?? NULL; 
 
-	/*$response_schema = [
-		'type' => 'object',
-		'properties' => [
-			'posts' => [
-				'type' => 'object',
-				'properties' => [
-					'tags' => [
-						'type' => 'array',
-						'items' => [ // 配列の各要素の型を定義
-								'type' => 'string',
-								'description' => 'ハッシュタグ',
-						],
-						'description' => '投稿に紐づくハッシュタグの配列',
-					],
-					'texts' => [
-						'type' => 'array',
-						'items' => [ // 配列の各要素（投稿例オブジェクト）の型を定義
-							'type' => 'object',
-							'properties' => [
-								'text' => ['type' => 'string', 'description' => 'SNS投稿例のテキスト'],
-								'tags' => [ // 各投稿例に紐づくタグも配列にする
-									'type' => 'array',
-									'items' => [
-										'type' => 'string',
-										'description' => 'SNS投稿例に紐づくハッシュタグ',
-									],
-								],
-							],
-							'required' => ['text', 'tags'], // 各投稿例の必須項目
-						],
-						'description' => 'SNS投稿例の配列',
-					],
-					'url' =>['type' => 'string', 'description' => '商品url']
-				]
-				,'required' => ['tags', 'texts','url']	//必須項目
-			],
-			'required' => ['posts']	//必須項目
-		]
-	];*/
-    
+
 	if($type==="kaiwa"){
 		$msg = gemini_api_kaiwa($user_input,$answer_type,$subject);
 	}else if($type==="one"){

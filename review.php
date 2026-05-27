@@ -32,7 +32,7 @@
     where m.shouhinCD = :shouhinCD
     and m.uid = :shop_id
   order by r.insdatetime desc";
-  $review = $db->SELECT($sql,["shouhinCD"=>$shouhinCD,"shop_id"=>$shop_id]);
+  $review = $db->SELECT($sql,["shouhinCD"=>$shouhinCD ?? "-","shop_id"=>$shop_id ?? "-"]);
   //log_writer2("\$review",$review,"lv3");
 
 ?>

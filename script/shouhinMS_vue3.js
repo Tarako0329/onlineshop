@@ -55,24 +55,6 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		}
 		const get_shouhinMS_newcd = () => {
 			shouhinCD.value = -999	//仮の新規コード(画面上では表示しない/DB登録時に新規コードに置換する)
-			/*
-			let url=`ajax_get_shouhinMS_newcd.php`
-			console_log('get_shouhinMS_newcd start')
-			
-			axios.get(url)
-			.then((response) => {
-				console_log(response.data)
-				shouhinCD.value = response.data
-				console_log('get_shouhinMS_newcd succsess')
-			})
-			.catch((error)=>{
-				console_log(error)
-				alert('リターンエラー：商品マスタnewCD取得失敗')
-			})
-			.finally(()=>{
-				//loader.value = false
-			})
-			*/
 		}
 		
 		const uid = ref('')
@@ -91,8 +73,6 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 		const ins_datetime = ref('')
 		const customer_bikou = ref('ご要望等ございましたらご記入ください。')
 		const pic_list = ref([])
-		//const rez_shouhinCD = ref('')
-		//const rez_shouhinNM = ref('')
 		const get_shouhinMS_online = (serch) => {
 			axios
 			.get(`ajax_get_shouhinMS_online.php?f=${serch}`)
@@ -240,7 +220,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			}
 		}
 
-		const sort_mode_switch = () =>{
+		const sort_mode_switch = async() =>{
 			//class temp が空の場合、.tempにdisplay:blockを追加。
 			const temps = document.querySelectorAll('.temp');
 			temps.forEach((el) => {
@@ -254,6 +234,8 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			});
 			//並べ替えは中断する
 			if(moto_index != null){resort(moto_index)}
+			console_log('sort_mode_switch 終了')
+			return 0
 		}
 
 		const pic_sort_chk = computed(()=>{
@@ -314,46 +296,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			})
 		}
 
-		/*廃止：商品登録時に削除処理をするように変更したため
-		const pic_delete = (filepass) =>{
-			//アップされたファイルを削除
-			//マスタに登録されたレコードを削除
-			//pic_list[]からレコード削除
-			if(confirm("削除は即反映されます。本当に削除しますか？")===false){
-				return 0
-			}
-			const form = new FormData();
-			form.append(`pic`, filepass)
-			form.append(`csrf_token`, token)
-			form.append(`hash`, hash)
-
-			axios.post("ajax_file_delete.php",form, {headers: {'Content-Type': 'multipart/form-data'}})
-			.then((response)=>{
-				console_log(response.data)
-				if(response.data.status==="alert-success"){
-					//画面のクリア
-					pic_list.value.forEach((row,index)=>{
-						if(row.filename===filepass){pic_list.value.splice(index,1)}
-					})
-					msg.value=`${filepass} を削除しました`
-
-				}else{
-					msg.value=`${filepass} の削除に失敗しました`
-				}
-				token = response.data.csrf_create
-			})
-			.catch((error,response)=>{
-				console_log(error)
-				msg.value=`${filepass} の削除に失敗しました`
-				token = response.data.csrf_create
-			})
-			.finally(()=>{
-				//loader.value = false
-			})
-		}
-		*/
-
-		const ins_shouhinMS = ()=>{
+		const ins_shouhinMS = async()=>{
 			let msg = ''
 			if(shouhinNM.value == ''){
 				msg = msg + ' 商品名、'
@@ -382,7 +325,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			}
 			if(choice_mode_btn_name.value==='並替え完了'){
 				//画像アップロード時は並べ替えモードを解除
-				sort_mode_switch()
+				await sort_mode_switch()
 			}
 
 			loader.value = true
@@ -735,7 +678,7 @@ const shouhinMS = (Where_to_use,p_token,p_hash) => createApp({//商品マスタ�
 			axios.post("ajax_chk_gemini.php",params, {headers: {'Content-Type': 'multipart/form-data'}})
 			.then((response) => {
 				console_log('get_AI_seo succsess')
-				console_log(response)
+				console_log(response.data)
 				if(response.data.emsg){
 					alert(response.data.emsg)
 					return 0

@@ -18,6 +18,7 @@ define("APP_NAME",$_ENV["APP_NAME"]);
 //システム通知
 define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
+session_name("PresentOnline_user_SESSION");
 session_start();
 //log_writer2("\$time",$time,"lv3");
 
@@ -58,6 +59,7 @@ define("POP_PASS", $_ENV["POP_PASS"]);
 
 
 register_shutdown_function('shutdown_ajax',basename(__FILE__));
+U::log("セッション名","PresentOnline_user_SESSION",4);
 
 $msg = "";                          //ユーザー向け処理結果メッセージ
 $reseve_status=false;               //処理結果セット済みフラグ。

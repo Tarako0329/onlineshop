@@ -14,7 +14,7 @@ const Unsipped_slip = (Where_to_use,p_token,p_hash) => createApp({//発送サポ
       axios
       .get(`ajax_get_unsipped.php?from=${FROM.value}&to=${TO.value}&hash=${hash}`)
       .then((response) => {
-        console_log(response)
+        console_log(response.data)
         Unsippedlist.value = response.data.result
         Unsippedlist_uchiwake.value = response.data.result2
         console_log('ajax_get_unsipped succsess')

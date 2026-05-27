@@ -1,12 +1,12 @@
 <?php
-require "php_header.php";
+require "php_header_admin.php";
 
 log_writer2("\$_FILES",$_FILES,"lv3");
 log_writer2("\$_POST",$_POST,"lv3");
 $rtn = csrf_checker(["shouhinMS.php","configration.php","payment.php","settlement.php"],["P","C","S"]);
 if($rtn !== true){
-	$msg=$rtn;
-	$alert_status = "alert-warning";
+	$msg="不正なアクセスです。リクエストを拒否しました。";
+	$status = "warning";
 	$reseve_status = true;
 }else{
     $i=0;
@@ -15,7 +15,7 @@ if($rtn !== true){
     while($i < count($_FILES)){
         $tempfile = $_FILES['user_file_name_'.$i]['tmp_name'];
         $filename = 'upload/temp/' .$_SESSION["user_id"]."_".$filesubname."_".date('Ymd-His')."_".$_FILES['user_file_name_'.$i]['name'];
-        $stats = "false";
+        $status = "false";
 
         if (is_uploaded_file($tempfile)) {
             if ( move_uploaded_file($tempfile , $filename )) {
@@ -32,7 +32,7 @@ if($rtn !== true){
                     ,"filename" => $filename
                     ,"delete_flg" => false
                 );
-                $stats = "success";
+                $status = "success";
             } else {
                 $msg = "ファイルをアップロードできません。";
             }
@@ -45,9 +45,9 @@ if($rtn !== true){
 }
 $token = csrf_create();
 $return = array(
-    "filename" => $filelist
+    "filename" => $filelist ?? []
     ,"msg" => $msg
-    ,"status" => $stats
+    ,"status" => $status
     ,"csrf_create" => $token
 );
 

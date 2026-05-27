@@ -1,4 +1,5 @@
 <?php
+	//ajax_get_orderlists.php
   require "php_header_admin.php";
 	//log_writer2("\$_GET",$_GET,"lv3");
 	$rtn = csrf_checker(["order_management.php","order_rireki.php"],[]);

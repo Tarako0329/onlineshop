@@ -1,6 +1,6 @@
 <?php
 	//StripeConnectの登録が終わった場合、もしくは戻るで戻った場合に処理されるPG
-  require "php_header.php";
+  require "php_header_admin.php";
 	$user_hash = $_GET["hash"] ;
 	$_SESSION["user_id"] = rot13decrypt2($user_hash);
 	log_writer2("ajax_create_stripe_return_url.php start","","lv3");
