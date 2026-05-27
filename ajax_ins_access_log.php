@@ -29,7 +29,6 @@ define("PASSWORD", $_ENV["PASS"]);
 define("DB_HOST", $_ENV["SV"]);
 define("DB_NAME", $_ENV["DBNAME"]);
 
-//$pdo_h = new PDO(DNS, USER_NAME, PASSWORD, get_pdo_options());
 spl_autoload_register(function ($className) {
   // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
   $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);
@@ -44,6 +43,7 @@ spl_autoload_register(function ($className) {
     log_writer2("Autoloading failed", "Class: " . $className . " (Expected Path: " . $file . ")", "lv3");
   }
 });
+class_alias('classes\Utilities\Utilities','U');
 use classes\Database\Database;
 $db = new Database();
 
