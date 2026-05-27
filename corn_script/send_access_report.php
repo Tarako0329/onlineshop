@@ -1,6 +1,6 @@
 <?php
 	if (php_sapi_name() != 'cli') {
-		//exit('このスクリプトはCLIからのみ実行可能です。');
+		exit('このスクリプトはCLIからのみ実行可能です。');
 	}
 	$mypath = dirname(__DIR__);
 	chdir($mypath);
@@ -77,11 +77,12 @@
 			U::log("アクセス解析データの取得に失敗 - ショップ {$shop['yagou']}", $response ?? [], 4);
 			continue; // このショップのレポート送信はスキップして次へ
 		}
-		$report = generateAccessReportTables($response[2] ?? [], $response[3] ?? [], $response[4] ?? []);
+		$report = generateAccessReportTables($response[2] ?? [], $response[3] ?? [], $response[4] ?? [], $shop);
 
 		$rtn = U::send_mail(
 			$shop['mail']
-			,"アクセスレポート"
+			,"アクセスレポート($prevMonth)"
+				." - " . APP_NAME
 			,$report
 			,APP_NAME
 			);
@@ -97,12 +98,12 @@
  * @param array $repeaters リピーターの訪問状況の配列
  * @return string メール本文にそのまま使えるHTML文字列
  */
-function generateAccessReportTables(array $adEffect, array $pageViews, array $repeaters): string 
+function generateAccessReportTables(array $adEffect, array $pageViews, array $repeaters, array $shop): string 
 {
 	// --------------------------------------------------
 	// 調整可能なパラメータ（ショップ名）
 	// --------------------------------------------------
-	$appName = "Cafe Present"; 
+	$appName = APP_NAME; // 例: "My Online Shop"
 
 	// --------------------------------------------------
 	// 【修正】実行日時の「前月」を自動計算するロジック
@@ -125,6 +126,7 @@ function generateAccessReportTables(array $adEffect, array $pageViews, array $re
 	// 挨拶文の作成
 	// --------------------------------------------------
 	$html = "<div style='font-family: sans-serif; font-size: 15px; line-height: 1.6; color: #333; margin-bottom: 30px;'>";
+	$html .= "<p> <strong>" . htmlspecialchars($shop['yagou']) . " 様</strong></p><p></p>";
 	$html .= "<p>いつも <strong>" . htmlspecialchars($appName) . "</strong> をご贔屓にしていただきありがとうございます。</p>";
 	$html .= "<p>" . htmlspecialchars($reportYear) . "年" . htmlspecialchars($reportMonth) . "月のアクセスレポートをお送りいたします。</p>";
 	$html .= "</div>";

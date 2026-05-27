@@ -27,7 +27,7 @@ function log_writer2($pgname,$msg,$kankyo){
 // =========================================================
 // オリジナルログ出力(access_log)
 // =========================================================
-function aclog_writer($param,$pdo){
+function aclog_writer($param){
 	//U::log("start aclog_writer","",4);
 	//U::log("\$param",$param,4);
 	global $db;
@@ -44,35 +44,13 @@ function aclog_writer($param,$pdo){
 		$uid = substr($param[5],0, $position-1);
 		$shouhinCD = substr($param[5], $position);
 		log_writer2("mojira",$uid."-".$shouhinCD,"lv3");
-		/*
-		$stmt = $pdo->prepare("SELECT * FROM shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD");
-		$stmt->bindValue("uid", $uid, PDO::PARAM_INT);
-		$stmt->bindValue("shouhinCD", $shouhinCD, PDO::PARAM_STR);
-		$stmt->execute();
-		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		*/
+
 		$rows = $db->SELECT("SELECT * FROM shouhinMS_online where uid = :uid and shouhinCD = :shouhinCD",["uid"=>$uid,"shouhinCD"=>$shouhinCD]);
 		log_writer2("/rows",$rows,"lv3");
 		$shouhinNM = $rows[0]["shouhinNM"];
 	}
 	//log_writer2("aclog_writer","finish1","lv3");
-	/*
-	$sql = "INSERT into access_log(ip,bot,ua,ref,page,param,get_param,koukoku_sns,mark_id,session_id,uid,shouhinNM) values(:ip,:bot,:ua,:ref,:page,:param,:get_param,:koukoku_sns,:mark_id,:session_id,:uid,:shouhinNM)";
-	$stmt = $pdo->prepare($sql);
-	$stmt->bindValue("ip", $param[0], PDO::PARAM_STR);
-	$stmt->bindValue("bot", $param[1], PDO::PARAM_STR);
-	$stmt->bindValue("ua", $param[2], PDO::PARAM_STR);
-	$stmt->bindValue("ref", $param[3], PDO::PARAM_STR);
-	$stmt->bindValue("page", $param[4], PDO::PARAM_STR);
-	$stmt->bindValue("param", $param[5], PDO::PARAM_STR);
-	$stmt->bindValue("get_param", $param[6], PDO::PARAM_STR);
-	$stmt->bindValue("koukoku_sns", $param[7], PDO::PARAM_STR);
-	$stmt->bindValue("mark_id", rot13decrypt2($param[8]), PDO::PARAM_STR);
-	$stmt->bindValue("session_id", session_id(), PDO::PARAM_STR);
-	$stmt->bindValue("uid", $uid, PDO::PARAM_INT);
-	$stmt->bindValue("shouhinNM", $shouhinNM, PDO::PARAM_STR);
-	$stmt->execute();
-	*/
+
 	$db->INSERT("access_log",[
 		"ip" => $param[0],
 		"bot" => $param[1],

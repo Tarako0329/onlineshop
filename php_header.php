@@ -158,7 +158,7 @@ if(!str_starts_with($request_php, 'ajax_')){//リファイラの取得($request_
     ,$aclu
   ];
   $_SESSION["log_param"] = $log_param;
-  aclog_writer($log_param,$pdo_h);
+  aclog_writer($log_param);
 }else{
   //log_writer2("","ajax：アクセスログスキップ","lv3");
 }

@@ -77,7 +77,7 @@ if(empty($_SESSION["log_param"])){
 		$_SESSION["log_param"][6] = "open";
 		log_writer2("\$_SESSION[log_param]",$_SESSION["log_param"],"lv3");
 
-		aclog_writer($_SESSION["log_param"],$pdo_h);
+		aclog_writer($_SESSION["log_param"]);
 
 		$msg="ログ書き込み成功";
 		$reseve_status=true;
