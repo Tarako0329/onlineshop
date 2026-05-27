@@ -7,7 +7,7 @@ if (php_sapi_name() !== 'cli') {
   session_name("PresentOnline_admin_SESSION");
   session_start();
 }
-define("VERSION","ver1.66.5");
+define("VERSION","ver1.67.0");
 
 //ini_set('max_execution_time', -1);
 //ini_set('max_input_time', -1);
